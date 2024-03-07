@@ -1,0 +1,34 @@
+{
+    "name": "InputActions",
+    "maps": [
+        {
+            "name": "Hardware",
+            "id": "d0323fde-259a-490f-b056-fab89204294c",
+            "actions": [
+                {
+                    "name": "Interactions",
+                    "type": "Button",
+                    "id": "cf4d268c-0d73-45e4-a1a0-b033f39ee5e5",
+                    "expectedControlType": "Button",
+                    "processors": "",
+                    "interactions": "",
+                    "initialStateCheck": false
+                }
+            ],
+            "bindings": [
+                {
+                    "name": "",
+                    "id": "a1f8be09-a362-460f-a82f-3973340849d6",
+                    "path": "<Keyboard>/f",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Interactions",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                }
+            ]
+        }
+    ],
+    "controlSchemes": []
+}
