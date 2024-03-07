@@ -44,8 +44,8 @@ namespace Assets.Scripts.MapGenerator.Generators
                     float height = terrainData.GetHeight((int)x, (int)y);
                     float heightScaled = height / terrainMaxHeight;
 
-                    float xS = x / terrainData.heightmapWidth;
-                    float yS = y / terrainData.heightmapHeight;
+                    float xS = x / terrainData.heightmapResolution;
+                    float yS = y / terrainData.heightmapResolution;
 
                     float steepness = terrainData.GetSteepness(xS, yS);
                     float angleScaled = steepness / 90.0f;
