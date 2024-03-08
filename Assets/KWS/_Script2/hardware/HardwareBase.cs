@@ -18,43 +18,15 @@ public class HardwareBase : MonoBehaviour
     [Range(10.0f, 50.0f)]
     public float hardwarePrice;
 
-    /// <summary>
-    /// 인풋 액션
-    /// </summary>
-    HardwareInputActions inputActions;
-
-    private void Awake()
+    protected virtual void HardwareWeight()
     {
-        inputActions = new HardwareInputActions();      // 인풋 액션 생성
+        // 물건 종류마다 무게가 달라야 함
+        // HardwareBase를 상속받는 곳에서 각각 가격 결정
     }
 
-    private void OnEnable()
+    protected virtual void HardwareSellPrice()
     {
-        inputActions.Hardware.Enable();
-        inputActions.Hardware.Interactions.performed += OnInteractionStart; // Hardware액션 맵의 Interactions액션에 OnInteractionStart 함수를 연결(눌렀을 때만)
-        inputActions.Hardware.Interactions.canceled += OnInteractionEnd;    // Hardware액션 맵의 Interactions액션에 OnInteractionEnd 함수를 연결(땠을 때만)
-    }    
-
-    private void OnDisable()
-    {
-        inputActions.Hardware.Interactions.canceled -= OnInteractionEnd;    // 연결 해제
-        inputActions.Hardware.Interactions.performed -= OnInteractionStart; // 연결 해제
-        inputActions.Hardware.Disable();
-    }
-
-
-    public void OnInteractionStart(InputAction.CallbackContext _)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void OnInteractionEnd(InputAction.CallbackContext _)
-    {
-        throw new NotImplementedException();
-    }
-
-    private void hardwareSell()
-    {
-
+        // 물건 종류마다 가격이 달라야 함
+        // HardwareBase를 상속받는 곳에서 각각 가격 결정
     }
 }
