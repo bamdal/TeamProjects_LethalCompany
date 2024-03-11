@@ -1,0 +1,13 @@
+0. Orientations 클래스에 전후좌우상하 고유 번호 0,1,2,3,4,5 정해두고 Quaternion[] rotations 에 지금 현재 맵 타일이 얼마나 돌아갔는지 알기 프로퍼티로 만들어서
+반드시 널값일때 Orientations.initialize(); 불러와서 초기화 시키기
+
+1. ModulePrototype 클래스에 각각 모듈별로 전후좌후위아래 값 설정 전후좌우와 위아래는 분리해두기 인스펙터로 값 입력하게 하기
+for (int rotation = 0; rotation < 4; rotation++) 으로 회전을 시키면서 찾기위해 얼마나 회전시켜둔 오브젝트 인지 적어두기
+otherFace.Connector == face.Connector && ((horizontalFace.Symmetric && otherFace.Symmetric) || otherFace.Flipped != horizontalFace.Flipped)
+두 면의 번호가 같고 서로 대칭된 관계거나 둘중하나만 반전되어 있으면 일치되는 조각판정
+ otherFace = prototype.Faces[(direction + 3) % 6] as ModulePrototype.VerticalFaceDetails;
+otherFace.Connector == face.Connector
+ 상하 같은면 판별
+
+new ConnectorHint(verticalFace.Rotation - otherFace.Rotation, this.getMesh(prototype));
+결과 출력
