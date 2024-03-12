@@ -11,3 +11,19 @@ otherFace.Connector == face.Connector
 
 new ConnectorHint(verticalFace.Rotation - otherFace.Rotation, this.getMesh(prototype));
 결과 출력
+
+/////////////////////////////////////
+
+WaveFunctionCollapse 방식은 자잘한 맵타일을 무한으로 뻗을때 적합하다고 판단하여 절차적 생성으로 교체
+그래도 방식에서 크게 차이는 안날듯
+
+
+
+
+
+
+
+
+
+
+
