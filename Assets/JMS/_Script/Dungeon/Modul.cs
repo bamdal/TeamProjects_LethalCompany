@@ -42,7 +42,14 @@ public class Modul : MonoBehaviour
 
     }
 
-
+    /// <summary>
+    /// 모듈의 사이즈를 구하는 함수
+    /// </summary>
+    /// <returns>모듈의 x,y,z크기</returns>
+    public Vector3 GetSize()
+    {
+        return size;
+    }
 
 
 }
