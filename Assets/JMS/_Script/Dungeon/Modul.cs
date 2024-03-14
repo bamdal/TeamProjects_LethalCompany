@@ -9,6 +9,11 @@ public class Modul : MonoBehaviour
     /// </summary>
     ModulConnector[] connectors;
 
+    public int ConnectorsCount
+    {
+        get => connectors.Length;
+    }
+
     /// <summary>
     /// true일경우 이 모듈은 1번만 소환되고 가능하면 소환해둔다
     /// </summary>

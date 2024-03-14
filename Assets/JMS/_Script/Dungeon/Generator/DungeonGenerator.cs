@@ -53,7 +53,7 @@ public class DungeonGenerator : MonoBehaviour
     List<Modul> uniqueModuls;
 
 
-    private void Awake()
+    private void Start()
     {
         if (randomSeed < 0)
         {
@@ -75,18 +75,18 @@ public class DungeonGenerator : MonoBehaviour
         Instantiate(startModul,generationStartPoint);   // 맵 시작 지점 스폰
         
         List<ModulConnector> existConnectors = new List<ModulConnector>(startModul.Connectors); // 시작지점의 연결지점 가져오기
-
+    
         for (int generation = 0; generation < generationCount; generation++)    // 반복 재생 횟수
         { 
             List<ModulConnector> newConnectors = new List<ModulConnector>();    // 생성된모듈들의 연결자 리스트
             for (int exist = 0; exist < existConnectors.Count; exist++)
             {
                 // 어쨋든 다음꺼 연결해서 붙임
-                Modul newModul = RandomSelectModul();
-                MatchConntectors(existConnectors[exist], newModul);
+                Modul newModul = RandomSelectModul();   // 랜덤한 모듈 가져오기
+                MatchConntectors(existConnectors[exist], newModul); // 모듈을 현재 커넥터에 연결
                 
                 //newConnectors.AddRange(newModul.Connectors.Where(e => e != 현재 이미 연결된 커넥터));
-                newConnectors.Add(AddValuesWithoutDuplicates(newConnectors, existConnectors[exist],newModul));
+                newConnectors.AddRange(AddValuesWithoutDuplicates(existConnectors[exist],newModul));
                 // 붙힐때 충돌 감지 되면 endmodul붙힘
 
             }
@@ -120,7 +120,13 @@ public class DungeonGenerator : MonoBehaviour
     /// <param name="newModul">새로 들어갈 모듈</param>
     private void MatchConntectors(ModulConnector oldConnector, Modul newModul)
     {
-
+        ModulConnector newConnector; // 연결될 커넥터
+        newConnector = newModul.Connectors[(int)Random.Range(0,newModul.ConnectorsCount)];
+        Instantiate(newModul, oldConnector.transform);
+        Quaternion relativeRotation = Quaternion.Inverse(newConnector.transform.rotation) * oldConnector.transform.rotation;
+        newModul.transform.rotation *= relativeRotation;
+        Vector3 m = newModul.transform.position - newConnector.transform.position;
+        
     }
 
     /// <summary>
@@ -130,7 +136,7 @@ public class DungeonGenerator : MonoBehaviour
     /// </summary>
     private Modul RandomSelectModul()
     {
-        Modul selectModul = new Modul();
+        Modul selectModul;
         int randomIndex = Random.Range(0, moduls.Count - 1);
         selectModul = moduls[randomIndex];
 
@@ -140,8 +146,8 @@ public class DungeonGenerator : MonoBehaviour
         {
             if (uniqueModuls != null)
             {
-                int randomUniqueIndex = Random.Range(0, uniqueModuls.Count - 1);
-                selectModul = uniqueModuls[randomUniqueIndex];
+                int randomUniqueIndex = Random.Range(0, uniqueModuls.Count);
+                selectModul = uniqueModuls[randomUniqueIndex];  // 인덱스 아웃
                 uniqueModuls.RemoveAt(randomUniqueIndex);
             }
         }
@@ -151,12 +157,22 @@ public class DungeonGenerator : MonoBehaviour
     /// <summary>
     /// 새로 연결된 모듈에서 이미 겹쳐진 커넥터는 연결될 커넥터에서 제외 시키는 함수
     /// </summary>
-    /// <param name="newConnectors">새로 연결되야 하는 커넥터</param>
     /// <param name="existConnectors">이미 연결중인 커넥터</param>
     /// <param name="modul">연결한 모듈</param>
-    /// <returns></returns>
-    private ModulConnector AddValuesWithoutDuplicates(List<ModulConnector> newConnectors, ModulConnector existConnectors,Modul modul)
+    /// <returns>새로 연결될 커넥터들</returns>
+    private List<ModulConnector> AddValuesWithoutDuplicates(ModulConnector existConnectors,Modul modul)
     {
-        return new ModulConnector();
+        List<ModulConnector> newConnecters = new List<ModulConnector>(modul.ConnectorsCount-1);
+
+        foreach (ModulConnector connecter in modul.Connectors)
+        {
+            if (connecter.transform.position != existConnectors.transform.position)
+            {
+                newConnecters.Add(connecter);
+            }
+        }
+
+        
+        return newConnecters;
     }
 }
