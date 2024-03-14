@@ -1,6 +1,10 @@
+using Cinemachine;
+using JetBrains.Annotations;
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Threading;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -29,6 +33,10 @@ public class PlayerInputController : MonoBehaviour
         Walk = 0,   // 걷기 모드
         Run         // 달리기 모드
     }
+
+    Vector3 mouseDir = Vector3.zero;
+
+    Quaternion cameraRotation = Quaternion.identity;
 
     /// <summary>
     /// 현재 이동 모드
@@ -73,11 +81,16 @@ public class PlayerInputController : MonoBehaviour
 
     // 입력용 인풋 액션
     PlayerInputActions inputActions;
-
+    public Camera cam;
+    //아이템 인식범위 콜라이더
+    Transform itemCatcher;
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
         inputActions = new PlayerInputActions();
+        itemCatcher = transform.GetChild(2);
+        Transform child = transform.Find("Main Camera");
+        cam = child.GetComponent<Camera>();
     }
 
     private void OnEnable()
@@ -87,11 +100,14 @@ public class PlayerInputController : MonoBehaviour
         inputActions.Player.Move.canceled += OnMove;
         inputActions.Player.MoveModeChange.performed += OnMoveModeChange;
         inputActions.Player.Interact.performed += OnInteract;
+        inputActions.Player.Interact.canceled += OnInteract;
+
     }
 
 
     private void OnDisable()
     {
+        inputActions.Player.Interact.canceled -= OnInteract;
         inputActions.Player.Interact.performed -= OnInteract;
         inputActions.Player.MoveModeChange.performed -= OnMoveModeChange;
         inputActions.Player.Move.canceled -= OnMove;
@@ -99,11 +115,31 @@ public class PlayerInputController : MonoBehaviour
         inputActions.Player.Disable();
     }
 
+    /*private void Update()
+     {
+         // 이동 처리
+         characterController.Move(Time.deltaTime * currentSpeed * inputDirection);
+     }
+ */
     private void Update()
     {
-        characterController.Move(Time.deltaTime * currentSpeed * inputDirection);   // 좀 더 수동
-        transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, Time.deltaTime * turnSpeed);  // 목표 회전으로 변경
+        // 카메라의 방향을 기준으로 이동 방향 계산
+        Vector3 cameraForward = cam.transform.forward;
+        Vector3 cameraRight = cam.transform.right;
+        cameraForward.y = 0f;
+        cameraRight.y = 0f;
+        cameraForward.Normalize();
+        cameraRight.Normalize();
+
+        Vector3 moveDirection = cameraForward * inputDirection.z + cameraRight * inputDirection.x;
+        moveDirection.Normalize();
+
+        // 이동 처리
+        characterController.Move(Time.deltaTime * currentSpeed * moveDirection);
     }
+
+
+
 
     /// <summary>
     /// 이동 입력 처리용 함수
@@ -112,19 +148,16 @@ public class PlayerInputController : MonoBehaviour
     private void OnMove(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
         Vector3 input = context.ReadValue<Vector2>();
-
         inputDirection.x = input.x;     // 입력 방향 저장
         inputDirection.y = 0;
         inputDirection.z = input.y;
+        Debug.Log(input);
 
         if (!context.canceled)
         {
             // 눌려진 상황(입력을 시작한 상황)
 
             // 입력 방향 회전 시키기
-            Quaternion camY = Quaternion.Euler(0, Camera.main.transform.rotation.eulerAngles.y, 0); // 카메라의 y회전만 따로 추출
-            inputDirection = camY * inputDirection;     // 입력 방향을 카메라의 y회전과 같은 정도로 회전 시키기
-            targetRotation = Quaternion.LookRotation(inputDirection);   // 목표 회전 저장
 
             // 이동 모드 변경
             MoveSpeedChange(CurrentMoveMode);
@@ -180,6 +213,12 @@ public class PlayerInputController : MonoBehaviour
         {
             ///여기에 작성하시면됩니다.
             Debug.Log("f키 눌렀음!");
+            itemCatcher.gameObject.SetActive(true);
+        }
+        if (context.canceled)
+        {
+            Debug.Log("f키 떨어짐!");
+            itemCatcher.gameObject.SetActive(false);
         }
     }
 }
