@@ -52,10 +52,10 @@ public class DungeonGenerator : MonoBehaviour
     /// </summary>
     List<Modul> uniqueModuls;
 
-
+    int index =0;
     private void Start()
     {
-        if (randomSeed < 0)
+        if (randomSeed > 0)
         {
             Random.InitState(randomSeed);
         }
@@ -72,9 +72,9 @@ public class DungeonGenerator : MonoBehaviour
     /// </summary>
     void Generation()
     {
-        Instantiate(startModul,generationStartPoint);   // 맵 시작 지점 스폰
+        Modul Start = Instantiate(startModul,generationStartPoint);   // 맵 시작 지점 스폰
         
-        List<ModulConnector> existConnectors = new List<ModulConnector>(startModul.Connectors); // 시작지점의 연결지점 가져오기
+        List<ModulConnector> existConnectors = new List<ModulConnector>(Start.Connectors); // 시작지점의 연결지점 가져오기
     
         for (int generation = 0; generation < generationCount; generation++)    // 반복 재생 횟수
         { 
@@ -83,10 +83,10 @@ public class DungeonGenerator : MonoBehaviour
             {
                 // 어쨋든 다음꺼 연결해서 붙임
                 Modul newModul = RandomSelectModul();   // 랜덤한 모듈 가져오기
-                MatchConntectors(existConnectors[exist], newModul); // 모듈을 현재 커넥터에 연결
+                Modul currentModul = MatchConntectors(existConnectors[exist], newModul); // 모듈을 현재 커넥터에 연결
                 
                 //newConnectors.AddRange(newModul.Connectors.Where(e => e != 현재 이미 연결된 커넥터));
-                newConnectors.AddRange(AddValuesWithoutDuplicates(existConnectors[exist],newModul));
+                newConnectors.AddRange(AddValuesWithoutDuplicates(existConnectors[exist], currentModul));
                 // 붙힐때 충돌 감지 되면 endmodul붙힘
 
             }
@@ -113,20 +113,35 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
+
+
     /// <summary>
     /// 연결될 위치와 새 모듈을 입력하면 자동으로 연결하고 배치하는 함수
     /// </summary>
     /// <param name="oldConnector">연결할 커넥터</param>
     /// <param name="newModul">새로 들어갈 모듈</param>
-    private void MatchConntectors(ModulConnector oldConnector, Modul newModul)
+    /// <returns>새로 생성되어 연결된 모듈</returns>
+    private Modul MatchConntectors(ModulConnector oldConnector, Modul newModul)
     {
+        Modul currentModul = Instantiate(newModul, generationStartPoint);
+        currentModul.name = $"{index}째 모듈";
+    
         ModulConnector newConnector; // 연결될 커넥터
-        newConnector = newModul.Connectors[(int)Random.Range(0,newModul.ConnectorsCount)];
-        Instantiate(newModul, oldConnector.transform);
-        Quaternion relativeRotation = Quaternion.Inverse(newConnector.transform.rotation) * oldConnector.transform.rotation;
-        newModul.transform.rotation *= relativeRotation;
-        Vector3 m = newModul.transform.position - newConnector.transform.position;
+        newConnector = currentModul.Connectors[Random.Range(1, 100) % currentModul.ConnectorsCount];    // 새로 만든 모듈의 연결할 커넥터
+        newConnector.name = $"{index}째 연결자";
+        index++;
+        currentModul.transform.position = oldConnector.transform.position;
+
+        // ㄱ자로 꺽인 모듈이 제대로 작동 안함
+        Quaternion relativeRotation = newConnector.transform.rotation * oldConnector.transform.rotation;    // 회전이 이상하게 작동
+        currentModul.transform.rotation *= relativeRotation;
+
+        // 회전이 정상 작동하면 newConnector좌표를 oldConnector좌표로 이동시키는 포지션 값을 구하고 currentModul의 위치를 그만큼 이동
+        Vector3 m = oldConnector.transform.position - newConnector.transform.position;
+        currentModul.transform.position += m;
+        // ㅁ생김새로 랜덤하게 나오면 조기 종료 해버림
         
+        return currentModul;
     }
 
     /// <summary>
@@ -142,11 +157,11 @@ public class DungeonGenerator : MonoBehaviour
 
 
         float num = Random.value;
-        if (num < 0.10f)// 10% 유니크맵
+        if (num < 0.05f)// 5% 유니크맵
         {
-            if (uniqueModuls != null)
+            if (uniqueModuls.Count > 0)
             {
-                int randomUniqueIndex = Random.Range(0, uniqueModuls.Count);
+                int randomUniqueIndex = Random.Range(1, 100)% uniqueModuls.Count;
                 selectModul = uniqueModuls[randomUniqueIndex];  // 인덱스 아웃
                 uniqueModuls.RemoveAt(randomUniqueIndex);
             }
