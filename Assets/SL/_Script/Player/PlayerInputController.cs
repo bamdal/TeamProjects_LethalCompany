@@ -82,13 +82,12 @@ public class PlayerInputController : MonoBehaviour
     // 입력용 인풋 액션
     PlayerInputActions inputActions;
     public Camera cam;
-    //아이템 인식범위 콜라이더
-    Transform itemCatcher;
+
+
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
         inputActions = new PlayerInputActions();
-        itemCatcher = transform.GetChild(2);
         Transform child = transform.Find("Main Camera");
         cam = child.GetComponent<Camera>();
     }
@@ -115,15 +114,53 @@ public class PlayerInputController : MonoBehaviour
         inputActions.Player.Disable();
     }
 
-    /*private void Update()
-     {
-         // 이동 처리
-         characterController.Move(Time.deltaTime * currentSpeed * inputDirection);
-     }
- */
-    private void Update()
+    private void FixedUpdate()
     {
-        // 카메라의 방향을 기준으로 이동 방향 계산
+        // 이동 방향 계산
+        Vector3 moveDirection = CalculateMoveDirection();
+
+        // 이동 처리
+        characterController.Move(Time.deltaTime * currentSpeed * moveDirection);
+        // 아이템을 상호작용하는 함수 호출
+        FindItemRay();
+    }
+
+    /// <summary>
+    /// 바라보고있는 오브젝트가 아이템이면 반응하는 함수
+    /// </summary>
+    private void FindItemRay()
+    {
+        // LayerMask를 설정하여 item 레이어만 검출하도록 합니다.
+        int layerMask = 1 << LayerMask.NameToLayer("Item");
+
+        // 카메라의 정 중앙을 기준으로 레이를 쏩니다.
+        Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+        RaycastHit hit;
+
+        // Physics.Raycast 메서드에 layerMask를 추가하여 해당 레이어만 검출하도록 합니다.
+        if (Physics.Raycast(ray, out hit, 5.0f, layerMask))
+        {
+            Debug.Log("아이템입니다.");
+
+            // 레이를 그려줍니다.
+            Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.green);
+        }
+        else
+        {
+            Debug.Log("레이캐스트 실패!");
+
+            // 실패 시에도 레이를 그려줍니다.
+            Debug.DrawRay(ray.origin, ray.direction * 5.0f, Color.red);
+        }
+    }
+
+
+    /// <summary>
+    /// 카메라의 방향을 기준으로 이동 방향을 계산합니다.
+    /// </summary>
+    /// <returns>이동 방향</returns>
+    private Vector3 CalculateMoveDirection()
+    {
         Vector3 cameraForward = cam.transform.forward;
         Vector3 cameraRight = cam.transform.right;
         cameraForward.y = 0f;
@@ -134,8 +171,7 @@ public class PlayerInputController : MonoBehaviour
         Vector3 moveDirection = cameraForward * inputDirection.z + cameraRight * inputDirection.x;
         moveDirection.Normalize();
 
-        // 이동 처리
-        characterController.Move(Time.deltaTime * currentSpeed * moveDirection);
+        return moveDirection;
     }
 
 
@@ -151,15 +187,9 @@ public class PlayerInputController : MonoBehaviour
         inputDirection.x = input.x;     // 입력 방향 저장
         inputDirection.y = 0;
         inputDirection.z = input.y;
-        Debug.Log(input);
 
         if (!context.canceled)
         {
-            // 눌려진 상황(입력을 시작한 상황)
-
-            // 입력 방향 회전 시키기
-
-            // 이동 모드 변경
             MoveSpeedChange(CurrentMoveMode);
         }
         else
@@ -209,16 +239,36 @@ public class PlayerInputController : MonoBehaviour
     /// <exception cref="NotImplementedException"></exception>
     private void OnInteract(InputAction.CallbackContext context)
     {
-       if(context.performed)
+        if (context.performed)
         {
-            ///여기에 작성하시면됩니다.
             Debug.Log("f키 눌렀음!");
-            itemCatcher.gameObject.SetActive(true);
+
+            // 카메라의 정 중앙을 기준으로 레이를 쏩니다.
+            Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit, 3.0f))
+            {
+                if (hit.collider.CompareTag("Item"))
+                {
+                    Debug.Log(hit);
+                    // 충돌한 객체를 자식으로 만듭니다.
+                    hit.collider.transform.SetParent(transform);
+
+                    // 자식으로 만든 객체를 비활성화합니다.
+                    hit.collider.gameObject.SetActive(false);
+                    Debug.Log("아이템을 획득했습니다!");
+
+                }
+            }
+            else
+            {
+                Debug.Log("레이캐스트 실패!");
+            }
         }
         if (context.canceled)
         {
             Debug.Log("f키 떨어짐!");
-            itemCatcher.gameObject.SetActive(false);
         }
     }
 }
