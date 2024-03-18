@@ -131,15 +131,17 @@ public class DungeonGenerator : MonoBehaviour
         newConnector.name = $"{index}째 연결자";
         index++;
         currentModul.transform.position = oldConnector.transform.position;
+   
 
-        // ㄱ자로 꺽인 모듈이 제대로 작동 안함
-        Quaternion relativeRotation = newConnector.transform.rotation * oldConnector.transform.rotation;    // 회전이 이상하게 작동
-        currentModul.transform.rotation *= relativeRotation;
+        float angle = Vector3.SignedAngle(newConnector.transform.forward, -oldConnector.transform.forward,Vector3.up);
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.up);
+        currentModul.transform.rotation = rotation;
 
         // 회전이 정상 작동하면 newConnector좌표를 oldConnector좌표로 이동시키는 포지션 값을 구하고 currentModul의 위치를 그만큼 이동
         Vector3 m = oldConnector.transform.position - newConnector.transform.position;
         currentModul.transform.position += m;
         // ㅁ생김새로 랜덤하게 나오면 조기 종료 해버림
+        // 맵이 곂치면 망함
         
         return currentModul;
     }
