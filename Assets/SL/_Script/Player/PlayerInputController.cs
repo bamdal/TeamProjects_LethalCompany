@@ -11,6 +11,21 @@ using UnityEngine.InputSystem;
 public class PlayerInputController : MonoBehaviour
 {
     /// <summary>
+    /// 플레이어 체력
+    /// </summary>
+    public float hp = 100.0f;
+
+    /// <summary>
+    /// 플레이어 기력
+    /// </summary>
+    public float stamina = 100.0f;
+
+    /// <summary>
+    /// 플레이어 현재 기력
+    /// </summary>
+    private float currnetStamina = 0.0f;
+
+    /// <summary>
     /// 걷는 속도
     /// </summary>
     public float walkSpeed = 3.0f;
@@ -19,6 +34,21 @@ public class PlayerInputController : MonoBehaviour
     /// 달리는 속도
     /// </summary>
     public float runSpeed = 5.0f;
+
+    /// <summary>
+    /// 걷는 동안의 스테미나 회복 속도
+    /// </summary>
+    private float staminaRecoveryRate = 10.0f;
+
+    /// <summary>
+    /// 달리는 동안의 스테미나 소모 속도
+    /// </summary>
+    private float staminaConsumptionRate = 10.0f;
+
+    /// <summary>
+    /// 스테미나 회복가능상태인지 여부
+    /// </summary>
+    bool isCanRecovery = true;
 
     /// <summary>
     /// 현재 속도
@@ -37,6 +67,8 @@ public class PlayerInputController : MonoBehaviour
     Vector3 mouseDir = Vector3.zero;
 
     Quaternion cameraRotation = Quaternion.identity;
+
+    Transform inventory;
 
     /// <summary>
     /// 현재 이동 모드
@@ -66,11 +98,6 @@ public class PlayerInputController : MonoBehaviour
     Vector3 inputDirection = Vector3.zero;  // y는 무조건 바닥 높이
 
     /// <summary>
-    /// 캐릭터의 목표방향으로 회전시키는 회전
-    /// </summary>
-    Quaternion targetRotation = Quaternion.identity;
-
-    /// <summary>
     /// 캐릭터 회전 속도
     /// </summary>
     public float turnSpeed = 10.0f;
@@ -90,6 +117,8 @@ public class PlayerInputController : MonoBehaviour
         inputActions = new PlayerInputActions();
         Transform child = transform.Find("Main Camera");
         cam = child.GetComponent<Camera>();
+        inventory = transform.Find("Inventory");
+        currnetStamina= stamina;
     }
 
     private void OnEnable()
@@ -123,7 +152,34 @@ public class PlayerInputController : MonoBehaviour
         characterController.Move(Time.deltaTime * currentSpeed * moveDirection);
         // 아이템을 상호작용하는 함수 호출
         FindItemRay();
+        Debug.Log("현재 스테미나는: " + currnetStamina);
     }
+    private void Update()
+    {
+        // 걷기 or 달리기 상태일때 스테미나 회복 및 감소
+        if (CurrentMoveMode == MoveMode.Run && currnetStamina > 1 && currentSpeed > 0)
+        {
+            ConsumeStamina();
+        }
+        //else if ((CurrentMoveMode == MoveMode.Walk || currentSpeed < 0.1f) && isCanRecovery)
+        //{
+        //    RecoverStamina();
+        //}
+        else if (CurrentMoveMode == MoveMode.Walk  && isCanRecovery)
+        {
+            RecoverStamina();
+        }
+        else
+        {
+            currentMoveMode = MoveMode.Walk;
+        }
+    }
+
+    void EnableStaminaRecovery()
+    {
+        isCanRecovery = true;
+    }
+
 
     /// <summary>
     /// 바라보고있는 오브젝트가 아이템이면 반응하는 함수
@@ -205,13 +261,43 @@ public class PlayerInputController : MonoBehaviour
     /// <param name="context"></param>
     private void OnMoveModeChange(UnityEngine.InputSystem.InputAction.CallbackContext context)
     {
-        if (CurrentMoveMode == MoveMode.Walk)
+        if (CurrentMoveMode == MoveMode.Walk && currnetStamina > 0.0f)
         {
             CurrentMoveMode = MoveMode.Run;
         }
         else
         {
             CurrentMoveMode = MoveMode.Walk;
+        }
+    }
+
+    /// <summary>
+    /// 달리는 동안 스테미나 소모하는 함수
+    /// </summary>
+    void ConsumeStamina()
+    {
+        // 달리는 동안 스테미나 소모
+        currnetStamina -= staminaConsumptionRate * Time.deltaTime;
+        if (currnetStamina < 1.0f)
+        {
+            currnetStamina = 0.0f;
+            CurrentMoveMode = MoveMode.Walk;
+            isCanRecovery = false;
+            Debug.Log("3초간 스테미나를 회복할 수 없습니다.");
+            Invoke(nameof(EnableStaminaRecovery), 3.0f);
+        }
+    }
+
+
+    /// <summary>
+    /// 걷는 동안 스테미나 회복
+    /// </summary>
+    void RecoverStamina()
+    {
+        currnetStamina += staminaRecoveryRate * Time.deltaTime;
+        if (currnetStamina > stamina)
+        {
+            currnetStamina = stamina;
         }
     }
 
@@ -253,7 +339,7 @@ public class PlayerInputController : MonoBehaviour
                 {
                     Debug.Log(hit);
                     // 충돌한 객체를 자식으로 만듭니다.
-                    hit.collider.transform.SetParent(transform);
+                    hit.collider.transform.SetParent(inventory);
 
                     // 자식으로 만든 객체를 비활성화합니다.
                     hit.collider.gameObject.SetActive(false);

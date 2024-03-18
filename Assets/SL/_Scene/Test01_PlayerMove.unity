@@ -324,6 +324,37 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 50, y: -30, z: 0}
+--- !u!1 &808396773
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 808396774}
+  m_Layer: 0
+  m_Name: Inventory
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &808396774
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 808396773}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 8808334746766510324}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &963194225
 GameObject:
   m_ObjectHideFlags: 0
@@ -749,8 +780,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 4c00d1eed8ccd734c96de28072017d11, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  hp: 100
+  stamina: 50
   walkSpeed: 3
-  runSpeed: 5
+  runSpeed: 10
   turnSpeed: 10
   cam: {fileID: 0}
 --- !u!1 &6022897334078760154
@@ -907,6 +940,7 @@ Transform:
   - {fileID: 2434999267713895314}
   - {fileID: 425802824}
   - {fileID: 963194228}
+  - {fileID: 808396774}
   m_Father: {fileID: 4132375391354160762}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &8938915229628808277
