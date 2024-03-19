@@ -86,7 +86,11 @@ public class DungeonGenerator : MonoBehaviour
                 Modul currentModul = MatchConntectors(existConnectors[exist], newModul); // 모듈을 현재 커넥터에 연결
                 
                 //newConnectors.AddRange(newModul.Connectors.Where(e => e != 현재 이미 연결된 커넥터));
-                newConnectors.AddRange(AddValuesWithoutDuplicates(existConnectors[exist], currentModul));
+                if(currentModul != null )
+                {
+                    newConnectors.AddRange(AddValuesWithoutDuplicates(existConnectors[exist], currentModul));
+
+                }
                 // 붙힐때 충돌 감지 되면 endmodul붙힘
 
             }
@@ -94,7 +98,10 @@ public class DungeonGenerator : MonoBehaviour
 
         }
         // existConnectors에 endmodul 연결함
-
+        foreach(ModulConnector connector in existConnectors)
+        {
+            MatchConntectors(connector, endModul);
+        }
     }
 
     /// <summary>
@@ -140,10 +147,43 @@ public class DungeonGenerator : MonoBehaviour
         // 회전이 정상 작동하면 newConnector좌표를 oldConnector좌표로 이동시키는 포지션 값을 구하고 currentModul의 위치를 그만큼 이동
         Vector3 m = oldConnector.transform.position - newConnector.transform.position;
         currentModul.transform.position += m;
+
+        bool overlapping = CheckOverlapping(currentModul);
+        if (overlapping)
+        {
+            Destroy(currentModul.gameObject); // 겹치는 모듈이 있으면 새로 생성한 모듈을 파괴하고 종료
+            return null;
+        }
+
         // ㅁ생김새로 랜덤하게 나오면 조기 종료 해버림
         // 맵이 곂치면 망함
-        
+
+
         return currentModul;
+    }
+
+    private bool CheckOverlapping(Modul newModul)
+    {
+        Collider moduleCollider = newModul.GetComponent<Collider>();
+        if (moduleCollider == null)
+        {
+            Debug.LogWarning("Module collider is missing!");
+            return false; // 콜라이더가 없으면 겹침을 판단하지 않고 바로 false 반환
+        }
+
+        // 상자의 크기를 상자의 콜라이더 크기에 따라 동적으로 설정
+        Vector3 boxSize = moduleCollider.bounds.size;
+
+        // 박스의 크기를 상자의 크기에 따라 동적으로 설정
+        Collider[] colliders = Physics.OverlapBox(newModul.transform.position, boxSize / 2);
+        foreach (Collider collider in colliders)
+        {
+            if (collider.gameObject != newModul.gameObject) // 자기 자신은 제외
+            {
+                return true; // 겹치는 모듈이 존재함
+            }
+        }
+        return false; // 겹치는 모듈이 없음
     }
 
     /// <summary>
