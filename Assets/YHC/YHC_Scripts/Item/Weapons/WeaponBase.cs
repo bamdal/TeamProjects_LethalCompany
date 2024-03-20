@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Weapon : Equipment
+public class WeaponBase : ItemBase
 {
-    public int damage;
+    public WeaponData weaponData;
 }
