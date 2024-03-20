@@ -4,29 +4,55 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Flash : MonoBehaviour, IEquipable
+public class Flash : ToolBase, IEquipable
 {
-    public Tool tool;
-    bool isActivate = true;
-    public bool IsActivate
+    float currentBattery;
+    public float CurrentBattery
     {
-        get => isActivate;
+        get => currentBattery;
         set
         {
-            if(isActivate != value)
+            if(currentBattery != value)
             {
-                isActivate = value;
+                currentBattery = value;
+                onBatteryChange?.Invoke(maxBattery / currentBattery);
             }
         }
     }
-    new Light light;
+
+    float maxBattery;
+
+    float weight;
+    public float Weight => weight;
+
+    public Action<float> onBatteryChange;
 
     PlayerInputActions inputActions;
+
+    new Light light;
 
     private void Awake()
     {
         inputActions = new PlayerInputActions();
         light = GetComponentInChildren<Light>();
+
+        maxBattery = toolData.battery;
+        CurrentBattery = maxBattery;
+        weight = toolData.weight;
+    }
+
+    private void Start()
+    {
+
+    }
+
+
+    private void Update()
+    {
+        if(GetComponent<Light>().enabled)
+        {
+            CurrentBattery -= Time.deltaTime;
+        }
     }
 
     /// <summary>
@@ -52,24 +78,24 @@ public class Flash : MonoBehaviour, IEquipable
     {
         Use();
     }
+
     public void Equip()
     {
+
     }
 
     public void Use()
     {
-        if (IsActivate)
+        if (light.enabled)
         {
             // 켜져있다.
-            IsActivate = false;     // 끄기
-            light.enabled = false;
+            light.enabled = false;  // 불 끄기
 
         }
         else
         {
             // 꺼져있다.
-            IsActivate = true;      // 켜기
-            light.enabled = true;
+            light.enabled = true;   // 불 켜기
         }
     }
 }

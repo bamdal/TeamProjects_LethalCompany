@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 7056639625058282365}
   - component: {fileID: 650047073038153131}
   - component: {fileID: 8900349220752472315}
-  - component: {fileID: 7905445479067823415}
+  - component: {fileID: -1571112613773847286}
   m_Layer: 0
   m_Name: Flashlight_1
   m_TagString: Untagged
@@ -110,7 +110,7 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &7905445479067823415
+--- !u!114 &-1571112613773847286
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -122,7 +122,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 76c77dcf6a2939d4dbaa226de9e3e8c4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  tool: {fileID: 11400000, guid: 0d61bd8a71a8f7a43b53008d6faaff1e, type: 2}
+  toolData: {fileID: 11400000, guid: 0d61bd8a71a8f7a43b53008d6faaff1e, type: 2}
 --- !u!1 &2013477300390627978
 GameObject:
   m_ObjectHideFlags: 0
