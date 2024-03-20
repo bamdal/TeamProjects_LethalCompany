@@ -4,17 +4,27 @@ using Unity.AI.Navigation;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class GenerationPointNav : TestBase
+public class GenerationPointNav : MonoBehaviour
 {
-    protected override void OnTest1(InputAction.CallbackContext context)
+    NavMeshSurface surface;
+
+    private void Awake()
     {
-        // 자식 오브젝트들을 반복하여 네비게이션 메쉬를 생성하고 할당
- 
-            NavMeshSurface surface = GetComponent<NavMeshSurface>();
-            if (surface != null)
-            {
-                surface.BuildNavMesh();
-            }
-        
+        //네비게이션 메쉬를 생성하고 할당
+        surface = GetComponent<NavMeshSurface>();
+
+
     }
+
+    /// <summary>
+    /// 현재 오브젝트의 자식들만 네비메시를 까는 함수
+    /// </summary>
+    public void CompliteGenerationDungeon()
+    {
+        if (surface != null)
+        {
+            surface.BuildNavMesh();
+        }
+    }
+
 }

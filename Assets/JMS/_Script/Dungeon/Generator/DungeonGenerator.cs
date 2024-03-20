@@ -33,9 +33,14 @@ public class DungeonGenerator : MonoBehaviour
     public Modul endModul;
 
     /// <summary>
-    /// 던전 생성 시작 지점
+    /// 던전생성 시작 지점
     /// </summary>
-    public Transform generationStartPoint;
+    public GenerationPointNav pointNav;
+
+    /// <summary>
+    /// 던전 생성 시작 지점 트랜스폼 컴포넌트
+    /// </summary>
+    Transform generationStartPoint => pointNav.transform;
 
     /// <summary>
     /// 반복시행할 맵 생성 횟수
@@ -102,6 +107,8 @@ public class DungeonGenerator : MonoBehaviour
         {
             MatchConntectors(connector, endModul);
         }
+
+        pointNav.CompliteGenerationDungeon();   // 던전 생성 완료후 네비메시를 깔게 함
     }
 
     /// <summary>
@@ -162,6 +169,11 @@ public class DungeonGenerator : MonoBehaviour
         return currentModul;
     }
 
+    /// <summary>
+    /// 현재 새로 생성된 모듈이 있는 위치에 기존 맵이 있는지 아닌지 판별하는 함수
+    /// </summary>
+    /// <param name="newModul"></param>
+    /// <returns>true면 겹치는 상태 false면 정상 생성</returns>
     private bool CheckOverlapping(Modul newModul)
     {
         Collider moduleCollider = newModul.GetComponent<Collider>();
@@ -172,7 +184,7 @@ public class DungeonGenerator : MonoBehaviour
         }
 
         // 상자의 크기를 상자의 콜라이더 크기에 따라 동적으로 설정
-        Vector3 boxSize = moduleCollider.bounds.size;
+        Vector3 boxSize = newModul.GetSize();
 
         // 박스의 크기를 상자의 크기에 따라 동적으로 설정
         Collider[] colliders = Physics.OverlapBox(newModul.transform.position, boxSize / 2);
@@ -180,6 +192,7 @@ public class DungeonGenerator : MonoBehaviour
         {
             if (collider.gameObject != newModul.gameObject) // 자기 자신은 제외
             {
+                Debug.Log(collider.name);
                 return true; // 겹치는 모듈이 존재함
             }
         }
