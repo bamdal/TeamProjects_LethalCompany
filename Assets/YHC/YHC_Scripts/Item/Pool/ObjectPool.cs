@@ -27,7 +27,6 @@ public class ObjectPool<T> : MonoBehaviour where T : Recycle
             poolQueue =  new Queue<T>(poolBaseCapacity);
 
             GenerateRecycleObjects(0, poolBaseCapacity, pool);      // 풀 제작
-            int i = 0;
         }
         else
         {
@@ -46,7 +45,6 @@ public class ObjectPool<T> : MonoBehaviour where T : Recycle
     /// <returns></returns>
     public T GetObject(Vector3? position = null, Vector3? angle = null)
     {
-        int i = 0;
         if(poolQueue.Count > 0)
         {
             T newComp = poolQueue.Dequeue();
