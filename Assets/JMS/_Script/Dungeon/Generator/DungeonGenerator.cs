@@ -17,6 +17,8 @@ public class DungeonGenerator : MonoBehaviour
 
     // 모듈에 미리 만들어둔 아이템 소환위치에 아이템 랜덤배치하기
 
+    public Difficulty difficulty = Difficulty.D;
+
     /// <summary>
     /// 사용할 모듈들 인스펙터에서 넣어두기
     /// </summary>
@@ -57,7 +59,80 @@ public class DungeonGenerator : MonoBehaviour
     /// </summary>
     List<Modul> uniqueModuls;
 
-    int index =0;
+    /// <summary>
+    /// 디버그용 모듈순서 검출기
+    /// </summary>
+    int index = 0;
+
+    /// <summary>
+    /// 아이템 생성 포인트 리스트
+    /// </summary>
+    List<ItemSpawnPoint> itemSpawnPoints = new List<ItemSpawnPoint>();
+
+    /// <summary>
+    /// 스폰될 아이템 개수
+    /// </summary>
+    uint itemSpawnCount = 0;
+
+    /// <summary>
+    /// 스폰될 아이템 개수 프로퍼티 (한번 값이 들어오면 변경되지 않음)
+    /// </summary>
+    public uint ItemSpawnCount
+    {
+        get
+        {
+            if(itemSpawnCount == 0)
+            {
+                itemSpawnCount = (uint)(Random.Range(itemSpawnMinCount, itemSpawnMaxCount) * DifficultyCorrection);
+            }
+            return itemSpawnCount;
+        }
+
+    }
+
+    /// <summary>
+    /// 아이템 랜덤스폰 최대치
+    /// </summary>
+    float itemSpawnMaxCount = 14;
+
+    /// <summary>
+    /// 아이템 랜덤스폰 최소치
+    /// </summary>
+    float itemSpawnMinCount = 10;
+
+    /// <summary>
+    /// 현재 난이도에 따른 보정치
+    /// </summary>
+    float difficultyCorrection = 1;
+
+    /// <summary>
+    /// 아이템 최종소환 개수에 곱해서 개수 조정용 프로퍼티
+    /// </summary>
+    public float DifficultyCorrection
+    {
+        get
+        {
+            switch (difficulty)
+            {
+                case Difficulty.D:
+                   return 1;
+           
+                case Difficulty.C:
+                    return  1.2f;
+             
+                case Difficulty.B:
+                    return 1.5f;
+          
+                case Difficulty.A:
+                    return  1.8f;
+       
+                case Difficulty.S:
+                    return 2;
+                default: return difficultyCorrection;
+            }
+        }
+    }
+
     private void Start()
     {
         if (randomSeed > 0)
@@ -65,11 +140,34 @@ public class DungeonGenerator : MonoBehaviour
             Random.InitState(randomSeed);
         }
 
+        // 1번만 소환되는 모듈만 따로 빼두기
         FindUnique();
-        
 
-        Generation();
-        
+        // GenerationPoint자식으로 랜덤맵생성
+        DungeonGeneration();
+
+        // 아이템 스폰 코드 작성
+        ItemGeneration();
+
+    }
+
+    /// <summary>
+    /// 아이템 스픈포인트에 아이템을 소환한다. 
+    /// </summary>
+    private void ItemGeneration()
+    {
+        // 아이템 스폰포인트 찾기
+        // itemSpawnPoints 는 DungeonGeneration 에서 넣어주고 있음
+        Debug.Log($"아이템의 소환 개수 :{ItemSpawnCount}");
+        //ItemSpawnCount 만큼 itemSpawnPoints에 랜덤위치에 랜덤스크럽 소환 
+        // 소환한 위치에 포인트는 리스트에서 삭제
+        foreach (ItemSpawnPoint p in itemSpawnPoints)
+        {
+            // 포인트들 중에서 아이템 최대 선택개수에 맞춰서 생성
+        }
+        // 아이템 랜덤선택 ItemType에서 Scrap항목만 생성
+        //
+
     }
 
     /// <summary>
@@ -77,23 +175,25 @@ public class DungeonGenerator : MonoBehaviour
     /// existConnectors는 이미 깔려 있는 모듈들의 커넥터 모음
     /// newConnectors는 이제 깔릴 모듈들의 커넥터 모음 나중에 existConnectors에 다시 넣어서 반복해 생성
     /// </summary>
-    void Generation()
+    void DungeonGeneration()
     {
-        Modul Start = Instantiate(startModul,generationStartPoint);   // 맵 시작 지점 스폰
-        
+        Modul Start = Instantiate(startModul, generationStartPoint);   // 맵 시작 지점 스폰
+
         List<ModulConnector> existConnectors = new List<ModulConnector>(Start.Connectors); // 시작지점의 연결지점 가져오기
-    
+
         for (int generation = 0; generation < generationCount; generation++)    // 반복 재생 횟수
-        { 
+        {
             List<ModulConnector> newConnectors = new List<ModulConnector>();    // 생성된모듈들의 연결자 리스트
             for (int exist = 0; exist < existConnectors.Count; exist++)
             {
                 // 어쨋든 다음꺼 연결해서 붙임
                 Modul newModul = RandomSelectModul();   // 랜덤한 모듈 가져오기
                 Modul currentModul = MatchConntectors(existConnectors[exist], newModul); // 모듈을 현재 커넥터에 연결
-                
+
+                itemSpawnPoints.AddRange(currentModul.GetComponentsInChildren<ItemSpawnPoint>());   //아이템 스폰포인터를 목록 넣기
+
                 //newConnectors.AddRange(newModul.Connectors.Where(e => e != 현재 이미 연결된 커넥터));
-                if(currentModul != null )
+                if (currentModul != null)
                 {
                     newConnectors.AddRange(AddValuesWithoutDuplicates(existConnectors[exist], currentModul));
 
@@ -105,9 +205,10 @@ public class DungeonGenerator : MonoBehaviour
 
         }
         // existConnectors에 endmodul 연결함
-        foreach(ModulConnector connector in existConnectors)    // 마무리 빈 커넥터의 입구 막기
+        foreach (ModulConnector connector in existConnectors)    // 마무리 빈 커넥터의 입구 막기
         {
-            MatchConntectors(connector, endModul);
+            MatchConntectors(connector, endModul);  // 하나는 비상탈출구로 만들어야함,
+            // 첫번째connector중 아무나 한개는 비상 탈출구
         }
 
         pointNav.CompliteGenerationDungeon();   // 던전 생성 완료후 네비메시를 깔게 함
@@ -141,15 +242,15 @@ public class DungeonGenerator : MonoBehaviour
     {
         Modul currentModul = Instantiate(newModul, generationStartPoint);
         currentModul.name = $"{index}째 모듈";
-    
+
         ModulConnector newConnector; // 연결될 커넥터
         newConnector = currentModul.Connectors[Random.Range(1, 100) % currentModul.ConnectorsCount];    // 새로 만든 모듈의 연결할 커넥터
         newConnector.name = $"{index}째 연결자";
         index++;
         currentModul.transform.position = oldConnector.transform.position;
-   
 
-        float angle = Vector3.SignedAngle(newConnector.transform.forward, -oldConnector.transform.forward,Vector3.up);
+
+        float angle = Vector3.SignedAngle(newConnector.transform.forward, -oldConnector.transform.forward, Vector3.up);
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.up);
         currentModul.transform.rotation = rotation;
 
@@ -161,7 +262,8 @@ public class DungeonGenerator : MonoBehaviour
         if (overlapping)
         {
             Destroy(currentModul.gameObject); // 겹치는 모듈이 있으면 새로 생성한 모듈을 파괴하고 종료
-            Modul modul = oldConnector.transform.parent.gameObject.GetComponent<Modul>();
+            Modul modul = oldConnector.transform.parent.gameObject.GetComponent<Modul>();   // 연결자 다시 돌려주기
+
             return modul;
         }
 
@@ -182,7 +284,7 @@ public class DungeonGenerator : MonoBehaviour
         Collider newmoduleCollider = newModul.GetComponent<Collider>();
         if (newmoduleCollider == null)
         {
-            Debug.LogWarning("Module collider is missing!");
+            //Debug.LogWarning(newModul.name);
             return false; // 콜라이더가 없으면 겹침을 판단하지 않고 바로 false 반환
         }
 
@@ -214,7 +316,7 @@ public class DungeonGenerator : MonoBehaviour
     private Modul RandomSelectModul()
     {
         Modul selectModul;
-        int randomIndex = Random.Range(0, moduls.Count - 1);
+        int randomIndex = Random.Range(0, moduls.Count);
         selectModul = moduls[randomIndex];
 
 
@@ -223,12 +325,12 @@ public class DungeonGenerator : MonoBehaviour
         {
             if (uniqueModuls.Count > 0)
             {
-                int randomUniqueIndex = Random.Range(1, 100)% uniqueModuls.Count;
+                int randomUniqueIndex = Random.Range(1, 100) % uniqueModuls.Count;
                 selectModul = uniqueModuls[randomUniqueIndex];  // 인덱스 아웃
                 uniqueModuls.RemoveAt(randomUniqueIndex);
             }
         }
-        return selectModul; 
+        return selectModul;
     }
 
     /// <summary>
@@ -237,9 +339,9 @@ public class DungeonGenerator : MonoBehaviour
     /// <param name="existConnectors">이미 연결중인 커넥터</param>
     /// <param name="modul">연결한 모듈</param>
     /// <returns>새로 연결될 커넥터들</returns>
-    private List<ModulConnector> AddValuesWithoutDuplicates(ModulConnector existConnectors,Modul modul)
+    private List<ModulConnector> AddValuesWithoutDuplicates(ModulConnector existConnectors, Modul modul)
     {
-        List<ModulConnector> newConnecters = new List<ModulConnector>(modul.ConnectorsCount-1);
+        List<ModulConnector> newConnecters = new List<ModulConnector>(modul.ConnectorsCount - 1);
 
         foreach (ModulConnector connecter in modul.Connectors)
         {
@@ -249,7 +351,7 @@ public class DungeonGenerator : MonoBehaviour
             }
         }
 
-        
+
         return newConnecters;
     }
 }
