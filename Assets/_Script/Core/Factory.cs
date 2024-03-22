@@ -4,12 +4,12 @@ using UnityEngine;
 
 public enum PoolObjectType
 {
-    Slime = 0,
 }
 
 public class Factory : Singleton<Factory>
 {
     //SlimePool slimePool;
+    ItemPool itemPool;
 
     protected override void OnInitialize()
     {
@@ -17,6 +17,9 @@ public class Factory : Singleton<Factory>
 
         //slimePool = GetComponentInChildren<SlimePool>();
         //if( slimePool != null ) slimePool.Initialize();
+        itemPool = GetComponentInChildren<ItemPool>();
+        if(itemPool != null )
+                itemPool.Initialize();
     }
  
     /// <summary>
@@ -29,33 +32,21 @@ public class Factory : Singleton<Factory>
     public GameObject GetObject(PoolObjectType type, Vector3? position = null, Vector3? euler = null)
     {
         GameObject result = null;
-        switch (type)
-        {
-            case PoolObjectType.Slime:
-                //result = slimePool.GetObject(position, euler).gameObject;
-                break;
-        }
+        // switch (type)
+        // {
+        //     
+        // }
 
         return result;
     }
 
-    ///// <summary>
-    ///// 슬라임 하나 가져오는 함수
-    ///// </summary>
-    ///// <returns>배치된 슬라임 하나</returns>
-    //public Slime GetSlime()
-    //{
-    //    return slimePool.GetObject();        
-    //}
+    public ItemBase GetItem()
+    {
+        return itemPool.GetObject();
+    }
 
-    ///// <summary>
-    ///// 슬라임 하나를 특정 위치에, 특정 각도로 배치
-    ///// </summary>
-    ///// <param name="position">배치될 위치</param>
-    ///// <param name="angle">배치 될 때의 각도</param>
-    ///// <returns>배치된 슬라임 하나</returns>
-    //public Slime GetSlime(Vector3 position, float angle = 0.0f)
-    //{
-    //    return slimePool.GetObject(position, angle * Vector3.forward);
-    //}
+    public ItemBase GetItem(Vector3 position, float angle = 0.0f)
+    {
+        return itemPool.GetObject(position, angle * Vector3.forward);
+    }
 }
