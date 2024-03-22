@@ -10,9 +10,8 @@ public class Shovel : WeaponBase, IEquipable
     float weight;
     public float Weight => weight;
 
-    private void Awake()
+    private void OnEnable()
     {
-        damage = weaponData.damage;
         weight = weaponData.weight;
     }
     private void Start()

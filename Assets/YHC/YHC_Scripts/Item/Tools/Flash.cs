@@ -6,7 +6,7 @@ using UnityEngine.InputSystem;
 
 public class Flash : ToolBase, IEquipable
 {
-    float currentBattery;
+    public float currentBattery;
     public float CurrentBattery
     {
         get => currentBattery;
@@ -15,10 +15,13 @@ public class Flash : ToolBase, IEquipable
             if(currentBattery != value)
             {
                 currentBattery = value;
-                onBatteryChange?.Invoke(maxBattery / currentBattery);
+                currentBattery = Math.Clamp(value, 0, maxBattery);
+                onBatteryChange?.Invoke(currentBattery / maxBattery);
             }
         }
     }
+
+    bool IsAvailable => currentBattery > 0;
 
     float maxBattery;
 
@@ -43,15 +46,20 @@ public class Flash : ToolBase, IEquipable
 
     private void Start()
     {
-
+        light.enabled = false;
     }
 
 
     private void Update()
     {
-        if(GetComponent<Light>().enabled)
+        if(light.enabled)
         {
             CurrentBattery -= Time.deltaTime;
+        }
+
+        if(!IsAvailable)
+        {
+            light.enabled = false;
         }
     }
 
@@ -64,10 +72,11 @@ public class Flash : ToolBase, IEquipable
         inputActions.Player.Interact.performed += OnUse;
     }
 
-    private void OnDisable()
+    protected override void OnDisable()
     {
+        base.OnDisable();
         inputActions.Player.Interact.performed -= OnUse;
-        inputActions.Player.Interact.Disable();
+        inputActions.Player.Interact?.Disable();
     }
 
     /// <summary>
@@ -76,7 +85,10 @@ public class Flash : ToolBase, IEquipable
     /// <param name="context"></param>
     private void OnUse(InputAction.CallbackContext context)
     {
-        Use();
+        if(IsAvailable)
+        {
+            Use();
+        }
     }
 
     public void Equip()

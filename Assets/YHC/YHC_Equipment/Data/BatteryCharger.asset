@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d174dda186c864f40a7af398b29a3fd1, type: 3}
-  m_Name: Flashlight_0
+  m_Name: BatteryCharger
   m_EditorClassIdentifier: 
-  itemName: "\uC77C\uBC18\uD6C4\uB808\uC26C"
-  itemText: "\uC77C\uBC18\uD6C4\uB808\uC26C"
-  weight: 1
+  itemName: _
+  itemText: "\uC544\uC774\uD15C \uC815\uBCF4"
+  weight: 0
   price: 0
   stackCount: 1
-  battery: 70
+  battery: 0
+  itemType: 0
+  isConductive: 0
   itemIcon: {fileID: 0}
-  itemModel: {fileID: 2785980725758327203, guid: 57287ac091d7f9047b9f152452761162, type: 3}
-  itemType: 1
+  itemModel: {fileID: 0}

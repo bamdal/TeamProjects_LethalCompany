@@ -10,7 +10,7 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d174dda186c864f40a7af398b29a3fd1, type: 3}
-  m_Name: Radio
+  m_Name: JetPack
   m_EditorClassIdentifier: 
   itemName: _
   itemText: "\uC544\uC774\uD15C \uC815\uBCF4"
@@ -18,6 +18,7 @@ MonoBehaviour:
   price: 0
   stackCount: 1
   battery: 0
+  itemType: 0
+  isConductive: 0
   itemIcon: {fileID: 0}
   itemModel: {fileID: 0}
-  itemType: 0

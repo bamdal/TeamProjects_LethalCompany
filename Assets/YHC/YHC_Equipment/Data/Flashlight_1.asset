@@ -10,14 +10,15 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d174dda186c864f40a7af398b29a3fd1, type: 3}
-  m_Name: JetPack
+  m_Name: Flashlight_1
   m_EditorClassIdentifier: 
-  itemName: _
-  itemText: "\uC544\uC774\uD15C \uC815\uBCF4"
-  weight: 0
+  itemName: "\uAC15\uD654\uD6C4\uB808\uC26C"
+  itemText: "\uAC15\uD654\uD6C4\uB808\uC26C"
+  weight: 1
   price: 0
   stackCount: 1
-  battery: 0
-  itemIcon: {fileID: 0}
-  itemModel: {fileID: 0}
+  battery: 100
   itemType: 0
+  isConductive: 0
+  itemIcon: {fileID: 0}
+  itemModel: {fileID: 1716725125594668205, guid: e97a58d4559d9ab488151ee89dc20a4a, type: 3}
