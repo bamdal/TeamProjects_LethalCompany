@@ -19,10 +19,25 @@ public class DungeonGenerator : MonoBehaviour
 
     public Difficulty difficulty = Difficulty.D;
 
+    public Transform Prototype;
+
     /// <summary>
     /// 사용할 모듈들 인스펙터에서 넣어두기
     /// </summary>
-    public List<Modul> moduls;
+    List<Modul> moduls;
+
+    public List<Modul> Moduls
+    {
+        get
+        {
+            if (moduls == null)
+            {
+                moduls = new List<Modul>();
+                moduls.AddRange(Prototype.GetComponentsInChildren<Modul>());
+            }
+            return moduls;
+        }
+    }
 
     /// <summary>
     /// 시작 모듈
@@ -219,13 +234,13 @@ public class DungeonGenerator : MonoBehaviour
     /// </summary>
     private void FindUnique()
     {
-        uniqueModuls = new List<Modul>(moduls.Count);
-        for (int i = 0; i < moduls.Count; i++)// 모듈에서 유니크모듈만 빼서 넣어두기
+        uniqueModuls = new List<Modul>(Moduls.Count);
+        for (int i = 0; i < Moduls.Count; i++)// 모듈에서 유니크모듈만 빼서 넣어두기
         {
-            if (moduls[i].thisUnique)
+            if (Moduls[i].thisUnique)
             {
-                uniqueModuls.Add(moduls[i]);
-                moduls.RemoveAt(i);
+                uniqueModuls.Add(Moduls[i]);
+                Moduls.RemoveAt(i);
             }
         }
     }
@@ -316,8 +331,8 @@ public class DungeonGenerator : MonoBehaviour
     private Modul RandomSelectModul()
     {
         Modul selectModul;
-        int randomIndex = Random.Range(0, moduls.Count);
-        selectModul = moduls[randomIndex];
+        int randomIndex = Random.Range(0, Moduls.Count);
+        selectModul = Moduls[randomIndex];
 
 
         float num = Random.value;
