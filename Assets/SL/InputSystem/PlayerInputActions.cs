@@ -37,6 +37,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""initialStateCheck"": true
                 },
                 {
+                    ""name"": ""Jump"",
+                    ""type"": ""Button"",
+                    ""id"": ""0f51e040-57ad-41c2-b68b-fe5ad2021cff"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
                     ""name"": ""MoveModeChange"",
                     ""type"": ""Button"",
                     ""id"": ""b94aa5b8-8e8c-412e-8e77-e18d6b9f84cd"",
@@ -62,6 +71,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": true
+                },
+                {
+                    ""name"": ""MouseLClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""9c2a5792-3bca-46f4-a0a8-ecaee4008139"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""MouseRClick"",
+                    ""type"": ""Button"",
+                    ""id"": ""eaf7148e-2e66-4206-bdd7-dcf1c02a2069"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -152,6 +179,39 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""MouseInput"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""f00d8213-6ee2-4dff-8a9f-77034c814612"",
+                    ""path"": ""<Mouse>/leftButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseLClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""c58b5bf8-0ddf-44dd-bfe0-1478736697ad"",
+                    ""path"": ""<Mouse>/rightButton"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""MouseRClick"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""0553656f-ea2a-4c87-8199-233d52a1fd12"",
+                    ""path"": ""<Keyboard>/space"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Jump"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -178,9 +238,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         // Player
         m_Player = asset.FindActionMap("Player", throwIfNotFound: true);
         m_Player_Move = m_Player.FindAction("Move", throwIfNotFound: true);
+        m_Player_Jump = m_Player.FindAction("Jump", throwIfNotFound: true);
         m_Player_MoveModeChange = m_Player.FindAction("MoveModeChange", throwIfNotFound: true);
         m_Player_Interact = m_Player.FindAction("Interact", throwIfNotFound: true);
         m_Player_MouseInput = m_Player.FindAction("MouseInput", throwIfNotFound: true);
+        m_Player_MouseLClick = m_Player.FindAction("MouseLClick", throwIfNotFound: true);
+        m_Player_MouseRClick = m_Player.FindAction("MouseRClick", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -243,17 +306,23 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputActionMap m_Player;
     private List<IPlayerActions> m_PlayerActionsCallbackInterfaces = new List<IPlayerActions>();
     private readonly InputAction m_Player_Move;
+    private readonly InputAction m_Player_Jump;
     private readonly InputAction m_Player_MoveModeChange;
     private readonly InputAction m_Player_Interact;
     private readonly InputAction m_Player_MouseInput;
+    private readonly InputAction m_Player_MouseLClick;
+    private readonly InputAction m_Player_MouseRClick;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
         public PlayerActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
         public InputAction @Move => m_Wrapper.m_Player_Move;
+        public InputAction @Jump => m_Wrapper.m_Player_Jump;
         public InputAction @MoveModeChange => m_Wrapper.m_Player_MoveModeChange;
         public InputAction @Interact => m_Wrapper.m_Player_Interact;
         public InputAction @MouseInput => m_Wrapper.m_Player_MouseInput;
+        public InputAction @MouseLClick => m_Wrapper.m_Player_MouseLClick;
+        public InputAction @MouseRClick => m_Wrapper.m_Player_MouseRClick;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -266,6 +335,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Move.started += instance.OnMove;
             @Move.performed += instance.OnMove;
             @Move.canceled += instance.OnMove;
+            @Jump.started += instance.OnJump;
+            @Jump.performed += instance.OnJump;
+            @Jump.canceled += instance.OnJump;
             @MoveModeChange.started += instance.OnMoveModeChange;
             @MoveModeChange.performed += instance.OnMoveModeChange;
             @MoveModeChange.canceled += instance.OnMoveModeChange;
@@ -275,6 +347,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @MouseInput.started += instance.OnMouseInput;
             @MouseInput.performed += instance.OnMouseInput;
             @MouseInput.canceled += instance.OnMouseInput;
+            @MouseLClick.started += instance.OnMouseLClick;
+            @MouseLClick.performed += instance.OnMouseLClick;
+            @MouseLClick.canceled += instance.OnMouseLClick;
+            @MouseRClick.started += instance.OnMouseRClick;
+            @MouseRClick.performed += instance.OnMouseRClick;
+            @MouseRClick.canceled += instance.OnMouseRClick;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -282,6 +360,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @Move.started -= instance.OnMove;
             @Move.performed -= instance.OnMove;
             @Move.canceled -= instance.OnMove;
+            @Jump.started -= instance.OnJump;
+            @Jump.performed -= instance.OnJump;
+            @Jump.canceled -= instance.OnJump;
             @MoveModeChange.started -= instance.OnMoveModeChange;
             @MoveModeChange.performed -= instance.OnMoveModeChange;
             @MoveModeChange.canceled -= instance.OnMoveModeChange;
@@ -291,6 +372,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @MouseInput.started -= instance.OnMouseInput;
             @MouseInput.performed -= instance.OnMouseInput;
             @MouseInput.canceled -= instance.OnMouseInput;
+            @MouseLClick.started -= instance.OnMouseLClick;
+            @MouseLClick.performed -= instance.OnMouseLClick;
+            @MouseLClick.canceled -= instance.OnMouseLClick;
+            @MouseRClick.started -= instance.OnMouseRClick;
+            @MouseRClick.performed -= instance.OnMouseRClick;
+            @MouseRClick.canceled -= instance.OnMouseRClick;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -320,8 +407,11 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     public interface IPlayerActions
     {
         void OnMove(InputAction.CallbackContext context);
+        void OnJump(InputAction.CallbackContext context);
         void OnMoveModeChange(InputAction.CallbackContext context);
         void OnInteract(InputAction.CallbackContext context);
         void OnMouseInput(InputAction.CallbackContext context);
+        void OnMouseLClick(InputAction.CallbackContext context);
+        void OnMouseRClick(InputAction.CallbackContext context);
     }
 }

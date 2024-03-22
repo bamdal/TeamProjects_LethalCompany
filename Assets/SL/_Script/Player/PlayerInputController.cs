@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Threading;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.EventSystems;
 using UnityEngine.InputSystem;
 
 public class PlayerInputController : MonoBehaviour
@@ -34,6 +35,11 @@ public class PlayerInputController : MonoBehaviour
     /// 달리는 속도
     /// </summary>
     public float runSpeed = 5.0f;
+
+    /// <summary>
+    /// 플레이어 점프 높이
+    /// </summary>
+    public float jumpForce = 5.0f;
 
     /// <summary>
     /// 걷는 동안의 스테미나 회복 속도
@@ -110,15 +116,30 @@ public class PlayerInputController : MonoBehaviour
     PlayerInputActions inputActions;
     public Camera cam;
 
+    /// <summary>
+    /// 이동방향
+    /// </summary>
+    Vector3 moveDirection;
+    //Transform itemRaderTransform;
 
+    Collider itemRader;
+    public float groundCheckDistance = 1f;    // 바닥 체크 거리
+    public LayerMask groundLayer;               // 바닥을 나타내는 레이어
     private void Awake()
     {
         characterController = GetComponent<CharacterController>();
         inputActions = new PlayerInputActions();
-        Transform child = transform.Find("Main Camera");
-        cam = child.GetComponent<Camera>();
+        Transform parentTransform = transform.parent;
+        Transform camera = parentTransform.Find("Main Camera");
+        cam = camera.GetComponent<Camera>();
         inventory = transform.Find("Inventory");
-        currnetStamina= stamina;
+        currnetStamina = stamina;
+
+
+        Collider[] colliders = GetComponents<Collider>();
+        itemRader = colliders[1];
+        //itemRaderTransform = transform.Find("ItemRader");
+        //itemRader = itemRaderTransform.GetComponent<Collider>();
     }
 
     private void OnEnable()
@@ -129,12 +150,19 @@ public class PlayerInputController : MonoBehaviour
         inputActions.Player.MoveModeChange.performed += OnMoveModeChange;
         inputActions.Player.Interact.performed += OnInteract;
         inputActions.Player.Interact.canceled += OnInteract;
-
+        inputActions.Player.MouseLClick.performed += OnLClick;
+        inputActions.Player.MouseRClick.performed += OnRClick;
+        inputActions.Player.MouseRClick.canceled += OnRClick;
+        inputActions.Player.Jump.performed += OnJump;
     }
 
 
     private void OnDisable()
     {
+        inputActions.Player.Jump.performed -= OnJump;
+        inputActions.Player.MouseRClick.canceled -= OnRClick;
+        inputActions.Player.MouseRClick.performed -= OnRClick;
+        inputActions.Player.MouseLClick.performed -= OnLClick;
         inputActions.Player.Interact.canceled -= OnInteract;
         inputActions.Player.Interact.performed -= OnInteract;
         inputActions.Player.MoveModeChange.performed -= OnMoveModeChange;
@@ -146,13 +174,13 @@ public class PlayerInputController : MonoBehaviour
     private void FixedUpdate()
     {
         // 이동 방향 계산
-        Vector3 moveDirection = CalculateMoveDirection();
+        moveDirection = CalculateMoveDirection();
 
         // 이동 처리
         characterController.Move(Time.deltaTime * currentSpeed * moveDirection);
+
         // 아이템을 상호작용하는 함수 호출
         FindItemRay();
-        Debug.Log("현재 스테미나는: " + currnetStamina);
     }
     private void Update()
     {
@@ -165,7 +193,7 @@ public class PlayerInputController : MonoBehaviour
         //{
         //    RecoverStamina();
         //}
-        else if (CurrentMoveMode == MoveMode.Walk  && isCanRecovery)
+        else if (CurrentMoveMode == MoveMode.Walk && isCanRecovery)
         {
             RecoverStamina();
         }
@@ -173,6 +201,18 @@ public class PlayerInputController : MonoBehaviour
         {
             currentMoveMode = MoveMode.Walk;
         }
+
+        Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundLayer);
+    }
+
+    private void OnDrawGizmos()
+    {
+        Gizmos.color = Color.red;
+        Vector3 raycastStart = transform.position;
+        Vector3 raycastDirection = Vector3.down;
+
+        // 레이캐스트 시작점에서 아래쪽으로 레이를 쏩니다.
+        Gizmos.DrawLine(raycastStart, raycastStart + raycastDirection * groundCheckDistance);
     }
 
     void EnableStaminaRecovery()
@@ -196,14 +236,14 @@ public class PlayerInputController : MonoBehaviour
         // Physics.Raycast 메서드에 layerMask를 추가하여 해당 레이어만 검출하도록 합니다.
         if (Physics.Raycast(ray, out hit, 5.0f, layerMask))
         {
-            Debug.Log("아이템입니다.");
+
 
             // 레이를 그려줍니다.
             Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.green);
         }
         else
         {
-            Debug.Log("레이캐스트 실패!");
+
 
             // 실패 시에도 레이를 그려줍니다.
             Debug.DrawRay(ray.origin, ray.direction * 5.0f, Color.red);
@@ -219,7 +259,7 @@ public class PlayerInputController : MonoBehaviour
     {
         Vector3 cameraForward = cam.transform.forward;
         Vector3 cameraRight = cam.transform.right;
-        cameraForward.y = 0f;
+        cameraForward.y = 0f; // y 값을 무시하여 플레이어의 높이를 고정합니다.
         cameraRight.y = 0f;
         cameraForward.Normalize();
         cameraRight.Normalize();
@@ -233,6 +273,7 @@ public class PlayerInputController : MonoBehaviour
 
 
 
+
     /// <summary>
     /// 이동 입력 처리용 함수
     /// </summary>
@@ -241,7 +282,6 @@ public class PlayerInputController : MonoBehaviour
     {
         Vector3 input = context.ReadValue<Vector2>();
         inputDirection.x = input.x;     // 입력 방향 저장
-        inputDirection.y = 0;
         inputDirection.z = input.y;
 
         if (!context.canceled)
@@ -254,6 +294,25 @@ public class PlayerInputController : MonoBehaviour
             currentSpeed = 0.0f;    // 정지 시키기
         }
     }
+
+    private void OnJump(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            Debug.Log(IsGrounded());
+            // 점프 가능한 상황에서만 점프를 실행합니다.
+            /*Debug.Log("호출됨");
+            moveDirection.y = jumpForce; // 캐릭터에 점프 힘을 적용합니다.
+            Debug.Log(moveDirection.y);*/
+        }
+    }
+
+    private bool IsGrounded()
+    {
+        // 캐릭터의 아래쪽에 레이캐스트를 쏴서 바닥과 충돌하는지 확인
+        return Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundLayer);
+    }
+
 
     /// <summary>
     /// 이동 모드 변경용 함수
@@ -357,4 +416,81 @@ public class PlayerInputController : MonoBehaviour
             Debug.Log("f키 떨어짐!");
         }
     }
+    List<Transform> itemTransforms = new List<Transform>();
+    private void OnLClick(InputAction.CallbackContext context)
+    {
+    }
+
+    private void OnRClick(InputAction.CallbackContext context)
+    {
+        if (context.performed)
+        {
+            itemRader.enabled = true;
+            Quaternion cameraRotation = Camera.main.transform.rotation;
+
+            Vector3 currentRotation = transform.rotation.eulerAngles;
+            transform.rotation = Quaternion.Euler(currentRotation.x, cameraRotation.eulerAngles.y, currentRotation.z);
+            StopAllCoroutines();
+            StartCoroutine(DisableItemRaderAfterDelay());
+            Debug.Log("아이템 목록:");
+        }
+    }
+
+    private IEnumerator DisableItemRaderAfterDelay()
+    {
+        // 일정 시간(예: 1초) 후에 itemRader.enabled를 false로 변경
+        yield return new WaitForSeconds(0.05f); // 변경하고자 하는 시간으로 수정 가능
+        itemRader.enabled = false;
+    }
+
+
+
+
+
+    private void OnTriggerEnter(Collider collision)
+    {
+        if (collision.CompareTag("Item"))
+        {
+            Transform itemTransform = collision.transform;
+            Vector3 itemPosition = itemTransform.position;
+
+            // 아이템의 위치와 플레이어의 위치 사이의 방향 벡터를 구합니다.
+            Vector3 directionToItem = itemPosition - transform.position;
+
+            // 플레이어 위치에서 아이템까지의 레이를 생성합니다.
+            Ray ray = new Ray(transform.position + transform.forward * 0.5f, directionToItem);
+
+            RaycastHit hit;
+
+            if (Physics.Raycast(ray, out hit))
+            {
+                // 레이가 충돌한 객체가 벽인지 확인합니다.
+                if (hit.collider.CompareTag("Obstacle"))
+                {
+                    // 벽 뒤에 있는 아이템을 제거합니다.
+                    Debug.Log("벽 뒤에 있는 아이템: " + itemTransform.gameObject.name);
+                }
+                else if (hit.collider.CompareTag("Item"))
+                {
+                    // 벽 뒤에 없는 아이템을 목록에 추가합니다.
+                    itemTransforms.Add(itemTransform);
+                }
+            }
+            else
+            {
+                // 레이가 아이템에 닿지 않은 경우 아이템을 목록에 추가합니다.
+                itemTransforms.Add(itemTransform);
+            }
+
+            foreach (Transform item in itemTransforms)
+            {
+                Debug.Log(item.gameObject.name);
+            }
+            itemTransforms.Clear();
+        }
+
+
+    }
+
+
 }
