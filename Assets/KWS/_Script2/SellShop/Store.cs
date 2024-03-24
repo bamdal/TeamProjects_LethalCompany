@@ -1,88 +1,139 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using static UnityEngine.InputSystem.InputAction;
+using UnityEngine.InputSystem.XInput;
+using static UnityEditor.Progress;
 
 public class Store : MonoBehaviour
 {
-    /*/// <summary>
-    /// 인풋 액션
+    /// <summary>
+    /// Store에 올려진 오브젝트의 무게를 누적할 변수
     /// </summary>
-    HardwareInputActions inputActions;
+    public float totalWeight = 0.0f;
 
-    private void Awake()
+    /// <summary>
+    /// Store에 올려진 오브젝트의 가격을 누적할 변수
+    /// </summary>
+    public float totalPrice = 0.0f;
+
+    /// <summary>
+    /// 여태 판매한 금액을 누적할 변수
+    /// </summary>
+    public float totalMoney = 0.0f;
+
+    /// <summary>
+    /// 충돌한 모든 오브젝트를 추적하기 위한 리스트
+    /// </summary>
+    private List<GameObject> collidedObjects = new List<GameObject>();
+
+    /// <summary>
+    /// 팔린 물건의 총 가격을 전달할 델리게이트(플레이어가 구독해야 함)
+    /// </summary>
+    public Action<float, float> onMoneyEarned;
+
+    void Start()
     {
-        inputActions = new HardwareInputActions();      // 인풋 액션 생성
+        // 경로 설정
+        //string folderPath = "Assets/KWS/Resources/ItemDB";
+        string folderPath = "ItemDB";
+
+        // 해당 폴더 내 모든 스크립터블 오브젝트 찾기
+        ItemDB[] scriptableObjects = Resources.LoadAll<ItemDB>(folderPath);
     }
 
-    private void OnEnable()
+    private void OnTriggerEnter(Collider other)
     {
-        inputActions.Hardware.Enable();
-        inputActions.Hardware.Interactions.performed += OnInteractionStart; // Hardware액션 맵의 Interactions액션에 OnInteractionStart 함수를 연결(눌렀을 때만)
-        //inputActions.Hardware.Interactions.canceled += OnInteractionEnd;    // Hardware액션 맵의 Interactions액션에 OnInteractionEnd 함수를 연결(땠을 때만)
-    }
-
-    private void OnDisable()
-    {
-        //inputActions.Hardware.Interactions.canceled -= OnInteractionEnd;    // 연결 해제
-        inputActions.Hardware.Interactions.performed -= OnInteractionStart; // 연결 해제
-        inputActions.Hardware.Disable();
-    }
-
-
-    public void OnInteractionStart(InputAction.CallbackContext context)
-    {
-        if (context.action.triggered)
+        // 충돌한 상대방 오브젝트가 있는지 확인
+        if (other.gameObject != null)
         {
-            Debug.Log($"F 키가 눌림");
+            // 충돌한 상대방 오브젝트가 Hardware인지 확인
+            if (other.gameObject.CompareTag("Hardware"))
+            {
+                // 해당 Hardware에 연결된 ItemDB 스크립터블 오브젝트 찾기
+                string itemName = other.gameObject.name;
+                ItemDB itemDB = Resources.Load<ItemDB>($"ItemDB/{itemName}");
+
+                if (itemDB != null)
+                {
+                    // ItemDB 정보 출력
+                    Debug.Log($"충돌한 {itemDB.itemName} 무게: {itemDB.weight}");
+                    Debug.Log($"충돌한 {itemDB.itemName} 가격: {itemDB.price}");
+
+                    // 무게를 누적
+                    totalWeight += itemDB.weight;
+                    Debug.Log($"누적된 무게: {totalWeight}");
+
+                    // 가격을 누적
+                    totalPrice += itemDB.price;
+                    Debug.Log($"누적된 가격: {totalPrice}");
+
+                    // 충돌한 오브젝트를 리스트에 추가
+                    collidedObjects.Add(other.gameObject);
+                }
+                else
+                {
+                    Debug.LogWarning("Hardware 오브젝트에 ItemDB 스크립트가 연결되어 있지 않습니다.");
+                }
+            }
         }
     }
 
-    private void OnInteractionEnd(InputAction.CallbackContext _)
+    private void OnTriggerExit(Collider other)
     {
-        throw new NotImplementedException();
-    }*/
+        // 해당 Hardware에 연결된 ItemDB 스크립터블 오브젝트 찾기
+        string itemName = other.gameObject.name;
+        ItemDB itemDB = Resources.Load<ItemDB>($"ItemDB/{itemName}");
 
+        Debug.Log($"{itemDB.itemName} 이 떨어졌습니다.");
 
+        totalWeight -= itemDB.weight;
+        Debug.Log($"누적된 무게: {totalWeight}");
 
+        totalPrice -= itemDB.price;
+        Debug.Log($"누적된 가격: {totalPrice}");
 
-    // private Player player;
-
-    private void Start()
-    {
-        
+        // 충돌이 끝난 오브젝트를 리스트에서 제거
+        collidedObjects.Remove(other.gameObject);
     }
 
-    private void OnEnable()
+    /// <summary>
+    /// 이 부분은 나중에 플레이어 인풋액션으로 수정해야 함(되는지 확인용)
+    /// </summary>
+    void Update()
     {
-        /*player = GetComponent<Player>(); // 더 나은 방법을 사용하도록 수정 가능
-
-        if (player != null)
+        // F 키를 누르면 충돌한 모든 오브젝트를 판매
+        if (Input.GetKeyDown(KeyCode.F))
         {
-            // F 액션에 대한 콜백 설정
-            player.FAction.performed += OnFKeyPressed;
-        }*/
-    }
+            // collidedObjects 리스트의 복사본을 만듭니다.
+            List<GameObject> collidedObjectsCopy = new List<GameObject>(collidedObjects);
 
-    private void OnFKeyPressed(InputAction.CallbackContext context)
-    {
-        if (context.action.triggered)
-        {
-            Debug.Log("B: F 키가 눌렸습니다!");
-            // 여기에 F 키가 눌렸을 때 이 스크립트에서 수행할 동작을 추가
+            // 복사본을 이용하여 판매를 수행합니다.
+            foreach (var obj in collidedObjectsCopy)
+            {
+                SellHardware(obj);
+            }
         }
     }
 
-    private void OnDisable()
+    /// <summary>
+    /// 폐철물을 판매하는 함수
+    /// </summary>
+    public void SellHardware(GameObject hardwareObject)
     {
-        /*if (player != null)
-        {
-            // 콜백 연결 해제
-            player.FAction.performed -= OnFKeyPressed;
-        }*/
+        totalMoney += totalPrice;
+        // 판매 처리
+        onMoneyEarned?.Invoke(totalPrice, totalMoney); // 총 가격과 금액을 델리게이트로 전달(onMoneyEarned 구독하는 부분 나중에 플레이어가 받게 수정 필요)
+
+        // 판매가 이루어졌으므로 누적된 무게와 가격 초기화
+        totalWeight = 0.0f;
+        totalPrice = 0.0f;
+
+        hardwareObject.SetActive(false);
+
+        // 판매 후에 리스트에서 해당 오브젝트 제거
+        collidedObjects.Remove(hardwareObject);
     }
-
-
 }
+/// 주말에 할 것: 플레이어의 판매 상호작용을 받을 버튼 추가?

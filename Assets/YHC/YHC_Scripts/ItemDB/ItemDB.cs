@@ -5,6 +5,7 @@ public enum ItemType
 {
     Scrap,
     Equipment,
+    Hardware,
 }
 
 public enum ItemCode
