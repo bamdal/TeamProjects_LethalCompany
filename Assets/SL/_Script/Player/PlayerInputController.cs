@@ -178,7 +178,7 @@ public class PlayerInputController : MonoBehaviour
 
         // 이동 처리
         characterController.Move(Time.deltaTime * currentSpeed * moveDirection);
-
+       
         // 아이템을 상호작용하는 함수 호출
         FindItemRay();
     }
