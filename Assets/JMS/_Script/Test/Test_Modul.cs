@@ -12,4 +12,14 @@ public class Test_Modul : TestBase
     {
         Door.Test_OpenVector(target);
     }
+
+    protected override void OnTest2(InputAction.CallbackContext context)
+    {
+        IInteraction interaction = Door;
+        if(interaction != null)
+        {
+            interaction.Interaction(target);
+        }
+
+    }
 }
