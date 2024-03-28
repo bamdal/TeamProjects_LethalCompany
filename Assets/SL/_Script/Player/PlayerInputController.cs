@@ -59,6 +59,7 @@ public class PlayerInputController : MonoBehaviour
     /// <summary>
     /// 현재 속도
     /// </summary>
+    [SerializeField]
     float currentSpeed = 0.0f;
 
     /// <summary>
@@ -120,26 +121,29 @@ public class PlayerInputController : MonoBehaviour
     /// 이동방향
     /// </summary>
     Vector3 moveDirection;
-    //Transform itemRaderTransform;
+
+    Rigidbody rb;
 
     Collider itemRader;
     public float groundCheckDistance = 1f;    // 바닥 체크 거리
     public LayerMask groundLayer;               // 바닥을 나타내는 레이어
+
+    private float _gravity = -9.81f;
+    [SerializeField] private float gravityMultiplier = 2.0f;
+    private float _velocity= 0f;
+
     private void Awake()
     {
-        characterController = GetComponent<CharacterController>();
+        //characterController = GetComponent<CharacterController>();
         inputActions = new PlayerInputActions();
-        Transform parentTransform = transform.parent;
-        Transform camera = parentTransform.Find("Main Camera");
-        cam = camera.GetComponent<Camera>();
+        cam = FindAnyObjectByType<Camera>();
         inventory = transform.Find("Inventory");
         currnetStamina = stamina;
+        rb = GetComponent<Rigidbody>();
 
 
         Collider[] colliders = GetComponents<Collider>();
         itemRader = colliders[1];
-        //itemRaderTransform = transform.Find("ItemRader");
-        //itemRader = itemRaderTransform.GetComponent<Collider>();
     }
 
     private void OnEnable()
@@ -171,28 +175,14 @@ public class PlayerInputController : MonoBehaviour
         inputActions.Player.Disable();
     }
 
-    private void FixedUpdate()
-    {
-        // 이동 방향 계산
-        moveDirection = CalculateMoveDirection();
 
-        // 이동 처리
-        characterController.Move(Time.deltaTime * currentSpeed * moveDirection);
-       
-        // 아이템을 상호작용하는 함수 호출
-        FindItemRay();
-    }
     private void Update()
     {
         // 걷기 or 달리기 상태일때 스테미나 회복 및 감소
-        if (CurrentMoveMode == MoveMode.Run && currnetStamina > 1 && currentSpeed > 0)
+        if (CurrentMoveMode == MoveMode.Run && currnetStamina > 0 && currentSpeed > 0)
         {
             ConsumeStamina();
         }
-        //else if ((CurrentMoveMode == MoveMode.Walk || currentSpeed < 0.1f) && isCanRecovery)
-        //{
-        //    RecoverStamina();
-        //}
         else if (CurrentMoveMode == MoveMode.Walk && isCanRecovery)
         {
             RecoverStamina();
@@ -202,24 +192,53 @@ public class PlayerInputController : MonoBehaviour
             currentMoveMode = MoveMode.Walk;
         }
 
-        Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundLayer);
+        Debug.Log(currnetStamina);
+        // 이동 방향 계산
+        CalculateMoveDirection();
+        // 플레이어가 바라보는 방향
+        Vector3 playerForward = transform.forward;
+        // 입력 방향의 크기만큼 이동 방향 설정
+        ApplyGravity();
+        Vector3 moveDirection = playerForward * inputDirection.z + transform.right * inputDirection.x;
+        moveDirection.Normalize(); // 이동 방향을 정규화하여 일정한 속도로 이동하도록 함
+        // 이동 처리
+        //characterController.Move(currentSpeed * Time.deltaTime * moveDirection);
+        rb.velocity = moveDirection * currentSpeed;
+        
+        Debug.Log(IsGrounded());
     }
 
-    private void OnDrawGizmos()
+    private void FixedUpdate()
     {
-        Gizmos.color = Color.red;
-        Vector3 raycastStart = transform.position;
-        Vector3 raycastDirection = Vector3.down;
-
-        // 레이캐스트 시작점에서 아래쪽으로 레이를 쏩니다.
-        Gizmos.DrawLine(raycastStart, raycastStart + raycastDirection * groundCheckDistance);
+        // 아이템을 상호작용하는 함수 호출
+        FindItemRay();
+        if (!IsGrounded())
+        {
+            rb.AddForce(Vector3.down * gravityMultiplier, ForceMode.Acceleration);
+        }
     }
+    private void ApplyGravity()
+    {
+        if (IsGrounded() && _velocity < 0.0f)
+        {
+            _velocity = -1.0f;
+        }
+        else
+        {
+            _velocity = _gravity * gravityMultiplier * Time.deltaTime;
+        }
+
+
+        //inputDirection.y = _velocity;
+        //characterController.Move(new Vector3(0, _velocity, 0));
+    }
+    
 
     void EnableStaminaRecovery()
     {
         isCanRecovery = true;
     }
-
+    
 
     /// <summary>
     /// 바라보고있는 오브젝트가 아이템이면 반응하는 함수
@@ -255,24 +274,18 @@ public class PlayerInputController : MonoBehaviour
     /// 카메라의 방향을 기준으로 이동 방향을 계산합니다.
     /// </summary>
     /// <returns>이동 방향</returns>
-    private Vector3 CalculateMoveDirection()
+    private void CalculateMoveDirection()
     {
-        Vector3 cameraForward = cam.transform.forward;
-        Vector3 cameraRight = cam.transform.right;
-        cameraForward.y = 0f; // y 값을 무시하여 플레이어의 높이를 고정합니다.
-        cameraRight.y = 0f;
+        // 카메라가 바라보는 방향
+        Vector3 cameraForward = Camera.main.transform.forward;
+        // Y축은 고려하지 않음
+        cameraForward.y = 0f;
+        // 정규화하여 방향 벡터를 얻음
         cameraForward.Normalize();
-        cameraRight.Normalize();
 
-        Vector3 moveDirection = cameraForward * inputDirection.z + cameraRight * inputDirection.x;
-        moveDirection.Normalize();
-
-        return moveDirection;
+        // 플레이어가 바라볼 방향 설정
+        transform.forward = cameraForward;
     }
-
-
-
-
 
     /// <summary>
     /// 이동 입력 처리용 함수
@@ -282,8 +295,9 @@ public class PlayerInputController : MonoBehaviour
     {
         Vector3 input = context.ReadValue<Vector2>();
         inputDirection.x = input.x;     // 입력 방향 저장
+        inputDirection.y = 0.0f;
         inputDirection.z = input.y;
-
+        
         if (!context.canceled)
         {
             MoveSpeedChange(CurrentMoveMode);
@@ -297,23 +311,31 @@ public class PlayerInputController : MonoBehaviour
 
     private void OnJump(InputAction.CallbackContext context)
     {
-        if (context.performed)
+        if (context.performed && IsGrounded())
         {
-            Debug.Log(IsGrounded());
-            // 점프 가능한 상황에서만 점프를 실행합니다.
-            /*Debug.Log("호출됨");
-            moveDirection.y = jumpForce; // 캐릭터에 점프 힘을 적용합니다.
-            Debug.Log(moveDirection.y);*/
+            Debug.Log("점프");
+            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
         }
     }
-
-    private bool IsGrounded()
+    bool IsGrounded()
     {
-        // 캐릭터의 아래쪽에 레이캐스트를 쏴서 바닥과 충돌하는지 확인
-        return Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, groundLayer);
+        // 캐릭터의 아래에 레이캐스트를 쏴서 바닥에 닿았는지 확인
+        return Physics.Raycast(transform.position + Vector3.down * 0.5f, Vector3.down, 0.7f, layerMask:groundLayer);
     }
 
+    private void OnDrawGizmos()
+    {
+        // 캐릭터의 아래에 레이캐스트를 쏴서 바닥에 닿았는지 확인
+        bool isGrounded = IsGrounded();
 
+        // 기즈모 색상 설정
+        Gizmos.color = isGrounded ? Color.green : Color.red;
+
+        // 레이캐스트의 시작점과 끝점을 계산하여 기즈모로 그리기
+        Vector3 startPos = transform.position + Vector3.down * 0.5f;
+        Vector3 endPos = startPos + Vector3.down * 0.7f;
+        Gizmos.DrawLine(startPos, endPos);
+    }
     /// <summary>
     /// 이동 모드 변경용 함수
     /// </summary>
@@ -337,7 +359,7 @@ public class PlayerInputController : MonoBehaviour
     {
         // 달리는 동안 스테미나 소모
         currnetStamina -= staminaConsumptionRate * Time.deltaTime;
-        if (currnetStamina < 1.0f)
+        if (currnetStamina < 0.1f)
         {
             currnetStamina = 0.0f;
             CurrentMoveMode = MoveMode.Walk;
@@ -488,7 +510,7 @@ public class PlayerInputController : MonoBehaviour
             }
             itemTransforms.Clear();
         }
-
+        
 
     }
 
