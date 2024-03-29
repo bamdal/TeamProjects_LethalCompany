@@ -12,7 +12,12 @@ public class Door : MonoBehaviour, IInteraction
 
     ModulConnector connector;
 
+    /// <summary>
+    /// true면 forward방향으로 열기
+    /// </summary>
+    bool forwardOpen = true;
 
+    public float doorSpeed = 180.0f;
 
     private void Awake()
     {
@@ -25,7 +30,9 @@ public class Door : MonoBehaviour, IInteraction
     /// <param name="target">문을 연 객체</param>
     public void Interaction(GameObject target)
     {
+        OpenVecter(target);
         TogggleOpenClose();
+ 
     }
 
     /// <summary>
@@ -34,6 +41,34 @@ public class Door : MonoBehaviour, IInteraction
     void Open()
     {
         open = true;
+        if (forwardOpen)
+        StartCoroutine(OpenDoor(forwardOpen));
+
+    }
+
+    IEnumerator OpenDoor(bool forwardOpen)
+    {
+        Debug.Log(forwardOpen);
+        if (forwardOpen)
+        {
+            // 90 -> 0
+            while (transform.rotation.y > 0)
+            {
+                transform.Rotate(Time.deltaTime * -doorSpeed * Vector3.forward);
+                yield return null;
+            }
+        }
+        else
+        {
+            // 90 -> 180
+            while (transform.rotation.y < 180)
+            {
+                transform.Rotate(Time.deltaTime * doorSpeed * Vector3.forward);
+                yield return null;
+            }
+        }
+
+        yield return null;
     }
 
     /// <summary>
@@ -43,6 +78,12 @@ public class Door : MonoBehaviour, IInteraction
     {
         open = false;
         // y를 90으로
+        StartCoroutine(CloseDoor());
+    }
+
+    IEnumerator CloseDoor()
+    {
+        yield return null;
     }
 
     /// <summary>
@@ -70,10 +111,12 @@ public class Door : MonoBehaviour, IInteraction
         if (Vector3.Dot(targetDir, connector.transform.forward) > 0)
         {
             Debug.Log("같은방향"); // 90 -> 0
+            forwardOpen = true;
         }
         else
         {
             Debug.Log("다른방향");  // 90 -> 180
+            forwardOpen = false;
         }
         
     }
