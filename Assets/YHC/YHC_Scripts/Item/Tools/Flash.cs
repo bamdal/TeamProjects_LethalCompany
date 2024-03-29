@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Flash : ToolBase, IEquipable
+public class Flash : ToolBase, IEquipable, IItemDataBase
 {
     public float currentBattery;
     public float CurrentBattery
@@ -28,16 +28,21 @@ public class Flash : ToolBase, IEquipable
     float weight;
     public float Weight => weight;
 
+    float rotateSpeed = 60.0f;
+    int rotateDirection = 1;
+
     public Action<float> onBatteryChange;
 
     PlayerInputActions inputActions;
-
+    Transform lightTransform;
     new Light light;
 
     private void Awake()
     {
         inputActions = new PlayerInputActions();
+        lightTransform = transform.GetChild(0);
         light = GetComponentInChildren<Light>();
+
 
         maxBattery = toolData.battery;
         CurrentBattery = maxBattery;
@@ -61,6 +66,18 @@ public class Flash : ToolBase, IEquipable
         {
             light.enabled = false;
         }
+
+        float rotateValue = Time.deltaTime * rotateDirection;
+        if (rotateValue > 60)
+        {
+            rotateDirection = -1;
+        }
+
+        if (rotateValue < -60)
+        {
+            rotateDirection = 1;
+        }
+        lightTransform.rotation = Quaternion.Euler(-90 + rotateValue, 0, 0);
     }
 
     /// <summary>
@@ -109,5 +126,25 @@ public class Flash : ToolBase, IEquipable
             // 꺼져있다.
             light.enabled = true;   // 불 켜기
         }
+    }
+
+    private void OnMouseDrag()
+    {
+        float rotateValue = Time.deltaTime * rotateSpeed * rotateDirection;
+        if(rotateValue > 60)
+        {
+            rotateDirection = -1;
+        }
+        
+        if(rotateValue < -60) 
+        {
+            rotateDirection = 1;
+        }
+        lightTransform.rotation = Quaternion.Euler(-90 + rotateValue, 0, 0);
+    }
+
+    public ItemDB GetItemDB()
+    {
+        return toolData;
     }
 }
