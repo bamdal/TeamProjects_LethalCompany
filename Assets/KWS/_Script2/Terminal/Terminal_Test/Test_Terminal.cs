@@ -1,3 +1,4 @@
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -16,6 +17,14 @@ public class Test_Terminal : MonoBehaviour
     /// </summary>
     TextMeshProUGUI PressE_text;
 
+    /// <summary>
+    /// 인터페이스를 화면의 중앙에 정렬하기 위한 오프셋
+    /// </summary>
+    public Vector3 interfaceOffset = new Vector3(0.5f, 0.5f, 0);
+    
+    public CinemachineVirtualCamera farVcam;        // 멀리 있는 Vcam
+    public CinemachineVirtualCamera nearVcam;       // 가까이 있는 Vcam
+
     private void Awake()
     {
         // SphereCollider를 찾아서 변수에 할당합니다.
@@ -32,6 +41,13 @@ public class Test_Terminal : MonoBehaviour
         {
             Debug.LogWarning("TextMeshProUGUI를 찾을 수 없습니다.");
         }
+
+        PressE_text.gameObject.SetActive(false);            // 시작할 때 TextMeshProUGUI를 비활성화
+    }
+
+    private void Start()
+    {
+        // 처음에는 MainCamera를 활성화하고, 시네머신 카메라를 비활성화합니다.        
     }
 
     private void OnTriggerEnter(Collider other)
@@ -51,10 +67,36 @@ public class Test_Terminal : MonoBehaviour
             PressE_text.gameObject.SetActive(false);            // TextMeshProUGUI를 비활성화
         }
     }
+
+    private void Update()
+    {
+        // PressE_text가 활성화 되어있을 때 E 키를 누르면
+        if (PressE_text.gameObject.activeSelf && Input.GetKeyDown(KeyCode.E))
+        {
+            Debug.Log("E 키가 눌렸습니다."); // E 키가 눌렸을 때 디버그 출력
+            SwitchCamera();
+        }
+    }
+
+    void SwitchCamera()
+    {
+        if (nearVcam != null && farVcam != null)
+        {
+            // 초기에 nearVcam.Priority = 11, farVcam.Priority = 10
+            int nearPriority = nearVcam.Priority;
+            nearVcam.Priority = farVcam.Priority;
+            farVcam.Priority = nearPriority;
+        }
+        else
+        {
+            Debug.LogError("One or both virtual cameras are not assigned.");
+        }
+    }
+
 }
 
 /// 0. 플레이어가 터미널의 일정 범위에 들어오면 "Access terminal : [E]" 가 활성화     // 1
-/// 1. 플레이어 인풋액션으로 E키를 받아서 터미널 활성화                               // 2
+/// 1. 플레이어 인풋액션으로 E키를 받아서 터미널 활성화                               // 2       받으면 디버그 출력으로 테스트하기
 /// 1-1. 터미널이 활성화되면 터미널의 모니터로 VCam 위치 조정                         // 3
 /// 2. 터미널의 처음 화면 텍스트 출력                                                 // 1번-UI
 
