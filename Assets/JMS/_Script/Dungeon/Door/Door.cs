@@ -17,7 +17,7 @@ public class Door : MonoBehaviour, IInteraction
     /// </summary>
     bool forwardOpen = true;
 
-    public float doorSpeed = 180.0f;
+    public float doorSpeed = 520.0f;
 
     private void Awake()
     {
@@ -41,7 +41,6 @@ public class Door : MonoBehaviour, IInteraction
     void Open()
     {
         open = true;
-        if (forwardOpen)
         StartCoroutine(OpenDoor(forwardOpen));
 
     }
@@ -54,6 +53,7 @@ public class Door : MonoBehaviour, IInteraction
             // 90 -> 0
             while (transform.rotation.y > 0)
             {
+                Debug.Log(transform.eulerAngles.y);
                 transform.Rotate(Time.deltaTime * -doorSpeed * Vector3.forward);
                 yield return null;
             }
@@ -61,9 +61,10 @@ public class Door : MonoBehaviour, IInteraction
         else
         {
             // 90 -> 180
-            while (transform.rotation.y < 180)
+            while (transform.eulerAngles.y < 180)
             {
                 transform.Rotate(Time.deltaTime * doorSpeed * Vector3.forward);
+                Debug.Log(transform.eulerAngles.y);
                 yield return null;
             }
         }
@@ -83,7 +84,12 @@ public class Door : MonoBehaviour, IInteraction
 
     IEnumerator CloseDoor()
     {
-        yield return null;
+        while (Mathf.Abs(transform.eulerAngles.y - 90) > 0.1f)
+        {
+            float step = doorSpeed * Time.deltaTime;
+            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(-90, 90, 0), step);
+            yield return null;
+        }
     }
 
     /// <summary>
@@ -91,6 +97,7 @@ public class Door : MonoBehaviour, IInteraction
     /// </summary>
     void TogggleOpenClose()
     {
+        StopAllCoroutines();
         if(open)
         {
             Close();
