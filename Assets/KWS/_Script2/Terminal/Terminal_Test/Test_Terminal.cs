@@ -1,8 +1,10 @@
 using Cinemachine;
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.SocialPlatforms.Impl;
 
 public class Test_Terminal : MonoBehaviour
@@ -25,6 +27,11 @@ public class Test_Terminal : MonoBehaviour
     public CinemachineVirtualCamera farVcam;        // 멀리 있는 Vcam
     public CinemachineVirtualCamera nearVcam;       // 가까이 있는 Vcam
 
+    /// <summary>
+    /// 플레이어 인풋 액션
+    /// </summary>
+    private PlayerInputActions playerInput;
+
     private void Awake()
     {
         // SphereCollider를 찾아서 변수에 할당합니다.
@@ -43,41 +50,66 @@ public class Test_Terminal : MonoBehaviour
         }
 
         PressE_text.gameObject.SetActive(false);            // 시작할 때 TextMeshProUGUI를 비활성화
+
+        playerInput = new PlayerInputActions();
     }
 
-    private void Start()
+    private void OnEnable()
     {
-        // 처음에는 MainCamera를 활성화하고, 시네머신 카메라를 비활성화합니다.        
+        playerInput.Enable();
+        playerInput.Player.Interact.performed += OnFClick;
+    }
+
+    private void OnDisable()
+    {
+        playerInput.Disable();
+        playerInput.Player.Interact.performed -= OnFClick;
+    }
+
+    private void OnFClick(InputAction.CallbackContext context)
+    {
+        Debug.Log($"F 키가 눌렸습니다.");
+        if (PressE_text.gameObject.activeSelf && context.action.triggered)
+        {
+            Debug.Log("활성화 & F 키가 눌렸습니다."); // E 키가 눌렸을 때 디버그 출력
+            PressE_text.gameObject.SetActive(false);
+            SwitchCamera();
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")           // 충돌한 상대 오브젝트의 태그가 Player이면
+        if (other.gameObject.tag == "Player")                   // 충돌한 상대 오브젝트의 태그가 Player이면
         {
             Debug.Log($"[Player] 가 범위 안에 들어왔다.");
-            PressE_text.gameObject.SetActive(true);            // TextMeshProUGUI를 활성화
+            PressE_text.gameObject.SetActive(true);             // TextMeshProUGUI를 활성화
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Player")           // 충돌한 상대 오브젝트의 태그가 Player이면
+        if (other.gameObject.tag == "Player")                   // 충돌한 상대 오브젝트의 태그가 Player이면
         {
             Debug.Log($"[Player] 가 범위 밖으로 나갔다.");
             PressE_text.gameObject.SetActive(false);            // TextMeshProUGUI를 비활성화
         }
     }
 
-    private void Update()
+    /*private void Update()
     {
         // PressE_text가 활성화 되어있을 때 E 키를 누르면
-        if (PressE_text.gameObject.activeSelf && Input.GetKeyDown(KeyCode.E))
+        if (PressE_text.gameObject.activeSelf && Input.GetKeyDown(KeyCode.E))       // 플레이어 인풋 액션으로 수정 필요
         {
             Debug.Log("E 키가 눌렸습니다."); // E 키가 눌렸을 때 디버그 출력
             SwitchCamera();
-        }
-    }
 
+            // 터미널에서 Text 입력할 때 E키가 눌려도 SwitchCamera() 함수가 실행되는 문제 수정 필요
+        }
+    }*/
+
+    /// <summary>
+    /// nearVcam과 farVcam의 Priority를 서로 바꾸는 함수
+    /// </summary>
     void SwitchCamera()
     {
         if (nearVcam != null && farVcam != null)
