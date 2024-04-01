@@ -382,6 +382,11 @@ public class Player : MonoBehaviour
                     Debug.Log("아이템을 획득했습니다!");
 
                 }
+                IInteraction interaction = hit.collider.gameObject.GetComponent<IInteraction>();
+                if (interaction != null)
+                {
+                    interaction.Interaction(transform.gameObject);
+                }
             }
             else
             {
@@ -392,6 +397,7 @@ public class Player : MonoBehaviour
         {
             Debug.Log("f키 떨어짐!");
         }
+        
     }
     List<Transform> itemTransforms = new List<Transform>();
     private void OnLClickInput()
