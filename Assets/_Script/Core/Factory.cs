@@ -4,6 +4,7 @@ using UnityEngine;
 
 public enum PoolObjectType
 {
+    item
 }
 
 public class Factory : Singleton<Factory>
