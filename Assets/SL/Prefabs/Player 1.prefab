@@ -111,6 +111,7 @@ MonoBehaviour:
   walkSpeed: 3
   runSpeed: 10
   jumpForce: 5
+  currentSpeed: 0
   turnSpeed: Infinity
   cam: {fileID: 0}
   groundCheckDistance: 0.1
@@ -284,9 +285,11 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6406609622831654624}
+  - component: {fileID: 8342967766747763218}
+  - component: {fileID: 716221731176275539}
   m_Layer: 0
   m_Name: Player 1
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -307,3 +310,40 @@ Transform:
   - {fileID: 7686409905278696262}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &8342967766747763218
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8187524887012749160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a72f7774b1316f34c889a21e0dcb13ee, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  hp: 100
+  stamina: 100
+  walkSpeed: 3
+  runSpeed: 5
+  jumpForce: 5
+  currentSpeed: 0
+  turnSpeed: 10
+  cam: {fileID: 0}
+  groundCheckDistance: 1
+  groundLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  gravityMultiplier: 2
+--- !u!114 &716221731176275539
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8187524887012749160}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a89d41cc18d70994984901cc14f45515, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
