@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ObjectPool<T> : MonoBehaviour where T : Recycle
 {
-    public GameObject recycleObject;
+    public GameObject recycleObject;    
 
     public int poolBaseCapacity = 8;
 
