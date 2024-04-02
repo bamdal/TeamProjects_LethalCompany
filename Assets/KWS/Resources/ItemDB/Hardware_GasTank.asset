@@ -19,7 +19,7 @@ MonoBehaviour:
   stackCount: 1
   battery: 0
   itemType: 2
-  itemCode: 0
+  itemCode: 4
   isConductive: 0
   itemIcon: {fileID: 0}
   itemModel: {fileID: 2231581111867255905, guid: 866bc2484e6908241800660e3f939602, type: 3}

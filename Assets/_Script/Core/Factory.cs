@@ -4,13 +4,16 @@ using UnityEngine;
 
 public enum PoolObjectType
 {
-    item
+    item = 0,
+    Hardware,
+
 }
 
 public class Factory : Singleton<Factory>
 {
     //SlimePool slimePool;
     ItemPool itemPool;
+    HardwarePool hardwarePool;
 
     protected override void OnInitialize()
     {
@@ -21,8 +24,11 @@ public class Factory : Singleton<Factory>
         itemPool = GetComponentInChildren<ItemPool>();
         if(itemPool != null )
                 itemPool.Initialize();
+
+        hardwarePool = GetComponentInChildren<HardwarePool>();
+        if(hardwarePool != null ) hardwarePool.Initialize();
     }
- 
+
     /// <summary>
     /// 풀에 있는 게임 오브젝트 하나 가져오기
     /// </summary>
@@ -39,6 +45,24 @@ public class Factory : Singleton<Factory>
         // }
 
         return result;
+    }
+
+    /*public GameObject GetHardware(ItemCode itemCode)
+    {
+        ItemDB data = GameManager.Instance.ItemData[itemCode];
+        // ItemObject obj = itemPool.GetObject();
+        // obj.ItemData = data;                    // 풀에서 하나 꺼내고 데이터 설정
+        return null;
+    }*/
+
+    public ItemBase GetHardware(ItemCode itemCode)      // itemCode를 1 ~ 5까지 랜덤하게 선택
+    {
+        return hardwarePool.GetObject();
+    }
+
+    public ItemBase GetHardware(Vector3 position, float angle = 0.0f)
+    {
+        return hardwarePool.GetObject(position, angle * Vector3.forward);
     }
 
     public ItemBase GetItem()

@@ -4,4 +4,5 @@ using UnityEngine;
 
 public class ItemBase : Recycle
 {
+    public ItemDB itemDB;
 }

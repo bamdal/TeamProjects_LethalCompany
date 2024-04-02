@@ -2,7 +2,6 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Hardware_PalletJack : ItemBase
+public class HardwarePool : ObjectPool<ItemBase>
 {
-    //public ItemDB itemDB;
 }
