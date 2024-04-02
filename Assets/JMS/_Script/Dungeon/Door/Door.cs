@@ -19,9 +19,15 @@ public class Door : MonoBehaviour
 
     public float doorSpeed = 520.0f;
 
+    /// <summary>
+    /// 문이 회전할 축
+    /// </summary>
+    Transform hinge;
+
     private void Awake()
     {
-        connector = GetComponentInParent<ModulConnector>();
+        connector = GetComponent<ModulConnector>();
+        hinge = transform.GetChild(0);
     }
 
     /// <summary>
@@ -51,19 +57,18 @@ public class Door : MonoBehaviour
         if (forwardOpen)
         {
             // 90 -> 0
-            while (transform.eulerAngles.y%360 < 1.0f)
+            while (hinge.eulerAngles.y < -90.0f)
             {
-                Debug.Log(transform.eulerAngles.y);
-                transform.Rotate(Time.deltaTime * -doorSpeed * Vector3.forward);
+                hinge.Rotate(Time.deltaTime * -doorSpeed * Vector3.up);
                 yield return null;
             }
         }
         else
         {
             // 90 -> 180
-            while (transform.eulerAngles.z < 90)
+            while (hinge.eulerAngles.y < 90.0f)
             {
-                transform.Rotate(Time.deltaTime * doorSpeed * Vector3.forward);
+                hinge.Rotate(Time.deltaTime * doorSpeed * Vector3.up);
 
                 yield return null;
             }
@@ -84,12 +89,14 @@ public class Door : MonoBehaviour
 
     IEnumerator CloseDoor()
     {
-        while (Mathf.Abs(transform.eulerAngles.z) > 0.1f)
+        Quaternion targetRotation = Quaternion.Euler(hinge.eulerAngles.x, 0f, hinge.eulerAngles.z);
+
+        while (Quaternion.Angle(hinge.rotation, targetRotation) > 0.1f)
         {
-            float step = doorSpeed * Time.deltaTime;
-            transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(-90, 90, 0), step);
+            hinge.rotation = Quaternion.Lerp(hinge.rotation, targetRotation, Time.deltaTime * 5f);
             yield return null;
         }
+        hinge.rotation = targetRotation;
     }
 
     /// <summary>
