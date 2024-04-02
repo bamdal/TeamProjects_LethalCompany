@@ -170,7 +170,7 @@ public class Player : MonoBehaviour
         CalculateMoveDirection();
         // 플레이어가 바라보는 방향
         Vector3 playerForward = transform.forward;
-        // 입력 방향의 크기만큼 이동 방향 설정
+        // 입력 방향의 크기만큼 이동 방향 설정s
         Vector3 moveDirection = playerForward * inputDirection.z + transform.right * inputDirection.x;
         moveDirection.Normalize(); // 이동 방향을 정규화하여 일정한 속도로 이동하도록 함
         // 이동 처리
