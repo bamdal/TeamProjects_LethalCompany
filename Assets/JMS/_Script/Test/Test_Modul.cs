@@ -15,11 +15,7 @@ public class Test_Modul : TestBase
 
     protected override void OnTest2(InputAction.CallbackContext context)
     {
-        IInteraction interaction = Door;
-        if(interaction != null)
-        {
-            interaction.Interaction(target);
-        }
+
 
     }
 }

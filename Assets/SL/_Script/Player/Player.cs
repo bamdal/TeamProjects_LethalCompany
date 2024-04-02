@@ -120,12 +120,13 @@ public class Player : MonoBehaviour
 
     Rigidbody rb;
 
-    Collider itemRader;
+//    Collider itemRader;
     public float groundCheckDistance = 1f;    // 바닥 체크 거리
     public LayerMask groundLayer;               // 바닥을 나타내는 레이어
 
     [SerializeField] private float gravityMultiplier = 2.0f;
 
+    Transform itemRader;
     private void Awake()
     {
         input = GetComponent<PlayerInput>();
@@ -141,9 +142,10 @@ public class Player : MonoBehaviour
         currnetStamina = stamina;
         rb = GetComponent<Rigidbody>();
 
+        itemRader = transform.GetChild(2);
 
-        Collider[] colliders = GetComponents<Collider>();
-        itemRader = colliders[1];
+        //Collider[] colliders = GetComponents<Collider>();
+        //itemRader = colliders[1];
     }
 
 
@@ -382,6 +384,14 @@ public class Player : MonoBehaviour
                     Debug.Log("아이템을 획득했습니다!");
 
                 }
+                IInteraction interaction = hit.collider.gameObject.GetComponent<IInteraction>();
+
+                // 상호작용이 가능한 물체일때 
+                if (interaction != null)
+                {
+                    // 상호작용 
+                    interaction.Interaction(transform.gameObject);
+                }
             }
             else
             {
@@ -392,8 +402,9 @@ public class Player : MonoBehaviour
         {
             Debug.Log("f키 떨어짐!");
         }
+        
     }
-    List<Transform> itemTransforms = new List<Transform>();
+
     private void OnLClickInput()
     {
     }
@@ -401,22 +412,24 @@ public class Player : MonoBehaviour
     private void OnRClickInput()
     {
 
-        itemRader.enabled = true;
-        Quaternion cameraRotation = Camera.main.transform.rotation;
 
-        Vector3 currentRotation = transform.rotation.eulerAngles;
-        transform.rotation = Quaternion.Euler(currentRotation.x, cameraRotation.eulerAngles.y, currentRotation.z);
-        StopAllCoroutines();
-        StartCoroutine(DisableItemRaderAfterDelay());
-        Debug.Log("아이템 목록:");
+        itemRader.gameObject.SetActive(true);
+        if (DisableItemRaderAfterDelayCoroutine != null)
+        {
+            StopCoroutine(DisableItemRaderAfterDelayCoroutine);
+        }
+        DisableItemRaderAfterDelayCoroutine = StartCoroutine(DisableItemRaderAfterDelay());
+
+
 
     }
 
+    Coroutine DisableItemRaderAfterDelayCoroutine;
     private IEnumerator DisableItemRaderAfterDelay()
     {
-        // 일정 시간(예: 1초) 후에 itemRader.enabled를 false로 변경
         yield return new WaitForSeconds(0.05f); // 변경하고자 하는 시간으로 수정 가능
-        itemRader.enabled = false;
+        itemRader.gameObject.SetActive(false);
+
     }
 
 
@@ -425,45 +438,6 @@ public class Player : MonoBehaviour
 
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.CompareTag("Item"))
-        {
-            Transform itemTransform = collision.transform;
-            Vector3 itemPosition = itemTransform.position;
-
-            // 아이템의 위치와 플레이어의 위치 사이의 방향 벡터를 구합니다.
-            Vector3 directionToItem = itemPosition - transform.position;
-
-            // 플레이어 위치에서 아이템까지의 레이를 생성합니다.
-            Ray ray = new Ray(transform.position + transform.forward * 0.5f, directionToItem);
-
-            RaycastHit hit;
-
-            if (Physics.Raycast(ray, out hit))
-            {
-                // 레이가 충돌한 객체가 벽인지 확인합니다.
-                if (hit.collider.CompareTag("Obstacle"))
-                {
-                    // 벽 뒤에 있는 아이템을 제거합니다.
-                    Debug.Log("벽 뒤에 있는 아이템: " + itemTransform.gameObject.name);
-                }
-                else if (hit.collider.CompareTag("Item"))
-                {
-                    // 벽 뒤에 없는 아이템을 목록에 추가합니다.
-                    itemTransforms.Add(itemTransform);
-                }
-            }
-            else
-            {
-                // 레이가 아이템에 닿지 않은 경우 아이템을 목록에 추가합니다.
-                itemTransforms.Add(itemTransform);
-            }
-
-            foreach (Transform item in itemTransforms)
-            {
-                Debug.Log(item.gameObject.name);
-            }
-            itemTransforms.Clear();
-        }
 
 
     }

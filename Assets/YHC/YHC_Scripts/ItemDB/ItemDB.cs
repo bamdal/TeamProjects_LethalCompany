@@ -11,6 +11,11 @@ public enum ItemType
 public enum ItemCode
 {
     FlashLight,
+    Barrel,
+    CableDrum,
+    GarbageCart,
+    GasTank,
+    PalletJack,
 }
 
 public class ItemDB : ScriptableObject

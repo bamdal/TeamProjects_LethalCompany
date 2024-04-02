@@ -41,7 +41,6 @@ public class PlayerInput : MonoBehaviour
         inputActions.Player.Interact.canceled += OnInteract;
         inputActions.Player.MouseLClick.performed += OnLClick;
         inputActions.Player.MouseRClick.performed += OnRClick;
-        inputActions.Player.MouseRClick.canceled += OnRClick;
         inputActions.Player.Jump.performed += OnJump;
     }
 
@@ -49,7 +48,6 @@ public class PlayerInput : MonoBehaviour
     private void OnDisable()
     {
         inputActions.Player.Jump.performed -= OnJump;
-        inputActions.Player.MouseRClick.canceled -= OnRClick;
         inputActions.Player.MouseRClick.performed -= OnRClick;
         inputActions.Player.MouseLClick.performed -= OnLClick;
         inputActions.Player.Interact.canceled -= OnInteract;

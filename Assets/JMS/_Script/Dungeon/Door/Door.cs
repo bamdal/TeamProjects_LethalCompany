@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Door : MonoBehaviour, IInteraction
+public class Door : MonoBehaviour
 {
 
     /// <summary>
@@ -51,7 +51,7 @@ public class Door : MonoBehaviour, IInteraction
         if (forwardOpen)
         {
             // 90 -> 0
-            while (transform.rotation.y > 0)
+            while (transform.eulerAngles.y%360 < 1.0f)
             {
                 Debug.Log(transform.eulerAngles.y);
                 transform.Rotate(Time.deltaTime * -doorSpeed * Vector3.forward);
@@ -61,10 +61,10 @@ public class Door : MonoBehaviour, IInteraction
         else
         {
             // 90 -> 180
-            while (transform.eulerAngles.y < 180)
+            while (transform.eulerAngles.z < 90)
             {
                 transform.Rotate(Time.deltaTime * doorSpeed * Vector3.forward);
-                Debug.Log(transform.eulerAngles.y);
+
                 yield return null;
             }
         }
@@ -84,7 +84,7 @@ public class Door : MonoBehaviour, IInteraction
 
     IEnumerator CloseDoor()
     {
-        while (Mathf.Abs(transform.eulerAngles.y - 90) > 0.1f)
+        while (Mathf.Abs(transform.eulerAngles.z) > 0.1f)
         {
             float step = doorSpeed * Time.deltaTime;
             transform.rotation = Quaternion.RotateTowards(transform.rotation, Quaternion.Euler(-90, 90, 0), step);
