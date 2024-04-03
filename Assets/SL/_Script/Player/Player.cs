@@ -105,26 +105,41 @@ public class Player : MonoBehaviour
     /// </summary>
     public float turnSpeed = 10.0f;
 
+    /// <summary>
+    /// 중력 가속도 변수
+    /// </summary>
+    private float gravityForce = -9.8f ;
+
     // 컴포넌트들
     CharacterController characterController;
 
 
     // 입력용 인풋 액션
     PlayerInput input;
+
+    /// <summary>
+    /// 카메라를 불러오기 위한 변수
+    /// </summary>
     public Camera cam;
 
+    /// <summary>
+    /// 현재 중력을 담당할 Y값
+    /// </summary>
+    float gravityY = 0.0f;
     /// <summary>
     /// 이동방향
     /// </summary>
     Vector3 moveDirection;
 
-    Rigidbody rb;
+    /// <summary>
+    /// 중력을 담당하는 방향 백터
+    /// </summary>
+    Vector3 gravityDir = Vector3.zero;
 
-//    Collider itemRader;
-    public float groundCheckDistance = 1f;    // 바닥 체크 거리
+
+    public float groundCheckDistance = 0.2f;    // 바닥 체크 거리
     public LayerMask groundLayer;               // 바닥을 나타내는 레이어
-
-    [SerializeField] private float gravityMultiplier = 2.0f;
+    Transform groundCheckPosition;              // 바닥 체크할 포지션
 
     Transform itemRader;
     private void Awake()
@@ -140,12 +155,11 @@ public class Player : MonoBehaviour
         cam = FindAnyObjectByType<Camera>();
         inventory = transform.Find("Inventory");
         currnetStamina = stamina;
-        rb = GetComponent<Rigidbody>();
 
+        characterController = GetComponent<CharacterController>();
         itemRader = transform.GetChild(2);
-
-        //Collider[] colliders = GetComponents<Collider>();
-        //itemRader = colliders[1];
+        groundCheckPosition = transform.GetChild(4);
+        gravityY = -1f;
     }
 
 
@@ -166,33 +180,31 @@ public class Player : MonoBehaviour
         {
             currentMoveMode = MoveMode.Walk;
         }
-
-        Debug.Log(currnetStamina);
         // 이동 방향 계산
         CalculateMoveDirection();
         // 플레이어가 바라보는 방향
         Vector3 playerForward = transform.forward;
-        // 입력 방향의 크기만큼 이동 방향 설정s
+        // 입력 방향의 크기만큼 이동 방향 설정
         Vector3 moveDirection = playerForward * inputDirection.z + transform.right * inputDirection.x;
-        moveDirection.Normalize(); // 이동 방향을 정규화하여 일정한 속도로 이동하도록 함
+        moveDirection.Normalize();          // 이동 방향을 정규화하여 일정한 속도로 이동하도록 함
+        gravityDir.y = gravityY;            // 중력을 담당하는 방향백터에 y값에 중력을 넣음
+        ApplyGravity();                     // 공중일때 중력 적용하는 함수
         // 이동 처리
-        //characterController.Move(currentSpeed * Time.deltaTime * moveDirection);
-        rb.velocity = moveDirection * currentSpeed;
-
-        Debug.Log(IsGrounded());
+        characterController.Move(currentSpeed * Time.deltaTime * moveDirection);
+        // 중력 처리
+        characterController.Move(1f * Time.deltaTime * gravityDir);
+        //Debug.Log(IsGrounded());
     }
 
     private void FixedUpdate()
     {
         // 아이템을 상호작용하는 함수 호출
         FindItemRay();
-        if (!IsGrounded())
-        {
-            rb.AddForce(Vector3.down * gravityMultiplier, ForceMode.Acceleration);
-        }
     }
 
-
+    /// <summary>
+    /// 스테미나 회복이 가능함을 담당하는 변수를 바꾸는 함수
+    /// </summary>
     void EnableStaminaRecovery()
     {
         isCanRecovery = true;
@@ -214,15 +226,11 @@ public class Player : MonoBehaviour
         // Physics.Raycast 메서드에 layerMask를 추가하여 해당 레이어만 검출하도록 합니다.
         if (Physics.Raycast(ray, out hit, 5.0f, layerMask))
         {
-
-
             // 레이를 그려줍니다.
             Debug.DrawRay(ray.origin, ray.direction * hit.distance, Color.green);
         }
         else
         {
-
-
             // 실패 시에도 레이를 그려줍니다.
             Debug.DrawRay(ray.origin, ray.direction * 5.0f, Color.red);
         }
@@ -267,21 +275,41 @@ public class Player : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 점프 입력에 대한 델리게이트로 실행되는 함수
+    /// </summary>
     private void OnJumpInput()
     {
         if (IsGrounded())
         {
             Debug.Log("점프");
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            gravityY = 5f;
         }
     }
+    
+    /// <summary>
+    /// 현재 지금 땅 위인지 확인하는 함수
+    /// </summary>
+    /// <returns></returns>
     bool IsGrounded()
     {
         // 캐릭터의 아래에 레이캐스트를 쏴서 바닥에 닿았는지 확인
-        return Physics.Raycast(transform.position + Vector3.down * 0.5f, Vector3.down, 0.7f, layerMask: groundLayer);
+        return Physics.Raycast(groundCheckPosition.position, Vector3.down, groundCheckDistance, layerMask: groundLayer);
     }
 
-    private void OnDrawGizmos()
+    /// <summary>
+    /// 공중일때 중력 적용하는 함수
+    /// </summary>
+    void ApplyGravity()
+    {
+        if (!IsGrounded())
+        {
+            gravityY += gravityForce * Time.deltaTime;
+        }
+    }
+    
+
+/*    private void OnDrawGizmos()
     {
         // 캐릭터의 아래에 레이캐스트를 쏴서 바닥에 닿았는지 확인
         bool isGrounded = IsGrounded();
@@ -290,10 +318,13 @@ public class Player : MonoBehaviour
         Gizmos.color = isGrounded ? Color.green : Color.red;
 
         // 레이캐스트의 시작점과 끝점을 계산하여 기즈모로 그리기
-        Vector3 startPos = transform.position + Vector3.down * 0.5f;
-        Vector3 endPos = startPos + Vector3.down * 0.7f;
+        Vector3 startPos = groundCheckPosition.position;
+        Vector3 endPos = startPos + Vector3.down * 0.2f;
         Gizmos.DrawLine(startPos, endPos);
-    }
+    }*/
+
+
+
     /// <summary>
     /// 이동 모드 변경 입력에 대한 델리게이트로 실행되는 함수
     /// </summary>
@@ -405,42 +436,37 @@ public class Player : MonoBehaviour
         
     }
 
+    /// <summary>
+    /// 좌클릭에 해당하는 입력에 대해 델리게이트로 실행되는 함수
+    /// </summary>
     private void OnLClickInput()
     {
+        // 공격처리
     }
 
+
+    /// <summary>
+    /// 아이템 레이더를 켜고 끌수있게 오른쪽 마우스 버튼 입력에 대한 델리게이트로 연결되어있는 함수
+    /// </summary>
     private void OnRClickInput()
     {
-
-
         itemRader.gameObject.SetActive(true);
         if (DisableItemRaderAfterDelayCoroutine != null)
         {
             StopCoroutine(DisableItemRaderAfterDelayCoroutine);
         }
         DisableItemRaderAfterDelayCoroutine = StartCoroutine(DisableItemRaderAfterDelay());
-
-
-
     }
 
     Coroutine DisableItemRaderAfterDelayCoroutine;
+    /// <summary>
+    /// 아이템 레이더 오브젝트를 아주잠깐 켜기위한 코루틴 함수
+    /// </summary>
+    /// <returns></returns>
     private IEnumerator DisableItemRaderAfterDelay()
     {
         yield return new WaitForSeconds(0.05f); // 변경하고자 하는 시간으로 수정 가능
         itemRader.gameObject.SetActive(false);
 
     }
-
-
-
-
-
-    private void OnTriggerEnter(Collider collision)
-    {
-
-
-    }
-
-
 }
