@@ -123,6 +123,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toolData: {fileID: 11400000, guid: 0d61bd8a71a8f7a43b53008d6faaff1e, type: 2}
+  currentBattery: 0
 --- !u!1 &2013477300390627978
 GameObject:
   m_ObjectHideFlags: 0

@@ -217,3 +217,4 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   toolData: {fileID: 11400000, guid: 707549a0952ee214082e0f107a9a9a25, type: 2}
+  currentBattery: 0

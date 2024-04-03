@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d174dda186c864f40a7af398b29a3fd1, type: 3}
+  m_Name: 00_Flashlight_0
+  m_EditorClassIdentifier: 
+  itemName: "\uC77C\uBC18\uD6C4\uB808\uC26C"
+  itemText: "\uC77C\uBC18\uD6C4\uB808\uC26C"
+  weight: 1
+  price: 0
+  stackCount: 1
+  battery: 70
+  itemType: 0
+  itemCode: 0
+  isConductive: 0
+  itemIcon: {fileID: 0}
+  itemPrefab: {fileID: 0}
+  mesh: {fileID: 4300000, guid: 9ae68d3d5ef09fb46b81ccc24e600840, type: 2}
+  materials:
+  - {fileID: 2100000, guid: 930adfdfdd9fafd469ffb427a452359d, type: 2}
+  - {fileID: 2100000, guid: bb59d9535c521eb48994e16487f7b2b9, type: 2}
+  - {fileID: 2100000, guid: 140db2315bb006848a12d719229080a3, type: 2}
+  - {fileID: 2100000, guid: 0eb0f996ba805c34c9e5dc4df46deb6b, type: 2}
