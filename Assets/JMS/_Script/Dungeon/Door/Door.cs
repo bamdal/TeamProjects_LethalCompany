@@ -111,15 +111,19 @@ public class Door : MonoBehaviour
     /// </summary>
     void TogggleOpenClose()
     {
-        StopAllCoroutines();
-        if(open)
+        if (hinge != null)
         {
-            Close();
+            StopAllCoroutines();
+            if (open)
+            {
+                Close();
+            }
+            else
+            {
+                Open();
+            }
         }
-        else
-        {
-            Open();
-        }
+
     }
 
     /// <summary>

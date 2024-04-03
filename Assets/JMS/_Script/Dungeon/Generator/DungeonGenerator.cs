@@ -286,7 +286,8 @@ public class DungeonGenerator : MonoBehaviour
         // 맵이 곂치면 망함
 
         // 모듈 연결할때 새로 생성한 모듈 커넥터에 있는 문은 삭제한다.
-
+        oldConnector.transform.GetChild(1).gameObject.SetActive(false);
+        oldConnector.transform.GetChild(0).gameObject.SetActive(false);
 
         return currentModul;
     }
