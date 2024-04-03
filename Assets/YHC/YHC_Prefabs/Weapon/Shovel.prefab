@@ -11,8 +11,8 @@ GameObject:
   - component: {fileID: 8151707747451979526}
   - component: {fileID: 535406967133704306}
   - component: {fileID: 3669016549897769648}
-  - component: {fileID: 1556428306439134221}
   - component: {fileID: 476701459295550722}
+  - component: {fileID: 3099214344968186920}
   m_Layer: 0
   m_Name: Shovel
   m_TagString: Weapon
@@ -85,8 +85,21 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &1556428306439134221
-MeshCollider:
+--- !u!114 &476701459295550722
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 722632824591328399}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f3c4a8df97018164987634bd72a760d2, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  weaponData: {fileID: 11400000, guid: 3d18f7f4ca06ea943a85a647623cd1c9, type: 2}
+--- !u!65 &3099214344968186920
+BoxCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -103,20 +116,6 @@ MeshCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 1
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 43209559726813588, guid: 9844e73961263ed4f9840f6e188bb613, type: 2}
---- !u!114 &476701459295550722
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 722632824591328399}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f3c4a8df97018164987634bd72a760d2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  weaponData: {fileID: 11400000, guid: 3d18f7f4ca06ea943a85a647623cd1c9, type: 2}
+  serializedVersion: 3
+  m_Size: {x: 0.2, y: 1.1, z: 0.1}
+  m_Center: {x: 0, y: -0.45, z: 0}

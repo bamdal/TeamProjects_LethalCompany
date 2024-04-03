@@ -22,26 +22,25 @@ public class Flash : ToolBase, IEquipable, IItemDataBase
     }
 
     bool IsAvailable => currentBattery > 0;
+    bool isActivated = false;
 
     float maxBattery;
 
     float weight;
     public float Weight => weight;
 
-    float rotateSpeed = 60.0f;
-    int rotateDirection = 1;
+    // float rotateSpeed = 60.0f;
+    // int rotateDirection = 1;
 
     public Action<float> onBatteryChange;
 
     PlayerInputActions inputActions;
     Transform lightTransform;
-    new Light light;
 
     private void Awake()
     {
         inputActions = new PlayerInputActions();
         lightTransform = transform.GetChild(0);
-        light = GetComponentInChildren<Light>();
 
 
         maxBattery = toolData.battery;
@@ -51,33 +50,29 @@ public class Flash : ToolBase, IEquipable, IItemDataBase
 
     private void Start()
     {
-        light.enabled = false;
+        lightTransform.gameObject.SetActive(true);
+        isActivated = true;
     }
 
 
     private void Update()
     {
-        if(light.enabled)
+        if(lightTransform.gameObject)
         {
             CurrentBattery -= Time.deltaTime;
         }
 
-        if(!IsAvailable)
-        {
-            light.enabled = false;
-        }
-
-        float rotateValue = Time.deltaTime * rotateDirection;
-        if (rotateValue > 60)
-        {
-            rotateDirection = -1;
-        }
-
-        if (rotateValue < -60)
-        {
-            rotateDirection = 1;
-        }
-        lightTransform.rotation = Quaternion.Euler(-90 + rotateValue, 0, 0);
+        // float rotateValue = Time.deltaTime * rotateDirection;
+        // if (rotateValue > 60)
+        // {
+        //     rotateDirection = -1;
+        // }
+        // 
+        // if (rotateValue < -60)
+        // {
+        //     rotateDirection = 1;
+        // }
+        // lightTransform.rotation = Quaternion.Euler(-90 + rotateValue, 0, 0);
     }
 
     /// <summary>
@@ -115,33 +110,35 @@ public class Flash : ToolBase, IEquipable, IItemDataBase
 
     public void Use()
     {
-        if (light.enabled)
+        if(isActivated)
         {
             // 켜져있다.
-            light.enabled = false;  // 불 끄기
+            lightTransform.gameObject.SetActive(false);  // 불 끄기
+            isActivated = false;
 
         }
         else
         {
             // 꺼져있다.
-            light.enabled = true;   // 불 켜기
+            lightTransform.gameObject.SetActive(true);   // 불 켜기
+            isActivated= true;
         }
     }
 
-    private void OnMouseDrag()
-    {
-        float rotateValue = Time.deltaTime * rotateSpeed * rotateDirection;
-        if(rotateValue > 60)
-        {
-            rotateDirection = -1;
-        }
-        
-        if(rotateValue < -60) 
-        {
-            rotateDirection = 1;
-        }
-        lightTransform.rotation = Quaternion.Euler(-90 + rotateValue, 0, 0);
-    }
+    // private void OnMouseDrag()
+    // {
+    //     float rotateValue = Time.deltaTime * rotateSpeed * rotateDirection;
+    //     if(rotateValue > 60)
+    //     {
+    //         rotateDirection = -1;
+    //     }
+    //     
+    //     if(rotateValue < -60) 
+    //     {
+    //         rotateDirection = 1;
+    //     }
+    //     lightTransform.rotation = Quaternion.Euler(-90 + rotateValue, 0, 0);
+    // }
 
     public ItemDB GetItemDB()
     {
