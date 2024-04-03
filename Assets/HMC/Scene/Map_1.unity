@@ -366,6 +366,7 @@ GameObject:
   - component: {fileID: 1590896863}
   - component: {fileID: 1590896865}
   - component: {fileID: 1590896864}
+  - component: {fileID: 1590896866}
   m_Layer: 0
   m_Name: Terrain_0_0_1a71c3b3-949b-42c1-907a-86e660da318d
   m_TagString: Untagged
@@ -447,6 +448,18 @@ Terrain:
   m_EnableHeightmapRayTracing: 1
   m_EnableTreesAndDetailsRayTracing: 0
   m_TreeMotionVectorModeOverride: 3
+--- !u!114 &1590896866
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1590896862}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b822a298f7e434aee9c31d745895f6d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!850595691 &1675860142
 LightingSettings:
   m_ObjectHideFlags: 0

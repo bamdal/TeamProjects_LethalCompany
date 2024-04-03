@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 202c949e72d884688a1fb089a272918b, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.085179634, g: 0.27896944, b: 0.48324084, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -338,6 +338,7 @@ GameObject:
   - component: {fileID: 1318960412}
   - component: {fileID: 1318960414}
   - component: {fileID: 1318960413}
+  - component: {fileID: 1318960415}
   m_Layer: 0
   m_Name: Terrain_0_0_959e9267-9e71-4f17-9102-2a964f4e27b0
   m_TagString: Untagged
@@ -419,6 +420,18 @@ Terrain:
   m_EnableHeightmapRayTracing: 1
   m_EnableTreesAndDetailsRayTracing: 0
   m_TreeMotionVectorModeOverride: 3
+--- !u!114 &1318960415
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1318960411}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b822a298f7e434aee9c31d745895f6d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &1725185513
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -562,7 +575,7 @@ Transform:
   m_GameObject: {fileID: 1916548007}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 1, z: -10}
+  m_LocalPosition: {x: 164.1, y: 27, z: 125.3}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -582,15 +595,23 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 2097595526914883649, guid: b997b60644a194e3da912e54fda1e49c, type: 3}
       propertyPath: m_LocalScale.x
-      value: 6.5112944
+      value: 7.5042667
+      objectReference: {fileID: 0}
+    - target: {fileID: 2097595526914883649, guid: b997b60644a194e3da912e54fda1e49c, type: 3}
+      propertyPath: m_LocalScale.z
+      value: 11.55164
       objectReference: {fileID: 0}
     - target: {fileID: 2097595526914883649, guid: b997b60644a194e3da912e54fda1e49c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 14.6586
+      value: 9.6951
       objectReference: {fileID: 0}
     - target: {fileID: 2097595526914883649, guid: b997b60644a194e3da912e54fda1e49c, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -98.4
+      value: -99.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 2097595526914883649, guid: b997b60644a194e3da912e54fda1e49c, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: -12.6498
       objectReference: {fileID: 0}
     - target: {fileID: 7531261789978237579, guid: b997b60644a194e3da912e54fda1e49c, type: 3}
       propertyPath: m_LocalPosition.x
