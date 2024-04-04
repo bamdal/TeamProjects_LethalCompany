@@ -41,20 +41,19 @@ public class Modul : MonoBehaviour
     {
         // 모듈이 연결될수 있는 모든 문
         connectors = GetComponentsInChildren<ModulConnector>();
-        rend = GetComponent<MeshRenderer>();
-        center = rend.bounds.center;
-        size = rend.bounds.size;
+        //rend = GetComponent<MeshRenderer>();
+
 
     }
 
-    /// <summary>
-    /// 모듈의 사이즈를 구하는 함수
-    /// </summary>
-    /// <returns>모듈의 x,y,z크기</returns>
-    public Vector3 GetSize()
-    {
-        return size;
-    }
+    ///// <summary>
+    ///// 모듈의 사이즈를 구하는 함수
+    ///// </summary>
+    ///// <returns>모듈의 x,y,z크기</returns>
+    //public Vector3 GetSize()
+    //{
+    //    return size;
+    //}
 
 
 }
