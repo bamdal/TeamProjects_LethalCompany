@@ -140,7 +140,8 @@ public class Player : MonoBehaviour
     public float groundCheckDistance = 0.2f;    // 바닥 체크 거리
     public LayerMask groundLayer;               // 바닥을 나타내는 레이어
     Transform groundCheckPosition;              // 바닥 체크할 포지션
-
+    Transform equipItemBox;
+    Transform equipItem;
     Transform itemRader;
     private void Awake()
     {
@@ -155,7 +156,8 @@ public class Player : MonoBehaviour
         cam = FindAnyObjectByType<Camera>();
         inventory = transform.Find("Inventory");
         currnetStamina = stamina;
-
+        equipItemBox = transform.GetChild(5);
+        equipItem = equipItemBox.GetChild(0);
         characterController = GetComponent<CharacterController>();
         itemRader = transform.GetChild(2);
         groundCheckPosition = transform.GetChild(4);
@@ -439,11 +441,20 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 좌클릭에 해당하는 입력에 대해 델리게이트로 실행되는 함수
     /// </summary>
-    private void OnLClickInput()
+    private void OnLClickInput(bool isPressed)
     {
-        // 공격처리
+        // 아이템 사용 처리
+        if(isPressed && equipItem != null)
+        {
+            IEquipable equipable = equipItem.GetComponent<IEquipable>();
+            if(equipable != null)
+            {
+                equipable.Use();
+            }
+        }
     }
 
+    ///인벤토리 구현 후 awake에 있는 equipItem 삭제 후 장비 장착부분에서 변수 할당해야함
 
     /// <summary>
     /// 아이템 레이더를 켜고 끌수있게 오른쪽 마우스 버튼 입력에 대한 델리게이트로 연결되어있는 함수

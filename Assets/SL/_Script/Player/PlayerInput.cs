@@ -18,7 +18,7 @@ public class PlayerInput : MonoBehaviour
 
     public Action onJump;
 
-    public Action onLClick;
+    public Action<bool> onLClick;
 
     public Action onRClick;
 
@@ -40,6 +40,7 @@ public class PlayerInput : MonoBehaviour
         inputActions.Player.Interact.performed += OnInteract;
         inputActions.Player.Interact.canceled += OnInteract;
         inputActions.Player.MouseLClick.performed += OnLClick;
+        inputActions.Player.MouseLClick.canceled += OnLClick;
         inputActions.Player.MouseRClick.performed += OnRClick;
         inputActions.Player.Jump.performed += OnJump;
     }
@@ -49,6 +50,7 @@ public class PlayerInput : MonoBehaviour
     {
         inputActions.Player.Jump.performed -= OnJump;
         inputActions.Player.MouseRClick.performed -= OnRClick;
+        inputActions.Player.MouseLClick.canceled -= OnLClick;
         inputActions.Player.MouseLClick.performed -= OnLClick;
         inputActions.Player.Interact.canceled -= OnInteract;
         inputActions.Player.Interact.performed -= OnInteract;
@@ -78,7 +80,7 @@ public class PlayerInput : MonoBehaviour
     }
     private void OnLClick(UnityEngine.InputSystem.InputAction.CallbackContext _)
     {
-        onLClick?.Invoke();
+        onLClick?.Invoke(!_.canceled);
     }
 
     private void OnInteract(UnityEngine.InputSystem.InputAction.CallbackContext _)
