@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class ItemPool : ObjectPool<ItemBase>
 {
-
+    public ItemDB[] itemDBs;
 }
