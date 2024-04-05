@@ -265,9 +265,9 @@ public class DungeonGenerator : MonoBehaviour
         currentModul.transform.position = oldConnector.transform.position;
 
 
-        //float angle = Vector3.SignedAngle(newConnector.transform.forward, -oldConnector.transform.forward, Vector3.up);
-        float angle = Quaternion.Angle(newConnector.transform.rotation, oldConnector.transform.rotation);
-        Quaternion rotation = Quaternion.AngleAxis(Mathf.Abs(angle)+180, Vector3.up);
+        float angle = Vector3.SignedAngle(newConnector.transform.forward, -oldConnector.transform.forward, Vector3.up);
+        //float angle = Quaternion.Angle(newConnector.transform.rotation, oldConnector.transform.rotation);
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.up);
         currentModul.transform.localRotation *= rotation;
 
         // 회전이 정상 작동하면 newConnector좌표를 oldConnector좌표로 이동시키는 포지션 값을 구하고 currentModul의 위치를 그만큼 이동
