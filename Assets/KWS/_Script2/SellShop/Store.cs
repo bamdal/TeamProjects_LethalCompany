@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Xml.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
+using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XInput;
 using static UnityEditor.Progress;
 
@@ -40,9 +41,26 @@ public class Store : MonoBehaviour
     ItemDataManager itemDataManager;
 
     /// <summary>
-    /// 아이템 데이터 매니저에서 아이템 코드를 가져오기 위한 변수
+    /// 플레이어 인풋 액션
     /// </summary>
-    //ItemCode itemCode;
+    private PlayerInputActions playerInput;
+
+    private void Awake()
+    {
+        playerInput = new PlayerInputActions();
+    }
+
+    private void OnEnable()
+    {
+        playerInput.Enable();
+        playerInput.Player.Interact.performed += OnSellClick;
+    }
+
+    private void OnDisable()
+    {
+        playerInput.Disable();
+        playerInput.Player.Interact.performed -= OnSellClick;
+    }
 
     void Start()
     {
@@ -169,7 +187,7 @@ public class Store : MonoBehaviour
     /// </summary>
     void Update()
     {
-        // F 키를 누르면 충돌한 모든 오브젝트를 판매
+        /*// F 키를 누르면 충돌한 모든 오브젝트를 판매
         if (Input.GetKeyDown(KeyCode.F))
         {
             // collidedObjects 리스트의 복사본을 만듭니다.
@@ -180,7 +198,7 @@ public class Store : MonoBehaviour
             {
                 SellHardware(obj);
             }
-        }
+        }*/
     }
 
     /// <summary>
@@ -200,6 +218,27 @@ public class Store : MonoBehaviour
 
         // 판매 후에 리스트에서 해당 오브젝트 제거
         collidedObjects.Remove(hardwareObject);
+
+        Debug.Log($"판매된 총 금액: [{totalPrice}]");
+        Debug.Log($"판매된 누적 금액: [{totalMoney}]");
+
+        // 판매된 총 금액을 플레이어가 가지고 있어야?
+    }
+
+    private void OnSellClick(InputAction.CallbackContext context)
+    {
+        //Debug.Log("트리거 범위에 Hardware가 없습니다.");
+        if (collidedObjects.Count > 0)
+        {
+            Debug.Log("트리거 범위에 Hardware가 있고, F가 활성화 되었습니다. ");
+            // collidedObjects 리스트의 복사본을 만듭니다.
+            List<GameObject> collidedObjectsCopy = new List<GameObject>(collidedObjects);
+
+            // 복사본을 이용하여 판매를 수행합니다.
+            foreach (var obj in collidedObjectsCopy)
+            {
+                SellHardware(obj);
+            }
+        }
     }
 }
-/// 주말에 할 것: 플레이어의 판매 상호작용을 받을 버튼 추가?
