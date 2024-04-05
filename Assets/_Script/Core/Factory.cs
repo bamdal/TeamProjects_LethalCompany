@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,7 +14,11 @@ public class Factory : Singleton<Factory>
 {
     //SlimePool slimePool;
     ItemPool itemPool;
-    HardwarePool hardwarePool;
+    HardwareBarrelPool hardwareBarrelPool;
+    HardwareCableDrumPool hardwareCableDrumPool;
+    HardwareGarbageCartPool hardwareGarbageCartPool;
+    HardwareGasTankPool hardwareGasTankPool;
+    HardwarePalletJackPool hardwarePalletJackPool;
 
     protected override void OnInitialize()
     {
@@ -25,8 +30,20 @@ public class Factory : Singleton<Factory>
         if(itemPool != null )
                 itemPool.Initialize();
 
-        hardwarePool = GetComponentInChildren<HardwarePool>();
-        if(hardwarePool != null ) hardwarePool.Initialize();
+        hardwareBarrelPool = GetComponentInChildren<HardwareBarrelPool>();
+        if(hardwareBarrelPool != null ) hardwareBarrelPool.Initialize();
+
+        hardwareCableDrumPool = GetComponentInChildren<HardwareCableDrumPool>();
+        if (hardwareCableDrumPool != null) hardwareCableDrumPool.Initialize();
+
+        hardwareGarbageCartPool = GetComponentInChildren<HardwareGarbageCartPool>();
+        if (hardwareGarbageCartPool != null) hardwareGarbageCartPool.Initialize();
+
+        hardwareGasTankPool = GetComponentInChildren<HardwareGasTankPool>();
+        if (hardwareGasTankPool != null) hardwareGasTankPool.Initialize();
+
+        hardwarePalletJackPool = GetComponentInChildren<HardwarePalletJackPool>();
+        if (hardwarePalletJackPool != null) hardwarePalletJackPool.Initialize();
     }
 
     /// <summary>
@@ -55,14 +72,47 @@ public class Factory : Singleton<Factory>
         return null;
     }*/
 
-    public ItemBase GetHardware(ItemCode itemCode)      // itemCode를 1 ~ 5까지 랜덤하게 선택
+    public ItemBase GetHardware(ItemCode itemCode)
     {
-        return hardwarePool.GetObject();
+        //return hardwareBarrelPool.GetObject();
+
+        switch (itemCode)
+        {
+            case ItemCode.Barrel:
+                return hardwareBarrelPool.GetObject();
+            case ItemCode.CableDrum:
+                return hardwareCableDrumPool.GetObject();
+            case ItemCode.GarbageCart:
+                return hardwareGarbageCartPool.GetObject();
+            case ItemCode.GasTank:
+                return hardwareGasTankPool.GetObject();
+            case ItemCode.PalletJack:
+                return hardwarePalletJackPool.GetObject();
+            default:
+                throw new ArgumentException("Invalid item code", nameof(itemCode));
+        }
+
     }
 
-    public ItemBase GetHardware(Vector3 position, float angle = 0.0f)
+    public ItemBase GetHardware(ItemCode itemCode, Vector3 position, float angle = 0.0f)
     {
-        return hardwarePool.GetObject(position, angle * Vector3.forward);
+        //return hardwareBarrelPool.GetObject(position, angle * Vector3.forward);
+
+        switch (itemCode)
+        {
+            case ItemCode.Barrel:
+                return hardwareBarrelPool.GetObject(position, angle * Vector3.forward);
+            case ItemCode.CableDrum:
+                return hardwareCableDrumPool.GetObject(position, angle * Vector3.forward);
+            case ItemCode.GarbageCart:
+                return hardwareGarbageCartPool.GetObject(position, angle * Vector3.forward);
+            case ItemCode.GasTank:
+                return hardwareGasTankPool.GetObject(position, angle * Vector3.forward);
+            case ItemCode.PalletJack:
+                return hardwarePalletJackPool.GetObject(position, angle * Vector3.forward);
+            default:
+                throw new ArgumentException("Invalid item code", nameof(itemCode));
+        }
     }
 
     public ItemBase GetItem()

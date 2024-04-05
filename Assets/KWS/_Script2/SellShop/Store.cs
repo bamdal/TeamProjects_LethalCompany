@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Xml.Linq;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem.XInput;
@@ -26,77 +27,142 @@ public class Store : MonoBehaviour
     /// <summary>
     /// 충돌한 모든 오브젝트를 추적하기 위한 리스트
     /// </summary>
-    private List<GameObject> collidedObjects = new List<GameObject>();
+    private List<GameObject> collidedObjects = new List<GameObject>();        
 
     /// <summary>
     /// 팔린 물건의 총 가격을 전달할 델리게이트(플레이어가 구독해야 함)
     /// </summary>
     public Action<float, float> onMoneyEarned;
 
+    /// <summary>
+    /// 아이템 데이터 매니저를 참조하기 위한 변수
+    /// </summary>
+    ItemDataManager itemDataManager;
+
+    /// <summary>
+    /// 아이템 데이터 매니저에서 아이템 코드를 가져오기 위한 변수
+    /// </summary>
+    //ItemCode itemCode;
+
     void Start()
     {
-        // 경로 설정
-        //string folderPath = "Assets/KWS/Resources/ItemDB";
-        string folderPath = "ItemDB";
+        // 게임 매니저 오브젝트 찾기
+        GameObject gameManager = GameObject.Find("GameManager");
 
-        // 해당 폴더 내 모든 스크립터블 오브젝트 찾기
-        ItemDB[] scriptableObjects = Resources.LoadAll<ItemDB>(folderPath);
+        if (gameManager != null)
+        {
+            // 게임 매니저 오브젝트에서 ItemDataManager 컴포넌트 가져오기
+            itemDataManager = gameManager.GetComponent<ItemDataManager>();
+
+            if (itemDataManager != null)
+            {
+                Debug.Log("ItemDataManager 찾음");
+
+                // ItemDataManager에서 itemDataBases 배열 가져오기
+                if (itemDataManager.itemDataBases != null)
+                {
+                    Debug.Log("ItemDB 배열 찾음");
+
+                    /*// ItemDB 배열의 각 요소를 디버그로 출력
+                    for (int i = 0; i < itemDataManager.itemDataBases.Length; i++)
+                    {
+                        Debug.Log($"ItemDB[{i}] 이름: {itemDataManager.itemDataBases[i].itemName}");
+                        Debug.Log($"ItemDB[{i}] 무게: {itemDataManager.itemDataBases[i].weight}");
+                        Debug.Log($"ItemDB[{i}] 가격: {itemDataManager.itemDataBases[i].price}");
+                    }*/
+                }
+                else
+                {
+                    Debug.LogError("ItemDB 배열을 찾을 수 없습니다.");
+                }
+            }
+            else
+            {
+                Debug.LogError("GameManager에 ItemDataManager 컴포넌트가 없습니다.");
+            }
+        }
+        else
+        {
+            Debug.LogError("GameManager 오브젝트를 찾을 수 없습니다.");
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        // 충돌한 상대방 오브젝트가 있는지 확인
-        if (other.gameObject != null)
+        if (other.gameObject != null && other.gameObject.CompareTag("Hardware"))
         {
-            // 충돌한 상대방 오브젝트가 Hardware인지 확인
-            if (other.gameObject.CompareTag("Hardware"))
+            // 충돌한 오브젝트의 ItemBase 컴포넌트 가져오기
+            ItemBase itemBase = other.gameObject.GetComponent<ItemBase>();      // 충돌한 오브젝트는 공통적으로 ItemBase를 상속받고 있음
+            if (itemBase != null)
             {
-                // 해당 Hardware에 연결된 ItemDB 스크립터블 오브젝트 찾기
-                string itemName = other.gameObject.name;
-                ItemDB itemDB = Resources.Load<ItemDB>($"ItemDB/{itemName}");
+                // 충돌한 오브젝트의 ItemDB 가져오기
+                ItemDB itemDB = itemBase.itemDB;
 
                 if (itemDB != null)
                 {
-                    // ItemDB 정보 출력
+                    // 충돌한 오브젝트의 아이템 코드 가져오기
+                    ItemCode itemCode = itemDB.itemCode;
+
                     Debug.Log($"충돌한 {itemDB.itemName} 무게: {itemDB.weight}");
                     Debug.Log($"충돌한 {itemDB.itemName} 가격: {itemDB.price}");
 
-                    // 무게를 누적
                     totalWeight += itemDB.weight;
                     Debug.Log($"누적된 무게: {totalWeight}");
 
-                    // 가격을 누적
                     totalPrice += itemDB.price;
                     Debug.Log($"누적된 가격: {totalPrice}");
 
-                    // 충돌한 오브젝트를 리스트에 추가
                     collidedObjects.Add(other.gameObject);
                 }
                 else
                 {
-                    Debug.LogWarning("Hardware 오브젝트에 ItemDB 스크립트가 연결되어 있지 않습니다.");
+                    Debug.LogWarning("충돌한 오브젝트의 ItemDB를 가져올 수 없습니다.");
                 }
+            }
+            else
+            {
+                Debug.LogWarning("충돌한 오브젝트에 ItemBase 컴포넌트가 없습니다.");
             }
         }
     }
 
+
     private void OnTriggerExit(Collider other)
     {
-        // 해당 Hardware에 연결된 ItemDB 스크립터블 오브젝트 찾기
-        string itemName = other.gameObject.name;
-        ItemDB itemDB = Resources.Load<ItemDB>($"ItemDB/{itemName}");
+        // 충돌한 오브젝트의 ItemBase 컴포넌트 가져오기
+        ItemBase itemBase = other.gameObject.GetComponent<ItemBase>();
+        if (itemBase != null)
+        {
+            // 충돌한 오브젝트의 ItemDB 가져오기
+            ItemDB itemDB = itemBase.itemDB;
 
-        Debug.Log($"{itemDB.itemName} 이 떨어졌습니다.");
+            if (itemDB != null)
+            {
+                // 충돌한 오브젝트의 아이템 코드 가져오기
+                ItemCode itemCode = itemDB.itemCode;
 
-        totalWeight -= itemDB.weight;
-        Debug.Log($"누적된 무게: {totalWeight}");
+                Debug.Log($"{itemDB.itemName} 이 떨어졌습니다.");
 
-        totalPrice -= itemDB.price;
-        Debug.Log($"누적된 가격: {totalPrice}");
+                totalWeight -= itemDB.weight;
+                Debug.Log($"누적된 무게: {totalWeight}");
 
-        // 충돌이 끝난 오브젝트를 리스트에서 제거
-        collidedObjects.Remove(other.gameObject);
+                totalPrice -= itemDB.price;
+                Debug.Log($"누적된 가격: {totalPrice}");
+
+                // 충돌이 끝난 오브젝트를 리스트에서 제거
+                collidedObjects.Remove(other.gameObject);
+            }
+            else
+            {
+                Debug.LogWarning("충돌한 오브젝트의 ItemDB를 가져올 수 없습니다.");
+            }
+        }
+        else
+        {
+            Debug.LogWarning("충돌한 오브젝트에 ItemBase 컴포넌트가 없습니다.");
+        }
     }
+
 
     /// <summary>
     /// 이 부분은 나중에 플레이어 인풋액션으로 수정해야 함(되는지 확인용)
