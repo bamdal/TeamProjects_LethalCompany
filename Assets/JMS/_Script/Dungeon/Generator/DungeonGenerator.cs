@@ -265,9 +265,10 @@ public class DungeonGenerator : MonoBehaviour
         currentModul.transform.position = oldConnector.transform.position;
 
 
-        float angle = Vector3.SignedAngle(newConnector.transform.forward, -oldConnector.transform.forward, Vector3.up);
-        Quaternion rotation = Quaternion.AngleAxis(-angle, Vector3.up);
-        currentModul.transform.rotation = rotation;
+        //float angle = Vector3.SignedAngle(newConnector.transform.forward, -oldConnector.transform.forward, Vector3.up);
+        float angle = Quaternion.Angle(newConnector.transform.rotation, oldConnector.transform.rotation);
+        Quaternion rotation = Quaternion.AngleAxis(angle+180, Vector3.up);
+        currentModul.transform.rotation *= rotation;
 
         // 회전이 정상 작동하면 newConnector좌표를 oldConnector좌표로 이동시키는 포지션 값을 구하고 currentModul의 위치를 그만큼 이동
         Vector3 m = oldConnector.transform.position - newConnector.transform.position;
@@ -276,7 +277,7 @@ public class DungeonGenerator : MonoBehaviour
         bool overlapping = CheckOverlapping(currentModul);
         if (overlapping)
         {
-            //Destroy(currentModul.gameObject); // 겹치는 모듈이 있으면 새로 생성한 모듈을 파괴하고 종료
+            Destroy(currentModul.gameObject); // 겹치는 모듈이 있으면 새로 생성한 모듈을 파괴하고 종료
             Modul modul = oldConnector.transform.parent.gameObject.GetComponent<Modul>();   // 연결자 다시 돌려주기
 
             return modul;
@@ -286,8 +287,8 @@ public class DungeonGenerator : MonoBehaviour
         // 맵이 곂치면 망함
 
         // 모듈 연결할때 새로 생성한 모듈 커넥터에 있는 문은 삭제한다. TestModul넣으면 에러
-        //oldConnector.transform.GetChild(1).gameObject.SetActive(false);
-        //oldConnector.transform.GetChild(0).gameObject.SetActive(false);
+        oldConnector.transform.GetChild(1).gameObject.SetActive(false);
+        oldConnector.transform.GetChild(0).gameObject.SetActive(false);
 
         return currentModul;
     }
@@ -359,7 +360,7 @@ public class DungeonGenerator : MonoBehaviour
     /// <returns>새로 연결될 커넥터들</returns>
     private List<ModulConnector> AddValuesWithoutDuplicates(ModulConnector existConnectors, Modul modul)
     {
-        List<ModulConnector> newConnecters = new List<ModulConnector>(modul.ConnectorsCount - 1);
+        List<ModulConnector> newConnecters = new List<ModulConnector>(modul.ConnectorsCount);
 
         foreach (ModulConnector connecter in modul.Connectors)
         {
