@@ -5,7 +5,7 @@ using UnityEngine;
 public class Fog : MonoBehaviour
 {
     public float highDensity = 0.05f;
-    public float LowDensity = 0.01f;
+    public float lowDensity = 0.001f;
     private float originalDensity;
     void Start()
     {
@@ -18,6 +18,7 @@ public class Fog : MonoBehaviour
         else
         {
             RenderSettings.fog = true;
+            Debug.Log("Fog on");
         }
         originalDensity = RenderSettings.fogDensity;
     }
@@ -28,24 +29,5 @@ public class Fog : MonoBehaviour
     public void SetLowDensity()
     {
         RenderSettings.fogDensity = originalDensity;
-    }
-}
-public class AnotherScript : MonoBehaviour
-{
-    private Flash flash;
-    private void Start()
-    {
-        flash = FindObjectOfType<Flash>();
-    }
-    private void Update()
-    {
-        if(flash != enabled)
-        {
-            FindObjectOfType<Fog>().SetHighDensity();
-        }
-        else
-        {
-            FindObjectOfType<Fog>().SetLowDensity();
-        }
     }
 }

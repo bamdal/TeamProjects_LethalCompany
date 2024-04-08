@@ -202,6 +202,7 @@ public class Player : MonoBehaviour
     {
         // 아이템을 상호작용하는 함수 호출
         FindItemRay();
+        equipItemBox.forward = ItemRotation();
     }
 
     /// <summary>
@@ -256,6 +257,10 @@ public class Player : MonoBehaviour
         transform.forward = cameraForward;
     }
 
+    Vector3 ItemRotation()
+    {
+        return (Camera.main.transform.forward).normalized;
+    }
     /// <summary>
     /// 이동 입력 처리용 함수
     /// </summary>
