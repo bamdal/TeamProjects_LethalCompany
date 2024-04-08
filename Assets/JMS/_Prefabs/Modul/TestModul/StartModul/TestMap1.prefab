@@ -94,6 +94,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 06099c9b0e5b07144834792c776858b9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  connectors:
+  - {fileID: 6018548425077372911}
   thisUnique: 0
 --- !u!114 &7040177929551751207
 MonoBehaviour:
