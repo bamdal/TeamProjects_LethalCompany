@@ -10,14 +10,15 @@ public enum ItemType
 
 public enum ItemCode
 {
-    FlashLight,
-    Barrel,
+    Barrel = 0,
     CableDrum,
     GarbageCart,
     GasTank,
     PalletJack,
+    FlashLight = 100,
 }
 
+[CreateAssetMenu(fileName = "new Item Data", menuName = "Scriptable Object/Item Data", order = 0)]
 public class ItemDB : ScriptableObject
 {
     [Header("아이템 공통 데이터")]
