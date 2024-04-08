@@ -42,6 +42,13 @@ public class Modul : MonoBehaviour
     /// </summary>
     Vector3 size;
 
+    private void Awake()
+    {
+        if(connectors == null)
+        {
+            connectors = GetComponentsInChildren<ModulConnector>();
+        }
+    }
 
 
     ///// <summary>

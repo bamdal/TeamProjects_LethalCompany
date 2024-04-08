@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 1091232516912353240}
   - component: {fileID: 8311575103127286265}
   m_Layer: 0
-  m_Name: "2\uC9F8 \uBAA8\uB4C8\uACFC \uC5F0\uACB0"
+  m_Name: "StartModul(Clone)\uACFC \uC5F0\uACB0"
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
