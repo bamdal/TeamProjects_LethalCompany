@@ -7,6 +7,7 @@ TagManager:
   - Item
   - Obstacle
   - Ground
+  - Weapon
   layers:
   - Default
   - TransparentFX
@@ -14,10 +15,10 @@ TagManager:
   - Ground
   - Water
   - UI
-  - 
-  - 
-  - 
-  - 
+  - Modul
+  - Obstacle
+  - Player
+  - Ememy
   - 
   - 
   - 

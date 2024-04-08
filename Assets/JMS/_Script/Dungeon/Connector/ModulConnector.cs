@@ -14,7 +14,7 @@ public class ModulConnector : MonoBehaviour
     /// </summary>
     public Vector3 Connection => connection;
 
-    private void Awake()
+    private void Start()
     {
         connection = transform.forward;
     }
