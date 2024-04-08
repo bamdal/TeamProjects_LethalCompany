@@ -148,7 +148,11 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
-    private void Start()
+
+    /// <summary>
+    /// 던전 생성하기 위해 부르는 함수
+    /// </summary>
+    public void StartGame()
     {
         if (randomSeed > 0)
         {
@@ -163,7 +167,6 @@ public class DungeonGenerator : MonoBehaviour
 
         // 아이템 스폰 코드 작성
         ItemGeneration();
-
     }
 
     /// <summary>
@@ -205,7 +208,7 @@ public class DungeonGenerator : MonoBehaviour
                 Modul newModul = RandomSelectModul();   // 랜덤한 모듈 가져오기
                 Modul currentModul = MatchConntectors(existConnectors[exist], newModul); // 모듈을 현재 커넥터에 연결
 
-                itemSpawnPoints.AddRange(currentModul.GetComponentsInChildren<ItemSpawnPoint>());   //아이템 스폰포인터를 목록 넣기
+                itemSpawnPoints.AddRange(currentModul.itemSpawnPoint);   //아이템 스폰포인터를 목록 넣기
 
                 //newConnectors.AddRange(newModul.Connectors.Where(e => e != 현재 이미 연결된 커넥터));
                 if (currentModul != null)
@@ -255,24 +258,32 @@ public class DungeonGenerator : MonoBehaviour
     /// <returns>새로 생성되어 연결된 모듈</returns>
     private Modul MatchConntectors(ModulConnector oldConnector, Modul newModul)
     {
-        Modul currentModul = Instantiate(newModul, generationStartPoint);
+        Debug.Log(newModul.name);
+        Debug.Log(newModul.ConnectorsCount);
+        ModulConnector c = newModul.Connectors[Random.Range(1, 100) % newModul.ConnectorsCount];
+        float angle = Vector3.SignedAngle(c.transform.forward, -oldConnector.transform.forward, Vector3.up);
+        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.up);
+        Vector3 m = oldConnector.transform.position - c.transform.position;
+        //currentModul.transform.position += m;
+        newModul.transform.position = Vector3.zero;
+        Modul currentModul = Instantiate(newModul, m, rotation, generationStartPoint);
         currentModul.name = $"{index}째 모듈";
 
-        ModulConnector newConnector; // 연결될 커넥터
-        newConnector = currentModul.Connectors[Random.Range(1, 100) % currentModul.ConnectorsCount];    // 새로 만든 모듈의 연결할 커넥터
-        newConnector.name = $"{oldConnector.gameObject.transform.parent.name}과 연결";
+        //ModulConnector newConnector; // 연결될 커넥터
+        //newConnector = currentModul.Connectors[Random.Range(1, 100) % currentModul.ConnectorsCount];    // 새로 만든 모듈의 연결할 커넥터
+        c.name = $"{oldConnector.gameObject.transform.parent.name}과 연결";
         index++;
-        currentModul.transform.position = oldConnector.transform.position;
+        //currentModul.transform.position = oldConnector.transform.position;
 
 
-        float angle = Vector3.SignedAngle(newConnector.transform.forward, -oldConnector.transform.forward, Vector3.up);
-        //float angle = Quaternion.Angle(newConnector.transform.rotation, oldConnector.transform.rotation);
-        Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.up);
-        currentModul.transform.localRotation *= rotation;
+        //float angle = Vector3.SignedAngle(newConnector.transform.forward, -oldConnector.transform.forward, Vector3.up);
+        ////float angle = Quaternion.Angle(newConnector.transform.rotation, oldConnector.transform.rotation);
+        //Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.up);
+        //currentModul.transform.localRotation *= rotation;
 
-        // 회전이 정상 작동하면 newConnector좌표를 oldConnector좌표로 이동시키는 포지션 값을 구하고 currentModul의 위치를 그만큼 이동
-        Vector3 m = oldConnector.transform.position - newConnector.transform.position;
-        currentModul.transform.position += m;
+        //// 회전이 정상 작동하면 newConnector좌표를 oldConnector좌표로 이동시키는 포지션 값을 구하고 currentModul의 위치를 그만큼 이동
+        //Vector3 m = oldConnector.transform.position - newConnector.transform.position;
+        //currentModul.transform.position += m;
 
         bool overlapping = CheckOverlapping(currentModul);
         if (overlapping)
