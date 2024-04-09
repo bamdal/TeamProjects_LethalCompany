@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEditor;
 using UnityEngine;
 
 public class DungeonGenerator : MonoBehaviour
@@ -19,22 +20,17 @@ public class DungeonGenerator : MonoBehaviour
 
     public Difficulty difficulty = Difficulty.D;
 
-    public Transform Prototype;
+
 
     /// <summary>
     /// 사용할 모듈들 인스펙터에서 넣어두기
     /// </summary>
-    List<Modul> moduls;
+    public List<Modul> moduls;
 
     public List<Modul> Moduls
     {
         get
         {
-            if (moduls == null)
-            {
-                moduls = new List<Modul>();
-                moduls.AddRange(Prototype.GetComponentsInChildren<Modul>());
-            }
             return moduls;
         }
     }
@@ -150,7 +146,7 @@ public class DungeonGenerator : MonoBehaviour
 
 
 
-    public async void StartGame()
+    public void StartGame()
     {
         if (randomSeed > 0)
         {
@@ -247,8 +243,7 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
-
-
+    
     /// <summary>
     /// 연결될 위치와 새 모듈을 입력하면 자동으로 연결하고 배치하는 함수
     /// </summary>
@@ -276,10 +271,10 @@ public class DungeonGenerator : MonoBehaviour
         Vector3 m = oldConnector.transform.position - newConnector.transform.position;
         currentModul.transform.position += m;
 
-        bool overlapping = false;//CheckOverlapping(currentModul);
+        bool overlapping = CheckOverlapping(currentModul);
         if (overlapping)
         {
-            Destroy(currentModul.gameObject); // 겹치는 모듈이 있으면 새로 생성한 모듈을 파괴하고 종료
+            currentModul.gameObject.SetActive(false); // 겹치는 모듈이 있으면 새로 생성한 모듈을 파괴하고 종료
             Modul modul = oldConnector.transform.parent.gameObject.GetComponent<Modul>();   // 연결자 다시 돌려주기
             // 삭제된경우 커넥터가 지워져서 그 부분에 마무리 입구 막기가 제대로 안되는 상황
             return modul;
@@ -316,13 +311,25 @@ public class DungeonGenerator : MonoBehaviour
             {
                 continue;
             }
-            Collider moduleCollider = modul.GetComponent<Collider>();
-            if (Physics.ComputePenetration(newmoduleCollider, newmoduleCollider.transform.position, newmoduleCollider.transform.rotation,
-                                           moduleCollider, moduleCollider.transform.position, moduleCollider.transform.rotation,
-                                           out _, out _))
+
+            // 기존 콜라이더로 비교하기
+            // Collider moduleCollider = modul.GetComponent<Collider>();
+            //if (Physics.ComputePenetration(newmoduleCollider, newmoduleCollider.transform.position, newmoduleCollider.transform.rotation,
+            //                               moduleCollider, moduleCollider.transform.position, moduleCollider.transform.rotation,
+            //                               out _, out _))
+            //{
+            //    Debug.Log(newModul.name);
+            //    return true; // 겹치는 모듈이 존재함
+            //}
+            
+            Collider[] moduleCollider = Physics.OverlapBox(newModul.Center, newModul.Size, newModul.transform.rotation, LayerMask.GetMask("GenerationMask"));
+            foreach (Collider collider in moduleCollider)
             {
-                Debug.Log(newModul.name);
-                return true; // 겹치는 모듈이 존재함
+                if (collider.gameObject != newModul.gameObject) // 자기 자신은 제외
+                {
+                    Debug.Log(collider.name);
+                    return true; // 겹치는 모듈이 존재함
+                }
             }
         }
 
