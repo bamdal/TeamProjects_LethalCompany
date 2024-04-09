@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerInput : MonoBehaviour
 {
@@ -27,6 +28,8 @@ public class PlayerInput : MonoBehaviour
     // 입력용 인풋 액션
     PlayerInputActions inputActions;
 
+    public Action<Vector2> onScroll;
+
     private void Awake()
     {
         inputActions = new PlayerInputActions();
@@ -43,11 +46,13 @@ public class PlayerInput : MonoBehaviour
         inputActions.Player.MouseLClick.canceled += OnLClick;
         inputActions.Player.MouseRClick.performed += OnRClick;
         inputActions.Player.Jump.performed += OnJump;
+        inputActions.Player.Wheel.performed += OnScroll;
     }
 
 
     private void OnDisable()
     {
+        inputActions.Player.Wheel.performed -= OnScroll;
         inputActions.Player.Jump.performed -= OnJump;
         inputActions.Player.MouseRClick.performed -= OnRClick;
         inputActions.Player.MouseLClick.canceled -= OnLClick;
@@ -86,5 +91,9 @@ public class PlayerInput : MonoBehaviour
     private void OnInteract(UnityEngine.InputSystem.InputAction.CallbackContext _)
     {
         onInteract?.Invoke(_.performed);
+    }
+    private void OnScroll(InputAction.CallbackContext context)
+    {
+        onScroll?.Invoke(context.ReadValue<Vector2>());
     }
 }

@@ -107,6 +107,15 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""Wheel"",
+                    ""type"": ""Value"",
+                    ""id"": ""9e6f332b-c6a2-4e76-a235-1a97448bce1a"",
+                    ""expectedControlType"": ""Vector2"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": true
                 }
             ],
             ""bindings"": [
@@ -263,6 +272,17 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""EnterInteract"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""101a6b77-fb74-4ad8-a040-021621bcd702"",
+                    ""path"": ""<Mouse>/scroll"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""Wheel"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -297,6 +317,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_MouseRClick = m_Player.FindAction("MouseRClick", throwIfNotFound: true);
         m_Player_ESCInteract = m_Player.FindAction("ESCInteract", throwIfNotFound: true);
         m_Player_EnterInteract = m_Player.FindAction("EnterInteract", throwIfNotFound: true);
+        m_Player_Wheel = m_Player.FindAction("Wheel", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -367,6 +388,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MouseRClick;
     private readonly InputAction m_Player_ESCInteract;
     private readonly InputAction m_Player_EnterInteract;
+    private readonly InputAction m_Player_Wheel;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -380,6 +402,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @MouseRClick => m_Wrapper.m_Player_MouseRClick;
         public InputAction @ESCInteract => m_Wrapper.m_Player_ESCInteract;
         public InputAction @EnterInteract => m_Wrapper.m_Player_EnterInteract;
+        public InputAction @Wheel => m_Wrapper.m_Player_Wheel;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -416,6 +439,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @EnterInteract.started += instance.OnEnterInteract;
             @EnterInteract.performed += instance.OnEnterInteract;
             @EnterInteract.canceled += instance.OnEnterInteract;
+            @Wheel.started += instance.OnWheel;
+            @Wheel.performed += instance.OnWheel;
+            @Wheel.canceled += instance.OnWheel;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -447,6 +473,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @EnterInteract.started -= instance.OnEnterInteract;
             @EnterInteract.performed -= instance.OnEnterInteract;
             @EnterInteract.canceled -= instance.OnEnterInteract;
+            @Wheel.started -= instance.OnWheel;
+            @Wheel.performed -= instance.OnWheel;
+            @Wheel.canceled -= instance.OnWheel;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -484,5 +513,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMouseRClick(InputAction.CallbackContext context);
         void OnESCInteract(InputAction.CallbackContext context);
         void OnEnterInteract(InputAction.CallbackContext context);
+        void OnWheel(InputAction.CallbackContext context);
     }
 }

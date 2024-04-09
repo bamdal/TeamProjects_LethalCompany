@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
@@ -131,6 +132,7 @@ public class Player : MonoBehaviour
     /// </summary>
     Vector3 moveDirection;
 
+
     /// <summary>
     /// 중력을 담당하는 방향 백터
     /// </summary>
@@ -155,6 +157,7 @@ public class Player : MonoBehaviour
         input.onJump += OnJumpInput;
         input.onLClick += OnLClickInput;
         input.onRClick += OnRClickInput;
+        input.onScroll += OnScrollWheel;
         cam = FindAnyObjectByType<Camera>();
         inventoryTransform = transform.Find("Inventory");
         for(int i = 0;  i < 4; i++)
@@ -170,8 +173,6 @@ public class Player : MonoBehaviour
         groundCheckPosition = transform.GetChild(4);
         gravityY = -1f;
     }
-
-
 
 
     private void Update()
@@ -202,7 +203,7 @@ public class Player : MonoBehaviour
         characterController.Move(currentSpeed * Time.deltaTime * moveDirection);
         // 중력 처리
         characterController.Move(1f * Time.deltaTime * gravityDir);
-        //Debug.Log(IsGrounded());
+        Debug.Log(IsGrounded());
     }
 
     private void FixedUpdate()
@@ -456,41 +457,7 @@ public class Player : MonoBehaviour
         
     }
 
-    /// <summary>
-    /// 좌클릭에 해당하는 입력에 대해 델리게이트로 실행되는 함수
-    /// </summary>
-    private void OnLClickInput(bool isPressed)
-    {
-        Transform equipItem = FindActiveObject(invenSlots);
-        // 아이템 사용 처리
-        if(isPressed && equipItem != null)
-        {
-            Debug.Log("찾았음" + equipItem);
-            IEquipable equipable = equipItem.GetComponent<IEquipable>();
-            if(equipable != null)
-            {
-                equipable.Use();
-            }
-            else
-            {
-                Debug.Log("이큅터블 없음!");
-            }
-        }
-    }
 
-    Transform FindActiveObject(Transform[] objects)
-    {
-        Transform result = null;
-        foreach (Transform obj in objects)
-        {
-            if (obj.childCount > 0 && obj.GetChild(0).gameObject.activeSelf)
-            {
-                result = obj.GetChild(0);
-                break; // 활성화된 오브젝트를 찾았으므로 반복문을 종료합니다.
-            }
-        }
-        return result;
-    }
 
 
     ///인벤토리 구현 후 awake에 있는 equipItem 삭제 후 장비 장착부분에서 변수 할당해야함
@@ -518,5 +485,112 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(0.05f); // 변경하고자 하는 시간으로 수정 가능
         itemRader.gameObject.SetActive(false);
 
+    }
+
+    Transform currentItem;
+
+
+
+    /// <summary>
+    /// 좌클릭에 해당하는 입력에 대해 델리게이트로 실행되는 함수
+    /// </summary>
+    private void OnLClickInput(bool isPressed)
+    {
+        Transform equipItem = FindActiveObject(invenSlots);
+        // 아이템 사용 처리
+        if (isPressed && equipItem != null)
+        {
+            Debug.Log("찾았음" + equipItem);
+            IEquipable equipable = equipItem.GetComponent<IEquipable>();
+            if (equipable != null)
+            {
+                equipable.Use();
+            }
+            else
+            {
+                Debug.Log("이큅터블 없음!");
+            }
+        }
+    }
+
+    Transform FindActiveObject(Transform[] objects)
+    {
+        Transform result = null;
+        foreach (Transform obj in objects)
+        {
+            if (obj.childCount > 0 && obj.GetChild(0).gameObject.activeSelf)
+            {
+                result = obj.GetChild(0);
+                break; // 활성화된 오브젝트를 찾았으므로 반복문을 종료합니다.
+            }
+        }
+        return result;
+    }
+
+    int FindIvenIndex(Transform[] objects)
+    {
+        int result = 0;
+        for (int i = 0; i < objects.Length; i++)
+        {
+            if (objects[i].childCount > 0 && objects[i].GetChild(0).gameObject.activeSelf)
+            {
+                // 활성화된 아이템이 발견되었으므로 해당 인덱스를 반환합니다.
+                result = i;
+            }
+        }
+        return result;
+    }
+    private void OnScrollWheel(Vector2 vector)
+    {
+        Debug.Log(vector.normalized);
+        int currentItemIndex = FindIvenIndex(invenSlots);
+        foreach (Transform obj in invenSlots)
+        {
+            if (obj.childCount > 0 && obj.GetChild(0).gameObject.activeSelf)
+            {
+                obj.GetChild(0).gameObject.SetActive(false);
+            }
+        }
+        if(vector.y  > 0)
+        {
+            if (invenSlots[NextIndex(currentItemIndex)].childCount > 0)
+            {
+                invenSlots[NextIndex(currentItemIndex)].GetChild(0).gameObject.SetActive(true);
+            }
+        }
+        else if(vector.y < 0)
+        {
+            if (invenSlots[PrevIndex(currentItemIndex)].childCount > 0)
+            {
+                invenSlots[PrevIndex(currentItemIndex)].GetChild(0).gameObject.SetActive(true);
+            }
+        }
+    }
+
+    int NextIndex(int index)
+    {
+        int result;
+        if (index + 1 > invenSlots.Length - 1)
+        {
+            result = 0;
+        }
+        else
+        {
+            result = index + 1;
+        }
+        return result;
+    }
+    int PrevIndex(int index)
+    {
+        int result;
+        if (index - 1 < 0)
+        {
+            result = invenSlots.Length - 1;
+        }
+        else
+        {
+            result = index - 1;
+        }
+        return result;
     }
 }
