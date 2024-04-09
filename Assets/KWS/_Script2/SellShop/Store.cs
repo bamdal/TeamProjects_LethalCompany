@@ -221,8 +221,6 @@ public class Store : MonoBehaviour
 
         Debug.Log($"판매된 총 금액: [{totalPrice}]");
         Debug.Log($"판매된 누적 금액: [{totalMoney}]");
-
-        // 판매된 총 금액을 플레이어가 가지고 있어야?
     }
 
     private void OnSellClick(InputAction.CallbackContext context)
