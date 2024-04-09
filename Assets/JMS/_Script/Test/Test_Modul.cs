@@ -7,6 +7,7 @@ public class Test_Modul : TestBase
 {
     public GameObject target;
     public Door Door;
+    public GenerationPointNav generationPointNav;
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
@@ -18,5 +19,15 @@ public class Test_Modul : TestBase
         DungeonGenerator dungeonGenerator = FindAnyObjectByType<DungeonGenerator>();
         dungeonGenerator.StartGame();
 
+    }
+
+    protected override void OnTest3(InputAction.CallbackContext context)
+    {
+        Transform[] child = generationPointNav.transform.GetComponentsInChildren<Transform>();
+        foreach (Transform child2 in child)
+        {
+            if(child2 != generationPointNav)
+                Destroy(child2.gameObject);
+        }
     }
 }

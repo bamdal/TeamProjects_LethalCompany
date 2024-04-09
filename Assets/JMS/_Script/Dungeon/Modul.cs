@@ -1,5 +1,6 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
 public class Modul : MonoBehaviour
@@ -7,7 +8,7 @@ public class Modul : MonoBehaviour
     /// <summary>
     /// 각 이동 모듈별 연결 지점
     /// </summary>
-    public ModulConnector[] connectors;
+    ModulConnector[] connectors;
 
     public ItemSpawnPoint[] itemSpawnPoint;
 
@@ -30,17 +31,21 @@ public class Modul : MonoBehaviour
     /// <summary>
     /// 모듈의 사이즈를 구하기 위한 랜더러
     /// </summary>
-    MeshRenderer rend;
+    public MeshRenderer rend;
 
     /// <summary>
     /// 모듈의 중심점
     /// </summary>
     Vector3 center;
 
+    public Vector3 Center => rend.bounds.center;
+
     /// <summary>
     /// 모듈의 사이즈
     /// </summary>
     Vector3 size;
+
+    public Vector3 Size => rend.bounds.size;    
 
     private void Awake()
     {
@@ -48,17 +53,22 @@ public class Modul : MonoBehaviour
         {
             connectors = GetComponentsInChildren<ModulConnector>();
         }
+        if (rend == null)
+        {
+
+            rend = GetComponent<MeshRenderer>();
+        }
     }
 
 
-    ///// <summary>
-    ///// 모듈의 사이즈를 구하는 함수
-    ///// </summary>
-    ///// <returns>모듈의 x,y,z크기</returns>
-    //public Vector3 GetSize()
-    //{
-    //    return size;
-    //}
+    /// <summary>
+    /// 모듈의 사이즈를 구하는 함수
+    /// </summary>
+    /// <returns>모듈의 x,y,z크기</returns>
+    public Vector3 GetSize()
+    {
+        return size;
+    }
 
 
 }

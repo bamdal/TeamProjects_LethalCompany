@@ -46,6 +46,12 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   difficulty: 0
   Prototype: {fileID: 959567581828422739, guid: ee31d5b2964dfb34b869ac5d8ba494c0, type: 3}
+  moduls:
+  - {fileID: 7778482641152205625, guid: dfefe8d3340b10e41bfacf06b3b67bd4, type: 3}
+  - {fileID: 12940692688365398, guid: 3587e3144237e3a4290ff68c3801324e, type: 3}
+  - {fileID: 5804405158789893055, guid: db3630195dfef9e4f9db616ff5d87f08, type: 3}
+  - {fileID: 3026735068864414375, guid: 27c533d505dc71748810d0c34ccd0ab2, type: 3}
+  - {fileID: 659766724523745672, guid: 1734bafbccad02849a27839e61b9061a, type: 3}
   startModul: {fileID: 4256095207435308055, guid: dc0061daaf5973d489e798856a9a4713, type: 3}
   endModul: {fileID: 2711601189296484595, guid: 9a651f062c3c2b14e82135f99156d794, type: 3}
   pointNav: {fileID: 0}

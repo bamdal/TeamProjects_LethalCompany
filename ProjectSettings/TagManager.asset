@@ -8,6 +8,7 @@ TagManager:
   - Obstacle
   - Ground
   - Weapon
+  - Hardware
   layers:
   - Default
   - TransparentFX
@@ -19,7 +20,7 @@ TagManager:
   - Obstacle
   - Player
   - Ememy
-  - 
+  - GenerationMask
   - 
   - 
   - 
