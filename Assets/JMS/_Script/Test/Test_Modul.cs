@@ -15,7 +15,8 @@ public class Test_Modul : TestBase
 
     protected override void OnTest2(InputAction.CallbackContext context)
     {
-
+        DungeonGenerator dungeonGenerator = FindAnyObjectByType<DungeonGenerator>();
+        dungeonGenerator.StartGame();
 
     }
 }

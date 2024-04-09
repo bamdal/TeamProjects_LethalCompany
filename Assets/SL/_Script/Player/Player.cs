@@ -71,7 +71,7 @@ public class Player : MonoBehaviour
 
     Quaternion cameraRotation = Quaternion.identity;
 
-    Transform inventory;
+    Transform inventoryTransform;
 
     /// <summary>
     /// 현재 이동 모드
@@ -136,13 +136,15 @@ public class Player : MonoBehaviour
     /// </summary>
     Vector3 gravityDir = Vector3.zero;
 
+    Transform[] invenSlots = new Transform[4];
 
     public float groundCheckDistance = 0.2f;    // 바닥 체크 거리
     public LayerMask groundLayer;               // 바닥을 나타내는 레이어
     Transform groundCheckPosition;              // 바닥 체크할 포지션
-    Transform equipItemBox;
-    Transform equipItem;
+/*    Transform equipItemBox;
+    Transform equipItem;*/
     Transform itemRader;
+    Inventory inventory;
     private void Awake()
     {
         input = GetComponent<PlayerInput>();
@@ -154,10 +156,15 @@ public class Player : MonoBehaviour
         input.onLClick += OnLClickInput;
         input.onRClick += OnRClickInput;
         cam = FindAnyObjectByType<Camera>();
-        inventory = transform.Find("Inventory");
+        inventoryTransform = transform.Find("Inventory");
+        for(int i = 0;  i < 4; i++)
+        {
+            invenSlots[i] = inventoryTransform.GetChild(i);
+        }
+        inventory = inventoryTransform.GetComponent<Inventory>();
         currnetStamina = stamina;
-        equipItemBox = transform.GetChild(5);
-        equipItem = equipItemBox.GetChild(0);
+/*        equipItemBox = transform.GetChild(5);
+        equipItem = equipItemBox.GetChild(0);*/
         characterController = GetComponent<CharacterController>();
         itemRader = transform.GetChild(2);
         groundCheckPosition = transform.GetChild(4);
@@ -202,7 +209,7 @@ public class Player : MonoBehaviour
     {
         // 아이템을 상호작용하는 함수 호출
         FindItemRay();
-        equipItemBox.forward = ItemRotation();
+        inventoryTransform.forward = ItemRotation();
     }
 
     /// <summary>
@@ -393,7 +400,7 @@ public class Player : MonoBehaviour
                 break;
         }
     }
-
+    
     /// <summary>
     /// 상호작용 처리용 함수
     /// </summary>
@@ -414,12 +421,18 @@ public class Player : MonoBehaviour
                 if (hit.collider.CompareTag("Item"))
                 {
                     Debug.Log(hit);
-                    // 충돌한 객체를 자식으로 만듭니다.
-                    hit.collider.transform.SetParent(inventory);
 
-                    // 자식으로 만든 객체를 비활성화합니다.
-                    hit.collider.gameObject.SetActive(false);
-                    Debug.Log("아이템을 획득했습니다!");
+                    for (int i = 0; i < invenSlots.Length; i++)
+                    {
+                        if (invenSlots[i].childCount == 0)
+                        {
+                            // 아이템을 인벤토리 슬롯에 넣습니다.
+                            hit.collider.transform.SetParent(invenSlots[i]);
+                            hit.collider.gameObject.SetActive(false);
+                            Debug.Log("아이템을 획득했습니다!");
+                            break;
+                        }
+                    }
 
                 }
                 IInteraction interaction = hit.collider.gameObject.GetComponent<IInteraction>();
@@ -448,16 +461,37 @@ public class Player : MonoBehaviour
     /// </summary>
     private void OnLClickInput(bool isPressed)
     {
+        Transform equipItem = FindActiveObject(invenSlots);
         // 아이템 사용 처리
         if(isPressed && equipItem != null)
         {
+            Debug.Log("찾았음" + equipItem);
             IEquipable equipable = equipItem.GetComponent<IEquipable>();
             if(equipable != null)
             {
                 equipable.Use();
             }
+            else
+            {
+                Debug.Log("이큅터블 없음!");
+            }
         }
     }
+
+    Transform FindActiveObject(Transform[] objects)
+    {
+        Transform result = null;
+        foreach (Transform obj in objects)
+        {
+            if (obj.childCount > 0 && obj.GetChild(0).gameObject.activeSelf)
+            {
+                result = obj.GetChild(0);
+                break; // 활성화된 오브젝트를 찾았으므로 반복문을 종료합니다.
+            }
+        }
+        return result;
+    }
+
 
     ///인벤토리 구현 후 awake에 있는 equipItem 삭제 후 장비 장착부분에서 변수 할당해야함
 
