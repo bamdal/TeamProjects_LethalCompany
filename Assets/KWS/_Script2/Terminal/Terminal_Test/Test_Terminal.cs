@@ -10,46 +10,46 @@ using UnityEngine.SocialPlatforms.Impl;
 public class Test_Terminal : MonoBehaviour
 {
     /// <summary>
-    /// SphereCollider¸¦ Ã£±â À§ÇÑ º¯¼ö sphere
+    /// SphereColliderë¥¼ ì°¾ê¸° ìœ„í•œ ë³€ìˆ˜ sphere
     /// </summary>
     SphereCollider sphere;
 
     /// <summary>
-    /// TextMeshProUGUI¸¦ »ç¿ëÇÏ±â À§ÇÑ º¯¼ö PressE_text
+    /// TextMeshProUGUIë¥¼ ì‚¬ìš©í•˜ê¸° ìœ„í•œ ë³€ìˆ˜ PressF_text
     /// </summary>
-    TextMeshProUGUI PressE_text;
+    TextMeshProUGUI PressF_text;
 
     /// <summary>
-    /// ÀÎÅÍÆäÀÌ½º¸¦ È­¸éÀÇ Áß¾Ó¿¡ Á¤·ÄÇÏ±â À§ÇÑ ¿ÀÇÁ¼Â
+    /// ì¸í„°í˜ì´ìŠ¤ë¥¼ í™”ë©´ì˜ ì¤‘ì•™ì— ì •ë ¬í•˜ê¸° ìœ„í•œ ì˜¤í”„ì…‹
     /// </summary>
     public Vector3 interfaceOffset = new Vector3(0.5f, 0.5f, 0);
     
-    public CinemachineVirtualCamera farVcam;        // ¸Ö¸® ÀÖ´Â Vcam
-    public CinemachineVirtualCamera nearVcam;       // °¡±îÀÌ ÀÖ´Â Vcam
+    public CinemachineVirtualCamera farVcam;        // ë©€ë¦¬ ìˆëŠ” Vcam
+    public CinemachineVirtualCamera nearVcam;       // ê°€ê¹Œì´ ìˆëŠ” Vcam
 
     /// <summary>
-    /// ÇÃ·¹ÀÌ¾î ÀÎÇ² ¾×¼Ç
+    /// í”Œë ˆì´ì–´ ì¸í’‹ ì•¡ì…˜
     /// </summary>
     private PlayerInputActions playerInput;
 
     private void Awake()
     {
-        // SphereCollider¸¦ Ã£¾Æ¼­ º¯¼ö¿¡ ÇÒ´çÇÕ´Ï´Ù.
+        // SphereColliderë¥¼ ì°¾ì•„ì„œ ë³€ìˆ˜ì— í• ë‹¹í•©ë‹ˆë‹¤.
         sphere = GetComponent<SphereCollider>();
 
-        // CanvasÀÇ Ã¹ ¹øÂ° ÀÚ½ÄÀ» °¡Á®¿É´Ï´Ù.
+        // Canvasì˜ ì²« ë²ˆì§¸ ìì‹ì„ ê°€ì ¸ì˜µë‹ˆë‹¤.
         Transform canvas = transform.GetChild(0);
 
-        // "Press_E"¸¦ ÀÌ¸§À¸·Î °¡Áø ÀÚ½ÄÀ» Ã£½À´Ï´Ù.
-        PressE_text = canvas.Find("Press_E")?.GetComponent<TextMeshProUGUI>();
+        // "Press_F"ë¥¼ ì´ë¦„ìœ¼ë¡œ ê°€ì§„ ìì‹ì„ ì°¾ìŠµë‹ˆë‹¤.
+        PressF_text = canvas.Find("Press_F")?.GetComponent<TextMeshProUGUI>();
 
-        // ¸¸¾à "Press_E"¸¦ Ã£Áö ¸øÇß´Ù¸é, °æ°í¸¦ Ãâ·ÂÇÕ´Ï´Ù.
-        if (PressE_text == null)
+        // ë§Œì•½ "Press_F"ë¥¼ ì°¾ì§€ ëª»í–ˆë‹¤ë©´, ê²½ê³ ë¥¼ ì¶œë ¥í•©ë‹ˆë‹¤.
+        if (PressF_text == null)
         {
-            Debug.LogWarning("TextMeshProUGUI¸¦ Ã£À» ¼ö ¾ø½À´Ï´Ù.");
+            Debug.LogWarning("TextMeshProUGUIë¥¼ ì°¾ì„ ìˆ˜ ì—†ìŠµë‹ˆë‹¤.");
         }
 
-        PressE_text.gameObject.SetActive(false);            // ½ÃÀÛÇÒ ¶§ TextMeshProUGUI¸¦ ºñÈ°¼ºÈ­
+        PressF_text.gameObject.SetActive(false);            // ì‹œì‘í•  ë•Œ TextMeshProUGUIë¥¼ ë¹„í™œì„±í™”
 
         playerInput = new PlayerInputActions();
     }
@@ -58,63 +58,64 @@ public class Test_Terminal : MonoBehaviour
     {
         playerInput.Enable();
         playerInput.Player.Interact.performed += OnFClick;
+        playerInput.Player.ESCInteract.performed += OnESCClick;
     }
 
     private void OnDisable()
     {
-        playerInput.Disable();
+        playerInput.Player.ESCInteract.performed -= OnESCClick;
         playerInput.Player.Interact.performed -= OnFClick;
+        playerInput.Disable();
     }
 
     private void OnFClick(InputAction.CallbackContext context)
     {
-        Debug.Log($"F Å°°¡ ´­·È½À´Ï´Ù.");
-        if (PressE_text.gameObject.activeSelf && context.action.triggered)
+        Debug.Log($"F í‚¤ê°€ ëˆŒë ¸ìŠµë‹ˆë‹¤.");
+        if (PressF_text.gameObject.activeSelf && context.action.triggered)
         {
-            Debug.Log("È°¼ºÈ­ & F Å°°¡ ´­·È½À´Ï´Ù."); // E Å°°¡ ´­·ÈÀ» ¶§ µğ¹ö±× Ãâ·Â
-            PressE_text.gameObject.SetActive(false);
+            Debug.Log("PressF í™œì„±í™” & F í‚¤ê°€ ëˆŒë ¸ìŠµë‹ˆë‹¤.");      // F í‚¤ê°€ ëˆŒë ¸ì„ ë•Œ ë””ë²„ê·¸ ì¶œë ¥
+            PressF_text.gameObject.SetActive(false);
             SwitchCamera();
         }
     }
 
+    private void OnESCClick(InputAction.CallbackContext context)
+    {
+        Debug.Log($"ESC í‚¤ê°€ ëˆŒë ¸ìŠµë‹ˆë‹¤");
+        if (!PressF_text.gameObject.activeSelf && context.action.triggered)
+        {
+            Debug.Log($"PressF ë¹„í™œì„±í™” & ESC í‚¤ê°€ ëˆŒë ¸ìŠµë‹ˆë‹¤.");      // ESC í‚¤ê°€ ëˆŒë ¸ì„ ë•Œ ë””ë²„ê·¸ ì¶œë ¥
+            PressF_text.gameObject.SetActive(false);
+        }
+
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.gameObject.tag == "Player")                   // Ãæµ¹ÇÑ »ó´ë ¿ÀºêÁ§Æ®ÀÇ ÅÂ±×°¡ PlayerÀÌ¸é
+        if (other.gameObject.tag == "Player")                   // ì¶©ëŒí•œ ìƒëŒ€ ì˜¤ë¸Œì íŠ¸ì˜ íƒœê·¸ê°€ Playerì´ë©´
         {
-            Debug.Log($"[Player] °¡ ¹üÀ§ ¾È¿¡ µé¾î¿Ô´Ù.");
-            PressE_text.gameObject.SetActive(true);             // TextMeshProUGUI¸¦ È°¼ºÈ­
+            Debug.Log($"[Player] ê°€ ë²”ìœ„ ì•ˆì— ë“¤ì–´ì™”ë‹¤.");
+            PressF_text.gameObject.SetActive(true);             // TextMeshProUGUIë¥¼ í™œì„±í™”
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.gameObject.tag == "Player")                   // Ãæµ¹ÇÑ »ó´ë ¿ÀºêÁ§Æ®ÀÇ ÅÂ±×°¡ PlayerÀÌ¸é
+        if (other.gameObject.tag == "Player")                   // ì¶©ëŒí•œ ìƒëŒ€ ì˜¤ë¸Œì íŠ¸ì˜ íƒœê·¸ê°€ Playerì´ë©´
         {
-            Debug.Log($"[Player] °¡ ¹üÀ§ ¹ÛÀ¸·Î ³ª°¬´Ù.");
-            PressE_text.gameObject.SetActive(false);            // TextMeshProUGUI¸¦ ºñÈ°¼ºÈ­
+            Debug.Log($"[Player] ê°€ ë²”ìœ„ ë°–ìœ¼ë¡œ ë‚˜ê°”ë‹¤.");
+            PressF_text.gameObject.SetActive(false);            // TextMeshProUGUIë¥¼ ë¹„í™œì„±í™”
         }
     }
 
-    /*private void Update()
-    {
-        // PressE_text°¡ È°¼ºÈ­ µÇ¾îÀÖÀ» ¶§ E Å°¸¦ ´©¸£¸é
-        if (PressE_text.gameObject.activeSelf && Input.GetKeyDown(KeyCode.E))       // ÇÃ·¹ÀÌ¾î ÀÎÇ² ¾×¼ÇÀ¸·Î ¼öÁ¤ ÇÊ¿ä
-        {
-            Debug.Log("E Å°°¡ ´­·È½À´Ï´Ù."); // E Å°°¡ ´­·ÈÀ» ¶§ µğ¹ö±× Ãâ·Â
-            SwitchCamera();
-
-            // ÅÍ¹Ì³Î¿¡¼­ Text ÀÔ·ÂÇÒ ¶§ EÅ°°¡ ´­·Áµµ SwitchCamera() ÇÔ¼ö°¡ ½ÇÇàµÇ´Â ¹®Á¦ ¼öÁ¤ ÇÊ¿ä
-        }
-    }*/
-
     /// <summary>
-    /// nearVcam°ú farVcamÀÇ Priority¸¦ ¼­·Î ¹Ù²Ù´Â ÇÔ¼ö
+    /// nearVcamê³¼ farVcamì˜ Priorityë¥¼ ì„œë¡œ ë°”ê¾¸ëŠ” í•¨ìˆ˜
     /// </summary>
     void SwitchCamera()
     {
         if (nearVcam != null && farVcam != null)
         {
-            // ÃÊ±â¿¡ nearVcam.Priority = 11, farVcam.Priority = 10
+            // ì´ˆê¸°ì— nearVcam.Priority = 11, farVcam.Priority = 10
             int nearPriority = nearVcam.Priority;
             nearVcam.Priority = farVcam.Priority;
             farVcam.Priority = nearPriority;
@@ -127,48 +128,48 @@ public class Test_Terminal : MonoBehaviour
 
 }
 
-/// 0. ÇÃ·¹ÀÌ¾î°¡ ÅÍ¹Ì³ÎÀÇ ÀÏÁ¤ ¹üÀ§¿¡ µé¾î¿À¸é "Access terminal : [E]" °¡ È°¼ºÈ­     // 1
-/// 1. ÇÃ·¹ÀÌ¾î ÀÎÇ²¾×¼ÇÀ¸·Î EÅ°¸¦ ¹Ş¾Æ¼­ ÅÍ¹Ì³Î È°¼ºÈ­                               // 2       ¹ŞÀ¸¸é µğ¹ö±× Ãâ·ÂÀ¸·Î Å×½ºÆ®ÇÏ±â
-/// 1-1. ÅÍ¹Ì³ÎÀÌ È°¼ºÈ­µÇ¸é ÅÍ¹Ì³ÎÀÇ ¸ğ´ÏÅÍ·Î VCam À§Ä¡ Á¶Á¤                         // 3
-/// 2. ÅÍ¹Ì³ÎÀÇ Ã³À½ È­¸é ÅØ½ºÆ® Ãâ·Â                                                 // 1¹ø-UI
+/// 0. í”Œë ˆì´ì–´ê°€ í„°ë¯¸ë„ì˜ ì¼ì • ë²”ìœ„ì— ë“¤ì–´ì˜¤ë©´ "Access terminal : [E]" ê°€ í™œì„±í™”     // 1
+/// 1. í”Œë ˆì´ì–´ ì¸í’‹ì•¡ì…˜ìœ¼ë¡œ Eí‚¤ë¥¼ ë°›ì•„ì„œ í„°ë¯¸ë„ í™œì„±í™”                               // 2       ë°›ìœ¼ë©´ ë””ë²„ê·¸ ì¶œë ¥ìœ¼ë¡œ í…ŒìŠ¤íŠ¸í•˜ê¸°
+/// 1-1. í„°ë¯¸ë„ì´ í™œì„±í™”ë˜ë©´ í„°ë¯¸ë„ì˜ ëª¨ë‹ˆí„°ë¡œ VCam ìœ„ì¹˜ ì¡°ì •                         // 3
+/// 2. í„°ë¯¸ë„ì˜ ì²˜ìŒ í™”ë©´ í…ìŠ¤íŠ¸ ì¶œë ¥                                                 // 1ë²ˆ-UI
 
 /*
-À§¼º Ä«Å»·Î±×¿¡ ¿À½Å °ÍÀ» È¯¿µÇÕ´Ï´Ù.
-ÀÚµ¿ Á¶Á¾ ÀåÄ¡ÀÇ °æ·Î¸¦ ÁöÁ¤ÇÏ·Á¸é ROUTE¸¦ ÀÔ·ÂÇÏ¼¼¿ä.
-´Ş¿¡ ´ëÇØ ¾Ë¾Æº¸·Á¸é INFO¸¦ ÀÔ·ÂÇÏ¼¼¿ä.
-----------------------------		// (28°³)
+ìœ„ì„± ì¹´íƒˆë¡œê·¸ì— ì˜¤ì‹  ê²ƒì„ í™˜ì˜í•©ë‹ˆë‹¤.
+ìë™ ì¡°ì¢… ì¥ì¹˜ì˜ ê²½ë¡œë¥¼ ì§€ì •í•˜ë ¤ë©´ ROUTEë¥¼ ì…ë ¥í•˜ì„¸ìš”.
+ë‹¬ì— ëŒ€í•´ ì•Œì•„ë³´ë ¤ë©´ INFOë¥¼ ì…ë ¥í•˜ì„¸ìš”.
+----------------------------		// (28ê°œ)
 
-* È¸»ç °Ç¹°	//	30%¿¡ ¸Å¸Å Áß.
+* íšŒì‚¬ ê±´ë¬¼	//	30%ì— ë§¤ë§¤ ì¤‘.
 
-* ÀÍ½ºÆä·¯¸àÅ×ÀÌ¼Ç (³¯¾¾)	Experimentation
-* ¾î½´¾î·±½º (³¯¾¾)		    Assurance
-* º¸¿ì (³¯¾¾)		        Vow
+* ìµìŠ¤í˜ëŸ¬ë©˜í…Œì´ì…˜ (ë‚ ì”¨)	Experimentation
+* ì–´ìŠˆì–´ëŸ°ìŠ¤ (ë‚ ì”¨)		    Assurance
+* ë³´ìš° (ë‚ ì”¨)		        Vow
 
-* ¿ÀÆæ½º (³¯¾¾)		        Offense
-* ¸ÓÄ¡ (³¯¾¾)		        March
+* ì˜¤íœìŠ¤ (ë‚ ì”¨)		        Offense
+* ë¨¸ì¹˜ (ë‚ ì”¨)		        March
 
-* ·»µå (³¯¾¾)		        Rend
-* ´ÙÀÎ (³¯¾¾)		        Dine
-* Å¸ÀÌÅº (³¯¾¾)		        Titan
+* ë Œë“œ (ë‚ ì”¨)		        Rend
+* ë‹¤ì¸ (ë‚ ì”¨)		        Dine
+* íƒ€ì´íƒ„ (ë‚ ì”¨)		        Titan
 
-(ÀÔ·ÂÇÏ´Â °÷)    ¿©±â¿¡ Ä¿¼­°¡ ±ôºı¿©¾ß ÇÔ?
+(ì…ë ¥í•˜ëŠ” ê³³)    ì—¬ê¸°ì— ì»¤ì„œê°€ ê¹œë¹¡ì—¬ì•¼ í•¨?
 */
 
-/// 3. ÅÍ¹Ì³Î¿¡¼­ Help(´ë¼Ò¹®ÀÚX) ¸¦ ÀÔ·ÂÇÏ°í ¿£ÅÍ¸¦ ´©¸£¸é »ç¿ë°¡´ÉÇÑ ¸ğµç ¸í·É¾î°¡ ÅÍ¹Ì³Î¿¡ Ãâ·Â   // 2¹ø-UI
-/// 3-1 È®ÀÎ(Confirm), Ãë¼Ò(Deny), »óÁ¡(Store)...                                                    // 2¹ø-UI
-/// 4. Store ¸ñ·Ï
+/// 3. í„°ë¯¸ë„ì—ì„œ Help(ëŒ€ì†Œë¬¸ìX) ë¥¼ ì…ë ¥í•˜ê³  ì—”í„°ë¥¼ ëˆ„ë¥´ë©´ ì‚¬ìš©ê°€ëŠ¥í•œ ëª¨ë“  ëª…ë ¹ì–´ê°€ í„°ë¯¸ë„ì— ì¶œë ¥   // 2ë²ˆ-UI
+/// 3-1 í™•ì¸(Confirm), ì·¨ì†Œ(Deny), ìƒì (Store)...                                                    // 2ë²ˆ-UI
+/// 4. Store ëª©ë¡
 /*
-Store¸¦ ÀÔ·ÂÇÏ°í ¿£ÅÍ¸¦ ´©¸£¸é »óÁ¡ÀÌ ¿­¸²
-¾Æ¾ÆÅÛ ±¸¸Åµµ ÅÍ¹Ì³Î¿¡¼­ ÇÔ / ±¸¸Å °¡´ÉÇÑ ¾ÆÀÌÅÛ ¸ñ·Ï(Ä¡°í ¿£ÅÍ ´­·¯¾ß ÇÔ)
-/ ¹«Àü±â				        12¿ø
-/ ¼ÕÀüµî				        15¿ø
-/ »ğ				            30¿ø
-/ ¸¶½ºÅÍ Å°			            20¿ø
-/ ÇÁ·Î ¼ÕÀüµî(Àü¹®°¡¿ë ¼ÕÀüµî)	25¿ø
-/ ¼¶±¤ ¼ö·ùÅº			        36¿ø
-/ ºÕ¹Ú½º				        60¿ø
-/ Tzp ÈíÀÔ±â			        72¿ø
-/ °ø±â ±ÇÃÑ(Zap Gun)		    400¿ø
-/ Á¦Æ®ÆÑ				        700¿ø
-/ È®Àå »ç´Ù¸®(°³Æó½Ä »ç´Ù¸®)	60¿ø
+Storeë¥¼ ì…ë ¥í•˜ê³  ì—”í„°ë¥¼ ëˆ„ë¥´ë©´ ìƒì ì´ ì—´ë¦¼
+ì•„ì•„í…œ êµ¬ë§¤ë„ í„°ë¯¸ë„ì—ì„œ í•¨ / êµ¬ë§¤ ê°€ëŠ¥í•œ ì•„ì´í…œ ëª©ë¡(ì¹˜ê³  ì—”í„° ëˆŒëŸ¬ì•¼ í•¨)
+/ ë¬´ì „ê¸°				        12ì›
+/ ì†ì „ë“±				        15ì›
+/ ì‚½				            30ì›
+/ ë§ˆìŠ¤í„° í‚¤			            20ì›
+/ í”„ë¡œ ì†ì „ë“±(ì „ë¬¸ê°€ìš© ì†ì „ë“±)	25ì›
+/ ì„¬ê´‘ ìˆ˜ë¥˜íƒ„			        36ì›
+/ ë¶ë°•ìŠ¤				        60ì›
+/ Tzp í¡ì…ê¸°			        72ì›
+/ ê³µê¸° ê¶Œì´(Zap Gun)		    400ì›
+/ ì œíŠ¸íŒ©				        700ì›
+/ í™•ì¥ ì‚¬ë‹¤ë¦¬(ê°œíì‹ ì‚¬ë‹¤ë¦¬)	60ì›
 */

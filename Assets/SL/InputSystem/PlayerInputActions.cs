@@ -89,6 +89,24 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""ESCInteract"",
+                    ""type"": ""Button"",
+                    ""id"": ""ec372c07-3840-4114-9cf4-606beb416caa"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                },
+                {
+                    ""name"": ""EnterInteract"",
+                    ""type"": ""Button"",
+                    ""id"": ""fb14210b-54a1-4841-8854-d4d95df1634b"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -212,6 +230,39 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""Jump"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""13e844f9-80d5-45dd-bcc7-9a5940116966"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""ESCInteract"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""ef16b3a9-b586-48cc-bbab-2997cbe91f09"",
+                    ""path"": ""<Keyboard>/enter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EnterInteract"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                },
+                {
+                    ""name"": """",
+                    ""id"": ""53a4cbec-1ec2-4bd7-b8e1-28f5c17fc381"",
+                    ""path"": ""<Keyboard>/numpadEnter"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": """",
+                    ""action"": ""EnterInteract"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
                 }
             ]
         }
@@ -244,6 +295,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_MouseInput = m_Player.FindAction("MouseInput", throwIfNotFound: true);
         m_Player_MouseLClick = m_Player.FindAction("MouseLClick", throwIfNotFound: true);
         m_Player_MouseRClick = m_Player.FindAction("MouseRClick", throwIfNotFound: true);
+        m_Player_ESCInteract = m_Player.FindAction("ESCInteract", throwIfNotFound: true);
+        m_Player_EnterInteract = m_Player.FindAction("EnterInteract", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -312,6 +365,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_MouseInput;
     private readonly InputAction m_Player_MouseLClick;
     private readonly InputAction m_Player_MouseRClick;
+    private readonly InputAction m_Player_ESCInteract;
+    private readonly InputAction m_Player_EnterInteract;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -323,6 +378,8 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @MouseInput => m_Wrapper.m_Player_MouseInput;
         public InputAction @MouseLClick => m_Wrapper.m_Player_MouseLClick;
         public InputAction @MouseRClick => m_Wrapper.m_Player_MouseRClick;
+        public InputAction @ESCInteract => m_Wrapper.m_Player_ESCInteract;
+        public InputAction @EnterInteract => m_Wrapper.m_Player_EnterInteract;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -353,6 +410,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @MouseRClick.started += instance.OnMouseRClick;
             @MouseRClick.performed += instance.OnMouseRClick;
             @MouseRClick.canceled += instance.OnMouseRClick;
+            @ESCInteract.started += instance.OnESCInteract;
+            @ESCInteract.performed += instance.OnESCInteract;
+            @ESCInteract.canceled += instance.OnESCInteract;
+            @EnterInteract.started += instance.OnEnterInteract;
+            @EnterInteract.performed += instance.OnEnterInteract;
+            @EnterInteract.canceled += instance.OnEnterInteract;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -378,6 +441,12 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @MouseRClick.started -= instance.OnMouseRClick;
             @MouseRClick.performed -= instance.OnMouseRClick;
             @MouseRClick.canceled -= instance.OnMouseRClick;
+            @ESCInteract.started -= instance.OnESCInteract;
+            @ESCInteract.performed -= instance.OnESCInteract;
+            @ESCInteract.canceled -= instance.OnESCInteract;
+            @EnterInteract.started -= instance.OnEnterInteract;
+            @EnterInteract.performed -= instance.OnEnterInteract;
+            @EnterInteract.canceled -= instance.OnEnterInteract;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -413,5 +482,7 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnMouseInput(InputAction.CallbackContext context);
         void OnMouseLClick(InputAction.CallbackContext context);
         void OnMouseRClick(InputAction.CallbackContext context);
+        void OnESCInteract(InputAction.CallbackContext context);
+        void OnEnterInteract(InputAction.CallbackContext context);
     }
 }
