@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SocialPlatforms.Impl;
@@ -15,9 +16,13 @@ public class Test_Terminal : MonoBehaviour
     SphereCollider sphere;
 
     /// <summary>
-    /// TextMeshProUGUI를 사용하기 위한 변수 PressF_text
+    /// PressF_text
     /// </summary>
     TextMeshProUGUI PressF_text;
+
+    TextMeshProUGUI defaultText;
+
+    TextMeshProUGUI storeText;
 
     /// <summary>
     /// 인터페이스를 화면의 중앙에 정렬하기 위한 오프셋
@@ -32,26 +37,50 @@ public class Test_Terminal : MonoBehaviour
     /// </summary>
     private PlayerInputActions playerInput;
 
+    Enter enter;
+
     private void Awake()
     {
         // SphereCollider를 찾아서 변수에 할당합니다.
         sphere = GetComponent<SphereCollider>();
 
-        // Canvas의 첫 번째 자식을 가져옵니다.
+        // 0번째 자식 canvas
         Transform canvas = transform.GetChild(0);
 
-        // "Press_F"를 이름으로 가진 자식을 찾습니다.
-        PressF_text = canvas.Find("Press_F")?.GetComponent<TextMeshProUGUI>();
+        // "Press_F"를 이름으로 가진 자식
+        /*PressF_text = canvas.Find("Press_F")?.GetComponent<TextMeshProUGUI>();
 
         // 만약 "Press_F"를 찾지 못했다면, 경고를 출력합니다.
         if (PressF_text == null)
         {
             Debug.LogWarning("TextMeshProUGUI를 찾을 수 없습니다.");
-        }
+        }*/
 
-        PressF_text.gameObject.SetActive(false);            // 시작할 때 TextMeshProUGUI를 비활성화
+        Transform child = transform.GetChild(0);                            // 0번째 자식 canvas
+        PressF_text = child.GetChild(0).GetComponent<TextMeshProUGUI>();    // canvas의 0번째 자식 Press_F
+
+        defaultText = child.GetChild(2).GetComponent<TextMeshProUGUI>();    // canvas의 2번째 자식 DefaultText
+
+        storeText = child.GetChild(3).GetComponent<TextMeshProUGUI>();      // canvas의 3번째 자식 StoreText
+
+
+        // 게임 시작 시
+        PressF_text.gameObject.SetActive(false);                            // 시작할 때 PressF_text 비활성화
+        defaultText.gameObject.SetActive(true);                             // 시작할 때 defaultText 활성화
+        storeText.gameObject.SetActive(false);                              // 시작할 때 storeText 비활성화
 
         playerInput = new PlayerInputActions();
+
+        // Enter 스크립트 찾음
+        enter = FindAnyObjectByType<Enter>();
+        
+        
+
+    }
+
+    private void Start()
+    {
+        enter.TotalText += ChangePanel;
     }
 
     private void OnEnable()
@@ -99,6 +128,10 @@ public class Test_Terminal : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 플레이어가 터미널의 범위 안에 들어왔는지 확인하는 함수
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")                   // 충돌한 상대 오브젝트의 태그가 Player이면
@@ -108,6 +141,10 @@ public class Test_Terminal : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 플레이어가 터미널의 범위 밖으로 나갔는지 확인하는 함수
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "Player")                   // 충돌한 상대 오브젝트의 태그가 Player이면
@@ -134,6 +171,26 @@ public class Test_Terminal : MonoBehaviour
             Debug.LogError("Priority를 바꿀 수 없다.");
         }
     }
+
+    /// <summary>
+    /// inputField에서 문자가 입력되었을 때 지정한 문자인지 확인하고 처리하는 함수
+    /// </summary>
+    /// <param name="obj">inputField에서 입력된 문자</param>
+    void ChangePanel(string obj)
+    {
+        //Debug.Log($"ChangePanel이 {obj}가 입력된 것을 확인했다.");
+        if (obj == "Store" || obj == "store")               // 입력된 문자열이 store 라면
+        {
+            defaultText.gameObject.SetActive(false);        // defaultText 비활성화
+            storeText.gameObject.SetActive(true);           // storeText 활성화
+        }
+        if (obj == "Default" || obj == "default")           // 입력된 문자열이 default 라면
+        {
+            storeText.gameObject.SetActive(false);          // storeText 비활성화
+            defaultText.gameObject.SetActive(true);         // defaultText 활성화
+        }
+    }
+
 
 }
 
