@@ -47,12 +47,16 @@ public class Enter : MonoBehaviour
 
     private void EnterClick(InputAction.CallbackContext context)
     {
-        // EnterInteract 이벤트가 발생했을 때 입력 필드의 텍스트를 가져와서 EndEdit 함수 호출
-        totalText = inputField.text;        // inputField에서 입력된 마지막 문자를 제외한 문자들을 totaltext에 저장하고
+        // inputField가 공백이 아닐때
+        if (inputField.text != "")
+        {
+            // EnterInteract 이벤트가 발생했을 때 입력 필드의 텍스트를 가져와서 EndEdit 함수 호출
+            totalText = inputField.text;        // inputField에서 입력된 마지막 문자를 제외한 문자들을 totaltext에 저장하고
 
-        // 입력 필드의 텍스트를 초기화
-        inputField.text = "";               // inputField 초기화 => 마지막 문자가 남음
-        StartCoroutine(LastWordChecdk());   // 코루틴 실행
+            // 입력 필드의 텍스트를 초기화
+            inputField.text = "";               // inputField 초기화 => 마지막 문자가 남음
+            StartCoroutine(LastWordChecdk());   // 코루틴 실행
+        }
     }
 
     /// <summary>
