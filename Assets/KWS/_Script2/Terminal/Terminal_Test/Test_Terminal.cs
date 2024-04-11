@@ -128,6 +128,10 @@ public class Test_Terminal : MonoBehaviour
 
     }
 
+    /// <summary>
+    /// 플레이어가 터미널의 범위 안에 들어왔는지 확인하는 함수
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")                   // 충돌한 상대 오브젝트의 태그가 Player이면
@@ -137,6 +141,10 @@ public class Test_Terminal : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 플레이어가 터미널의 범위 밖으로 나갔는지 확인하는 함수
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "Player")                   // 충돌한 상대 오브젝트의 태그가 Player이면
@@ -164,18 +172,22 @@ public class Test_Terminal : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// inputField에서 문자가 입력되었을 때 지정한 문자인지 확인하고 처리하는 함수
+    /// </summary>
+    /// <param name="obj">inputField에서 입력된 문자</param>
     void ChangePanel(string obj)
     {
         //Debug.Log($"ChangePanel이 {obj}가 입력된 것을 확인했다.");
-        if (obj == "Store" || obj == "store")
+        if (obj == "Store" || obj == "store")               // 입력된 문자열이 store 라면
         {
-            defaultText.gameObject.SetActive(false);
-            storeText.gameObject.SetActive(true);
+            defaultText.gameObject.SetActive(false);        // defaultText 비활성화
+            storeText.gameObject.SetActive(true);           // storeText 활성화
         }
-        if (obj == "Default" || obj == "default")
+        if (obj == "Default" || obj == "default")           // 입력된 문자열이 default 라면
         {
-            storeText.gameObject.SetActive(false);
-            defaultText.gameObject.SetActive(true);
+            storeText.gameObject.SetActive(false);          // storeText 비활성화
+            defaultText.gameObject.SetActive(true);         // defaultText 활성화
         }
     }
 
