@@ -3,6 +3,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SocialPlatforms.Impl;
@@ -15,9 +16,13 @@ public class Test_Terminal : MonoBehaviour
     SphereCollider sphere;
 
     /// <summary>
-    /// TextMeshProUGUI를 사용하기 위한 변수 PressF_text
+    /// PressF_text
     /// </summary>
     TextMeshProUGUI PressF_text;
+
+    TextMeshProUGUI defaultText;
+
+    TextMeshProUGUI storeText;
 
     /// <summary>
     /// 인터페이스를 화면의 중앙에 정렬하기 위한 오프셋
@@ -32,26 +37,50 @@ public class Test_Terminal : MonoBehaviour
     /// </summary>
     private PlayerInputActions playerInput;
 
+    Enter enter;
+
     private void Awake()
     {
         // SphereCollider를 찾아서 변수에 할당합니다.
         sphere = GetComponent<SphereCollider>();
 
-        // Canvas의 첫 번째 자식을 가져옵니다.
+        // 0번째 자식 canvas
         Transform canvas = transform.GetChild(0);
 
-        // "Press_F"를 이름으로 가진 자식을 찾습니다.
-        PressF_text = canvas.Find("Press_F")?.GetComponent<TextMeshProUGUI>();
+        // "Press_F"를 이름으로 가진 자식
+        /*PressF_text = canvas.Find("Press_F")?.GetComponent<TextMeshProUGUI>();
 
         // 만약 "Press_F"를 찾지 못했다면, 경고를 출력합니다.
         if (PressF_text == null)
         {
             Debug.LogWarning("TextMeshProUGUI를 찾을 수 없습니다.");
-        }
+        }*/
 
-        PressF_text.gameObject.SetActive(false);            // 시작할 때 PressF_text 비활성화
+        Transform child = transform.GetChild(0);                            // 0번째 자식 canvas
+        PressF_text = child.GetChild(0).GetComponent<TextMeshProUGUI>();    // canvas의 0번째 자식 Press_F
+
+        defaultText = child.GetChild(2).GetComponent<TextMeshProUGUI>();    // canvas의 2번째 자식 DefaultText
+
+        storeText = child.GetChild(3).GetComponent<TextMeshProUGUI>();      // canvas의 3번째 자식 StoreText
+
+
+        // 게임 시작 시
+        PressF_text.gameObject.SetActive(false);                            // 시작할 때 PressF_text 비활성화
+        defaultText.gameObject.SetActive(true);                             // 시작할 때 defaultText 활성화
+        storeText.gameObject.SetActive(false);                              // 시작할 때 storeText 비활성화
 
         playerInput = new PlayerInputActions();
+
+        // Enter 스크립트 찾음
+        enter = FindAnyObjectByType<Enter>();
+        
+        
+
+    }
+
+    private void Start()
+    {
+        enter.TotalText += ChangePanel;
     }
 
     private void OnEnable()
@@ -134,6 +163,22 @@ public class Test_Terminal : MonoBehaviour
             Debug.LogError("Priority를 바꿀 수 없다.");
         }
     }
+
+    void ChangePanel(string obj)
+    {
+        //Debug.Log($"ChangePanel이 {obj}가 입력된 것을 확인했다.");
+        if (obj == "Store" || obj == "store")
+        {
+            defaultText.gameObject.SetActive(false);
+            storeText.gameObject.SetActive(true);
+        }
+        if (obj == "Default" || obj == "default")
+        {
+            storeText.gameObject.SetActive(false);
+            defaultText.gameObject.SetActive(true);
+        }
+    }
+
 
 }
 

@@ -19,7 +19,9 @@ public class Enter : MonoBehaviour
     /// 한글 맨 뒤 글자가 잘려서 나오는 문제 수정용 string
     /// 정확한 입력을 비교할 때 totalText를 사용해서 비교해야 함
     /// </summary>
-    string totalText;
+    public string totalText;
+
+    public Action<string> TotalText;
 
     private void Awake()
     {
@@ -71,6 +73,7 @@ public class Enter : MonoBehaviour
         totalText += inputField.text;       // 마지막 문자를 totalText에 더해줌
         Debug.Log(totalText);               // 디버그로 전체 문자 출력
         inputField.text = "";               // 마지막 문자 초기화
+        TotalText?.Invoke(totalText);
     }
 
     /// <summary>
