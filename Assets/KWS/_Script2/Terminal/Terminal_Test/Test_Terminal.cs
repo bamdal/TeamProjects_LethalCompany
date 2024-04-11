@@ -49,7 +49,7 @@ public class Test_Terminal : MonoBehaviour
             Debug.LogWarning("TextMeshProUGUI를 찾을 수 없습니다.");
         }
 
-        PressF_text.gameObject.SetActive(false);            // 시작할 때 TextMeshProUGUI를 비활성화
+        PressF_text.gameObject.SetActive(false);            // 시작할 때 PressF_text 비활성화
 
         playerInput = new PlayerInputActions();
     }
