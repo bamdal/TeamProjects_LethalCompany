@@ -68,6 +68,10 @@ public class Test_Terminal : MonoBehaviour
         playerInput.Disable();
     }
 
+    /// <summary>
+    /// 터미널에 진입하기 위한 함수
+    /// </summary>
+    /// <param name="context"></param>
     private void OnFClick(InputAction.CallbackContext context)
     {
         Debug.Log($"F 키가 눌렸습니다.");
@@ -79,13 +83,18 @@ public class Test_Terminal : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 터미널에서 빠져나오기 위한 함수
+    /// </summary>
+    /// <param name="context"></param>
     private void OnESCClick(InputAction.CallbackContext context)
     {
         Debug.Log($"ESC 키가 눌렸습니다");
         if (!PressF_text.gameObject.activeSelf && context.action.triggered)
         {
             Debug.Log($"PressF 비활성화 & ESC 키가 눌렸습니다.");      // ESC 키가 눌렸을 때 디버그 출력
-            PressF_text.gameObject.SetActive(false);
+            PressF_text.gameObject.SetActive(true);
+            SwitchCamera();
         }
 
     }
@@ -122,7 +131,7 @@ public class Test_Terminal : MonoBehaviour
         }
         else
         {
-            Debug.LogError("One or both virtual cameras are not assigned.");
+            Debug.LogError("Priority를 바꿀 수 없다.");
         }
     }
 
