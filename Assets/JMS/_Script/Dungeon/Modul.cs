@@ -39,14 +39,14 @@ public class Modul : MonoBehaviour
     /// </summary>
     Vector3 center;
 
-    public Vector3 Center => rend.bounds.center;
+    //public Vector3 Center => rend.bounds.center;
 
     /// <summary>
     /// 모듈의 사이즈
     /// </summary>
     Vector3 size;
 
-    public Vector3 Size => rend.bounds.size;    
+    //public Vector3 Size => rend.bounds.size;    
 
     private void Awake()
     {
@@ -80,7 +80,7 @@ public class Modul : MonoBehaviour
 
             rend = GetComponent<Collider>();
         }
-        Handles.DrawWireCube(Center, Size);
+        //Handles.DrawWireCube(Center, Size);
     }
 
 
