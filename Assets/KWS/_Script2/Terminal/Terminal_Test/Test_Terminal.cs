@@ -20,7 +20,7 @@ public class Test_Terminal : MonoBehaviour
     /// </summary>
     TextMeshProUGUI PressF_text;
 
-    TextMeshProUGUI defaultText;
+    TextMeshProUGUI mainText;
 
     TextMeshProUGUI storeText;
 
@@ -57,16 +57,16 @@ public class Test_Terminal : MonoBehaviour
         }*/
 
         Transform child = transform.GetChild(0);                            // 0번째 자식 canvas
-        PressF_text = child.GetChild(0).GetComponent<TextMeshProUGUI>();    // canvas의 0번째 자식 Press_F
+        PressF_text = canvas.GetChild(0).GetComponent<TextMeshProUGUI>();    // canvas의 0번째 자식 Press_F
 
-        defaultText = child.GetChild(2).GetComponent<TextMeshProUGUI>();    // canvas의 2번째 자식 DefaultText
+        mainText = canvas.GetChild(2).GetComponent<TextMeshProUGUI>();    // canvas의 2번째 자식 DefaultText
 
-        storeText = child.GetChild(3).GetComponent<TextMeshProUGUI>();      // canvas의 3번째 자식 StoreText
+        storeText = canvas.GetChild(3).GetComponent<TextMeshProUGUI>();      // canvas의 3번째 자식 StoreText
 
 
         // 게임 시작 시
         PressF_text.gameObject.SetActive(false);                            // 시작할 때 PressF_text 비활성화
-        defaultText.gameObject.SetActive(true);                             // 시작할 때 defaultText 활성화
+        mainText.gameObject.SetActive(true);                             // 시작할 때 mainText 활성화
         storeText.gameObject.SetActive(false);                              // 시작할 때 storeText 비활성화
 
         playerInput = new PlayerInputActions();
@@ -178,16 +178,33 @@ public class Test_Terminal : MonoBehaviour
     /// <param name="obj">inputField에서 입력된 문자</param>
     void ChangePanel(string obj)
     {
-        //Debug.Log($"ChangePanel이 {obj}가 입력된 것을 확인했다.");
-        if (obj == "Store" || obj == "store")               // 입력된 문자열이 store 라면
+        /*//Debug.Log($"ChangePanel이 {obj}가 입력된 것을 확인했다.");
+        if (obj == "Store" || obj == "store" || obj == "스토어")               // 입력된 문자열이 store 라면
         {
-            defaultText.gameObject.SetActive(false);        // defaultText 비활성화
+            mainText.gameObject.SetActive(false);        // mainText 비활성화
             storeText.gameObject.SetActive(true);           // storeText 활성화
         }
-        if (obj == "Default" || obj == "default")           // 입력된 문자열이 default 라면
+        if (obj == "Main" || obj == "main" || obj == "메인")           // 입력된 문자열이 default 라면
         {
             storeText.gameObject.SetActive(false);          // storeText 비활성화
-            defaultText.gameObject.SetActive(true);         // defaultText 활성화
+            mainText.gameObject.SetActive(true);         // mainText 활성화
+        }*/
+
+        switch (obj.ToLower())
+        {
+            case "store":
+            case "스토어":
+                mainText.gameObject.SetActive(false);           // mainText 비활성화
+                storeText.gameObject.SetActive(true);           // storeText 활성화
+                break;
+            case "main":
+            case "메인":
+                storeText.gameObject.SetActive(false);          // storeText 비활성화
+                mainText.gameObject.SetActive(true);            // mainText 활성화
+                break;
+            default:
+                Debug.Log("정확히 입력해주세요.");
+                break;
         }
     }
 

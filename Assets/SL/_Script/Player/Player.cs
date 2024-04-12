@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.InputSystem.HID;
 using UnityEngine.InputSystem.XInput;
 
 public class Player : MonoBehaviour
@@ -139,7 +140,10 @@ public class Player : MonoBehaviour
     Vector3 gravityDir = Vector3.zero;
 
     Transform[] invenSlots = new Transform[4];
-
+    public Transform[] InvenSlots
+    {
+        get => invenSlots;
+    }
     public float groundCheckDistance = 0.2f;    // 바닥 체크 거리
     public LayerMask groundLayer;               // 바닥을 나타내는 레이어
     Transform groundCheckPosition;              // 바닥 체크할 포지션
@@ -158,6 +162,8 @@ public class Player : MonoBehaviour
         input.onLClick += OnLClickInput;
         input.onRClick += OnRClickInput;
         input.onScroll += OnScrollWheel;
+        input.onItemDrop += OnItemDrop;
+        input.onTerminal += OnTerminal;
         cam = FindAnyObjectByType<Camera>();
         inventoryTransform = transform.Find("Inventory");
         for(int i = 0;  i < 4; i++)
@@ -173,6 +179,7 @@ public class Player : MonoBehaviour
         groundCheckPosition = transform.GetChild(4);
         gravityY = -1f;
     }
+
 
 
     private void Update()
@@ -428,11 +435,23 @@ public class Player : MonoBehaviour
                         if (invenSlots[i].childCount == 0)
                         {
                             // 아이템을 인벤토리 슬롯에 넣습니다.
-                            hit.collider.transform.SetParent(invenSlots[i]);
+                            Transform itemTransform = hit.collider.transform;
+                            itemTransform.SetParent(invenSlots[i]);
+                            itemTransform.localPosition = new Vector3(0,-0.5f,1); // 포지션을 (0, 0, 0)으로 설정합니다.
+
+                            Collider itemCollider = hit.collider.GetComponent<Collider>();
+                            if (itemCollider != null)
+                                itemCollider.enabled = false;
+
+                            Rigidbody itemRigidbody = hit.collider.GetComponent<Rigidbody>();
+                            if (itemRigidbody != null)
+                                itemRigidbody.isKinematic = true;
+
                             hit.collider.gameObject.SetActive(false);
                             Debug.Log("아이템을 획득했습니다!");
                             break;
                         }
+
                     }
 
                 }
@@ -456,7 +475,18 @@ public class Player : MonoBehaviour
         }
         
     }
+    private void OnItemDrop()
+    {
+        Transform item = invenSlots[FindIvenIndex(invenSlots)].GetChild(0);
+        Collider itemCollider = item.GetComponent<Collider>();
+        if (itemCollider != null)
+            itemCollider.enabled = true;
+        Rigidbody itemRigidbody = item.GetComponent<Rigidbody>();
+        if (itemRigidbody != null)
+            itemRigidbody.isKinematic = false;
+        item.SetParent(null); // 부모에서 떼어냅니다.
 
+    }
 
 
 
@@ -592,5 +622,11 @@ public class Player : MonoBehaviour
             result = index - 1;
         }
         return result;
+    }
+
+
+    private void OnTerminal()
+    {
+
     }
 }
