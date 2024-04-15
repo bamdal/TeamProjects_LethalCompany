@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 
@@ -260,6 +261,7 @@ public class DungeonGenerator : MonoBehaviour
     {
         Modul currentModul = Instantiate(newModul, generationStartPoint);
         currentModul.name = $"{index}째 모듈";
+        currentModul.transform.GetChild(0).name = $"{index}째 모듈";
 
         ModulConnector newConnector; // 연결될 커넥터
         newConnector = currentModul.Connectors[Random.Range(0, currentModul.ConnectorsCount)];    // 새로 만든 모듈의 연결할 커넥터
@@ -323,9 +325,15 @@ public class DungeonGenerator : MonoBehaviour
         //    return true; // 겹치는 모듈이 존재함
         //}
         BoxCollider newmoduleCollider = newModul.GetComponent<BoxCollider>();
-
-        Collider[] moduleCollider = Physics.OverlapBox(newmoduleCollider.transform.position, newmoduleCollider.size*0.5f, newmoduleCollider.transform.rotation, LayerMask.GetMask("GenerationMask"));
-            foreach (Collider collider in moduleCollider)
+        /*        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+                cube.transform.position = newmoduleCollider.transform.position; // 큐브 위치 설정
+                cube.transform.localScale = newmoduleCollider.size ; // 큐브 크기 설정
+                cube.transform.rotation = newmoduleCollider.transform.rotation;
+                cube.GetComponent<Renderer>().material.color = Color.blue; // 큐브 색상 설정*/
+        Collider[] moduleCollider = Physics.OverlapBox(newmoduleCollider.transform.position, newmoduleCollider.bounds.extents, newmoduleCollider.transform.rotation, LayerMask.GetMask("GenerationMask"));
+            
+        
+        foreach (Collider collider in moduleCollider)
             {
                 if (collider.gameObject != newModul.gameObject) // 자기 자신은 제외
                 {
