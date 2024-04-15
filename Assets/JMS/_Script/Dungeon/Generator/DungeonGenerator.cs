@@ -189,6 +189,7 @@ public class DungeonGenerator : MonoBehaviour
     /// </summary>
     private void DungeonGeneration()
     {
+        index = 0; // 재생성시 초기화용
         Modul Start = Instantiate(startModul, generationStartPoint);   // 맵 시작 지점 스폰
 
         List<ModulConnector> existConnectors = new List<ModulConnector>(Start.Connectors); // 시작지점의 연결지점 가져오기
@@ -200,15 +201,20 @@ public class DungeonGenerator : MonoBehaviour
             {
                 // 어쨋든 다음꺼 연결해서 붙임
                 Modul newModul = RandomSelectModul();   // 랜덤한 모듈 가져오기
-                Modul currentModul = MatchConntectors(existConnectors[exist], newModul); // 모듈을 현재 커넥터에 연결
+                ModulConnector dc = null;
+                Modul currentModul = MatchConntectors(existConnectors[exist], newModul, out dc); // 모듈을 현재 커넥터에 연결
 
-                itemSpawnPoints.AddRange(currentModul.GetComponentsInChildren<ItemSpawnPoint>());   //아이템 스폰포인터를 목록 넣기
                
                 //newConnectors.AddRange(newModul.Connectors.Where(e => e != 현재 이미 연결된 커넥터));
                 if (currentModul != null)
                 {
-                    newConnectors.AddRange(AddValuesWithoutDuplicates(existConnectors[exist], currentModul));
+                    itemSpawnPoints.AddRange(currentModul.GetComponentsInChildren<ItemSpawnPoint>());   //아이템 스폰포인터를 목록 넣기
+                    newConnectors.AddRange(AddValuesWithoutDuplicates(dc, currentModul));
 
+                }
+                else
+                {
+                    newConnectors.Add(existConnectors[exist]);  // 실패시 커넥터 다시 돌려주기
                 }
                 // 붙힐때 충돌 감지 되면 endmodul붙힘
 
@@ -219,7 +225,7 @@ public class DungeonGenerator : MonoBehaviour
         // existConnectors에 endmodul 연결함
         foreach (ModulConnector connector in existConnectors)    // 마무리 빈 커넥터의 입구 막기
         {
-            MatchConntectors(connector, endModul);  // 하나는 비상탈출구로 만들어야함,
+            MatchConntectors(connector, endModul,out _);  // 하나는 비상탈출구로 만들어야함,
                                                     // 첫번째connector중 아무나 한개는 비상 탈출구
            
         }
@@ -243,14 +249,14 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
-    
+
     /// <summary>
     /// 연결될 위치와 새 모듈을 입력하면 자동으로 연결하고 배치하는 함수
     /// </summary>
     /// <param name="oldConnector">연결할 커넥터</param>
     /// <param name="newModul">새로 들어갈 모듈</param>
     /// <returns>새로 생성되어 연결된 모듈</returns>
-    private Modul MatchConntectors(ModulConnector oldConnector, Modul newModul)
+    private Modul MatchConntectors(ModulConnector oldConnector, Modul newModul, out ModulConnector destroyconnecter)
     {
         Modul currentModul = Instantiate(newModul, generationStartPoint);
         currentModul.name = $"{index}째 모듈";
@@ -270,14 +276,14 @@ public class DungeonGenerator : MonoBehaviour
         // 회전이 정상 작동하면 newConnector좌표를 oldConnector좌표로 이동시키는 포지션 값을 구하고 currentModul의 위치를 그만큼 이동
         Vector3 m = oldConnector.transform.position - newConnector.transform.position;
         currentModul.transform.position += m;
-
+        destroyconnecter = newConnector;
         bool overlapping = CheckOverlapping(currentModul);
         if (overlapping)
         {
             currentModul.gameObject.SetActive(false); // 겹치는 모듈이 있으면 새로 생성한 모듈을 파괴하고 종료
-            Modul modul = oldConnector.transform.parent.gameObject.GetComponent<Modul>();   // 연결자 다시 돌려주기
+            //Modul modul = oldConnector.transform.parent.gameObject.GetComponent<Modul>();   // 연결자 다시 돌려주기
             // 삭제된경우 커넥터가 지워져서 그 부분에 마무리 입구 막기가 제대로 안되는 상황
-            return modul;
+            return null;
         }
 
         // ㅁ생김새로 랜덤하게 나오면 조기 종료 해버림
@@ -297,32 +303,28 @@ public class DungeonGenerator : MonoBehaviour
     /// <returns>true면 겹치는 상태 false면 정상 생성</returns>
     private bool CheckOverlapping(Modul newModul)
     {
-        Collider newmoduleCollider = newModul.GetComponent<Collider>();
-        if (newmoduleCollider == null)
-        {
-            //Debug.LogWarning(newModul.name);
-            return false; // 콜라이더가 없으면 겹침을 판단하지 않고 바로 false 반환
-        }
+        //Collider newmoduleCollider = newModul.GetComponent<Collider>();
+        //if (newmoduleCollider == null)
+        //{
+        //    //Debug.LogWarning(newModul.name);
+        //    return false; // 콜라이더가 없으면 겹침을 판단하지 않고 바로 false 반환
+        //}
 
-        Modul[] moduls = pointNav.GetComponentsInChildren<Modul>(); // 이미 깔려있는 모듈 가져오기
-        foreach (Modul modul in moduls)
-        {
-            if (modul == newModul)  // 자기자신 제외
-            {
-                continue;
-            }
+        //Modul[] moduls = pointNav.GetComponentsInChildren<Modul>(); // 이미 깔려있는 모듈 가져오기
 
-            // 기존 콜라이더로 비교하기
-            // Collider moduleCollider = modul.GetComponent<Collider>();
-            //if (Physics.ComputePenetration(newmoduleCollider, newmoduleCollider.transform.position, newmoduleCollider.transform.rotation,
-            //                               moduleCollider, moduleCollider.transform.position, moduleCollider.transform.rotation,
-            //                               out _, out _))
-            //{
-            //    Debug.Log(newModul.name);
-            //    return true; // 겹치는 모듈이 존재함
-            //}
-            
-            Collider[] moduleCollider = Physics.OverlapBox(newModul.Center, newModul.Size, newModul.transform.rotation, LayerMask.GetMask("GenerationMask"));
+
+        // 기존 콜라이더로 비교하기
+        // Collider moduleCollider = modul.GetComponent<Collider>();
+        //if (Physics.ComputePenetration(newmoduleCollider, newmoduleCollider.transform.position, newmoduleCollider.transform.rotation,
+        //                               moduleCollider, moduleCollider.transform.position, moduleCollider.transform.rotation,
+        //                               out _, out _))
+        //{
+        //    Debug.Log(newModul.name);
+        //    return true; // 겹치는 모듈이 존재함
+        //}
+        BoxCollider newmoduleCollider = newModul.GetComponent<BoxCollider>();
+
+        Collider[] moduleCollider = Physics.OverlapBox(newmoduleCollider.transform.position, newmoduleCollider.size*0.5f, newmoduleCollider.transform.rotation, LayerMask.GetMask("GenerationMask"));
             foreach (Collider collider in moduleCollider)
             {
                 if (collider.gameObject != newModul.gameObject) // 자기 자신은 제외
@@ -331,7 +333,7 @@ public class DungeonGenerator : MonoBehaviour
                     return true; // 겹치는 모듈이 존재함
                 }
             }
-        }
+        // 문제 1 center가 로컬이라 잘못된 값이 나온다 
 
         return false; // 겹치는 모듈이 없음
     }
@@ -368,13 +370,13 @@ public class DungeonGenerator : MonoBehaviour
     /// <param name="existConnectors">이미 연결중인 커넥터</param>
     /// <param name="modul">연결한 모듈</param>
     /// <returns>새로 연결될 커넥터들</returns>
-    private List<ModulConnector> AddValuesWithoutDuplicates(ModulConnector existConnectors, Modul modul)
+    private List<ModulConnector> AddValuesWithoutDuplicates(ModulConnector DConnectors, Modul modul)
     {
         List<ModulConnector> newConnecters = new List<ModulConnector>(modul.ConnectorsCount);
 
         foreach (ModulConnector connecter in modul.Connectors)
         {
-            if (connecter.transform.position != existConnectors.transform.position)
+            if (connecter != DConnectors)
             {
                 newConnecters.Add(connecter);
             }

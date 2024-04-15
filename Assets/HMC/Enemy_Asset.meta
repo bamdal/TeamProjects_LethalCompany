@@ -1,6 +1,10 @@
 fileFormatVersion: 2
+<<<<<<<< HEAD:Assets/HMC/Enemy_Asset.meta
 guid: 38282859b13ea4999a8af0194f5ddef7
 folderAsset: yes
+========
+guid: 3f47e73633631cc4e8ae9e3e7637f997
+>>>>>>>> a5eeaa4e8cb0c075a8e3dfbd046028984cf735ab:Assets/JMS/Scenes/TestScenes/05_Test_overlap.unity.meta
 DefaultImporter:
   externalObjects: {}
   userData: 

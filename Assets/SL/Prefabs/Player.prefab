@@ -137,6 +137,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8238680081705296311}
+  - component: {fileID: 990485114914279762}
   m_Layer: 0
   m_Name: Inventory
   m_TagString: Untagged
@@ -163,6 +164,18 @@ Transform:
   - {fileID: 5031080707123283546}
   m_Father: {fileID: 5964225437306367306}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &990485114914279762
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1609491831697127138}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 397752c2f92f4cb478b56fcb3de5ce48, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &2311924539692548176
 GameObject:
   m_ObjectHideFlags: 0
@@ -323,7 +336,7 @@ GameObject:
   - component: {fileID: 3573177968198787878}
   m_Layer: 0
   m_Name: Flashlight_0
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -491,7 +504,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6134542688660180932}
   serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: -0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0

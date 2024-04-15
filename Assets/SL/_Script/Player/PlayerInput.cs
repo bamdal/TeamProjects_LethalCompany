@@ -29,7 +29,9 @@ public class PlayerInput : MonoBehaviour
     PlayerInputActions inputActions;
 
     public Action<Vector2> onScroll;
-
+    public Action onItemDrop;
+    public Action onInTerminal;
+    public Action onOutTerminal;
     private void Awake()
     {
         inputActions = new PlayerInputActions();
@@ -47,11 +49,17 @@ public class PlayerInput : MonoBehaviour
         inputActions.Player.MouseRClick.performed += OnRClick;
         inputActions.Player.Jump.performed += OnJump;
         inputActions.Player.Wheel.performed += OnScroll;
+        inputActions.Player.ItemDrop.performed += OnItemDrop;
+        inputActions.Player.terminal.performed += OnInTerminal;
+        inputActions.Player.ESCInteract.performed += OnOutTerminal;
     }
 
 
     private void OnDisable()
     {
+        inputActions.Player.ESCInteract.performed -= OnOutTerminal;
+        inputActions.Player.terminal.performed -= OnInTerminal;
+        inputActions.Player.ItemDrop.performed -= OnItemDrop;
         inputActions.Player.Wheel.performed -= OnScroll;
         inputActions.Player.Jump.performed -= OnJump;
         inputActions.Player.MouseRClick.performed -= OnRClick;
@@ -95,5 +103,18 @@ public class PlayerInput : MonoBehaviour
     private void OnScroll(InputAction.CallbackContext context)
     {
         onScroll?.Invoke(context.ReadValue<Vector2>());
+    }
+
+    private void OnItemDrop(InputAction.CallbackContext context)
+    {
+        onItemDrop?.Invoke();
+    }
+    private void OnInTerminal(InputAction.CallbackContext context)
+    {
+        onInTerminal?.Invoke();
+    }
+    private void OnOutTerminal(InputAction.CallbackContext context)
+    {
+        onOutTerminal?.Invoke();
     }
 }

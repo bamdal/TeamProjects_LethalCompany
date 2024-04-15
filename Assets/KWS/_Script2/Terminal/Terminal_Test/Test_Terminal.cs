@@ -3,9 +3,12 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UI;
+using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class Test_Terminal : MonoBehaviour
 {
@@ -15,9 +18,16 @@ public class Test_Terminal : MonoBehaviour
     SphereCollider sphere;
 
     /// <summary>
-    /// TextMeshProUGUI를 사용하기 위한 변수 PressF_text
+    /// PressE_text
     /// </summary>
-    TextMeshProUGUI PressF_text;
+    TextMeshProUGUI PressE_text;
+
+    /// <summary>
+    /// mainText
+    /// </summary>
+    TextMeshProUGUI mainText;
+
+    TextMeshProUGUI storeText;
 
     /// <summary>
     /// 인터페이스를 화면의 중앙에 정렬하기 위한 오프셋
@@ -30,90 +40,189 @@ public class Test_Terminal : MonoBehaviour
     /// <summary>
     /// 플레이어 인풋 액션
     /// </summary>
-    private PlayerInputActions playerInput;
+    private PlayerInputActions playerInputActions;
+
+    /// <summary>
+    /// 인풋필드에서 엔터가 입력되었을 때 실행될 스크립트
+    /// </summary>
+    Enter enter;
+
+    /// <summary>
+    /// 플레이어 인풋 스크립트
+    /// </summary>
+    PlayerInput playerInput;
+
+    /// <summary>
+    /// 스토어 화면에서 입력된 onFlashLight 아이템을 게임매니저로 알릴 델리게이트
+    /// </summary>
+    public Action onFlashLight;
 
     private void Awake()
     {
         // SphereCollider를 찾아서 변수에 할당합니다.
         sphere = GetComponent<SphereCollider>();
 
-        // Canvas의 첫 번째 자식을 가져옵니다.
+        // 0번째 자식 canvas
         Transform canvas = transform.GetChild(0);
 
-        // "Press_F"를 이름으로 가진 자식을 찾습니다.
-        PressF_text = canvas.Find("Press_F")?.GetComponent<TextMeshProUGUI>();
+        // "Press_E"를 이름으로 가진 자식
+        /*PressE_text = canvas.Find("Press_E")?.GetComponent<TextMeshProUGUI>();
 
-        // 만약 "Press_F"를 찾지 못했다면, 경고를 출력합니다.
-        if (PressF_text == null)
+        // 만약 "Press_E"를 찾지 못했다면, 경고를 출력합니다.
+        if (PressE_text == null)
         {
             Debug.LogWarning("TextMeshProUGUI를 찾을 수 없습니다.");
+        }*/
+
+        Transform child = transform.GetChild(0);                            // 0번째 자식 canvas
+        PressE_text = canvas.GetChild(0).GetComponent<TextMeshProUGUI>();    // canvas의 0번째 자식 Press_E
+
+        mainText = canvas.GetChild(2).GetComponent<TextMeshProUGUI>();    // canvas의 2번째 자식 DefaultText
+
+        storeText = canvas.GetChild(3).GetComponent<TextMeshProUGUI>();      // canvas의 3번째 자식 StoreText
+
+
+        // 게임 시작 시
+        PressE_text.gameObject.SetActive(false);                            // 시작할 때 PressE_text 비활성화
+        mainText.gameObject.SetActive(true);                             // 시작할 때 mainText 활성화
+        storeText.gameObject.SetActive(false);                              // 시작할 때 storeText 비활성화
+
+        playerInputActions = new PlayerInputActions();
+
+        // Enter 스크립트 찾음
+        enter = FindAnyObjectByType<Enter>();
+
+        playerInput = FindAnyObjectByType<PlayerInput>();
+
+    }
+
+    private void Start()
+    {
+        enter.TotalText += ChangePanel;
+        playerInput.onInTerminal += OnEClick;
+        playerInput.onOutTerminal += OnESCClick;
+
+
+    }
+
+    private void OnESCClick()
+    {
+        Debug.Log($"ESC 키가 눌렸습니다");
+        if (!PressE_text.gameObject.activeSelf)
+        {
+            // 포커스 아웃
+            enter.FocusOut();
+
+            Debug.Log($"PressE 비활성화 & ESC 키가 눌렸습니다.");      // ESC 키가 눌렸을 때 디버그 출력
+            PressE_text.gameObject.SetActive(true);
+            SwitchCamera();
+
+            // Move 액션 처리 활성화
+            playerInputActions.Player.Move.Enable();
         }
+    }
 
-        PressF_text.gameObject.SetActive(false);            // 시작할 때 TextMeshProUGUI를 비활성화
+    /// <summary>
+    /// 터미널에 진입하기 위한 함수
+    /// </summary>
+    private void OnEClick()
+    {
+        Debug.Log($"E 키가 눌렸습니다.");
+        if (PressE_text.gameObject.activeSelf)
+        {
+            enter.ClearText();
+            // 포커스 온
+            enter.FocusOn();
+            Debug.Log("PressE 활성화 & E 키가 눌렸습니다.");      // E 키가 눌렸을 때 디버그 출력
+            PressE_text.gameObject.SetActive(false);
+            SwitchCamera();
 
-        playerInput = new PlayerInputActions();
+            // Move 액션 처리 비활성화
+            playerInputActions.Player.Move.Disable();
+        }
     }
 
     private void OnEnable()
     {
-        playerInput.Enable();
-        playerInput.Player.Interact.performed += OnFClick;
-        playerInput.Player.ESCInteract.performed += OnESCClick;
+        playerInputActions.Enable();
+        //playerInputActions.Player.terminal.performed += OnEClick;
+        //playerInputActions.Player.ESCInteract.performed += OnESCClick;        
     }
 
     private void OnDisable()
     {
-        playerInput.Player.ESCInteract.performed -= OnESCClick;
-        playerInput.Player.Interact.performed -= OnFClick;
-        playerInput.Disable();
+        //playerInputActions.Player.ESCInteract.performed -= OnESCClick;
+        //playerInputActions.Player.terminal.performed -= OnEClick;
+        playerInputActions.Disable();
     }
 
     /// <summary>
     /// 터미널에 진입하기 위한 함수
     /// </summary>
     /// <param name="context"></param>
-    private void OnFClick(InputAction.CallbackContext context)
+    /*private void OnEClick(InputAction.CallbackContext context)
     {
-        Debug.Log($"F 키가 눌렸습니다.");
-        if (PressF_text.gameObject.activeSelf && context.action.triggered)
+        Debug.Log($"E 키가 눌렸습니다.");
+        if (PressE_text.gameObject.activeSelf && context.action.triggered)
         {
-            Debug.Log("PressF 활성화 & F 키가 눌렸습니다.");      // F 키가 눌렸을 때 디버그 출력
-            PressF_text.gameObject.SetActive(false);
+            enter.ClearText();
+            // 포커스 온
+            enter.FocusOn();
+            Debug.Log("PressE 활성화 & E 키가 눌렸습니다.");      // E 키가 눌렸을 때 디버그 출력
+            PressE_text.gameObject.SetActive(false);
             SwitchCamera();
+
+            // Move 액션 처리 비활성화
+            playerInputActions.Player.Move.Disable();
         }
-    }
+
+    }*/
 
     /// <summary>
     /// 터미널에서 빠져나오기 위한 함수
     /// </summary>
     /// <param name="context"></param>
-    private void OnESCClick(InputAction.CallbackContext context)
+    /*private void OnESCClick(InputAction.CallbackContext context)
     {
         Debug.Log($"ESC 키가 눌렸습니다");
-        if (!PressF_text.gameObject.activeSelf && context.action.triggered)
+        if (!PressE_text.gameObject.activeSelf && context.action.triggered)
         {
-            Debug.Log($"PressF 비활성화 & ESC 키가 눌렸습니다.");      // ESC 키가 눌렸을 때 디버그 출력
-            PressF_text.gameObject.SetActive(true);
+            // 포커스 아웃
+            enter.FocusOut();
+
+            Debug.Log($"PressE 비활성화 & ESC 키가 눌렸습니다.");      // ESC 키가 눌렸을 때 디버그 출력
+            PressE_text.gameObject.SetActive(true);
             SwitchCamera();
+
+            // Move 액션 처리 활성화
+            playerInputActions.Player.Move.Enable();
         }
 
-    }
+    }*/
 
+    /// <summary>
+    /// 플레이어가 터미널의 범위 안에 들어왔는지 확인하는 함수
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerEnter(Collider other)
     {
         if (other.gameObject.tag == "Player")                   // 충돌한 상대 오브젝트의 태그가 Player이면
         {
             Debug.Log($"[Player] 가 범위 안에 들어왔다.");
-            PressF_text.gameObject.SetActive(true);             // TextMeshProUGUI를 활성화
+            PressE_text.gameObject.SetActive(true);             // TextMeshProUGUI를 활성화
         }
     }
 
+    /// <summary>
+    /// 플레이어가 터미널의 범위 밖으로 나갔는지 확인하는 함수
+    /// </summary>
+    /// <param name="other"></param>
     private void OnTriggerExit(Collider other)
     {
         if (other.gameObject.tag == "Player")                   // 충돌한 상대 오브젝트의 태그가 Player이면
         {
             Debug.Log($"[Player] 가 범위 밖으로 나갔다.");
-            PressF_text.gameObject.SetActive(false);            // TextMeshProUGUI를 비활성화
+            PressE_text.gameObject.SetActive(false);            // TextMeshProUGUI를 비활성화
         }
     }
 
@@ -128,12 +237,62 @@ public class Test_Terminal : MonoBehaviour
             int nearPriority = nearVcam.Priority;
             nearVcam.Priority = farVcam.Priority;
             farVcam.Priority = nearPriority;
+                        
         }
         else
         {
             Debug.LogError("Priority를 바꿀 수 없다.");
         }
     }
+
+    /// <summary>
+    /// inputField에서 문자가 입력되었을 때 지정한 문자인지 확인하고 처리하는 함수
+    /// </summary>
+    /// <param name="obj">inputField에서 입력된 문자</param>
+    void ChangePanel(string obj)
+    {
+        /*//Debug.Log($"ChangePanel이 {obj}가 입력된 것을 확인했다.");
+        if (obj == "Store" || obj == "store" || obj == "스토어")               // 입력된 문자열이 store 라면
+        {
+            mainText.gameObject.SetActive(false);        // mainText 비활성화
+            storeText.gameObject.SetActive(true);           // storeText 활성화
+        }
+        if (obj == "Main" || obj == "main" || obj == "메인")           // 입력된 문자열이 default 라면
+        {
+            storeText.gameObject.SetActive(false);          // storeText 비활성화
+            mainText.gameObject.SetActive(true);         // mainText 활성화
+        }*/
+
+        switch (obj.ToLower())
+        {
+            case "store":
+            case "스토어":
+                mainText.gameObject.SetActive(false);           // mainText 비활성화
+                storeText.gameObject.SetActive(true);           // storeText 활성화
+                break;
+            case "main":
+            case "메인":
+                storeText.gameObject.SetActive(false);          // storeText 비활성화
+                mainText.gameObject.SetActive(true);            // mainText 활성화
+                break;
+
+
+
+
+            case "flashlight":
+            case "손전등":
+                if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf)
+                {
+                    Debug.Log("스토어 입력 중 손전등 입력 확인");
+                    onFlashLight?.Invoke();
+                }
+                break;
+            default:
+                Debug.Log("정확히 입력해주세요.");
+                break;
+        }
+    }
+
 
 }
 

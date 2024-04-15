@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class Modul : MonoBehaviour
@@ -31,21 +32,21 @@ public class Modul : MonoBehaviour
     /// <summary>
     /// 모듈의 사이즈를 구하기 위한 랜더러
     /// </summary>
-    public MeshRenderer rend;
+    public Collider rend;
 
     /// <summary>
     /// 모듈의 중심점
     /// </summary>
     Vector3 center;
 
-    public Vector3 Center => rend.bounds.center;
+    //public Vector3 Center => rend.bounds.center;
 
     /// <summary>
     /// 모듈의 사이즈
     /// </summary>
     Vector3 size;
 
-    public Vector3 Size => rend.bounds.size;    
+    //public Vector3 Size => rend.bounds.size;    
 
     private void Awake()
     {
@@ -56,7 +57,7 @@ public class Modul : MonoBehaviour
         if (rend == null)
         {
 
-            rend = GetComponent<MeshRenderer>();
+            rend = GetComponent<Collider>();
         }
     }
 
@@ -68,6 +69,18 @@ public class Modul : MonoBehaviour
     public Vector3 GetSize()
     {
         return size;
+    }
+
+
+    private void OnDrawGizmosSelected()
+    {
+        Handles.color = Color.red;
+        if (rend == null)
+        {
+
+            rend = GetComponent<Collider>();
+        }
+        //Handles.DrawWireCube(Center, Size);
     }
 
 
