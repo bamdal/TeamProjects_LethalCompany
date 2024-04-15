@@ -57,6 +57,11 @@ public class Test_Terminal : MonoBehaviour
     /// </summary>
     public Action onFlashLight;
 
+    /// <summary>
+    /// true면 터미널 범위에 진입
+    /// </summary>
+    bool TerminalOnOff = false;
+
     private void Awake()
     {
         // SphereCollider를 찾아서 변수에 할당합니다.
@@ -103,43 +108,6 @@ public class Test_Terminal : MonoBehaviour
         playerInput.onOutTerminal += OnESCClick;
 
 
-    }
-
-    private void OnESCClick()
-    {
-        Debug.Log($"ESC 키가 눌렸습니다");
-        if (!PressE_text.gameObject.activeSelf)
-        {
-            // 포커스 아웃
-            enter.FocusOut();
-
-            Debug.Log($"PressE 비활성화 & ESC 키가 눌렸습니다.");      // ESC 키가 눌렸을 때 디버그 출력
-            PressE_text.gameObject.SetActive(true);
-            SwitchCamera();
-
-            // Move 액션 처리 활성화
-            playerInputActions.Player.Move.Enable();
-        }
-    }
-
-    /// <summary>
-    /// 터미널에 진입하기 위한 함수
-    /// </summary>
-    private void OnEClick()
-    {
-        Debug.Log($"E 키가 눌렸습니다.");
-        if (PressE_text.gameObject.activeSelf)
-        {
-            enter.ClearText();
-            // 포커스 온
-            enter.FocusOn();
-            Debug.Log("PressE 활성화 & E 키가 눌렸습니다.");      // E 키가 눌렸을 때 디버그 출력
-            PressE_text.gameObject.SetActive(false);
-            SwitchCamera();
-
-            // Move 액션 처리 비활성화
-            playerInputActions.Player.Move.Disable();
-        }
     }
 
     private void OnEnable()
@@ -200,6 +168,44 @@ public class Test_Terminal : MonoBehaviour
 
     }*/
 
+    
+
+    // 터미널 진입 관련 -----------------------------------------------------------------------------------------------------
+
+    /// <summary>
+    /// 터미널에 진입하기 위한 함수
+    /// </summary>
+    private void OnEClick()
+    {
+        Debug.Log($"E 키가 눌렸습니다.");
+        if (PressE_text.gameObject.activeSelf && TerminalOnOff == true)
+        {
+            enter.ClearText();
+            // 포커스 온
+            enter.FocusOn();
+            Debug.Log("PressE 활성화 & E 키가 눌렸습니다.");      // E 키가 눌렸을 때 디버그 출력
+            PressE_text.gameObject.SetActive(false);
+            SwitchCamera();
+        }
+    }
+
+    /// <summary>
+    /// 터미널에서 빠져나오기 위한 함수
+    /// </summary>
+    private void OnESCClick()
+    {
+        Debug.Log($"ESC 키가 눌렸습니다");
+        if (!PressE_text.gameObject.activeSelf && TerminalOnOff == true)
+        {
+            // 포커스 아웃
+            enter.FocusOut();
+
+            Debug.Log($"PressE 비활성화 & ESC 키가 눌렸습니다.");      // ESC 키가 눌렸을 때 디버그 출력
+            PressE_text.gameObject.SetActive(true);
+            SwitchCamera();
+        }
+    }
+
     /// <summary>
     /// 플레이어가 터미널의 범위 안에 들어왔는지 확인하는 함수
     /// </summary>
@@ -208,6 +214,7 @@ public class Test_Terminal : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")                   // 충돌한 상대 오브젝트의 태그가 Player이면
         {
+            TerminalOnOff = true;
             Debug.Log($"[Player] 가 범위 안에 들어왔다.");
             PressE_text.gameObject.SetActive(true);             // TextMeshProUGUI를 활성화
         }
@@ -221,6 +228,7 @@ public class Test_Terminal : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")                   // 충돌한 상대 오브젝트의 태그가 Player이면
         {
+            TerminalOnOff = false;
             Debug.Log($"[Player] 가 범위 밖으로 나갔다.");
             PressE_text.gameObject.SetActive(false);            // TextMeshProUGUI를 비활성화
         }
@@ -244,6 +252,8 @@ public class Test_Terminal : MonoBehaviour
             Debug.LogError("Priority를 바꿀 수 없다.");
         }
     }
+
+    // 터미널의 InputField 관련 ------------------------------------------------------------------------------------------------
 
     /// <summary>
     /// inputField에서 문자가 입력되었을 때 지정한 문자인지 확인하고 처리하는 함수
@@ -275,10 +285,6 @@ public class Test_Terminal : MonoBehaviour
                 storeText.gameObject.SetActive(false);          // storeText 비활성화
                 mainText.gameObject.SetActive(true);            // mainText 활성화
                 break;
-
-
-
-
             case "flashlight":
             case "손전등":
                 if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf)
