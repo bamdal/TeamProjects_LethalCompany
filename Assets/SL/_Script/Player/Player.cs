@@ -172,6 +172,8 @@ public class Player : MonoBehaviour
             }
         }
     }
+
+    InventoryUI invenUI;
     private void Awake()
     {
         input = GetComponent<PlayerInput>();
@@ -195,6 +197,7 @@ public class Player : MonoBehaviour
         itemRader = transform.GetChild(2);
         groundCheckPosition = transform.GetChild(4);
         gravityY = -1f;
+        invenUI = FindAnyObjectByType<InventoryUI>();
     }
 
 
@@ -465,14 +468,35 @@ public class Player : MonoBehaviour
                                 itemRigidbody.isKinematic = true;
                             itemTransform.rotation = new Quaternion(0, 0, 0, 0);
                             hit.collider.gameObject.SetActive(false);
-                            if (inventory.InvenSlots[CurrentItemIndex].childCount > 0)
+                            if (inventory.InvenSlots[CurrentItemIndex] != null && inventory.InvenSlots[CurrentItemIndex].childCount > 0)
                             {
                                 inventory.InvenSlots[CurrentItemIndex].GetChild(0).gameObject.SetActive(true);
                             }
+
+
                             Debug.Log("아이템을 획득했습니다!");
                             break;
                         }
 
+                    }
+                    for (int j = 0; j < 4; j++)
+                    {
+                        if (inventory.InvenSlots[j].childCount > 0)
+                        {
+                            Transform currentItem = inventory.InvenSlots[j].GetChild(0);
+                            if (currentItem != null)
+                            {
+                                Debug.Log(currentItem);
+                                IItemDataBase itemData = currentItem.GetComponent<IItemDataBase>();
+                                if (itemData != null)
+                                {
+                                    Debug.Log(itemData);
+                                    inventory.ItemDBs[j] = itemData.GetItemDB();
+                                    invenUI.ItemImages[j].sprite = inventory.ItemDBs[j].itemIcon;
+                                    Debug.Log(inventory.ItemDBs[j].itemIcon);
+                                }
+                            }
+                        }
                     }
 
                 }
@@ -498,7 +522,7 @@ public class Player : MonoBehaviour
     }
     private void OnItemDrop()
     {
-        if (inventory.InvenSlots[CurrentItemIndex].childCount > 0)
+        if (inventory.InvenSlots[CurrentItemIndex] != null && inventory.InvenSlots[CurrentItemIndex].childCount > 0)
         {
             CurrentItem = inventory.InvenSlots[CurrentItemIndex].GetChild(0);
             Collider itemCollider = CurrentItem.GetComponent<Collider>();
@@ -584,39 +608,32 @@ public class Player : MonoBehaviour
         Debug.Log(vector.normalized);
         foreach (Transform obj in inventory.InvenSlots)
         {
-            if (obj.childCount > 0 && obj.GetChild(0).gameObject.activeSelf)
+            if (obj != null && obj.childCount > 0 && obj.GetChild(0).gameObject.activeSelf)
             {
                 obj.GetChild(0).gameObject.SetActive(false);
             }
         }
+
         if (vector.y > 0)
         {
             CurrentItemIndex = PrevIndex(CurrentItemIndex);
-            Debug.Log(CurrentItemIndex + "감소");
-            if (inventory.InvenSlots[CurrentItemIndex].childCount > 0)
-            {
-                currentItem = inventory.InvenSlots[CurrentItemIndex].GetChild(0);
-                if (currentItem != null)
-                {
-                    currentItem.gameObject.SetActive(true);
-                }
-            }
-
+            Debug.Log(CurrentItemIndex + " 감소");
         }
         else if (vector.y < 0)
         {
             CurrentItemIndex = NextIndex(CurrentItemIndex);
-            Debug.Log(CurrentItemIndex + "증가");
-            if(inventory.InvenSlots[CurrentItemIndex].childCount > 0)
-            {
-                currentItem = inventory.InvenSlots[CurrentItemIndex].GetChild(0);
-                if (currentItem != null)
-                {
-                    currentItem.gameObject.SetActive(true);
-                }
-            }
-
+            Debug.Log(CurrentItemIndex + " 증가");
         }
+
+        if (inventory.InvenSlots[CurrentItemIndex] != null && inventory.InvenSlots[CurrentItemIndex].childCount > 0)
+        {
+            currentItem = inventory.InvenSlots[CurrentItemIndex].GetChild(0);
+            if (currentItem != null)
+            {
+                currentItem.gameObject.SetActive(true);
+            }
+        }
+
     }
 
     int NextIndex(int index)
