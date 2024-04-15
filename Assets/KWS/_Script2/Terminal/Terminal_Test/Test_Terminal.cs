@@ -7,6 +7,8 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.SocialPlatforms.Impl;
+using UnityEngine.UI;
+using static UnityEditor.Timeline.TimelinePlaybackControls;
 
 public class Test_Terminal : MonoBehaviour
 {
@@ -38,9 +40,17 @@ public class Test_Terminal : MonoBehaviour
     /// <summary>
     /// 플레이어 인풋 액션
     /// </summary>
-    private PlayerInputActions playerInput;
+    private PlayerInputActions playerInputActions;
 
+    /// <summary>
+    /// 인풋필드에서 엔터가 입력되었을 때 실행될 스크립트
+    /// </summary>
     Enter enter;
+
+    /// <summary>
+    /// 플레이어 인풋 스크립트
+    /// </summary>
+    PlayerInput playerInput;
 
     private void Awake()
     {
@@ -72,48 +82,75 @@ public class Test_Terminal : MonoBehaviour
         mainText.gameObject.SetActive(true);                             // 시작할 때 mainText 활성화
         storeText.gameObject.SetActive(false);                              // 시작할 때 storeText 비활성화
 
-        playerInput = new PlayerInputActions();
+        playerInputActions = new PlayerInputActions();
 
         // Enter 스크립트 찾음
         enter = FindAnyObjectByType<Enter>();
-        
-        
+
+        playerInput = FindAnyObjectByType<PlayerInput>();
 
     }
 
     private void Start()
     {
         enter.TotalText += ChangePanel;
+        playerInput.onTerminal += OnEClick;
+
+
+    }
+
+    private void OnEClick()
+    {
+        Debug.Log($"E 키가 눌렸습니다.");
+        if (PressE_text.gameObject.activeSelf)
+        {
+            enter.ClearText();
+            // 포커스 온
+            enter.FocusOn();
+            Debug.Log("PressE 활성화 & E 키가 눌렸습니다.");      // E 키가 눌렸을 때 디버그 출력
+            PressE_text.gameObject.SetActive(false);
+            SwitchCamera();
+
+            // Move 액션 처리 비활성화
+            playerInputActions.Player.Move.Disable();
+        }
     }
 
     private void OnEnable()
     {
-        playerInput.Enable();
-        playerInput.Player.Interact.performed += OnFClick;
-        playerInput.Player.ESCInteract.performed += OnESCClick;
+        playerInputActions.Enable();
+        //playerInputActions.Player.terminal.performed += OnEClick;
+        playerInputActions.Player.ESCInteract.performed += OnESCClick;        
     }
 
     private void OnDisable()
     {
-        playerInput.Player.ESCInteract.performed -= OnESCClick;
-        playerInput.Player.Interact.performed -= OnFClick;
-        playerInput.Disable();
+        playerInputActions.Player.ESCInteract.performed -= OnESCClick;
+        //playerInputActions.Player.terminal.performed -= OnEClick;
+        playerInputActions.Disable();
     }
 
     /// <summary>
     /// 터미널에 진입하기 위한 함수
     /// </summary>
     /// <param name="context"></param>
-    private void OnFClick(InputAction.CallbackContext context)
+    /*private void OnEClick(InputAction.CallbackContext context)
     {
         Debug.Log($"E 키가 눌렸습니다.");
         if (PressE_text.gameObject.activeSelf && context.action.triggered)
         {
-            Debug.Log("PressE 활성화 & E 키가 눌렸습니다.");      // F 키가 눌렸을 때 디버그 출력
+            enter.ClearText();
+            // 포커스 온
+            enter.FocusOn();
+            Debug.Log("PressE 활성화 & E 키가 눌렸습니다.");      // E 키가 눌렸을 때 디버그 출력
             PressE_text.gameObject.SetActive(false);
             SwitchCamera();
+
+            // Move 액션 처리 비활성화
+            playerInputActions.Player.Move.Disable();
         }
-    }
+
+    }*/
 
     /// <summary>
     /// 터미널에서 빠져나오기 위한 함수
@@ -124,9 +161,15 @@ public class Test_Terminal : MonoBehaviour
         Debug.Log($"ESC 키가 눌렸습니다");
         if (!PressE_text.gameObject.activeSelf && context.action.triggered)
         {
+            // 포커스 아웃
+            enter.FocusOut();
+
             Debug.Log($"PressE 비활성화 & ESC 키가 눌렸습니다.");      // ESC 키가 눌렸을 때 디버그 출력
             PressE_text.gameObject.SetActive(true);
             SwitchCamera();
+
+            // Move 액션 처리 활성화
+            playerInputActions.Player.Move.Enable();
         }
 
     }
@@ -168,6 +211,7 @@ public class Test_Terminal : MonoBehaviour
             int nearPriority = nearVcam.Priority;
             nearVcam.Priority = farVcam.Priority;
             farVcam.Priority = nearPriority;
+                        
         }
         else
         {
@@ -204,6 +248,15 @@ public class Test_Terminal : MonoBehaviour
             case "메인":
                 storeText.gameObject.SetActive(false);          // storeText 비활성화
                 mainText.gameObject.SetActive(true);            // mainText 활성화
+                break;
+
+
+
+            case "무전기":
+                if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf)
+                {
+                    Debug.Log("스토어 입력 중 무전기 입력 확인");
+                }
                 break;
             default:
                 Debug.Log("정확히 입력해주세요.");
