@@ -49,6 +49,11 @@ public class Enter : MonoBehaviour
 
     private void EnterClick(InputAction.CallbackContext context)
     {
+        // 메시지를 보내도 포커스 활성화
+        //inputField.ActivateInputField();
+
+        FocusOn();
+
         // inputField가 공백이 아닐때
         if (inputField.text != "")
         {
@@ -56,9 +61,14 @@ public class Enter : MonoBehaviour
             totalText = inputField.text;        // inputField에서 입력된 마지막 문자를 제외한 문자들을 totaltext에 저장하고
 
             // 입력 필드의 텍스트를 초기화
-            inputField.text = "";               // inputField 초기화 => 마지막 문자가 남음
+            ClearText();                        // inputField 초기화 => 마지막 문자가 남음
             StartCoroutine(LastWordChecdk());   // 코루틴 실행
         }
+
+        // 메시지를 보낸 후 비활성화
+        //inputField.Select();
+
+        FocusOut();
     }
 
     /// <summary>
@@ -72,7 +82,7 @@ public class Enter : MonoBehaviour
     {
         totalText += inputField.text;       // 마지막 문자를 totalText에 더해줌
         Debug.Log(totalText);               // 디버그로 전체 문자 출력
-        inputField.text = "";               // 마지막 문자 초기화
+        ClearText();                        // 마지막 문자 초기화
         TotalText?.Invoke(totalText);
     }
 
@@ -84,5 +94,22 @@ public class Enter : MonoBehaviour
     {
         yield return new WaitForSeconds(0.01f);
         EndEdit(totalText);
+    }
+
+    public void FocusOn()
+    {
+        // 메시지를 보내도 포커스 활성화
+        inputField.ActivateInputField();
+    }
+
+    public void FocusOut()
+    {
+        // 메시지를 보낸 후 비활성화
+        inputField.Select();
+    }
+
+    public void ClearText()
+    {
+        inputField.text = "";
     }
 }

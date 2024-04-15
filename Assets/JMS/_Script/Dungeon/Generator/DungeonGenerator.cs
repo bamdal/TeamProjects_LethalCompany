@@ -189,6 +189,7 @@ public class DungeonGenerator : MonoBehaviour
     /// </summary>
     private void DungeonGeneration()
     {
+        index = 0; // 재생성시 초기화용
         Modul Start = Instantiate(startModul, generationStartPoint);   // 맵 시작 지점 스폰
 
         List<ModulConnector> existConnectors = new List<ModulConnector>(Start.Connectors); // 시작지점의 연결지점 가져오기
@@ -323,7 +324,7 @@ public class DungeonGenerator : MonoBehaviour
         //}
         BoxCollider newmoduleCollider = newModul.GetComponent<BoxCollider>();
 
-        Collider[] moduleCollider = Physics.OverlapBox(newmoduleCollider.center, newmoduleCollider.size, newmoduleCollider.transform.rotation, LayerMask.GetMask("GenerationMask"));
+        Collider[] moduleCollider = Physics.OverlapBox(newmoduleCollider.transform.position, newmoduleCollider.size*0.5f, newmoduleCollider.transform.rotation, LayerMask.GetMask("GenerationMask"));
             foreach (Collider collider in moduleCollider)
             {
                 if (collider.gameObject != newModul.gameObject) // 자기 자신은 제외
@@ -332,7 +333,7 @@ public class DungeonGenerator : MonoBehaviour
                     return true; // 겹치는 모듈이 존재함
                 }
             }
-        
+        // 문제 1 center가 로컬이라 잘못된 값이 나온다 
 
         return false; // 겹치는 모듈이 없음
     }
