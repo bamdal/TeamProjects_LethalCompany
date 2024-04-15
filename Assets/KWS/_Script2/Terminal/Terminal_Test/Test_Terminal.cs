@@ -99,11 +99,32 @@ public class Test_Terminal : MonoBehaviour
     private void Start()
     {
         enter.TotalText += ChangePanel;
-        playerInput.onTerminal += OnEClick;
+        playerInput.onInTerminal += OnEClick;
+        playerInput.onOutTerminal += OnESCClick;
 
 
     }
 
+    private void OnESCClick()
+    {
+        Debug.Log($"ESC 키가 눌렸습니다");
+        if (!PressE_text.gameObject.activeSelf)
+        {
+            // 포커스 아웃
+            enter.FocusOut();
+
+            Debug.Log($"PressE 비활성화 & ESC 키가 눌렸습니다.");      // ESC 키가 눌렸을 때 디버그 출력
+            PressE_text.gameObject.SetActive(true);
+            SwitchCamera();
+
+            // Move 액션 처리 활성화
+            playerInputActions.Player.Move.Enable();
+        }
+    }
+
+    /// <summary>
+    /// 터미널에 진입하기 위한 함수
+    /// </summary>
     private void OnEClick()
     {
         Debug.Log($"E 키가 눌렸습니다.");
@@ -125,12 +146,12 @@ public class Test_Terminal : MonoBehaviour
     {
         playerInputActions.Enable();
         //playerInputActions.Player.terminal.performed += OnEClick;
-        playerInputActions.Player.ESCInteract.performed += OnESCClick;        
+        //playerInputActions.Player.ESCInteract.performed += OnESCClick;        
     }
 
     private void OnDisable()
     {
-        playerInputActions.Player.ESCInteract.performed -= OnESCClick;
+        //playerInputActions.Player.ESCInteract.performed -= OnESCClick;
         //playerInputActions.Player.terminal.performed -= OnEClick;
         playerInputActions.Disable();
     }
@@ -161,7 +182,7 @@ public class Test_Terminal : MonoBehaviour
     /// 터미널에서 빠져나오기 위한 함수
     /// </summary>
     /// <param name="context"></param>
-    private void OnESCClick(InputAction.CallbackContext context)
+    /*private void OnESCClick(InputAction.CallbackContext context)
     {
         Debug.Log($"ESC 키가 눌렸습니다");
         if (!PressE_text.gameObject.activeSelf && context.action.triggered)
@@ -177,7 +198,7 @@ public class Test_Terminal : MonoBehaviour
             playerInputActions.Player.Move.Enable();
         }
 
-    }
+    }*/
 
     /// <summary>
     /// 플레이어가 터미널의 범위 안에 들어왔는지 확인하는 함수
