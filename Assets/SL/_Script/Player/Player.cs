@@ -110,7 +110,7 @@ public class Player : MonoBehaviour
     /// <summary>
     /// 중력 가속도 변수
     /// </summary>
-    private float gravityForce = -9.8f ;
+    private float gravityForce = -9.8f;
 
     // 컴포넌트들
     CharacterController characterController;
@@ -139,18 +139,39 @@ public class Player : MonoBehaviour
     /// </summary>
     Vector3 gravityDir = Vector3.zero;
 
-    Transform[] invenSlots = new Transform[4];
-    public Transform[] InvenSlots
-    {
-        get => invenSlots;
-    }
     public float groundCheckDistance = 0.2f;    // 바닥 체크 거리
     public LayerMask groundLayer;               // 바닥을 나타내는 레이어
     Transform groundCheckPosition;              // 바닥 체크할 포지션
-/*    Transform equipItemBox;
-    Transform equipItem;*/
+    /*    Transform equipItemBox;
+        Transform equipItem;*/
     Transform itemRader;
     Inventory inventory;
+
+    Transform currentItem = null;
+
+    public Transform CurrentItem
+    {
+        get => currentItem;
+        set
+        {
+            if(currentItem != value)
+            {
+                currentItem = value;
+            }
+        }
+    }
+    int currentItemIndex = 0;
+    public int CurrentItemIndex
+    {
+        get => currentItemIndex;
+        set
+        {
+            if(currentItemIndex != value)
+            {
+                currentItemIndex = value;
+            }
+        }
+    }
     private void Awake()
     {
         input = GetComponent<PlayerInput>();
@@ -163,17 +184,13 @@ public class Player : MonoBehaviour
         input.onRClick += OnRClickInput;
         input.onScroll += OnScrollWheel;
         input.onItemDrop += OnItemDrop;
-        input.onTerminal += OnTerminal;
+        input.onInTerminal += OnInTerminal;
+        input.onOutTerminal += OnOutTerminal;
         cam = FindAnyObjectByType<Camera>();
         inventoryTransform = transform.Find("Inventory");
-        for(int i = 0;  i < 4; i++)
-        {
-            invenSlots[i] = inventoryTransform.GetChild(i);
-        }
         inventory = inventoryTransform.GetComponent<Inventory>();
         currnetStamina = stamina;
-/*        equipItemBox = transform.GetChild(5);
-        equipItem = equipItemBox.GetChild(0);*/
+        currentItem = inventory.InvenSlots[0];
         characterController = GetComponent<CharacterController>();
         itemRader = transform.GetChild(2);
         groundCheckPosition = transform.GetChild(4);
@@ -308,7 +325,7 @@ public class Player : MonoBehaviour
             gravityY = 5f;
         }
     }
-    
+
     /// <summary>
     /// 현재 지금 땅 위인지 확인하는 함수
     /// </summary>
@@ -329,21 +346,21 @@ public class Player : MonoBehaviour
             gravityY += gravityForce * Time.deltaTime;
         }
     }
-    
 
-/*    private void OnDrawGizmos()
-    {
-        // 캐릭터의 아래에 레이캐스트를 쏴서 바닥에 닿았는지 확인
-        bool isGrounded = IsGrounded();
 
-        // 기즈모 색상 설정
-        Gizmos.color = isGrounded ? Color.green : Color.red;
+    /*    private void OnDrawGizmos()
+        {
+            // 캐릭터의 아래에 레이캐스트를 쏴서 바닥에 닿았는지 확인
+            bool isGrounded = IsGrounded();
 
-        // 레이캐스트의 시작점과 끝점을 계산하여 기즈모로 그리기
-        Vector3 startPos = groundCheckPosition.position;
-        Vector3 endPos = startPos + Vector3.down * 0.2f;
-        Gizmos.DrawLine(startPos, endPos);
-    }*/
+            // 기즈모 색상 설정
+            Gizmos.color = isGrounded ? Color.green : Color.red;
+
+            // 레이캐스트의 시작점과 끝점을 계산하여 기즈모로 그리기
+            Vector3 startPos = groundCheckPosition.position;
+            Vector3 endPos = startPos + Vector3.down * 0.2f;
+            Gizmos.DrawLine(startPos, endPos);
+        }*/
 
 
 
@@ -408,7 +425,7 @@ public class Player : MonoBehaviour
                 break;
         }
     }
-    
+
     /// <summary>
     /// 상호작용 처리용 함수
     /// </summary>
@@ -430,15 +447,15 @@ public class Player : MonoBehaviour
                 {
                     Debug.Log(hit);
 
-                    for (int i = 0; i < invenSlots.Length; i++)
+                    for (int i = 0; i < inventory.InvenSlots.Length; i++)
                     {
-                        if (invenSlots[i].childCount == 0)
+                        if (inventory.InvenSlots[i].childCount == 0)
                         {
                             // 아이템을 인벤토리 슬롯에 넣습니다.
                             Transform itemTransform = hit.collider.transform;
-                            itemTransform.SetParent(invenSlots[i]);
-                            itemTransform.localPosition = new Vector3(0,-0.5f,1); // 포지션을 (0, 0, 0)으로 설정합니다.
-
+                            itemTransform.SetParent(inventory.InvenSlots[i]);
+                            itemTransform.localPosition = new Vector3(0, -0.5f, 1); // 포지션을 (0, 0, 0)으로 설정합니다.
+                            
                             Collider itemCollider = hit.collider.GetComponent<Collider>();
                             if (itemCollider != null)
                                 itemCollider.enabled = false;
@@ -446,8 +463,12 @@ public class Player : MonoBehaviour
                             Rigidbody itemRigidbody = hit.collider.GetComponent<Rigidbody>();
                             if (itemRigidbody != null)
                                 itemRigidbody.isKinematic = true;
-
+                            itemTransform.rotation = new Quaternion(0, 0, 0, 0);
                             hit.collider.gameObject.SetActive(false);
+                            if (inventory.InvenSlots[CurrentItemIndex].childCount > 0)
+                            {
+                                inventory.InvenSlots[CurrentItemIndex].GetChild(0).gameObject.SetActive(true);
+                            }
                             Debug.Log("아이템을 획득했습니다!");
                             break;
                         }
@@ -473,19 +494,21 @@ public class Player : MonoBehaviour
         {
             Debug.Log("f키 떨어짐!");
         }
-        
+
     }
     private void OnItemDrop()
     {
-        Transform item = invenSlots[FindIvenIndex(invenSlots)].GetChild(0);
-        Collider itemCollider = item.GetComponent<Collider>();
-        if (itemCollider != null)
-            itemCollider.enabled = true;
-        Rigidbody itemRigidbody = item.GetComponent<Rigidbody>();
-        if (itemRigidbody != null)
-            itemRigidbody.isKinematic = false;
-        item.SetParent(null); // 부모에서 떼어냅니다.
-
+        if (inventory.InvenSlots[CurrentItemIndex].childCount > 0)
+        {
+            CurrentItem = inventory.InvenSlots[CurrentItemIndex].GetChild(0);
+            Collider itemCollider = CurrentItem.GetComponent<Collider>();
+            if (itemCollider != null)
+                itemCollider.enabled = true;
+            Rigidbody itemRigidbody = CurrentItem.GetComponent<Rigidbody>();
+            if (itemRigidbody != null)
+                itemRigidbody.isKinematic = false;
+            CurrentItem.SetParent(null); // 부모에서 떼어냅니다.
+        }
     }
 
 
@@ -517,8 +540,6 @@ public class Player : MonoBehaviour
 
     }
 
-    Transform currentItem;
-
 
 
     /// <summary>
@@ -526,7 +547,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private void OnLClickInput(bool isPressed)
     {
-        Transform equipItem = FindActiveObject(invenSlots);
+        /*Transform equipItem = FindActiveObject(invenSlots);
         // 아이템 사용 처리
         if (isPressed && equipItem != null)
         {
@@ -541,66 +562,67 @@ public class Player : MonoBehaviour
                 Debug.Log("이큅터블 없음!");
             }
         }
-    }
-
-    Transform FindActiveObject(Transform[] objects)
-    {
-        Transform result = null;
-        foreach (Transform obj in objects)
+        */
+        // 아이템 사용 처리
+        if (CurrentItem != null && isPressed)
         {
-            if (obj.childCount > 0 && obj.GetChild(0).gameObject.activeSelf)
+            Debug.Log("찾았음" + CurrentItem);
+            IEquipable equipable = CurrentItem.GetComponent<IEquipable>();
+            if (equipable != null)
             {
-                result = obj.GetChild(0);
-                break; // 활성화된 오브젝트를 찾았으므로 반복문을 종료합니다.
+                equipable.Use();
+            }
+            else
+            {
+                Debug.Log("이큅터블 없음!");
             }
         }
-        return result;
     }
 
-    int FindIvenIndex(Transform[] objects)
-    {
-        int result = 0;
-        for (int i = 0; i < objects.Length; i++)
-        {
-            if (objects[i].childCount > 0 && objects[i].GetChild(0).gameObject.activeSelf)
-            {
-                // 활성화된 아이템이 발견되었으므로 해당 인덱스를 반환합니다.
-                result = i;
-            }
-        }
-        return result;
-    }
     private void OnScrollWheel(Vector2 vector)
     {
         Debug.Log(vector.normalized);
-        int currentItemIndex = FindIvenIndex(invenSlots);
-        foreach (Transform obj in invenSlots)
+        foreach (Transform obj in inventory.InvenSlots)
         {
             if (obj.childCount > 0 && obj.GetChild(0).gameObject.activeSelf)
             {
                 obj.GetChild(0).gameObject.SetActive(false);
             }
         }
-        if(vector.y  > 0)
+        if (vector.y > 0)
         {
-            if (invenSlots[NextIndex(currentItemIndex)].childCount > 0)
+            CurrentItemIndex = PrevIndex(CurrentItemIndex);
+            Debug.Log(CurrentItemIndex + "감소");
+            if (inventory.InvenSlots[CurrentItemIndex].childCount > 0)
             {
-                invenSlots[NextIndex(currentItemIndex)].GetChild(0).gameObject.SetActive(true);
+                currentItem = inventory.InvenSlots[CurrentItemIndex].GetChild(0);
+                if (currentItem != null)
+                {
+                    currentItem.gameObject.SetActive(true);
+                }
             }
+
         }
-        else if(vector.y < 0)
+        else if (vector.y < 0)
         {
-            if (invenSlots[PrevIndex(currentItemIndex)].childCount > 0)
+            CurrentItemIndex = NextIndex(CurrentItemIndex);
+            Debug.Log(CurrentItemIndex + "증가");
+            if(inventory.InvenSlots[CurrentItemIndex].childCount > 0)
             {
-                invenSlots[PrevIndex(currentItemIndex)].GetChild(0).gameObject.SetActive(true);
+                currentItem = inventory.InvenSlots[CurrentItemIndex].GetChild(0);
+                if (currentItem != null)
+                {
+                    currentItem.gameObject.SetActive(true);
+                }
             }
+
         }
     }
 
     int NextIndex(int index)
     {
         int result;
-        if (index + 1 > invenSlots.Length - 1)
+        if (index + 1 > inventory.InvenSlots.Length - 1)
         {
             result = 0;
         }
@@ -615,7 +637,7 @@ public class Player : MonoBehaviour
         int result;
         if (index - 1 < 0)
         {
-            result = invenSlots.Length - 1;
+            result = inventory.InvenSlots.Length - 1;
         }
         else
         {
@@ -625,7 +647,12 @@ public class Player : MonoBehaviour
     }
 
 
-    private void OnTerminal()
+    private void OnInTerminal()
+    {
+
+    }
+
+    private void OnOutTerminal()
     {
 
     }
