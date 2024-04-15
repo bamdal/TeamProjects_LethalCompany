@@ -16,10 +16,13 @@ public class Test_Terminal : MonoBehaviour
     SphereCollider sphere;
 
     /// <summary>
-    /// PressF_text
+    /// PressE_text
     /// </summary>
-    TextMeshProUGUI PressF_text;
+    TextMeshProUGUI PressE_text;
 
+    /// <summary>
+    /// mainText
+    /// </summary>
     TextMeshProUGUI mainText;
 
     TextMeshProUGUI storeText;
@@ -47,17 +50,17 @@ public class Test_Terminal : MonoBehaviour
         // 0번째 자식 canvas
         Transform canvas = transform.GetChild(0);
 
-        // "Press_F"를 이름으로 가진 자식
-        /*PressF_text = canvas.Find("Press_F")?.GetComponent<TextMeshProUGUI>();
+        // "Press_E"를 이름으로 가진 자식
+        /*PressE_text = canvas.Find("Press_E")?.GetComponent<TextMeshProUGUI>();
 
-        // 만약 "Press_F"를 찾지 못했다면, 경고를 출력합니다.
-        if (PressF_text == null)
+        // 만약 "Press_E"를 찾지 못했다면, 경고를 출력합니다.
+        if (PressE_text == null)
         {
             Debug.LogWarning("TextMeshProUGUI를 찾을 수 없습니다.");
         }*/
 
         Transform child = transform.GetChild(0);                            // 0번째 자식 canvas
-        PressF_text = canvas.GetChild(0).GetComponent<TextMeshProUGUI>();    // canvas의 0번째 자식 Press_F
+        PressE_text = canvas.GetChild(0).GetComponent<TextMeshProUGUI>();    // canvas의 0번째 자식 Press_E
 
         mainText = canvas.GetChild(2).GetComponent<TextMeshProUGUI>();    // canvas의 2번째 자식 DefaultText
 
@@ -65,7 +68,7 @@ public class Test_Terminal : MonoBehaviour
 
 
         // 게임 시작 시
-        PressF_text.gameObject.SetActive(false);                            // 시작할 때 PressF_text 비활성화
+        PressE_text.gameObject.SetActive(false);                            // 시작할 때 PressE_text 비활성화
         mainText.gameObject.SetActive(true);                             // 시작할 때 mainText 활성화
         storeText.gameObject.SetActive(false);                              // 시작할 때 storeText 비활성화
 
@@ -103,11 +106,11 @@ public class Test_Terminal : MonoBehaviour
     /// <param name="context"></param>
     private void OnFClick(InputAction.CallbackContext context)
     {
-        Debug.Log($"F 키가 눌렸습니다.");
-        if (PressF_text.gameObject.activeSelf && context.action.triggered)
+        Debug.Log($"E 키가 눌렸습니다.");
+        if (PressE_text.gameObject.activeSelf && context.action.triggered)
         {
-            Debug.Log("PressF 활성화 & F 키가 눌렸습니다.");      // F 키가 눌렸을 때 디버그 출력
-            PressF_text.gameObject.SetActive(false);
+            Debug.Log("PressE 활성화 & E 키가 눌렸습니다.");      // F 키가 눌렸을 때 디버그 출력
+            PressE_text.gameObject.SetActive(false);
             SwitchCamera();
         }
     }
@@ -119,10 +122,10 @@ public class Test_Terminal : MonoBehaviour
     private void OnESCClick(InputAction.CallbackContext context)
     {
         Debug.Log($"ESC 키가 눌렸습니다");
-        if (!PressF_text.gameObject.activeSelf && context.action.triggered)
+        if (!PressE_text.gameObject.activeSelf && context.action.triggered)
         {
-            Debug.Log($"PressF 비활성화 & ESC 키가 눌렸습니다.");      // ESC 키가 눌렸을 때 디버그 출력
-            PressF_text.gameObject.SetActive(true);
+            Debug.Log($"PressE 비활성화 & ESC 키가 눌렸습니다.");      // ESC 키가 눌렸을 때 디버그 출력
+            PressE_text.gameObject.SetActive(true);
             SwitchCamera();
         }
 
@@ -137,7 +140,7 @@ public class Test_Terminal : MonoBehaviour
         if (other.gameObject.tag == "Player")                   // 충돌한 상대 오브젝트의 태그가 Player이면
         {
             Debug.Log($"[Player] 가 범위 안에 들어왔다.");
-            PressF_text.gameObject.SetActive(true);             // TextMeshProUGUI를 활성화
+            PressE_text.gameObject.SetActive(true);             // TextMeshProUGUI를 활성화
         }
     }
 
@@ -150,7 +153,7 @@ public class Test_Terminal : MonoBehaviour
         if (other.gameObject.tag == "Player")                   // 충돌한 상대 오브젝트의 태그가 Player이면
         {
             Debug.Log($"[Player] 가 범위 밖으로 나갔다.");
-            PressF_text.gameObject.SetActive(false);            // TextMeshProUGUI를 비활성화
+            PressE_text.gameObject.SetActive(false);            // TextMeshProUGUI를 비활성화
         }
     }
 
