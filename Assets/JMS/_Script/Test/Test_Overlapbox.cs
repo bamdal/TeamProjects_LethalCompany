@@ -17,7 +17,7 @@ public class Test_Overlapbox : TestBase
     void Update()
     {
         BoxCollider newmoduleCollider = newModul.GetComponent<BoxCollider>();
-        Collider[] moduleCollider = Physics.OverlapBox(newmoduleCollider.transform.position, newmoduleCollider.size*0.5f, newmoduleCollider.transform.rotation);
+        Collider[] moduleCollider = Physics.OverlapBox(newmoduleCollider.transform.position, newmoduleCollider.size*0.5f, newmoduleCollider.transform.rotation, LayerMask.GetMask("GenerationMask"));
        
         foreach (Collider collider in moduleCollider)
         {
