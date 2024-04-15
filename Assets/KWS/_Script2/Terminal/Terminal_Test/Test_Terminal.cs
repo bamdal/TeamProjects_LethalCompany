@@ -52,6 +52,11 @@ public class Test_Terminal : MonoBehaviour
     /// </summary>
     PlayerInput playerInput;
 
+    /// <summary>
+    /// 스토어 화면에서 입력된 onFlashLight 아이템을 게임매니저로 알릴 델리게이트
+    /// </summary>
+    public Action onFlashLight;
+
     private void Awake()
     {
         // SphereCollider를 찾아서 변수에 할당합니다.
@@ -252,10 +257,13 @@ public class Test_Terminal : MonoBehaviour
 
 
 
-            case "무전기":
+
+            case "flashlight":
+            case "손전등":
                 if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf)
                 {
-                    Debug.Log("스토어 입력 중 무전기 입력 확인");
+                    Debug.Log("스토어 입력 중 손전등 입력 확인");
+                    onFlashLight?.Invoke();
                 }
                 break;
             default:
