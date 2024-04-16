@@ -495,6 +495,11 @@ public class Player : MonoBehaviour
                                     invenUI.ItemImages[j].sprite = inventory.ItemDBs[j].itemIcon;
                                     Debug.Log(inventory.ItemDBs[j].itemIcon);
                                 }
+                                
+                            }
+                            else
+                            {
+                                invenUI.ItemImages[j].sprite = null;
                             }
                         }
                     }
@@ -531,6 +536,30 @@ public class Player : MonoBehaviour
             Rigidbody itemRigidbody = CurrentItem.GetComponent<Rigidbody>();
             if (itemRigidbody != null)
                 itemRigidbody.isKinematic = false;
+            for (int j = 0; j < 4; j++)
+            {
+                if (inventory.InvenSlots[j].childCount > 0)
+                {
+                    Transform currentItem = inventory.InvenSlots[j].GetChild(0);
+                    if (currentItem != null)
+                    {
+                        Debug.Log(currentItem);
+                        IItemDataBase itemData = currentItem.GetComponent<IItemDataBase>();
+                        if (itemData != null)
+                        {
+                            Debug.Log(itemData);
+                            inventory.ItemDBs[j] = itemData.GetItemDB();
+                            invenUI.ItemImages[j].sprite = inventory.ItemDBs[j].itemIcon;
+                            Debug.Log(inventory.ItemDBs[j].itemIcon);
+                        }
+                        
+                    }
+                    else
+                    {
+                        invenUI.ItemImages[j].sprite = null;
+                    }
+                }
+            }
             CurrentItem.SetParent(null); // 부모에서 떼어냅니다.
         }
     }
