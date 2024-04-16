@@ -158,7 +158,7 @@ public class DungeonGenerator : MonoBehaviour
         FindUnique();
 
         // GenerationPoint자식으로 랜덤맵생성
-        DungeonGeneration();
+        StartCoroutine( DungeonGeneration());
 
         // 아이템 스폰 코드 작성
         ItemGeneration();
@@ -188,7 +188,7 @@ public class DungeonGenerator : MonoBehaviour
     /// existConnectors는 이미 깔려 있는 모듈들의 커넥터 모음
     /// newConnectors는 이제 깔릴 모듈들의 커넥터 모음 나중에 existConnectors에 다시 넣어서 반복해 생성
     /// </summary>
-    private void DungeonGeneration()
+    IEnumerator DungeonGeneration()
     {
         index = 0; // 재생성시 초기화용
         Modul Start = Instantiate(startModul, generationStartPoint);   // 맵 시작 지점 스폰
@@ -204,7 +204,8 @@ public class DungeonGenerator : MonoBehaviour
                 Modul newModul = RandomSelectModul();   // 랜덤한 모듈 가져오기
                 ModulConnector dc = null;
                 Modul currentModul = MatchConntectors(existConnectors[exist], newModul, out dc); // 모듈을 현재 커넥터에 연결
-
+                //yield return new WaitForSeconds(1);
+                yield return null;
                
                 //newConnectors.AddRange(newModul.Connectors.Where(e => e != 현재 이미 연결된 커넥터));
                 if (currentModul != null)
@@ -227,8 +228,9 @@ public class DungeonGenerator : MonoBehaviour
         foreach (ModulConnector connector in existConnectors)    // 마무리 빈 커넥터의 입구 막기
         {
             MatchConntectors(connector, endModul,out _);  // 하나는 비상탈출구로 만들어야함,
-                                                    // 첫번째connector중 아무나 한개는 비상 탈출구
-           
+                                                          // 첫번째connector중 아무나 한개는 비상 탈출구
+            //yield return new WaitForSeconds(1);
+            yield return null;
         }
 
         pointNav.CompliteGenerationDungeon();   // 던전 생성 완료후 네비메시를 깔게 함
@@ -324,15 +326,29 @@ public class DungeonGenerator : MonoBehaviour
         //    Debug.Log(newModul.name);
         //    return true; // 겹치는 모듈이 존재함
         //}
+
+
         BoxCollider newmoduleCollider = newModul.GetComponent<BoxCollider>();
         /*        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 cube.transform.position = newmoduleCollider.transform.position; // 큐브 위치 설정
                 cube.transform.localScale = newmoduleCollider.size ; // 큐브 크기 설정
                 cube.transform.rotation = newmoduleCollider.transform.rotation;
                 cube.GetComponent<Renderer>().material.color = Color.blue; // 큐브 색상 설정*/
-        Collider[] moduleCollider = Physics.OverlapBox(newmoduleCollider.transform.position, newmoduleCollider.bounds.extents, newmoduleCollider.transform.rotation, LayerMask.GetMask("GenerationMask"));
-            
+                Collider[] moduleCollider = Physics.OverlapBox(newmoduleCollider.transform.position, newmoduleCollider.bounds.extents*0.95f, newmoduleCollider.transform.rotation, LayerMask.GetMask("GenerationMask"));
+
         
+/*        RaycastHit hitInfo;
+        Physics.BoxCast(newmoduleCollider.transform.position, newmoduleCollider.size*0.5f, newmoduleCollider.transform.forward, out hitInfo, newmoduleCollider.transform.rotation, 5f, LayerMask.GetMask("GenerationMask"));
+
+        if (hitInfo.transform != null)
+        {
+            // 충돌한 경우에 수행할 작업
+            Debug.Log(hitInfo.transform.gameObject.name);
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = hitInfo.point;
+            cube.GetComponent<Renderer>().material.color = Color.blue;
+            return true; // 겹치는 모듈이 존재함
+        }*/
         foreach (Collider collider in moduleCollider)
             {
                 if (collider.gameObject != newModul.gameObject) // 자기 자신은 제외
@@ -341,10 +357,15 @@ public class DungeonGenerator : MonoBehaviour
                     return true; // 겹치는 모듈이 존재함
                 }
             }
-        // 문제 1 center가 로컬이라 잘못된 값이 나온다 
 
-        return false; // 겹치는 모듈이 없음
+       // Physics.BoxCast(newmoduleCollider.transform.position, newmoduleCollider.bounds.extents,, newmoduleCollider.transform.rotation)
+               
+
+        // 함수 파라미터 : 현재 위치, Box의 절반 사이즈, Ray의 방향, RaycastHit 결과, Box의 회전값, BoxCast를 진행할 거리
+        return false;
     }
+
+
 
     /// <summary>
     /// 연결될 모듈을 랜덤으로 꺼내서 정해줌 moduls, uniqueModuls
