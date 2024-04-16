@@ -21,5 +21,5 @@ MonoBehaviour:
   itemType: 2
   itemCode: 0
   isConductive: 0
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: f13c12afde25d514a933829fb154bab0, type: 3}
   itemModel: {fileID: 371826997391568018, guid: 137bfbb17bab5ba45959ed6727901443, type: 3}

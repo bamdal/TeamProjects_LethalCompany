@@ -4,29 +4,51 @@ using Unity.VisualScripting;
 using UnityEngine;
 
 public class Inventory : MonoBehaviour
-{   
+{
     Player player;
     Transform[] invenSlots = new Transform[4];
+
+    ItemDB[] itemDBs = new ItemDB[4];
+
     public Transform[] InvenSlots
     {
         get => invenSlots;
         set
         {
-            if(invenSlots != value)
+            if (invenSlots != value)
             {
                 invenSlots = value;
             }
         }
     }
-
+    public ItemDB[] ItemDBs
+    {
+        get => itemDBs;
+        set
+        {
+            if (itemDBs != value)
+            {
+                itemDBs = value;
+            }
+        }
+    }
     private void Awake()
     {
         player = GameManager.Instance.Player;
         for (int i = 0; i < 4; i++)
         {
-            InvenSlots[i] = transform.GetChild(i);
+            Transform child = transform.GetChild(i);
+            if (child != null)
+            {
+                InvenSlots[i] = child;
+                if (child.childCount > 0 && child.GetChild(0).GetComponent<IItemDataBase>() != null)
+                {
+                    ItemDBs[i] = child.GetChild(0).GetComponent<IItemDataBase>().GetItemDB();
+                }
+            }
         }
     }
+
 
     private void Update()
     {
