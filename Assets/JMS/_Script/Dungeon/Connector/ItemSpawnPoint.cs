@@ -8,6 +8,6 @@ public class ItemSpawnPoint : MonoBehaviour
     
     public void SpawnItem()
     {
-        Factory.Instance.GetHardware(ItemCode.GasTank);
+        Factory.Instance.GetHardware(ItemCode.GasTank,transform.position);
     }
 }
