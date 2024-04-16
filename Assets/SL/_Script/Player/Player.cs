@@ -230,7 +230,7 @@ public class Player : MonoBehaviour
         characterController.Move(currentSpeed * Time.deltaTime * moveDirection);
         // 중력 처리
         characterController.Move(1f * Time.deltaTime * gravityDir);
-        Debug.Log(IsGrounded());
+        //Debug.Log(IsGrounded());
     }
 
     private void FixedUpdate()
