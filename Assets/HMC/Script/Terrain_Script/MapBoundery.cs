@@ -20,7 +20,7 @@ public class MapBoundery : MonoBehaviour
                 float radius = playerCollider.radius;   //플레이어와 오브젝트의 거리 계산.
                 if(distance <= radius)
                 {
-                    ChangeTransparency(0.5f); //충돌 지점을 기준으로 투명도 변경.
+                    ChangeTransparency(5f); //충돌 지점을 기준으로 투명도 변경.
                 }
             }
             Debug.Log("player touchde collider ");

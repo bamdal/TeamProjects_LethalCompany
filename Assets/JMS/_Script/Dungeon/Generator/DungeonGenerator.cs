@@ -158,37 +158,19 @@ public class DungeonGenerator : MonoBehaviour
         FindUnique();
 
         // GenerationPoint자식으로 랜덤맵생성
-        DungeonGeneration();
+        StartCoroutine( DungeonGeneration());
 
-        // 아이템 스폰 코드 작성
-        ItemGeneration();
-    }
-
-    /// <summary>
-    /// 아이템 스픈포인트에 아이템을 소환한다. 
-    /// </summary>
-    private void ItemGeneration()
-    {
-        // 아이템 스폰포인트 찾기
-        // itemSpawnPoints 는 DungeonGeneration 에서 넣어주고 있음
-        Debug.Log($"아이템의 소환 개수 :{ItemSpawnCount}");
-        //ItemSpawnCount 만큼 itemSpawnPoints에 랜덤위치에 랜덤스크럽 소환 
-        // 소환한 위치에 포인트는 리스트에서 삭제
-        foreach (ItemSpawnPoint p in itemSpawnPoints)
-        {
-            // 포인트들 중에서 아이템 최대 선택개수에 맞춰서 생성
-        }
-        // 아이템 랜덤선택 ItemType에서 Scrap항목만 생성
-        //
 
     }
+
+
 
     /// <summary>
     /// 맵 생성 시작
     /// existConnectors는 이미 깔려 있는 모듈들의 커넥터 모음
     /// newConnectors는 이제 깔릴 모듈들의 커넥터 모음 나중에 existConnectors에 다시 넣어서 반복해 생성
     /// </summary>
-    private void DungeonGeneration()
+    IEnumerator DungeonGeneration()
     {
         index = 0; // 재생성시 초기화용
         Modul Start = Instantiate(startModul, generationStartPoint);   // 맵 시작 지점 스폰
@@ -204,7 +186,8 @@ public class DungeonGenerator : MonoBehaviour
                 Modul newModul = RandomSelectModul();   // 랜덤한 모듈 가져오기
                 ModulConnector dc = null;
                 Modul currentModul = MatchConntectors(existConnectors[exist], newModul, out dc); // 모듈을 현재 커넥터에 연결
-
+                //yield return new WaitForSeconds(1);
+                yield return null;
                
                 //newConnectors.AddRange(newModul.Connectors.Where(e => e != 현재 이미 연결된 커넥터));
                 if (currentModul != null)
@@ -227,11 +210,14 @@ public class DungeonGenerator : MonoBehaviour
         foreach (ModulConnector connector in existConnectors)    // 마무리 빈 커넥터의 입구 막기
         {
             MatchConntectors(connector, endModul,out _);  // 하나는 비상탈출구로 만들어야함,
-                                                    // 첫번째connector중 아무나 한개는 비상 탈출구
-           
+                                                          // 첫번째connector중 아무나 한개는 비상 탈출구
+            //yield return new WaitForSeconds(1);
+            yield return null;
         }
 
         pointNav.CompliteGenerationDungeon();   // 던전 생성 완료후 네비메시를 깔게 함
+
+        ItemGeneration();  // 아이템 스폰 코드 작성
     }
 
     /// <summary>
@@ -324,15 +310,29 @@ public class DungeonGenerator : MonoBehaviour
         //    Debug.Log(newModul.name);
         //    return true; // 겹치는 모듈이 존재함
         //}
+
+
         BoxCollider newmoduleCollider = newModul.GetComponent<BoxCollider>();
         /*        GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
                 cube.transform.position = newmoduleCollider.transform.position; // 큐브 위치 설정
                 cube.transform.localScale = newmoduleCollider.size ; // 큐브 크기 설정
                 cube.transform.rotation = newmoduleCollider.transform.rotation;
                 cube.GetComponent<Renderer>().material.color = Color.blue; // 큐브 색상 설정*/
-        Collider[] moduleCollider = Physics.OverlapBox(newmoduleCollider.transform.position, newmoduleCollider.bounds.extents, newmoduleCollider.transform.rotation, LayerMask.GetMask("GenerationMask"));
-            
+                Collider[] moduleCollider = Physics.OverlapBox(newmoduleCollider.transform.position, newmoduleCollider.bounds.extents*0.95f, newmoduleCollider.transform.rotation, LayerMask.GetMask("GenerationMask"));
+
         
+/*        RaycastHit hitInfo;
+        Physics.BoxCast(newmoduleCollider.transform.position, newmoduleCollider.size*0.5f, newmoduleCollider.transform.forward, out hitInfo, newmoduleCollider.transform.rotation, 5f, LayerMask.GetMask("GenerationMask"));
+
+        if (hitInfo.transform != null)
+        {
+            // 충돌한 경우에 수행할 작업
+            Debug.Log(hitInfo.transform.gameObject.name);
+            GameObject cube = GameObject.CreatePrimitive(PrimitiveType.Cube);
+            cube.transform.position = hitInfo.point;
+            cube.GetComponent<Renderer>().material.color = Color.blue;
+            return true; // 겹치는 모듈이 존재함
+        }*/
         foreach (Collider collider in moduleCollider)
             {
                 if (collider.gameObject != newModul.gameObject) // 자기 자신은 제외
@@ -341,10 +341,15 @@ public class DungeonGenerator : MonoBehaviour
                     return true; // 겹치는 모듈이 존재함
                 }
             }
-        // 문제 1 center가 로컬이라 잘못된 값이 나온다 
 
-        return false; // 겹치는 모듈이 없음
+       // Physics.BoxCast(newmoduleCollider.transform.position, newmoduleCollider.bounds.extents,, newmoduleCollider.transform.rotation)
+               
+
+        // 함수 파라미터 : 현재 위치, Box의 절반 사이즈, Ray의 방향, RaycastHit 결과, Box의 회전값, BoxCast를 진행할 거리
+        return false;
     }
+
+
 
     /// <summary>
     /// 연결될 모듈을 랜덤으로 꺼내서 정해줌 moduls, uniqueModuls
@@ -392,5 +397,49 @@ public class DungeonGenerator : MonoBehaviour
 
 
         return newConnecters;
+    }
+
+    /// <summary>
+    /// 아이템 스픈포인트에 아이템을 소환한다. 
+    /// </summary>
+    private void ItemGeneration()
+    {
+        // 아이템 스폰포인트 찾기
+        // itemSpawnPoints 는 DungeonGeneration 에서 넣어주고 있음
+        Debug.Log($"아이템의 소환 개수 :{ItemSpawnCount}");
+        //ItemSpawnCount 만큼 itemSpawnPoints에 랜덤위치에 랜덤스크럽 소환 
+        // 소환한 위치에 포인트는 리스트에서 삭제
+        Shuffle(itemSpawnPoints.Count, out int[] itemcount);
+        foreach (int index in itemcount)
+        {
+            itemSpawnPoints[index].SpawnItem();
+        }
+        // 아이템 랜덤선택 ItemType에서 Scrap항목만 생성
+        //
+
+    }
+
+    /// <summary>
+    /// 셔플용 함수
+    /// </summary>
+    /// <param name="count">셔플할 숫자 범위 (0 ~ count -1)</param>
+    /// <param name="result">셔플 결과</param>
+    void Shuffle(int count, out int[] result)
+    {
+        // count만큼 순서대로 숫자가 들어간 배열 만들기
+        result = new int[count];
+        for (int i = 0; i < count; i++)
+        {
+            result[i] = i;
+        }
+        // 위에서 만든 배열을 섞기 
+        int loopCount = result.Length - 1;
+        for (int i = 0; i < loopCount; i++) // 8*8일때 63번 반복
+        {
+            int randomIndex = UnityEngine.Random.Range(0, result.Length - i);   // 처음에는 0 ~ 63 중 랜덤 선택
+            int lastIndex = loopCount - i;                                      // 처음엔 63번 인덱스
+
+            (result[lastIndex], result[randomIndex]) = (result[randomIndex], result[lastIndex]);    // 랜덤으로 나온 값과 63번 값 스왑
+        }
     }
 }
