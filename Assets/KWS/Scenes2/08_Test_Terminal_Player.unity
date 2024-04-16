@@ -289,6 +289,11 @@ Transform:
   - {fileID: 1545049872}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!20 &244956429 stripped
+Camera:
+  m_CorrespondingSourceObject: {fileID: 9130777625712821569, guid: b102fa9bf91144049ae9f69f60a99891, type: 3}
+  m_PrefabInstance: {fileID: 1653530236}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &341285928
 GameObject:
   m_ObjectHideFlags: 0
@@ -957,7 +962,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &857697288
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1086,7 +1091,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c7066aaa74aa02545925bb8ab8ddb537, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  playerVC: {fileID: 1644427171}
+  mainCamera: {fileID: 244956429}
 --- !u!1 &1100616919
 GameObject:
   m_ObjectHideFlags: 0

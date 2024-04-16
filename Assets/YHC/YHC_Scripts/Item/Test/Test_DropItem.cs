@@ -2,23 +2,19 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using static UnityEditor.PlayerSettings;
 
 public class Test_DropItem : TestBase
 {
-    GameObject obj;
-    MeshFilter meshFilter;
-    MeshRenderer meshRenderer;
-
-    private void Awake()
-    {
-        
-        obj = FindObjectOfType<ItemBase>().gameObject;
-        meshFilter = obj.GetComponent<MeshFilter>();
-        meshRenderer = obj.GetComponent<MeshRenderer>();
-    }
+    public Grenade grenade;
+    public CoilHead coilHead;
+    public Vector3 randPos;
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
+    }
 
+    protected override void OnTest2(InputAction.CallbackContext context)
+    {
     }
 }
