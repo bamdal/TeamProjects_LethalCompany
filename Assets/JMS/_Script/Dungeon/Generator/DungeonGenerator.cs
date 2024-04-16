@@ -145,10 +145,17 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
+    bool doMakeComplite = false;
+
 
 
     public void StartGame()
     {
+        doMakeComplite = false;
+        if (pointNav == null)
+        {
+            pointNav = FindAnyObjectByType<GenerationPointNav>();
+        }
         if (randomSeed > 0)
         {
             Random.InitState(randomSeed);
@@ -416,7 +423,7 @@ public class DungeonGenerator : MonoBehaviour
         }
         // 아이템 랜덤선택 ItemType에서 Scrap항목만 생성
         //
-
+        doMakeComplite = true; // 던전 생성 끝
     }
 
     /// <summary>
@@ -441,5 +448,10 @@ public class DungeonGenerator : MonoBehaviour
 
             (result[lastIndex], result[randomIndex]) = (result[randomIndex], result[lastIndex]);    // 랜덤으로 나온 값과 63번 값 스왑
         }
+    }
+
+    public bool IsStartGameDone()
+    {
+        return doMakeComplite;
     }
 }
