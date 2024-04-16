@@ -10,13 +10,12 @@ public class Billboard : MonoBehaviour
     /// </summary>
     public CinemachineVirtualCamera playerVC;
 
+    //public Camera mainCamera;
+
     void Update()
     {
-        // 카메라와의 상대 위치를 구해서(UI에서 카메라를 향하는 방향 벡터)
-        Vector3 relativePos = playerVC.transform.position - transform.position;
-
-        // 카메라의 forward 방향으로 텍스트를 회전
-        transform.rotation = Quaternion.LookRotation(-relativePos, Vector3.up);
+        //transform.LookAt(transform.position + mainCamera.transform.forward);
+        transform.forward = playerVC.transform.forward;
     }
     /// 빌보드로 만들면 UI의 글자가 찢어지는 문제 수정 필요
 }
