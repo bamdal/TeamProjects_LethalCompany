@@ -6,13 +6,27 @@ using UnityEngine.AI;
 
 public class CoilHead : EnemyBase, IHealth
 {
+    /// <summary>
+    /// CoilHead의 공격력
+    /// </summary>
     int attackDamage = 0;
     public int AttackDamage => attackDamage;
 
+
+    /// <summary>
+    /// 공격 쿨타임
+    /// </summary>
     float attackCoolTime;
 
+    /// <summary>
+    /// 현재 남아있는 쿨타임, 0이 되면 공격
+    /// </summary>
     float currentAttackCoolTime;
 
+
+    /// <summary>
+    /// CoilHead의 이동속도
+    /// </summary>
     float moveSpeed = 10;
     public float MoveSpeed
     {
@@ -23,75 +37,59 @@ public class CoilHead : EnemyBase, IHealth
         }
     }
 
-    NavMeshAgent agent;
+    /// <summary>
+    /// CoilHead의 패트롤 범위, 목적지에 도작하면 patrolRange 범위 안에 새로운 랜덤 목적지 생성
+    /// </summary>
+    float patrolRange = 100.0f;
 
-    EnemyState coilheadState;
-    public EnemyState CoilHeadState
-    {
-        get => coilheadState;
-        set
-        {
-            if(coilheadState != value)
-            {
-                coilheadState = value;
-                switch(coilheadState)
-                {
-                    case EnemyState.Stop:
-                        break;
-                    case EnemyState.Patrol:
-                        MoveSpeed = 7.0f;
-                        break;
-                    case EnemyState.Chase:
-                        MoveSpeed = 3.0f;
-                        break;
-                    case EnemyState.Attack:
-                        break;
-                    case EnemyState.Die:
-                        break;
-                    default:
-                        break;
-
-                }
-            }
-        }
-    }
-
+    /// <summary>
+    /// 적의 Patrol할 랜덤 목적지
+    /// </summary>
     Vector3 randomPos;
+
+    // 컴포넌트
+    NavMeshAgent agent;
 
     private void Awake()
     {
-        attackCoolTime = 90;
+        attackDamage = 90;
         attackCoolTime = 0.2f;
         currentAttackCoolTime = attackCoolTime;
+
         agent = GetComponent<NavMeshAgent>();
     }
 
     private void Start()
     {
-        agent.speed = moveSpeed;
-        agent.stoppingDistance = 0.1f;
-        randomPos = Vector3.zero;
+        agent.SetDestination(new Vector3(10.0f, transform.position.y, 10.0f));
     }
+
     private void Update()
     {
         if(agent.remainingDistance < agent.stoppingDistance)
         {
-            randomPos = new Vector3(UnityEngine.Random.Range(-30.0f, 30.0f), transform.position.y, UnityEngine.Random.Range(-30.0f, 30.0f));
-            Debug.Log($"{randomPos}");
-            agent.SetDestination(randomPos);
+            agent.SetDestination(SetRandomDestination());
         }
     }
 
-    public void TracePlayer(Vector3 pos)
-    {
-        agent.SetDestination(pos);
-    }
 
-    private void OnTriggerEnter(Collider other)
+    /// <summary>
+    /// 새로운 랜덤 목적지 생성
+    /// </summary>
+    /// <returns></returns>
+    Vector3 SetRandomDestination()
     {
-        if(other.CompareTag("Player"))
+        Vector3 random = UnityEngine.Random.insideUnitSphere * patrolRange;
+        random += transform.position;
+
+        NavMeshHit hit;
+        if(NavMesh.SamplePosition(random, out hit, patrolRange, NavMesh.AllAreas))
         {
-            agent.SetDestination(other.transform.position);
+            return hit.position;
+        }
+        else
+        {
+            return Vector3.zero;
         }
     }
 }
