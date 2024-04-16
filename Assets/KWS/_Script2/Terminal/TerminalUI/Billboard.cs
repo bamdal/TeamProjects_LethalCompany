@@ -18,4 +18,5 @@ public class Billboard : MonoBehaviour
         // 카메라의 forward 방향으로 텍스트를 회전
         transform.rotation = Quaternion.LookRotation(-relativePos, Vector3.up);
     }
+    /// 빌보드로 만들면 UI의 글자가 찢어지는 문제 수정 필요
 }
