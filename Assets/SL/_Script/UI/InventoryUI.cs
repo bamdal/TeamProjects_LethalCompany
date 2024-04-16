@@ -9,6 +9,9 @@ public class InventoryUI : MonoBehaviour
     Inventory inventory;
 
     Image[] itemImages = new Image[4];
+    Image[] itemEdgeImages = new Image[4];
+
+
     public Image[] ItemImages
     {
         get => itemImages;
@@ -21,6 +24,18 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
+    public Image[] ItemEdgeImages
+    {
+        get => itemEdgeImages;
+        set
+        {
+            if (itemEdgeImages != value)
+            {
+                itemEdgeImages = value;
+            }
+        }
+    }
+
     void Start()
     {
         player = GameManager.Instance.Player;
@@ -28,7 +43,11 @@ public class InventoryUI : MonoBehaviour
 
         for (int i = 0; i < itemImages.Length; i++)
         {
-            itemImages[i] = transform.GetChild(i).GetComponent<Image>(); // 이미지 컴포넌트에 접근하는 코드 수정
+            itemImages[i] = transform.GetChild(i).GetChild(0).GetComponent<Image>(); // 이미지 컴포넌트에 접근하는 코드 수정
+        }
+        for (int i = 0; i < itemImages.Length; i++)
+        {
+            itemEdgeImages[i] = transform.GetChild(i).GetComponent<Image>(); // 이미지 컴포넌트에 접근하는 코드 수정
         }
 
         // inventory.ItemDBs가 null이 아닌 경우에만 itemImages의 스프라이트 설정

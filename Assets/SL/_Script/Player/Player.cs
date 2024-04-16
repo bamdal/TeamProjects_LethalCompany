@@ -483,6 +483,7 @@ public class Player : MonoBehaviour
                     {
                         if (inventory.InvenSlots[j].childCount > 0)
                         {
+                            // invenUI.ItemEdgeImages의 알파값 수정ㅎㅏ면 됨
                             Transform currentItem = inventory.InvenSlots[j].GetChild(0);
                             if (currentItem != null)
                             {
