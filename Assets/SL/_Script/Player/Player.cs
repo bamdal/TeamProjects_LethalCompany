@@ -497,10 +497,10 @@ public class Player : MonoBehaviour
                                 }
                                 
                             }
-                            else
-                            {
-                                invenUI.ItemImages[j].sprite = null;
-                            }
+                        }
+                        else
+                        {
+                            invenUI.ItemImages[j].sprite = null;
                         }
                     }
 
@@ -536,6 +536,8 @@ public class Player : MonoBehaviour
             Rigidbody itemRigidbody = CurrentItem.GetComponent<Rigidbody>();
             if (itemRigidbody != null)
                 itemRigidbody.isKinematic = false;
+            
+            CurrentItem.SetParent(null); // 부모에서 떼어냅니다.
             for (int j = 0; j < 4; j++)
             {
                 if (inventory.InvenSlots[j].childCount > 0)
@@ -552,15 +554,15 @@ public class Player : MonoBehaviour
                             invenUI.ItemImages[j].sprite = inventory.ItemDBs[j].itemIcon;
                             Debug.Log(inventory.ItemDBs[j].itemIcon);
                         }
-                        
+
                     }
-                    else
-                    {
-                        invenUI.ItemImages[j].sprite = null;
-                    }
+                    
+                }
+                else
+                {
+                    invenUI.ItemImages[j].sprite = null;
                 }
             }
-            CurrentItem.SetParent(null); // 부모에서 떼어냅니다.
         }
     }
 

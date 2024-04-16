@@ -12,6 +12,6 @@ public class Hardware_Barrel : ItemBase, IItemDataBase
     //public ItemDB itemDB;
     public ItemDB GetItemDB()
     {
-        throw new NotImplementedException();
+        return itemDB;
     }
 }
