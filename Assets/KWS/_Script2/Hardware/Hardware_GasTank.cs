@@ -7,6 +7,6 @@ public class Hardware_GasTank : ItemBase, IItemDataBase
     //public ItemDB itemDB;
     public ItemDB GetItemDB()
     {
-        throw new System.NotImplementedException();
+        return itemDB;
     }
 }

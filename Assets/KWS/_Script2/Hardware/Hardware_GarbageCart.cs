@@ -7,6 +7,6 @@ public class Hardware_GarbageCart : ItemBase, IItemDataBase
     //public ItemDB itemDB;
     public ItemDB GetItemDB()
     {
-        throw new System.NotImplementedException();
+        return itemDB;
     }
 }
