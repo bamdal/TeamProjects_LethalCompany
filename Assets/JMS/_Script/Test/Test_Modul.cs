@@ -26,7 +26,7 @@ public class Test_Modul : TestBase
         Transform[] child = generationPointNav.transform.GetComponentsInChildren<Transform>();
         foreach (Transform child2 in child)
         {
-            if(child2 != generationPointNav)
+            if(child2.gameObject != generationPointNav.gameObject)
                 Destroy(child2.gameObject);
         }
     }

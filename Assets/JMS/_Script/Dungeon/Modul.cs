@@ -11,7 +11,7 @@ public class Modul : MonoBehaviour
     /// </summary>
     ModulConnector[] connectors;
 
-    public ItemSpawnPoint[] itemSpawnPoint;
+    ItemSpawnPoint[] itemSpawnPoint;
 
     public int ConnectorsCount
     {
@@ -32,56 +32,50 @@ public class Modul : MonoBehaviour
     /// <summary>
     /// 모듈의 사이즈를 구하기 위한 랜더러
     /// </summary>
-    public Collider rend;
+    //public Collider rend;
 
     /// <summary>
     /// 모듈의 중심점
     /// </summary>
-    Vector3 center;
+    //Vector3 center;
 
     //public Vector3 Center => rend.bounds.center;
 
     /// <summary>
     /// 모듈의 사이즈
     /// </summary>
-    Vector3 size;
+    //Vector3 size;
 
     //public Vector3 Size => rend.bounds.size;    
 
     private void Awake()
     {
+        Transform child = transform.GetChild(0);
         if(connectors == null)
         {
-            connectors = GetComponentsInChildren<ModulConnector>();
+            connectors = child.GetComponentsInChildren<ModulConnector>();
         }
-        if (rend == null)
-        {
 
-            rend = GetComponent<Collider>();
-        }
+        itemSpawnPoint = child.GetComponentsInChildren<ItemSpawnPoint>();
+        //if (rend == null)
+        //{
+
+        //    rend = GetComponent<Collider>();
+        //}
     }
 
 
-    /// <summary>
-    /// 모듈의 사이즈를 구하는 함수
-    /// </summary>
-    /// <returns>모듈의 x,y,z크기</returns>
-    public Vector3 GetSize()
-    {
-        return size;
-    }
+    ///// <summary>
+    ///// 모듈의 사이즈를 구하는 함수
+    ///// </summary>
+    ///// <returns>모듈의 x,y,z크기</returns>
+    //public Vector3 GetSize()
+    //{
+    //    return size;
+    //}
 
 
-    private void OnDrawGizmosSelected()
-    {
-        Handles.color = Color.red;
-        if (rend == null)
-        {
 
-            rend = GetComponent<Collider>();
-        }
-        //Handles.DrawWireCube(Center, Size);
-    }
 
 
 }
