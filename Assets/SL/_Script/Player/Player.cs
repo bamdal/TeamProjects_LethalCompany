@@ -142,8 +142,6 @@ public class Player : MonoBehaviour
     public float groundCheckDistance = 0.2f;    // 바닥 체크 거리
     public LayerMask groundLayer;               // 바닥을 나타내는 레이어
     Transform groundCheckPosition;              // 바닥 체크할 포지션
-    /*    Transform equipItemBox;
-        Transform equipItem;*/
     Transform itemRader;
     Inventory inventory;
 
@@ -190,9 +188,9 @@ public class Player : MonoBehaviour
         input.onOutTerminal += OnOutTerminal;
         cam = FindAnyObjectByType<Camera>();
         inventoryTransform = transform.Find("Inventory");
-        inventory = inventoryTransform.GetComponent<Inventory>();
+//        inventory = inventoryTransform.GetComponent<Inventory>();
+        inventory = FindAnyObjectByType<Inventory>();
         currnetStamina = stamina;
-        currentItem = inventory.InvenSlots[0];
         characterController = GetComponent<CharacterController>();
         itemRader = transform.GetChild(2);
         groundCheckPosition = transform.GetChild(4);
@@ -200,6 +198,10 @@ public class Player : MonoBehaviour
         invenUI = FindAnyObjectByType<InventoryUI>();
     }
 
+    private void Start()
+    {
+        CurrentItem = inventory.InvenSlots[0];
+    }
 
 
     private void Update()
@@ -457,7 +459,7 @@ public class Player : MonoBehaviour
                             // 아이템을 인벤토리 슬롯에 넣습니다.
                             Transform itemTransform = hit.collider.transform;
                             itemTransform.SetParent(inventory.InvenSlots[i]);
-                            itemTransform.localPosition = new Vector3(0, -0.5f, 1); // 포지션을 (0, 0, 0)으로 설정합니다.
+                            itemTransform.localPosition = new Vector3(0, -0.5f, 1.5f); // 포지션을 (0, 0, 0)으로 설정합니다.
                             
                             Collider itemCollider = hit.collider.GetComponent<Collider>();
                             if (itemCollider != null)
@@ -483,7 +485,6 @@ public class Player : MonoBehaviour
                     {
                         if (inventory.InvenSlots[j].childCount > 0)
                         {
-                            // invenUI.ItemEdgeImages의 알파값 수정ㅎㅏ면 됨
                             Transform currentItem = inventory.InvenSlots[j].GetChild(0);
                             if (currentItem != null)
                             {
@@ -526,12 +527,16 @@ public class Player : MonoBehaviour
         }
 
     }
+
+    /// <summary>
+    /// 아이템 버리는 함수
+    /// </summary>
     private void OnItemDrop()
     {
-        if (inventory.InvenSlots[CurrentItemIndex] != null && inventory.InvenSlots[CurrentItemIndex].childCount > 0)
+        if (inventory.InvenSlots[CurrentItemIndex] != null && inventory.InvenSlots[CurrentItemIndex].childCount > 0)    // 인벤토리 인벤슬롯의 현재 인덱스가 널이 아니고, 인벤토리 인벤슬롯안에 아이템이 있다면
         {
-            CurrentItem = inventory.InvenSlots[CurrentItemIndex].GetChild(0);
-            Collider itemCollider = CurrentItem.GetComponent<Collider>();
+            CurrentItem = inventory.InvenSlots[CurrentItemIndex].GetChild(0);   // 현재 아이템은 인벤슬롯의 안에 있는 아이템이다.
+            Collider itemCollider = CurrentItem.GetComponent<Collider>();       // 버릴때 콜라이더와 리지드바디 다시 킴
             if (itemCollider != null)
                 itemCollider.enabled = true;
             Rigidbody itemRigidbody = CurrentItem.GetComponent<Rigidbody>();
@@ -541,18 +546,18 @@ public class Player : MonoBehaviour
             CurrentItem.SetParent(null); // 부모에서 떼어냅니다.
             for (int j = 0; j < 4; j++)
             {
-                if (inventory.InvenSlots[j].childCount > 0)
+                if (inventory.InvenSlots[j].childCount > 0)             // 인벤토리 인벤슬롯에 아이템이 들어있다면
                 {
-                    Transform currentItem = inventory.InvenSlots[j].GetChild(0);
-                    if (currentItem != null)
+                    Transform tempItem = inventory.InvenSlots[j].GetChild(0);
+                    if (tempItem != null)
                     {
-                        Debug.Log(currentItem);
-                        IItemDataBase itemData = currentItem.GetComponent<IItemDataBase>();
+                        Debug.Log(tempItem);
+                        IItemDataBase itemData = tempItem.GetComponent<IItemDataBase>();
                         if (itemData != null)
                         {
                             Debug.Log(itemData);
-                            inventory.ItemDBs[j] = itemData.GetItemDB();
-                            invenUI.ItemImages[j].sprite = inventory.ItemDBs[j].itemIcon;
+                            inventory.ItemDBs[j] = itemData.GetItemDB();                    // ItemDB에서 데이터를 가져와
+                            invenUI.ItemImages[j].sprite = inventory.ItemDBs[j].itemIcon;   // 이미지를 인벤토리창에 띄움
                             Debug.Log(inventory.ItemDBs[j].itemIcon);
                         }
 
@@ -561,15 +566,12 @@ public class Player : MonoBehaviour
                 }
                 else
                 {
-                    invenUI.ItemImages[j].sprite = null;
+                    invenUI.ItemImages[j].sprite = null;            // 인벤토리 인벤슬롯에 아이템이 비어있으면 인벤토리 이미지 비움
                 }
             }
         }
     }
 
-
-
-    ///인벤토리 구현 후 awake에 있는 equipItem 삭제 후 장비 장착부분에서 변수 할당해야함
 
     /// <summary>
     /// 아이템 레이더를 켜고 끌수있게 오른쪽 마우스 버튼 입력에 대한 델리게이트로 연결되어있는 함수
@@ -603,22 +605,7 @@ public class Player : MonoBehaviour
     /// </summary>
     private void OnLClickInput(bool isPressed)
     {
-        /*Transform equipItem = FindActiveObject(invenSlots);
-        // 아이템 사용 처리
-        if (isPressed && equipItem != null)
-        {
-            Debug.Log("찾았음" + equipItem);
-            IEquipable equipable = equipItem.GetComponent<IEquipable>();
-            if (equipable != null)
-            {
-                equipable.Use();
-            }
-            else
-            {
-                Debug.Log("이큅터블 없음!");
-            }
-        }
-        */
+        
         // 아이템 사용 처리
         if (CurrentItem != null && isPressed)
         {
@@ -657,17 +644,28 @@ public class Player : MonoBehaviour
             Debug.Log(CurrentItemIndex + " 증가");
         }
 
-        if (inventory.InvenSlots[CurrentItemIndex] != null && inventory.InvenSlots[CurrentItemIndex].childCount > 0)
+        if (inventory.InvenSlots[CurrentItemIndex] != null && inventory.InvenSlots[CurrentItemIndex].childCount > 0)    // 인벤토리 슬롯 현재 인덱스가 널값이 아니고, 인벤토리 슬롯 현재 인덱스 내에 아이템이 들어있다면
         {
-            currentItem = inventory.InvenSlots[CurrentItemIndex].GetChild(0);
-            if (currentItem != null)
+            CurrentItem = inventory.InvenSlots[CurrentItemIndex].GetChild(0);                                           // 현재 아이템을 인벤토리 슬롯의 현재 인덱스 안에 있는 아이템으로 저장
+            
+            if (CurrentItem != null)
             {
-                currentItem.gameObject.SetActive(true);
+                CurrentItem.gameObject.SetActive(true);
             }
         }
+        for (int i = 0; i < inventory.InvenSlots.Length; i++)
+        {
+            invenUI.ItemEdgeImages[i].color = invenUI.edgeRedInvisible;     // 일단 인벤토리 테두리 전부다 투명하게
+        }
+        invenUI.ItemEdgeImages[CurrentItemIndex].color = invenUI.edgeRed;   // 그후 현재 선택된 인덱스의 테두리를 활성화
 
     }
 
+    /// <summary>
+    /// 휠 사용할때 인덱스 증가시키는 함수
+    /// </summary>
+    /// <param name="index"> 휠 움직임 전 인덱스</param>
+    /// <returns>다음 인덱스 값</returns>
     int NextIndex(int index)
     {
         int result;
@@ -681,6 +679,11 @@ public class Player : MonoBehaviour
         }
         return result;
     }
+    /// <summary>
+    /// 휠 사용할 때 인덱스 감소시키는 함수
+    /// </summary>
+    /// <param name="index">휠 움직임 전 인덱스</param>
+    /// <returns>이전 인덱스 값</returns>
     int PrevIndex(int index)
     {
         int result;

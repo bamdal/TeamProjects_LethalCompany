@@ -12,6 +12,8 @@ public class InventoryUI : MonoBehaviour
     Image[] itemEdgeImages = new Image[4];
 
 
+    public Color edgeRed = new Color(255, 0, 0, 1f);
+    public Color edgeRedInvisible = new Color(255, 0, 0, 0.0f);
     public Image[] ItemImages
     {
         get => itemImages;
@@ -36,11 +38,9 @@ public class InventoryUI : MonoBehaviour
         }
     }
 
-    void Start()
-    {
-        player = GameManager.Instance.Player;
-        inventory = player.transform.GetChild(1).GetComponent<Inventory>();
 
+    private void Awake()
+    {
         for (int i = 0; i < itemImages.Length; i++)
         {
             itemImages[i] = transform.GetChild(i).GetChild(0).GetComponent<Image>(); // 이미지 컴포넌트에 접근하는 코드 수정
@@ -48,8 +48,16 @@ public class InventoryUI : MonoBehaviour
         for (int i = 0; i < itemImages.Length; i++)
         {
             itemEdgeImages[i] = transform.GetChild(i).GetComponent<Image>(); // 이미지 컴포넌트에 접근하는 코드 수정
+            itemEdgeImages[i].color = edgeRedInvisible;
         }
-
+        
+        
+    }
+    void Start()
+    {
+        player = GameManager.Instance.Player;
+        inventory = player.transform.GetChild(1).GetComponent<Inventory>();
+        
         // inventory.ItemDBs가 null이 아닌 경우에만 itemImages의 스프라이트 설정
         if (inventory != null && inventory.ItemDBs != null)
         {
@@ -61,6 +69,7 @@ public class InventoryUI : MonoBehaviour
                 }
             }
         }
+        ItemEdgeImages[0].color = edgeRed;
     }
 
 
