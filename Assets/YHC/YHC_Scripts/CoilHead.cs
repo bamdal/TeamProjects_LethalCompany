@@ -12,7 +12,6 @@ public class CoilHead : EnemyBase, IHealth
     int attackDamage = 0;
     public int AttackDamage => attackDamage;
 
-
     /// <summary>
     /// 공격 쿨타임
     /// </summary>
@@ -42,11 +41,6 @@ public class CoilHead : EnemyBase, IHealth
     /// </summary>
     float patrolRange = 100.0f;
 
-    /// <summary>
-    /// 적의 Patrol할 랜덤 목적지
-    /// </summary>
-    Vector3 randomPos;
-
     // 컴포넌트
     NavMeshAgent agent;
 
@@ -61,7 +55,7 @@ public class CoilHead : EnemyBase, IHealth
 
     private void Start()
     {
-        agent.SetDestination(new Vector3(10.0f, transform.position.y, 10.0f));
+        agent.SetDestination(SetRandomDestination());
     }
 
     private void Update()
@@ -70,8 +64,9 @@ public class CoilHead : EnemyBase, IHealth
         {
             agent.SetDestination(SetRandomDestination());
         }
-    }
 
+        currentAttackCoolTime -= Time.deltaTime;
+    }
 
     /// <summary>
     /// 새로운 랜덤 목적지 생성
