@@ -7,22 +7,50 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
 using UnityEngine.InputSystem.XInput;
 
-public class Player : MonoBehaviour
+public class Player : MonoBehaviour, IBattler, IHealth
 {
     /// <summary>
     /// 플레이어 체력
     /// </summary>
-    public float hp = 100.0f;
+    public float maxHp = 100.0f;
+
+    private float currentHp = 0.0f;
+
+    public float Hp
+    {
+        get => currentHp;
+        private set
+        {
+            if (currentHp != value)
+            {
+                currentHp = Math.Clamp(value, 0, maxHp);
+                onHealthChange?.Invoke(Hp);
+            }
+        }
+    }
 
     /// <summary>
     /// 플레이어 기력
     /// </summary>
-    public float stamina = 100.0f;
+    public float maxStamina = 100.0f;
 
     /// <summary>
     /// 플레이어 현재 기력
     /// </summary>
-    private float currnetStamina = 0.0f;
+    private float currentStamina = 0.0f;
+
+    public float Stamina
+    {
+        get => currentStamina;
+        private set
+        {
+            if(currentStamina != value)
+            {
+                currentStamina = Math.Clamp(value, 0, maxStamina);
+                onStaminaChange?.Invoke(Stamina);
+            }
+        }
+    }
 
     /// <summary>
     /// 걷는 속도
@@ -171,6 +199,10 @@ public class Player : MonoBehaviour
         }
     }
 
+    public Action<float> onHealthChange;
+    public Action<float> onStaminaChange;
+
+
     InventoryUI invenUI;
     private void Awake()
     {
@@ -190,7 +222,8 @@ public class Player : MonoBehaviour
         inventoryTransform = transform.Find("Inventory");
 //        inventory = inventoryTransform.GetComponent<Inventory>();
         inventory = FindAnyObjectByType<Inventory>();
-        currnetStamina = stamina;
+        Stamina = maxStamina;
+        Hp = maxHp;
         characterController = GetComponent<CharacterController>();
         itemRader = transform.GetChild(2);
         groundCheckPosition = transform.GetChild(4);
@@ -207,7 +240,7 @@ public class Player : MonoBehaviour
     private void Update()
     {
         // 걷기 or 달리기 상태일때 스테미나 회복 및 감소
-        if (CurrentMoveMode == MoveMode.Run && currnetStamina > 0 && currentSpeed > 0)
+        if (CurrentMoveMode == MoveMode.Run && Stamina > 0 && currentSpeed > 0)
         {
             ConsumeStamina();
         }
@@ -390,10 +423,10 @@ public class Player : MonoBehaviour
     void ConsumeStamina()
     {
         // 달리는 동안 스테미나 소모
-        currnetStamina -= staminaConsumptionRate * Time.deltaTime;
-        if (currnetStamina < 0.1f)
+        Stamina -= staminaConsumptionRate * Time.deltaTime;
+        if (Stamina < 0.1f)
         {
-            currnetStamina = 0.0f;
+            Stamina = 0.0f;
             CurrentMoveMode = MoveMode.Walk;
             isCanRecovery = false;
             Debug.Log("3초간 스테미나를 회복할 수 없습니다.");
@@ -407,10 +440,10 @@ public class Player : MonoBehaviour
     /// </summary>
     void RecoverStamina()
     {
-        currnetStamina += staminaRecoveryRate * Time.deltaTime;
-        if (currnetStamina > stamina)
+        Stamina += staminaRecoveryRate * Time.deltaTime;
+        if (Stamina > maxStamina)
         {
-            currnetStamina = stamina;
+            Stamina = maxStamina;
         }
     }
 
@@ -698,7 +731,7 @@ public class Player : MonoBehaviour
         return result;
     }
 
-
+    
     private void OnInTerminal()
     {
 
@@ -708,4 +741,10 @@ public class Player : MonoBehaviour
     {
 
     }
+
+    public void OnTestDamage()
+    {
+        Hp -= 10;
+    }
+    
 }
