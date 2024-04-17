@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Store_Fin : MonoBehaviour
+public class Store_Test : MonoBehaviour
 {
     void Start()
     {

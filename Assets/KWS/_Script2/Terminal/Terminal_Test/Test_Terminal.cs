@@ -58,9 +58,9 @@ public class Test_Terminal : MonoBehaviour
     public Action onFlashLight;
 
     /// <summary>
-    /// true면 터미널 범위에 진입
+    /// 터미널의 범위에 들어왔는지 확인하는 변수
     /// </summary>
-    bool TerminalOnOff = false;
+    bool TerminalRange = false;
 
     private void Awake()
     {
@@ -106,8 +106,6 @@ public class Test_Terminal : MonoBehaviour
         enter.TotalText += ChangePanel;
         playerInput.onInTerminal += OnEClick;
         playerInput.onOutTerminal += OnESCClick;
-
-
     }
 
     private void OnEnable()
@@ -178,7 +176,7 @@ public class Test_Terminal : MonoBehaviour
     private void OnEClick()
     {
         Debug.Log($"E 키가 눌렸습니다.");
-        if (PressE_text.gameObject.activeSelf && TerminalOnOff == true)
+        if (PressE_text.gameObject.activeSelf && TerminalRange == true)
         {
             enter.ClearText();
             // 포커스 온
@@ -195,7 +193,7 @@ public class Test_Terminal : MonoBehaviour
     private void OnESCClick()
     {
         Debug.Log($"ESC 키가 눌렸습니다");
-        if (!PressE_text.gameObject.activeSelf && TerminalOnOff == true)
+        if (!PressE_text.gameObject.activeSelf && TerminalRange == true)
         {
             // 포커스 아웃
             enter.FocusOut();
@@ -214,7 +212,7 @@ public class Test_Terminal : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")                   // 충돌한 상대 오브젝트의 태그가 Player이면
         {
-            TerminalOnOff = true;
+            TerminalRange = true;
             Debug.Log($"[Player] 가 범위 안에 들어왔다.");
             PressE_text.gameObject.SetActive(true);             // TextMeshProUGUI를 활성화
         }
@@ -228,7 +226,7 @@ public class Test_Terminal : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")                   // 충돌한 상대 오브젝트의 태그가 Player이면
         {
-            TerminalOnOff = false;
+            TerminalRange = false;
             Debug.Log($"[Player] 가 범위 밖으로 나갔다.");
             PressE_text.gameObject.SetActive(false);            // TextMeshProUGUI를 비활성화
         }
@@ -302,10 +300,10 @@ public class Test_Terminal : MonoBehaviour
 
 }
 
-/// 0. 플레이어가 터미널의 일정 범위에 들어오면 "Access terminal : [E]" 가 활성화     // 1
-/// 1. 플레이어 인풋액션으로 E키를 받아서 터미널 활성화                               // 2       받으면 디버그 출력으로 테스트하기
-/// 1-1. 터미널이 활성화되면 터미널의 모니터로 VCam 위치 조정                         // 3
-/// 2. 터미널의 처음 화면 텍스트 출력                                                 // 1번-UI
+/// 0. 플레이어가 터미널의 일정 범위에 들어오면 "Access terminal : [E]" 가 활성화     // 1       v
+/// 1. 플레이어 인풋액션으로 E키를 받아서 터미널 활성화                               // 2       v
+/// 1-1. 터미널이 활성화되면 터미널의 모니터로 VCam 위치 조정                         // 3       v
+/// 2. 터미널의 처음 화면 텍스트 출력                                                 // 1번-UI  v
 
 /*
 위성 카탈로그에 오신 것을 환영합니다.
@@ -330,7 +328,14 @@ public class Test_Terminal : MonoBehaviour
 */
 
 /// 3. 터미널에서 Help(대소문자X) 를 입력하고 엔터를 누르면 사용가능한 모든 명령어가 터미널에 출력   // 2번-UI
-/// 3-1 확인(Confirm), 취소(Deny), 상점(Store)...                                                    // 2번-UI
+/// 3-1 메인에서 할 수 있는 명령어
+///     - Store
+///     - 갈수 있는 행성들
+///     - Help
+/// 3-2 스토어에서 할 수 있는 명령어
+///     - Main
+///     - 살 수 있는 아이템들
+///     - 현재 있는 총 금액?(Money)
 /// 4. Store 목록
 /*
 Store를 입력하고 엔터를 누르면 상점이 열림
