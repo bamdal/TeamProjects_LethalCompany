@@ -145,7 +145,16 @@ public class DungeonGenerator : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 마무리 단계때 커넥터 정리하는 변수
+    /// </summary>
+    bool closeConnector = false;
+
+    /// <summary>
+    /// 씬생성시 맵생성 완료되었는지 파악하는 변수
+    /// </summary>
     bool doMakeComplite = false;
+
 
 
 
@@ -213,6 +222,7 @@ public class DungeonGenerator : MonoBehaviour
             existConnectors = newConnectors; // 현재 깔려있는 커넥터들 갱신
 
         }
+        closeConnector = true;          // 남은 커넥터정리시에는 충돌검사 안하기
         // existConnectors에 endmodul 연결함
         foreach (ModulConnector connector in existConnectors)    // 마무리 빈 커넥터의 입구 막기
         {
@@ -272,8 +282,9 @@ public class DungeonGenerator : MonoBehaviour
         Vector3 m = oldConnector.transform.position - newConnector.transform.position;
         currentModul.transform.position += m;
         destroyconnecter = newConnector;
-        bool overlapping = CheckOverlapping(currentModul);
-        if (overlapping)
+
+
+        if (!closeConnector && CheckOverlapping(currentModul))
         {
             currentModul.gameObject.SetActive(false); // 겹치는 모듈이 있으면 새로 생성한 모듈을 파괴하고 종료
             //Modul modul = oldConnector.transform.parent.gameObject.GetComponent<Modul>();   // 연결자 다시 돌려주기
