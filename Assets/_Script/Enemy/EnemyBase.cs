@@ -48,7 +48,7 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler
 
     protected Action onEnemyStateUpdate;
 
-    private void Update()
+    protected virtual void Update()
     {
         onEnemyStateUpdate();
     }
