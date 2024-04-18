@@ -105,11 +105,14 @@ public class Enter : MonoBehaviour
     public void FocusOut()
     {
         // 메시지를 보낸 후 비활성화
-        inputField.Select();
+        inputField.Select();        // 포커스가 되어있으면 비활성화, 포커스가 안되어 있으면 활성화
     }
 
+    /// <summary>
+    /// 문자열을 비우기 위한 함수
+    /// </summary>
     public void ClearText()
     {
-        inputField.text = "";
+        inputField.text = string.Empty;
     }
 }
