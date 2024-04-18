@@ -9,6 +9,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 using static UnityEditor.Timeline.TimelinePlaybackControls;
+using UnityEngine.SceneManagement;
 
 public class Test_Terminal : MonoBehaviour
 {
@@ -27,7 +28,15 @@ public class Test_Terminal : MonoBehaviour
     /// </summary>
     TextMeshProUGUI mainText;
 
+    /// <summary>
+    /// storeText
+    /// </summary>
     TextMeshProUGUI storeText;
+
+    /// <summary>
+    /// HelpText
+    /// </summary>
+    TextMeshProUGUI helpText;
 
     /// <summary>
     /// 인터페이스를 화면의 중앙에 정렬하기 위한 오프셋
@@ -62,35 +71,30 @@ public class Test_Terminal : MonoBehaviour
     /// </summary>
     bool TerminalRange = false;
 
+    string sceneNameToLoad;
+
     private void Awake()
     {
         // SphereCollider를 찾아서 변수에 할당합니다.
         sphere = GetComponent<SphereCollider>();
+        
+        //Transform child = transform.GetChild(0);                             // 0번째 자식 canvas
 
-        // 0번째 자식 canvas
-        Transform canvas = transform.GetChild(0);
-
-        // "Press_E"를 이름으로 가진 자식
-        /*PressE_text = canvas.Find("Press_E")?.GetComponent<TextMeshProUGUI>();
-
-        // 만약 "Press_E"를 찾지 못했다면, 경고를 출력합니다.
-        if (PressE_text == null)
-        {
-            Debug.LogWarning("TextMeshProUGUI를 찾을 수 없습니다.");
-        }*/
-
-        Transform child = transform.GetChild(0);                            // 0번째 자식 canvas
+        Transform canvas = transform.GetChild(0);                            // 0번째 자식 canvas
         PressE_text = canvas.GetChild(0).GetComponent<TextMeshProUGUI>();    // canvas의 0번째 자식 Press_E
 
-        mainText = canvas.GetChild(2).GetComponent<TextMeshProUGUI>();    // canvas의 2번째 자식 DefaultText
+        mainText = canvas.GetChild(2).GetComponent<TextMeshProUGUI>();       // canvas의 2번째 자식 DefaultText
 
         storeText = canvas.GetChild(3).GetComponent<TextMeshProUGUI>();      // canvas의 3번째 자식 StoreText
 
+        helpText = canvas.GetChild(4).GetComponent<TextMeshProUGUI>();       // canvas의 4번째 자식 HelpText
+
 
         // 게임 시작 시
+        mainText.gameObject.SetActive(true);                                // 시작할 때 mainText 활성화
         PressE_text.gameObject.SetActive(false);                            // 시작할 때 PressE_text 비활성화
-        mainText.gameObject.SetActive(true);                             // 시작할 때 mainText 활성화
         storeText.gameObject.SetActive(false);                              // 시작할 때 storeText 비활성화
+        helpText.gameObject.SetActive(false);                               // 시작할 때 helpText 비활성화
 
         playerInputActions = new PlayerInputActions();
 
@@ -277,15 +281,28 @@ public class Test_Terminal : MonoBehaviour
             case "스토어":
                 mainText.gameObject.SetActive(false);           // mainText 비활성화
                 storeText.gameObject.SetActive(true);           // storeText 활성화
+                helpText.gameObject.SetActive(false);           // helpText 비활성화
                 break;
             case "main":
             case "메인":
                 storeText.gameObject.SetActive(false);          // storeText 비활성화
                 mainText.gameObject.SetActive(true);            // mainText 활성화
+                helpText.gameObject.SetActive(false);           // helpText 비활성화
                 break;
+            case "help":
+            case "도움":
+                if(mainText.gameObject.activeSelf || storeText.gameObject.activeSelf)   // mainText 또는 storeText 가 활성화 상태이면
+                {
+                    mainText.gameObject.SetActive(false);           // mainText 비활성화
+                    storeText.gameObject.SetActive(false);          // storeText 비활성화
+                    helpText.gameObject.SetActive(true);            // helpText 활성화
+                }
+                break;
+
+            // 물건 구매하는 부분 -----------------------------------------------------------------------------------------
             case "flashlight":
             case "손전등":
-                if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf)
+                if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf) // mainText 비활성화 storeText 활성화 상태이면
                 {
                     Debug.Log("스토어 입력 중 손전등 입력 확인");
                     onFlashLight?.Invoke();
@@ -294,7 +311,59 @@ public class Test_Terminal : MonoBehaviour
             default:
                 Debug.Log("정확히 입력해주세요.");
                 break;
+
+            // 행성 이동하는 부분 -----------------------------------------------------------------------------------------
+            case "행성":
+            case "planet":
+                if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
+                {
+                    Debug.Log("mainText가 활성화된 상태에서 행성의 입력을 확인");
+                    sceneNameToLoad = "09_Test_LoadSceen";              // 씬의 이름이 09_Test_LoadSceen 것 불러옴
+                    ChangeSceen();
+                }
+                break;
+
+            case "원래행성":
+                if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
+                {
+                    Debug.Log("mainText가 활성화된 상태에서 원래 행성의 입력을 확인");
+                    sceneNameToLoad = "08_Test_Terminal_Player";              // 씬의 이름이 08_Test_Terminal_Player 것 불러옴
+                    ChangeSceen();
+                }
+                break;
         }
+    }
+
+    void ChangeSceen()
+    {
+        StartCoroutine(LoadSceneAsync());
+        enter.FocusOut();
+    }
+
+    /// <summary>
+    /// 씬을 비동기로 로드하기 위한 코루틴
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator LoadSceneAsync()
+    {
+        // 다음 씬 비동기 로드 시작
+        AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneNameToLoad, LoadSceneMode.Single);
+
+        // 씬 로드 완료를 기다림
+        while (!loadOperation.isDone)
+        {
+            yield return null;
+        }
+
+        // 현재 씬의 비동기 로드 시작
+        AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+
+        // 씬 언로드 완료를 기다림
+        while (!unloadOperation.isDone)
+        {
+            yield return null;
+        }
+
     }
 
 
