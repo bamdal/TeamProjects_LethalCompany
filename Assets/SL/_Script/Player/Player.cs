@@ -1,3 +1,4 @@
+using Cinemachine;
 using System;
 using System.Collections;
 using System.Collections.Generic;
@@ -204,6 +205,9 @@ public class Player : MonoBehaviour, IBattler, IHealth
 
 
     InventoryUI invenUI;
+
+    CinemachineImpulseSource _source;
+
     private void Awake()
     {
         input = GetComponent<PlayerInput>();
@@ -229,6 +233,8 @@ public class Player : MonoBehaviour, IBattler, IHealth
         groundCheckPosition = transform.GetChild(4);
         gravityY = -1f;
         invenUI = FindAnyObjectByType<InventoryUI>();
+        Transform child = transform.GetChild(0);
+        _source = child.GetComponent<CinemachineImpulseSource>();
     }
 
     private void Start()
@@ -745,6 +751,7 @@ public class Player : MonoBehaviour, IBattler, IHealth
     public void OnTestDamage()
     {
         Hp -= 10;
+        _source.GenerateImpulse(new Vector3(UnityEngine.Random.Range(-1.0f, 0.0f), UnityEngine.Random.Range(-1.0f, 0.0f), 0.0f));
     }
     
 }
