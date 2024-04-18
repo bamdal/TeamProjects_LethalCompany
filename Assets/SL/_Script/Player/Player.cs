@@ -7,6 +7,8 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.HID;
 using UnityEngine.InputSystem.XInput;
+using UnityEngine.Rendering;
+using UnityEngine.Rendering.Universal;
 
 public class Player : MonoBehaviour, IBattler, IHealth
 {
@@ -206,7 +208,9 @@ public class Player : MonoBehaviour, IBattler, IHealth
 
     InventoryUI invenUI;
 
-    CinemachineImpulseSource _source;
+    CinemachineImpulseSource _source;   // 카메라 흔들림을 위한 시네머신 임펄스 소스 컴포넌트
+    Volume volume;
+    Vignette vignette;
 
     private void Awake()
     {
@@ -235,6 +239,8 @@ public class Player : MonoBehaviour, IBattler, IHealth
         invenUI = FindAnyObjectByType<InventoryUI>();
         Transform child = transform.GetChild(0);
         _source = child.GetComponent<CinemachineImpulseSource>();
+        volume = FindObjectOfType<Volume>();
+        volume.profile.TryGet(out vignette);
     }
 
     private void Start()
@@ -740,18 +746,30 @@ public class Player : MonoBehaviour, IBattler, IHealth
     
     private void OnInTerminal()
     {
-
+        // 터미널 진입시 인풋시스템 비활성화
     }
 
     private void OnOutTerminal()
     {
-
+        // 터미널에서 나올때 인풋시스템 활성화
     }
 
     public void OnTestDamage()
     {
         Hp -= 10;
+        if(onDamageVignette != null)
+        {
+            StopCoroutine(onDamageVignette);
+        }
         _source.GenerateImpulse(new Vector3(UnityEngine.Random.Range(-1.0f, 0.0f), UnityEngine.Random.Range(-1.0f, 0.0f), 0.0f));
+        onDamageVignette = StartCoroutine(OnDamageVignette());
     }
-    
+
+    Coroutine onDamageVignette;
+    IEnumerator OnDamageVignette()
+    {
+        vignette.intensity.value = 0.3f;
+        yield return new WaitForSeconds(0.1f);
+        vignette.intensity.value = 0f;
+    }
 }
