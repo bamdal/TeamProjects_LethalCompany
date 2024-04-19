@@ -25,15 +25,22 @@ public class CoilHead : EnemyBase, IHealth
     /// <summary>
     /// CoilHead의 이동속도
     /// </summary>
-    float moveSpeed = 10;
-    public float MoveSpeed
+    float moveSpeed = 0.0f;
+    float MoveSpeed
     {
         get => moveSpeed;
         set
         {
-            moveSpeed = value;
+            if(moveSpeed != value)
+            {
+                moveSpeed = value;
+                agent.speed = moveSpeed;
+            }
         }
     }
+
+    public float patrolMoveSpeed = 5.0f;
+    public float chaseMoveSpeed = 7.0f;
 
     /// <summary>
     /// CoilHead의 패트롤 범위, 목적지에 도작하면 patrolRange 범위 안에 새로운 랜덤 목적지 생성
@@ -41,20 +48,27 @@ public class CoilHead : EnemyBase, IHealth
     float patrolRange = 100.0f;
 
     /// <summary>
-    /// 
+    /// 추적상태 돌입 범위
     /// </summary>
     public float chasePatrolTransitionRange = 20.0f;
+
+    /// <summary>
+    /// 눈 마주칠때 범위
+    /// </summary>
+    public float cognitionRange = 10.0f;
 
     Action onStateTransition_Patrol_Chase;
 
     // 컴포넌트
     NavMeshAgent agent;
     SphereCollider chaseArea;
+
+    Player player;
     
     private void Awake()
     {
         attackDamage = 90;
-        attackCoolTime = 0.2f;
+        attackCoolTime = 2.0f;
         currentAttackCoolTime = attackCoolTime;
 
         agent = GetComponent<NavMeshAgent>();
@@ -65,6 +79,8 @@ public class CoilHead : EnemyBase, IHealth
     private void Start()
     {
         agent.SetDestination(SetRandomDestination());
+        MoveSpeed = patrolMoveSpeed;
+        agent.speed = MoveSpeed;
     }
 
     protected override void Update()
@@ -77,8 +93,17 @@ public class CoilHead : EnemyBase, IHealth
     {
         if(other.CompareTag("Player"))
         {
-            onStateTransition_Patrol_Chase?.Invoke();
+            State = EnemyState.Chase;
+            MoveSpeed = chaseMoveSpeed;
+            player = GameManager.Instance.Player;
         }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        State = EnemyState.Patrol;
+        MoveSpeed = patrolMoveSpeed;
+        player = null;
     }
 
     // 업데이트 함수들 ----------------------------------------------------------------------------------------------------------------
@@ -97,12 +122,19 @@ public class CoilHead : EnemyBase, IHealth
 
     protected override void Update_Chase()
     {
-
+        if(PlayerEncounter())
+        {
+            agent.speed = 0.0f;
+        }
+        else
+        {
+            agent.speed = chaseMoveSpeed;
+        }
     }
 
     protected override void Update_Attack()
     {
-
+        currentAttackCoolTime -= Time.deltaTime;
     }
 
     protected override void Update_Die()
@@ -135,6 +167,24 @@ public class CoilHead : EnemyBase, IHealth
     /// </summary>
     void PatrolChaseMutualTranstion()
     {
+        
+    }
 
-    }   
+    /// <summary>
+    /// 적과 플레이어가 눈을 마주쳤는지 확인하는 함수
+    /// </summary>
+    bool PlayerEncounter()
+    {
+        bool result = false;
+        RaycastHit hit;
+        if (Physics.Raycast(transform.position, transform.forward, out hit, cognitionRange, LayerMask.GetMask("Player")))
+        {
+            if((player.transform.forward - transform.position).sqrMagnitude < 30.0f)
+            {
+                result = true;
+            }
+        }
+        
+        return result;
+    }
 }
