@@ -137,7 +137,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5964225437306367306, guid: 4548862bbe78e5442adac29ab687b04e, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1.25
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 5964225437306367306, guid: 4548862bbe78e5442adac29ab687b04e, type: 3}
       propertyPath: m_LocalPosition.z
@@ -1640,10 +1640,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: FakeTerminal
       objectReference: {fileID: 0}
-    - target: {fileID: 6985932459583977369, guid: 4474b02a3251baf4eac8269c491524fc, type: 3}
-      propertyPath: m_Enabled
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 8291492785477504582, guid: 4474b02a3251baf4eac8269c491524fc, type: 3}
       propertyPath: farVcam
       value: 
@@ -1652,8 +1648,7 @@ PrefabInstance:
       propertyPath: nearVcam
       value: 
       objectReference: {fileID: 1236673845}
-    m_RemovedComponents:
-    - {fileID: 6985932459583977369, guid: 4474b02a3251baf4eac8269c491524fc, type: 3}
+    m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
     m_AddedComponents: []

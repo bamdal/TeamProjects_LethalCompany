@@ -1099,12 +1099,11 @@ GameObject:
   - component: {fileID: 3795476612405506366}
   - component: {fileID: 2441665513067187565}
   - component: {fileID: 3145374738233883555}
-  - component: {fileID: 6985932459583977369}
   - component: {fileID: 687682018703500886}
   - component: {fileID: 8291492785477504582}
   m_Layer: 0
   m_Name: FakeTerminal
-  m_TagString: Untagged
+  m_TagString: Terminal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -1195,27 +1194,6 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &6985932459583977369
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6677382605799944831}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1.5
   m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &687682018703500886
 Rigidbody:
