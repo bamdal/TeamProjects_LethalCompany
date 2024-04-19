@@ -224,8 +224,7 @@ public class Player : MonoBehaviour, IBattler, IHealth
         input.onRClick += OnRClickInput;
         input.onScroll += OnScrollWheel;
         input.onItemDrop += OnItemDrop;
-        input.onInTerminal += OnInTerminal;
-        input.onOutTerminal += OnOutTerminal;
+        input.onTerminalInteract += OnInTerminal;
         cam = FindAnyObjectByType<Camera>();
         inventoryTransform = transform.Find("Inventory");
 //        inventory = inventoryTransform.GetComponent<Inventory>();

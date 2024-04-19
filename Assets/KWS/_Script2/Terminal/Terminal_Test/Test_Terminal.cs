@@ -11,7 +11,7 @@ using UnityEngine.UI;
 using static UnityEditor.Timeline.TimelinePlaybackControls;
 using UnityEngine.SceneManagement;
 
-public class Test_Terminal : MonoBehaviour
+public class Test_Terminal : MonoBehaviour,IInteraction
 {
     /// <summary>
     /// SphereCollider를 찾기 위한 변수 sphere
@@ -108,7 +108,7 @@ public class Test_Terminal : MonoBehaviour
     private void Start()
     {
         enter.TotalText += ChangePanel;
-        playerInput.onInTerminal += OnEClick;
+        playerInput.onTerminalInteract += OnEClick;
         playerInput.onOutTerminal += OnESCClick;
     }
 
@@ -366,7 +366,10 @@ public class Test_Terminal : MonoBehaviour
 
     }
 
-
+    public void Interaction(GameObject target)
+    {
+        
+    }
 }
 
 /// 0. 플레이어가 터미널의 일정 범위에 들어오면 "Access terminal : [E]" 가 활성화     // 1       v

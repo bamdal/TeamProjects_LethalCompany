@@ -125,15 +125,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""processors"": """",
                     ""interactions"": """",
                     ""initialStateCheck"": false
-                },
-                {
-                    ""name"": ""terminal"",
-                    ""type"": ""Button"",
-                    ""id"": ""e83cbad9-7424-487b-967e-78d1b561fb0e"",
-                    ""expectedControlType"": ""Button"",
-                    ""processors"": """",
-                    ""interactions"": """",
-                    ""initialStateCheck"": false
                 }
             ],
             ""bindings"": [
@@ -312,17 +303,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""action"": ""ItemDrop"",
                     ""isComposite"": false,
                     ""isPartOfComposite"": false
-                },
-                {
-                    ""name"": """",
-                    ""id"": ""887e8fbc-6710-4795-aa91-a581d8b5e908"",
-                    ""path"": ""<Keyboard>/e"",
-                    ""interactions"": """",
-                    ""processors"": """",
-                    ""groups"": """",
-                    ""action"": ""terminal"",
-                    ""isComposite"": false,
-                    ""isPartOfComposite"": false
                 }
             ]
         },
@@ -387,7 +367,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_EnterInteract = m_Player.FindAction("EnterInteract", throwIfNotFound: true);
         m_Player_Wheel = m_Player.FindAction("Wheel", throwIfNotFound: true);
         m_Player_ItemDrop = m_Player.FindAction("ItemDrop", throwIfNotFound: true);
-        m_Player_terminal = m_Player.FindAction("terminal", throwIfNotFound: true);
         // Option
         m_Option = asset.FindActionMap("Option", throwIfNotFound: true);
         m_Option_ESC = m_Option.FindAction("ESC", throwIfNotFound: true);
@@ -463,7 +442,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
     private readonly InputAction m_Player_EnterInteract;
     private readonly InputAction m_Player_Wheel;
     private readonly InputAction m_Player_ItemDrop;
-    private readonly InputAction m_Player_terminal;
     public struct PlayerActions
     {
         private @PlayerInputActions m_Wrapper;
@@ -479,7 +457,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         public InputAction @EnterInteract => m_Wrapper.m_Player_EnterInteract;
         public InputAction @Wheel => m_Wrapper.m_Player_Wheel;
         public InputAction @ItemDrop => m_Wrapper.m_Player_ItemDrop;
-        public InputAction @terminal => m_Wrapper.m_Player_terminal;
         public InputActionMap Get() { return m_Wrapper.m_Player; }
         public void Enable() { Get().Enable(); }
         public void Disable() { Get().Disable(); }
@@ -522,9 +499,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ItemDrop.started += instance.OnItemDrop;
             @ItemDrop.performed += instance.OnItemDrop;
             @ItemDrop.canceled += instance.OnItemDrop;
-            @terminal.started += instance.OnTerminal;
-            @terminal.performed += instance.OnTerminal;
-            @terminal.canceled += instance.OnTerminal;
         }
 
         private void UnregisterCallbacks(IPlayerActions instance)
@@ -562,9 +536,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
             @ItemDrop.started -= instance.OnItemDrop;
             @ItemDrop.performed -= instance.OnItemDrop;
             @ItemDrop.canceled -= instance.OnItemDrop;
-            @terminal.started -= instance.OnTerminal;
-            @terminal.performed -= instance.OnTerminal;
-            @terminal.canceled -= instance.OnTerminal;
         }
 
         public void RemoveCallbacks(IPlayerActions instance)
@@ -650,7 +621,6 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnEnterInteract(InputAction.CallbackContext context);
         void OnWheel(InputAction.CallbackContext context);
         void OnItemDrop(InputAction.CallbackContext context);
-        void OnTerminal(InputAction.CallbackContext context);
     }
     public interface IOptionActions
     {
