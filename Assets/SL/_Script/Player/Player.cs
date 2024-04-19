@@ -558,6 +558,10 @@ public class Player : MonoBehaviour, IBattler, IHealth
                 {
                     // 상호작용 
                     interaction.Interaction(transform.gameObject);
+                    if(hit.collider.CompareTag("Terminal"))
+                    {
+                        
+                    }
                 }
             }
             else
