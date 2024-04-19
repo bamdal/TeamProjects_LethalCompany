@@ -45,15 +45,14 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   difficulty: 0
-  Prototype: {fileID: 959567581828422739, guid: ee31d5b2964dfb34b869ac5d8ba494c0, type: 3}
   moduls:
-  - {fileID: 7778482641152205625, guid: dfefe8d3340b10e41bfacf06b3b67bd4, type: 3}
-  - {fileID: 12940692688365398, guid: 3587e3144237e3a4290ff68c3801324e, type: 3}
-  - {fileID: 5804405158789893055, guid: db3630195dfef9e4f9db616ff5d87f08, type: 3}
-  - {fileID: 3026735068864414375, guid: 27c533d505dc71748810d0c34ccd0ab2, type: 3}
-  - {fileID: 659766724523745672, guid: 1734bafbccad02849a27839e61b9061a, type: 3}
-  startModul: {fileID: 4256095207435308055, guid: dc0061daaf5973d489e798856a9a4713, type: 3}
-  endModul: {fileID: 2711601189296484595, guid: 9a651f062c3c2b14e82135f99156d794, type: 3}
+  - {fileID: 4564526961701584482, guid: 1138215f9dd50bb48a4377b49ce3db21, type: 3}
+  - {fileID: 2468206507073093500, guid: d30871add4ee14548b4d3ba81c49880d, type: 3}
+  - {fileID: 2424807591886278952, guid: 1b7c7a3b7587de94f929a12fb0dc1508, type: 3}
+  - {fileID: 4273572237908490902, guid: 9f01424d2264758429f12be1db411a0e, type: 3}
+  - {fileID: 7613359671708523254, guid: 025c7bda046e32b45a0a74101a1a40e8, type: 3}
+  startModul: {fileID: 8890035108818428612, guid: 9d2017c4855d0ef4db8209631d4adc77, type: 3}
+  endModul: {fileID: 1020186458150760470, guid: 5f69f3cd0b65629458f1740f0559e220, type: 3}
   pointNav: {fileID: 0}
-  generationCount: 50
+  generationCount: 3
   randomSeed: -1

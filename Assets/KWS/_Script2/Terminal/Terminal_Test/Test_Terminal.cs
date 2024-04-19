@@ -9,6 +9,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 using static UnityEditor.Timeline.TimelinePlaybackControls;
+using UnityEngine.SceneManagement;
 
 public class Test_Terminal : MonoBehaviour
 {
@@ -27,7 +28,15 @@ public class Test_Terminal : MonoBehaviour
     /// </summary>
     TextMeshProUGUI mainText;
 
+    /// <summary>
+    /// storeText
+    /// </summary>
     TextMeshProUGUI storeText;
+
+    /// <summary>
+    /// HelpText
+    /// </summary>
+    TextMeshProUGUI helpText;
 
     /// <summary>
     /// 인터페이스를 화면의 중앙에 정렬하기 위한 오프셋
@@ -58,39 +67,34 @@ public class Test_Terminal : MonoBehaviour
     public Action onFlashLight;
 
     /// <summary>
-    /// true면 터미널 범위에 진입
+    /// 터미널의 범위에 들어왔는지 확인하는 변수
     /// </summary>
-    bool TerminalOnOff = false;
+    bool TerminalRange = false;
+
+    string sceneNameToLoad;
 
     private void Awake()
     {
         // SphereCollider를 찾아서 변수에 할당합니다.
         sphere = GetComponent<SphereCollider>();
+        
+        //Transform child = transform.GetChild(0);                             // 0번째 자식 canvas
 
-        // 0번째 자식 canvas
-        Transform canvas = transform.GetChild(0);
-
-        // "Press_E"를 이름으로 가진 자식
-        /*PressE_text = canvas.Find("Press_E")?.GetComponent<TextMeshProUGUI>();
-
-        // 만약 "Press_E"를 찾지 못했다면, 경고를 출력합니다.
-        if (PressE_text == null)
-        {
-            Debug.LogWarning("TextMeshProUGUI를 찾을 수 없습니다.");
-        }*/
-
-        Transform child = transform.GetChild(0);                            // 0번째 자식 canvas
+        Transform canvas = transform.GetChild(0);                            // 0번째 자식 canvas
         PressE_text = canvas.GetChild(0).GetComponent<TextMeshProUGUI>();    // canvas의 0번째 자식 Press_E
 
-        mainText = canvas.GetChild(2).GetComponent<TextMeshProUGUI>();    // canvas의 2번째 자식 DefaultText
+        mainText = canvas.GetChild(2).GetComponent<TextMeshProUGUI>();       // canvas의 2번째 자식 DefaultText
 
         storeText = canvas.GetChild(3).GetComponent<TextMeshProUGUI>();      // canvas의 3번째 자식 StoreText
 
+        helpText = canvas.GetChild(4).GetComponent<TextMeshProUGUI>();       // canvas의 4번째 자식 HelpText
+
 
         // 게임 시작 시
+        mainText.gameObject.SetActive(true);                                // 시작할 때 mainText 활성화
         PressE_text.gameObject.SetActive(false);                            // 시작할 때 PressE_text 비활성화
-        mainText.gameObject.SetActive(true);                             // 시작할 때 mainText 활성화
         storeText.gameObject.SetActive(false);                              // 시작할 때 storeText 비활성화
+        helpText.gameObject.SetActive(false);                               // 시작할 때 helpText 비활성화
 
         playerInputActions = new PlayerInputActions();
 
@@ -106,8 +110,6 @@ public class Test_Terminal : MonoBehaviour
         enter.TotalText += ChangePanel;
         playerInput.onInTerminal += OnEClick;
         playerInput.onOutTerminal += OnESCClick;
-
-
     }
 
     private void OnEnable()
@@ -178,7 +180,7 @@ public class Test_Terminal : MonoBehaviour
     private void OnEClick()
     {
         Debug.Log($"E 키가 눌렸습니다.");
-        if (PressE_text.gameObject.activeSelf && TerminalOnOff == true)
+        if (PressE_text.gameObject.activeSelf && TerminalRange == true)
         {
             enter.ClearText();
             // 포커스 온
@@ -195,7 +197,7 @@ public class Test_Terminal : MonoBehaviour
     private void OnESCClick()
     {
         Debug.Log($"ESC 키가 눌렸습니다");
-        if (!PressE_text.gameObject.activeSelf && TerminalOnOff == true)
+        if (!PressE_text.gameObject.activeSelf && TerminalRange == true)
         {
             // 포커스 아웃
             enter.FocusOut();
@@ -214,7 +216,7 @@ public class Test_Terminal : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")                   // 충돌한 상대 오브젝트의 태그가 Player이면
         {
-            TerminalOnOff = true;
+            TerminalRange = true;
             Debug.Log($"[Player] 가 범위 안에 들어왔다.");
             PressE_text.gameObject.SetActive(true);             // TextMeshProUGUI를 활성화
         }
@@ -228,7 +230,7 @@ public class Test_Terminal : MonoBehaviour
     {
         if (other.gameObject.tag == "Player")                   // 충돌한 상대 오브젝트의 태그가 Player이면
         {
-            TerminalOnOff = false;
+            TerminalRange = false;
             Debug.Log($"[Player] 가 범위 밖으로 나갔다.");
             PressE_text.gameObject.SetActive(false);            // TextMeshProUGUI를 비활성화
         }
@@ -279,15 +281,28 @@ public class Test_Terminal : MonoBehaviour
             case "스토어":
                 mainText.gameObject.SetActive(false);           // mainText 비활성화
                 storeText.gameObject.SetActive(true);           // storeText 활성화
+                helpText.gameObject.SetActive(false);           // helpText 비활성화
                 break;
             case "main":
             case "메인":
                 storeText.gameObject.SetActive(false);          // storeText 비활성화
                 mainText.gameObject.SetActive(true);            // mainText 활성화
+                helpText.gameObject.SetActive(false);           // helpText 비활성화
                 break;
+            case "help":
+            case "도움":
+                if(mainText.gameObject.activeSelf || storeText.gameObject.activeSelf)   // mainText 또는 storeText 가 활성화 상태이면
+                {
+                    mainText.gameObject.SetActive(false);           // mainText 비활성화
+                    storeText.gameObject.SetActive(false);          // storeText 비활성화
+                    helpText.gameObject.SetActive(true);            // helpText 활성화
+                }
+                break;
+
+            // 물건 구매하는 부분 -----------------------------------------------------------------------------------------
             case "flashlight":
             case "손전등":
-                if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf)
+                if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf) // mainText 비활성화 storeText 활성화 상태이면
                 {
                     Debug.Log("스토어 입력 중 손전등 입력 확인");
                     onFlashLight?.Invoke();
@@ -296,16 +311,68 @@ public class Test_Terminal : MonoBehaviour
             default:
                 Debug.Log("정확히 입력해주세요.");
                 break;
+
+            // 행성 이동하는 부분 -----------------------------------------------------------------------------------------
+            case "행성":
+            case "planet":
+                if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
+                {
+                    Debug.Log("mainText가 활성화된 상태에서 행성의 입력을 확인");
+                    sceneNameToLoad = "09_Test_LoadSceen";              // 씬의 이름이 09_Test_LoadSceen 것 불러옴
+                    ChangeSceen();
+                }
+                break;
+
+            case "원래행성":
+                if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
+                {
+                    Debug.Log("mainText가 활성화된 상태에서 원래 행성의 입력을 확인");
+                    sceneNameToLoad = "08_Test_Terminal_Player";              // 씬의 이름이 08_Test_Terminal_Player 것 불러옴
+                    ChangeSceen();
+                }
+                break;
         }
+    }
+
+    void ChangeSceen()
+    {
+        StartCoroutine(LoadSceneAsync());
+        enter.FocusOut();
+    }
+
+    /// <summary>
+    /// 씬을 비동기로 로드하기 위한 코루틴
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator LoadSceneAsync()
+    {
+        // 다음 씬 비동기 로드 시작
+        AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneNameToLoad, LoadSceneMode.Single);
+
+        // 씬 로드 완료를 기다림
+        while (!loadOperation.isDone)
+        {
+            yield return null;
+        }
+
+        // 현재 씬의 비동기 로드 시작
+        AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
+
+        // 씬 언로드 완료를 기다림
+        while (!unloadOperation.isDone)
+        {
+            yield return null;
+        }
+
     }
 
 
 }
 
-/// 0. 플레이어가 터미널의 일정 범위에 들어오면 "Access terminal : [E]" 가 활성화     // 1
-/// 1. 플레이어 인풋액션으로 E키를 받아서 터미널 활성화                               // 2       받으면 디버그 출력으로 테스트하기
-/// 1-1. 터미널이 활성화되면 터미널의 모니터로 VCam 위치 조정                         // 3
-/// 2. 터미널의 처음 화면 텍스트 출력                                                 // 1번-UI
+/// 0. 플레이어가 터미널의 일정 범위에 들어오면 "Access terminal : [E]" 가 활성화     // 1       v
+/// 1. 플레이어 인풋액션으로 E키를 받아서 터미널 활성화                               // 2       v
+/// 1-1. 터미널이 활성화되면 터미널의 모니터로 VCam 위치 조정                         // 3       v
+/// 2. 터미널의 처음 화면 텍스트 출력                                                 // 1번-UI  v
 
 /*
 위성 카탈로그에 오신 것을 환영합니다.
@@ -330,7 +397,14 @@ public class Test_Terminal : MonoBehaviour
 */
 
 /// 3. 터미널에서 Help(대소문자X) 를 입력하고 엔터를 누르면 사용가능한 모든 명령어가 터미널에 출력   // 2번-UI
-/// 3-1 확인(Confirm), 취소(Deny), 상점(Store)...                                                    // 2번-UI
+/// 3-1 메인에서 할 수 있는 명령어
+///     - Store
+///     - 갈수 있는 행성들
+///     - Help
+/// 3-2 스토어에서 할 수 있는 명령어
+///     - Main
+///     - 살 수 있는 아이템들
+///     - 현재 있는 총 금액?(Money)
 /// 4. Store 목록
 /*
 Store를 입력하고 엔터를 누르면 상점이 열림

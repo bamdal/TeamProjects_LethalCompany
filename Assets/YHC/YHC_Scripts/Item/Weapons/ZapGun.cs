@@ -22,7 +22,7 @@ public class ZapGun : WeaponBase, IEquipable
 
     public void Equip()
     {
-        throw new System.NotImplementedException();
+
     }
 
     public void Use()

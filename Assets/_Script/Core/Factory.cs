@@ -124,4 +124,34 @@ public class Factory : Singleton<Factory>
     {
         return itemPool.GetObject(position, angle * Vector3.forward);
     }
+
+
+    /// <summary>
+    /// 랜덤한 폐철물 소환 enumValues.Length-1 부분 코드수 늘어나면 조정해야함
+    /// </summary>
+    /// <param name="position"></param>
+    /// <param name="angle"></param>
+    /// <returns></returns>
+    /// <exception cref="ArgumentException"></exception>
+    public ItemBase GetRandomHardware(Vector3 position, float angle = 0.0f)
+    {
+        var enumValues = Enum.GetValues(enumType: typeof(ItemCode));
+        ItemCode itemCode = (ItemCode)enumValues.GetValue(UnityEngine.Random.Range(0, enumValues.Length-1));
+
+        switch (itemCode)
+        {
+            case ItemCode.Barrel:
+                return hardwareBarrelPool.GetObject(position, angle * Vector3.forward);
+            case ItemCode.CableDrum:
+                return hardwareCableDrumPool.GetObject(position, angle * Vector3.forward);
+            case ItemCode.GarbageCart:
+                return hardwareGarbageCartPool.GetObject(position, angle * Vector3.forward);
+            case ItemCode.GasTank:
+                return hardwareGasTankPool.GetObject(position, angle * Vector3.forward);
+            case ItemCode.PalletJack:
+                return hardwarePalletJackPool.GetObject(position, angle * Vector3.forward);
+            default:
+                throw new ArgumentException("Invalid item code", nameof(itemCode));
+        }
+    }
 }
