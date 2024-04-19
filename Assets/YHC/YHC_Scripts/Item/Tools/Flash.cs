@@ -60,13 +60,7 @@ public class Flash : ToolBase, IEquipable, IItemDataBase
         if(lightTransform.gameObject)
         {
             CurrentBattery -= Time.deltaTime;
-            //SetLowFogDensity();                      //손전등이 켜지면 Fog의 밀도 낮추기.
-            //Debug.Log("flash on");
-        }
-        else
-        {
-            //SetHighFogDensity();                     //손전등이 꺼지면 fog의 기본값으로 복원
-            //Debug.Log("flash off");
+
         }
         // float rotateValue = Time.deltaTime * rotateDirection;
         // if (rotateValue > 60)
@@ -80,16 +74,7 @@ public class Flash : ToolBase, IEquipable, IItemDataBase
         // }
         // lightTransform.rotation = Quaternion.Euler(-90 + rotateValue, 0, 0);
     }
-    //------------------fog-------------------
-    private void SetLowFogDensity()
-    {
-        RenderSettings.fogDensity = 0.001f;
-    }
-    private void SetHighFogDensity()
-    {
-        RenderSettings.fogDensity = 0.1f;
-    }
-    //----------------------------------------
+    
     /// <summary>
     /// 임시용 인풋시스템
     /// </summary>

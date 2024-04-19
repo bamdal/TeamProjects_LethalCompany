@@ -51,13 +51,11 @@ public class PlayerInput : MonoBehaviour
         inputActions.Player.Wheel.performed += OnScroll;
         inputActions.Player.ItemDrop.performed += OnItemDrop;
         inputActions.Player.terminal.performed += OnInTerminal;
-        inputActions.Player.ESCInteract.performed += OnOutTerminal;
     }
 
 
     private void OnDisable()
     {
-        inputActions.Player.ESCInteract.performed -= OnOutTerminal;
         inputActions.Player.terminal.performed -= OnInTerminal;
         inputActions.Player.ItemDrop.performed -= OnItemDrop;
         inputActions.Player.Wheel.performed -= OnScroll;
@@ -112,9 +110,5 @@ public class PlayerInput : MonoBehaviour
     private void OnInTerminal(InputAction.CallbackContext context)
     {
         onInTerminal?.Invoke();
-    }
-    private void OnOutTerminal(InputAction.CallbackContext context)
-    {
-        onOutTerminal?.Invoke();
     }
 }
