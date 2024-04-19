@@ -14,11 +14,6 @@ using UnityEngine.SceneManagement;
 public class Test_Terminal : MonoBehaviour,IInteraction
 {
     /// <summary>
-    /// SphereCollider를 찾기 위한 변수 sphere
-    /// </summary>
-    SphereCollider sphere;
-
-    /// <summary>
     /// PressE_text
     /// </summary>
     TextMeshProUGUI PressE_text;
@@ -75,9 +70,6 @@ public class Test_Terminal : MonoBehaviour,IInteraction
 
     private void Awake()
     {
-        // SphereCollider를 찾아서 변수에 할당합니다.
-        sphere = GetComponent<SphereCollider>();
-        
         //Transform child = transform.GetChild(0);                             // 0번째 자식 canvas
 
         Transform canvas = transform.GetChild(0);                            // 0번째 자식 canvas
@@ -101,29 +93,31 @@ public class Test_Terminal : MonoBehaviour,IInteraction
         // Enter 스크립트 찾음
         enter = FindAnyObjectByType<Enter>();
 
-        playerInput = FindAnyObjectByType<PlayerInput>();
 
     }
 
     private void Start()
     {
         enter.TotalText += ChangePanel;
-        playerInput.onTerminalInteract += OnEClick;
-        playerInput.onOutTerminal += OnESCClick;
+
     }
+
+
 
     private void OnEnable()
     {
-        playerInputActions.Enable();
+
+
         //playerInputActions.Player.terminal.performed += OnEClick;
         //playerInputActions.Player.ESCInteract.performed += OnESCClick;        
     }
 
     private void OnDisable()
     {
+
+
         //playerInputActions.Player.ESCInteract.performed -= OnESCClick;
         //playerInputActions.Player.terminal.performed -= OnEClick;
-        playerInputActions.Disable();
     }
 
     /// <summary>
@@ -182,31 +176,11 @@ public class Test_Terminal : MonoBehaviour,IInteraction
         Debug.Log($"E 키가 눌렸습니다.");
         if (PressE_text.gameObject.activeSelf && TerminalRange == true)
         {
-            enter.ClearText();
-            // 포커스 온
-            enter.FocusOn();
-            Debug.Log("PressE 활성화 & E 키가 눌렸습니다.");      // E 키가 눌렸을 때 디버그 출력
-            PressE_text.gameObject.SetActive(false);
-            SwitchCamera();
+
         }
     }
 
-    /// <summary>
-    /// 터미널에서 빠져나오기 위한 함수
-    /// </summary>
-    private void OnESCClick()
-    {
-        Debug.Log($"ESC 키가 눌렸습니다");
-        if (!PressE_text.gameObject.activeSelf && TerminalRange == true)
-        {
-            // 포커스 아웃
-            enter.FocusOut();
 
-            Debug.Log($"PressE 비활성화 & ESC 키가 눌렸습니다.");      // ESC 키가 눌렸을 때 디버그 출력
-            PressE_text.gameObject.SetActive(true);
-            SwitchCamera();
-        }
-    }
 
     /// <summary>
     /// 플레이어가 터미널의 범위 안에 들어왔는지 확인하는 함수
@@ -368,7 +342,35 @@ public class Test_Terminal : MonoBehaviour,IInteraction
 
     public void Interaction(GameObject target)
     {
-        
+        playerInputActions.Enable();
+        playerInputActions.Option.ESC.performed += OnESCClick;
+        enter.ClearText();
+        // 포커스 온
+        enter.FocusOn();
+        Debug.Log("PressE 활성화 & E 키가 눌렸습니다.");      // E 키가 눌렸을 때 디버그 출력
+        PressE_text.gameObject.SetActive(false);
+        SwitchCamera();
+    }
+
+    public Action ESC;
+
+    public Action request { get; set; }
+
+    private void OnESCClick(InputAction.CallbackContext context)
+    {
+        Debug.Log($"ESC 키가 눌렸습니다");
+        if (!PressE_text.gameObject.activeSelf)
+        {
+            // 포커스 아웃
+            enter.FocusOut();
+
+            Debug.Log($"PressE 비활성화 & ESC 키가 눌렸습니다.");      // ESC 키가 눌렸을 때 디버그 출력
+            PressE_text.gameObject.SetActive(true);
+            SwitchCamera();
+            playerInputActions.Option.ESC.performed -= OnESCClick;
+            playerInputActions.Disable();
+            request?.Invoke();
+        }
     }
 }
 
