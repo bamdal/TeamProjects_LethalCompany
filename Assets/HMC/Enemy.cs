@@ -12,8 +12,8 @@ public class Enemy : MonoBehaviour
         DIE
     }
 
-    public float attackRange = 2f; // 공격 범위
-    public float attackCooldown = 2f; // 공격 쿨다운 시간
+    public float attackRange = 1.5f; // 공격 범위
+    public float attackCooldown = 3f; // 공격 쿨다운 시간
 
     private State currentState = State.IDLE; // 몬스터의 현재 상태
     private Transform target; // 추적할 대상 (플레이어)
@@ -74,6 +74,9 @@ public class Enemy : MonoBehaviour
         {
             currentState = State.ATTACK;
         }
+
+        // 추적 중에 속도 높이기
+        agent.speed = 3.0f;
     }
 
     private void Attack()
@@ -98,24 +101,8 @@ public class Enemy : MonoBehaviour
         // 사망 처리 코드 추가
         Debug.Log("I'm dead!");
         Destroy(gameObject);
+
+        // 몬스터가 사망하면 속도를 원래대로 복구
+        agent.speed = 1.0f;
     }
 }
-    
-    /**public float MoveSpeed = 1.0f;
-    public float HP = 10f;
-    //public int currentSpwanCount = 3;
-    public int maxSpawnCount = 3;
-    public void Update() 
-    {
-        if(currentSpwanCount < maxSpawnCount)
-        {
-            SpawnMonsters();
-        }
-    }
-    public void SpawnMonsters() 
-    {
-        Transform spawnPoint = spawnPoint[Random.Range(0,spawnPoint.Length)];
-        Instantiate(EnemyPrefab, spawnPoint.position, spawnPoint.rotation);
-        currentSpwanCount++;
-    }**/
-
