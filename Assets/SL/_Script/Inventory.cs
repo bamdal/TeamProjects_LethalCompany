@@ -50,12 +50,7 @@ public class Inventory : MonoBehaviour
     }
 
 
-    private void Update()
-    {
-
-    }
-
-    public Transform FindActiveObject(Transform[] objects)
+    /*public Transform FindActiveObject(Transform[] objects)
     {
         Transform result = null;
         foreach (Transform obj in objects)
@@ -67,9 +62,9 @@ public class Inventory : MonoBehaviour
             }
         }
         return result;
-    }
+    }*/
 
-    public int FindIvenIndex(Transform[] objects)
+    /*public int FindIvenIndex(Transform[] objects)
     {
         int result = 0;
         for (int i = 0; i < objects.Length; i++)
@@ -85,5 +80,5 @@ public class Inventory : MonoBehaviour
             }
         }
         return result;
-    }
+    }*/
 }
