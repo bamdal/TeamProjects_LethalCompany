@@ -325,6 +325,34 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
                     ""isPartOfComposite"": false
                 }
             ]
+        },
+        {
+            ""name"": ""Option"",
+            ""id"": ""a5bd03c6-56d8-49a0-8644-315ebe5fd9e4"",
+            ""actions"": [
+                {
+                    ""name"": ""ESC"",
+                    ""type"": ""Button"",
+                    ""id"": ""e537ceea-8e7c-4829-b9a9-f14eb2e80e61"",
+                    ""expectedControlType"": ""Button"",
+                    ""processors"": """",
+                    ""interactions"": """",
+                    ""initialStateCheck"": false
+                }
+            ],
+            ""bindings"": [
+                {
+                    ""name"": """",
+                    ""id"": ""6d7e628b-a2c0-4163-96e5-989829f07c68"",
+                    ""path"": ""<Keyboard>/escape"",
+                    ""interactions"": """",
+                    ""processors"": """",
+                    ""groups"": ""KM"",
+                    ""action"": ""ESC"",
+                    ""isComposite"": false,
+                    ""isPartOfComposite"": false
+                }
+            ]
         }
     ],
     ""controlSchemes"": [
@@ -360,6 +388,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         m_Player_Wheel = m_Player.FindAction("Wheel", throwIfNotFound: true);
         m_Player_ItemDrop = m_Player.FindAction("ItemDrop", throwIfNotFound: true);
         m_Player_terminal = m_Player.FindAction("terminal", throwIfNotFound: true);
+        // Option
+        m_Option = asset.FindActionMap("Option", throwIfNotFound: true);
+        m_Option_ESC = m_Option.FindAction("ESC", throwIfNotFound: true);
     }
 
     public void Dispose()
@@ -551,6 +582,52 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         }
     }
     public PlayerActions @Player => new PlayerActions(this);
+
+    // Option
+    private readonly InputActionMap m_Option;
+    private List<IOptionActions> m_OptionActionsCallbackInterfaces = new List<IOptionActions>();
+    private readonly InputAction m_Option_ESC;
+    public struct OptionActions
+    {
+        private @PlayerInputActions m_Wrapper;
+        public OptionActions(@PlayerInputActions wrapper) { m_Wrapper = wrapper; }
+        public InputAction @ESC => m_Wrapper.m_Option_ESC;
+        public InputActionMap Get() { return m_Wrapper.m_Option; }
+        public void Enable() { Get().Enable(); }
+        public void Disable() { Get().Disable(); }
+        public bool enabled => Get().enabled;
+        public static implicit operator InputActionMap(OptionActions set) { return set.Get(); }
+        public void AddCallbacks(IOptionActions instance)
+        {
+            if (instance == null || m_Wrapper.m_OptionActionsCallbackInterfaces.Contains(instance)) return;
+            m_Wrapper.m_OptionActionsCallbackInterfaces.Add(instance);
+            @ESC.started += instance.OnESC;
+            @ESC.performed += instance.OnESC;
+            @ESC.canceled += instance.OnESC;
+        }
+
+        private void UnregisterCallbacks(IOptionActions instance)
+        {
+            @ESC.started -= instance.OnESC;
+            @ESC.performed -= instance.OnESC;
+            @ESC.canceled -= instance.OnESC;
+        }
+
+        public void RemoveCallbacks(IOptionActions instance)
+        {
+            if (m_Wrapper.m_OptionActionsCallbackInterfaces.Remove(instance))
+                UnregisterCallbacks(instance);
+        }
+
+        public void SetCallbacks(IOptionActions instance)
+        {
+            foreach (var item in m_Wrapper.m_OptionActionsCallbackInterfaces)
+                UnregisterCallbacks(item);
+            m_Wrapper.m_OptionActionsCallbackInterfaces.Clear();
+            AddCallbacks(instance);
+        }
+    }
+    public OptionActions @Option => new OptionActions(this);
     private int m_KMSchemeIndex = -1;
     public InputControlScheme KMScheme
     {
@@ -574,5 +651,9 @@ public partial class @PlayerInputActions: IInputActionCollection2, IDisposable
         void OnWheel(InputAction.CallbackContext context);
         void OnItemDrop(InputAction.CallbackContext context);
         void OnTerminal(InputAction.CallbackContext context);
+    }
+    public interface IOptionActions
+    {
+        void OnESC(InputAction.CallbackContext context);
     }
 }
