@@ -9,6 +9,8 @@ TagManager:
   - Ground
   - Weapon
   - Hardware
+  - Terminal
+  - Store
   layers:
   - Default
   - TransparentFX

@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -1636,6 +1636,14 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 3470266005132139390, guid: 4474b02a3251baf4eac8269c491524fc, type: 3}
+      propertyPath: m_Name
+      value: Press_F
+      objectReference: {fileID: 0}
+    - target: {fileID: 3913728031477960528, guid: 4474b02a3251baf4eac8269c491524fc, type: 3}
+      propertyPath: m_text
+      value: 'Access terminal : [F]'
+      objectReference: {fileID: 0}
     - target: {fileID: 6677382605799944831, guid: 4474b02a3251baf4eac8269c491524fc, type: 3}
       propertyPath: m_Name
       value: FakeTerminal
@@ -1651,8 +1659,37 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 6677382605799944831, guid: 4474b02a3251baf4eac8269c491524fc, type: 3}
+      insertIndex: 3
+      addedObject: {fileID: 793877567338467680}
   m_SourcePrefab: {fileID: 100100000, guid: 4474b02a3251baf4eac8269c491524fc, type: 3}
+--- !u!1 &793877567338467679 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6677382605799944831, guid: 4474b02a3251baf4eac8269c491524fc, type: 3}
+  m_PrefabInstance: {fileID: 793877567338467678}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &793877567338467680
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 793877567338467679}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Radius: 1
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

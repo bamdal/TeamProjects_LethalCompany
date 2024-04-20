@@ -10,13 +10,19 @@ using UnityEngine.SocialPlatforms.Impl;
 using UnityEngine.UI;
 using static UnityEditor.Timeline.TimelinePlaybackControls;
 using UnityEngine.SceneManagement;
+using UnityEngine.ProBuilder.Shapes;
 
-public class Test_Terminal : MonoBehaviour,IInteraction
+public class Terminal : MonoBehaviour,IInteraction
 {
     /// <summary>
-    /// PressE_text
+    /// PressF_text 텍스트 활성화 범위를 감지할 콜라이더
     /// </summary>
-    TextMeshProUGUI PressE_text;
+    SphereCollider sphere;
+
+    /// <summary>
+    /// PressF_text
+    /// </summary>
+    TextMeshProUGUI PressF_text;
 
     /// <summary>
     /// mainText
@@ -66,14 +72,22 @@ public class Test_Terminal : MonoBehaviour,IInteraction
     /// </summary>
     bool TerminalRange = false;
 
+    /// <summary>
+    /// 터미널에서 씬을 불러올 때 입력된 행성을 받아올 string
+    /// </summary>
     string sceneNameToLoad;
+
+    // 델리게이트들 -----------------------------------------------------------------------------------------------------
+
+    public Action ESC;
+    public Action request { get; set; }
 
     private void Awake()
     {
-        //Transform child = transform.GetChild(0);                             // 0번째 자식 canvas
-
+        sphere = GetComponent<SphereCollider>();                             // PressF_text의 감지범위 콜라이더
+        
         Transform canvas = transform.GetChild(0);                            // 0번째 자식 canvas
-        PressE_text = canvas.GetChild(0).GetComponent<TextMeshProUGUI>();    // canvas의 0번째 자식 Press_E
+        PressF_text = canvas.GetChild(0).GetComponent<TextMeshProUGUI>();    // canvas의 0번째 자식 Press_E
 
         mainText = canvas.GetChild(2).GetComponent<TextMeshProUGUI>();       // canvas의 2번째 자식 DefaultText
 
@@ -84,7 +98,7 @@ public class Test_Terminal : MonoBehaviour,IInteraction
 
         // 게임 시작 시
         mainText.gameObject.SetActive(true);                                // 시작할 때 mainText 활성화
-        PressE_text.gameObject.SetActive(false);                            // 시작할 때 PressE_text 비활성화
+        PressF_text.gameObject.SetActive(false);                            // 시작할 때 PressF_text 비활성화
         storeText.gameObject.SetActive(false);                              // 시작할 때 storeText 비활성화
         helpText.gameObject.SetActive(false);                               // 시작할 때 helpText 비활성화
 
@@ -127,13 +141,13 @@ public class Test_Terminal : MonoBehaviour,IInteraction
     /*private void OnEClick(InputAction.CallbackContext context)
     {
         Debug.Log($"E 키가 눌렸습니다.");
-        if (PressE_text.gameObject.activeSelf && context.action.triggered)
+        if (PressF_text.gameObject.activeSelf && context.action.triggered)
         {
             enter.ClearText();
             // 포커스 온
             enter.FocusOn();
             Debug.Log("PressE 활성화 & E 키가 눌렸습니다.");      // E 키가 눌렸을 때 디버그 출력
-            PressE_text.gameObject.SetActive(false);
+            PressF_text.gameObject.SetActive(false);
             SwitchCamera();
 
             // Move 액션 처리 비활성화
@@ -149,13 +163,13 @@ public class Test_Terminal : MonoBehaviour,IInteraction
     /*private void OnESCClick(InputAction.CallbackContext context)
     {
         Debug.Log($"ESC 키가 눌렸습니다");
-        if (!PressE_text.gameObject.activeSelf && context.action.triggered)
+        if (!PressF_text.gameObject.activeSelf && context.action.triggered)
         {
             // 포커스 아웃
             enter.FocusOut();
 
             Debug.Log($"PressE 비활성화 & ESC 키가 눌렸습니다.");      // ESC 키가 눌렸을 때 디버그 출력
-            PressE_text.gameObject.SetActive(true);
+            PressF_text.gameObject.SetActive(true);
             SwitchCamera();
 
             // Move 액션 처리 활성화
@@ -174,7 +188,7 @@ public class Test_Terminal : MonoBehaviour,IInteraction
     private void OnEClick()
     {
         Debug.Log($"E 키가 눌렸습니다.");
-        if (PressE_text.gameObject.activeSelf && TerminalRange == true)
+        if (PressF_text.gameObject.activeSelf && TerminalRange == true)
         {
 
         }
@@ -192,7 +206,7 @@ public class Test_Terminal : MonoBehaviour,IInteraction
         {
             TerminalRange = true;
             Debug.Log($"[Player] 가 범위 안에 들어왔다.");
-            PressE_text.gameObject.SetActive(true);             // TextMeshProUGUI를 활성화
+            PressF_text.gameObject.SetActive(true);             // TextMeshProUGUI를 활성화
         }
     }
 
@@ -206,7 +220,7 @@ public class Test_Terminal : MonoBehaviour,IInteraction
         {
             TerminalRange = false;
             Debug.Log($"[Player] 가 범위 밖으로 나갔다.");
-            PressE_text.gameObject.SetActive(false);            // TextMeshProUGUI를 비활성화
+            PressF_text.gameObject.SetActive(false);            // TextMeshProUGUI를 비활성화
         }
     }
 
@@ -340,35 +354,48 @@ public class Test_Terminal : MonoBehaviour,IInteraction
 
     }
 
+    /// <summary>
+    /// 상호작용 인터페이스
+    /// </summary>
+    /// <param name="target"></param>
     public void Interaction(GameObject target)
     {
-        playerInputActions.Enable();
-        playerInputActions.Option.ESC.performed += OnESCClick;
-        enter.ClearText();
-        // 포커스 온
-        enter.FocusOn();
-        Debug.Log("PressE 활성화 & E 키가 눌렸습니다.");      // E 키가 눌렸을 때 디버그 출력
-        PressE_text.gameObject.SetActive(false);
-        SwitchCamera();
+        if (PressF_text.gameObject.activeSelf)
+        {
+            PressF_text.gameObject.SetActive(false);        // PressF_text 비활성화
+
+            // OnESCClick 연결
+            playerInputActions.Enable();
+            playerInputActions.Option.ESC.performed += OnESCClick;
+
+            // 텍스트 지우기
+            enter.ClearText();
+
+            // 포커스 온
+            enter.FocusOn();
+
+            // 카메라 스위칭
+            SwitchCamera();
+        }
     }
-
-    public Action ESC;
-
-    public Action request { get; set; }
 
     private void OnESCClick(InputAction.CallbackContext context)
     {
         Debug.Log($"ESC 키가 눌렸습니다");
-        if (!PressE_text.gameObject.activeSelf)
+        if (!PressF_text.gameObject.activeSelf)
         {
+            PressF_text.gameObject.SetActive(true);        // PressF_text 활성화
             // 포커스 아웃
             enter.FocusOut();
-
-            Debug.Log($"PressE 비활성화 & ESC 키가 눌렸습니다.");      // ESC 키가 눌렸을 때 디버그 출력
-            PressE_text.gameObject.SetActive(true);
+            
+            // 카메라 스위칭
             SwitchCamera();
+
+            // OnESCClick 연결해제
             playerInputActions.Option.ESC.performed -= OnESCClick;
             playerInputActions.Disable();
+
+            // IInteraction 인터페이스에 알림
             request?.Invoke();
         }
     }

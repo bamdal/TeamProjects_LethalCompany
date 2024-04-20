@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XInput;
 using static UnityEditor.Progress;
 
-public class Store : MonoBehaviour
+public class Store : MonoBehaviour, IInteraction
 {
     /// <summary>
     /// Store에 올려진 오브젝트의 무게를 누적할 변수
@@ -30,10 +30,6 @@ public class Store : MonoBehaviour
     /// </summary>
     private List<GameObject> collidedObjects = new List<GameObject>();        
 
-    /// <summary>
-    /// 팔린 물건의 총 가격을 전달할 델리게이트(플레이어가 구독해야 함)
-    /// </summary>
-    public Action<float, float> onMoneyEarned;
 
     /// <summary>
     /// 아이템 데이터 매니저를 참조하기 위한 변수
@@ -45,6 +41,15 @@ public class Store : MonoBehaviour
     /// </summary>
     private PlayerInputActions playerInput;
 
+    // 델리게이트들 ---------------------------------------------------------------------------------------------------
+
+    /// <summary>
+    /// 팔린 물건의 총 가격을 전달할 델리게이트(게임매니저가 구독해야 함)
+    /// </summary>
+    public Action<float, float> onMoneyEarned;
+
+    public Action request { get; set; }
+
     private void Awake()
     {
         playerInput = new PlayerInputActions();
@@ -52,14 +57,14 @@ public class Store : MonoBehaviour
 
     private void OnEnable()
     {
-        playerInput.Enable();
-        playerInput.Player.Interact.performed += OnSellClick;
+        //playerInput.Enable();
+        //playerInput.Player.Interact.performed += OnSellClick;
     }
 
     private void OnDisable()
     {
-        playerInput.Disable();
-        playerInput.Player.Interact.performed -= OnSellClick;
+        //playerInput.Disable();
+        //playerInput.Player.Interact.performed -= OnSellClick;
     }
 
     void Start()
@@ -179,27 +184,7 @@ public class Store : MonoBehaviour
         {
             Debug.LogWarning("충돌한 오브젝트에 ItemBase 컴포넌트가 없습니다.");
         }
-    }
-
-
-    /// <summary>
-    /// 이 부분은 나중에 플레이어 인풋액션으로 수정해야 함(되는지 확인용)
-    /// </summary>
-    void Update()
-    {
-        /*// F 키를 누르면 충돌한 모든 오브젝트를 판매
-        if (Input.GetKeyDown(KeyCode.F))
-        {
-            // collidedObjects 리스트의 복사본을 만듭니다.
-            List<GameObject> collidedObjectsCopy = new List<GameObject>(collidedObjects);
-
-            // 복사본을 이용하여 판매를 수행합니다.
-            foreach (var obj in collidedObjectsCopy)
-            {
-                SellHardware(obj);
-            }
-        }*/
-    }
+    }    
 
     /// <summary>
     /// 폐철물을 판매하는 함수
@@ -208,7 +193,7 @@ public class Store : MonoBehaviour
     {
         totalMoney += totalPrice;
         // 판매 처리
-        onMoneyEarned?.Invoke(totalPrice, totalMoney); // 총 가격과 금액을 델리게이트로 전달(onMoneyEarned 구독하는 부분 나중에 플레이어가 받게 수정 필요)
+        onMoneyEarned?.Invoke(totalPrice, totalMoney); // 총 가격과 금액을 델리게이트로 전달
 
         // 판매가 이루어졌으므로 누적된 무게와 가격 초기화
         totalWeight = 0.0f;
@@ -223,16 +208,36 @@ public class Store : MonoBehaviour
         Debug.Log($"판매된 누적 금액: [{totalMoney}]");
     }
 
-    private void OnSellClick(InputAction.CallbackContext context)
+    /*private void OnSellClick(InputAction.CallbackContext context)
     {
         //Debug.Log("트리거 범위에 Hardware가 없습니다.");
         if (collidedObjects.Count > 0)
         {
-            Debug.Log("트리거 범위에 Hardware가 있고, F가 활성화 되었습니다. ");
-            // collidedObjects 리스트의 복사본을 만듭니다.
+            //Debug.Log("트리거 범위에 Hardware가 있고, F가 활성화 되었습니다. ");
+            // collidedObjects 리스트의 복사본을 만들고
             List<GameObject> collidedObjectsCopy = new List<GameObject>(collidedObjects);
 
-            // 복사본을 이용하여 판매를 수행합니다.
+            // 복사본을 이용하여 판매를 수행
+            foreach (var obj in collidedObjectsCopy)
+            {
+                SellHardware(obj);
+            }
+        }
+    }*/
+
+    /// <summary>
+    /// 상호작용 인터페이스
+    /// </summary>
+    /// <param name="target"></param>
+    public void Interaction(GameObject target)
+    {
+        if (collidedObjects.Count > 0)
+        {
+            //Debug.Log("트리거 범위에 Hardware가 있고, F가 활성화 되었습니다. ");
+            // collidedObjects 리스트의 복사본을 만들고
+            List<GameObject> collidedObjectsCopy = new List<GameObject>(collidedObjects);
+
+            // 복사본을 이용하여 판매를 수행
             foreach (var obj in collidedObjectsCopy)
             {
                 SellHardware(obj);
