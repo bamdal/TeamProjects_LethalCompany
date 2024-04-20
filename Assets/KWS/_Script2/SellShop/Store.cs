@@ -39,7 +39,7 @@ public class Store : MonoBehaviour, IInteraction
     /// <summary>
     /// 플레이어 인풋 액션
     /// </summary>
-    private PlayerInputActions playerInput;
+    private PlayerInputActions playerInputActions;
 
     // 델리게이트들 ---------------------------------------------------------------------------------------------------
 
@@ -52,19 +52,19 @@ public class Store : MonoBehaviour, IInteraction
 
     private void Awake()
     {
-        playerInput = new PlayerInputActions();
+        playerInputActions = new PlayerInputActions();
     }
 
     private void OnEnable()
     {
-        //playerInput.Enable();
-        //playerInput.Player.Interact.performed += OnSellClick;
+        //playerInputActions.Enable();
+        //playerInputActions.Player.Interact.performed += OnSellClick;
     }
 
     private void OnDisable()
     {
-        //playerInput.Disable();
-        //playerInput.Player.Interact.performed -= OnSellClick;
+        //playerInputActions.Disable();
+        //playerInputActions.Player.Interact.performed -= OnSellClick;
     }
 
     void Start()
@@ -231,6 +231,7 @@ public class Store : MonoBehaviour, IInteraction
     /// <param name="target"></param>
     public void Interaction(GameObject target)
     {
+        Debug.Log("왜 안됨");
         if (collidedObjects.Count > 0)
         {
             //Debug.Log("트리거 범위에 Hardware가 있고, F가 활성화 되었습니다. ");
