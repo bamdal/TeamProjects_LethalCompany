@@ -14,6 +14,19 @@ public class GameManager : Singleton<GameManager>
     Store store;
     public Store Store => store;
 
+    DungeonGenerator dungeonGenerator;
+
+    /// <summary>
+    /// EnemyAI용 배회할 포지션 좌표들
+    /// </summary>
+    public List<Modul> moduls => dungeonGenerator?.Moduls;
+
+    protected override void OnAddtiveInitialize()
+    {
+        dungeonGenerator = FindAnyObjectByType<DungeonGenerator>();
+
+    }
+
     protected override void OnInitialize()
     {
         player = FindAnyObjectByType<Player>();
