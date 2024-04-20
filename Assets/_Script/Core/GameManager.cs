@@ -31,12 +31,16 @@ public class GameManager : Singleton<GameManager>
     {
         player = FindAnyObjectByType<Player>();
         itemDataManager = GetComponent<ItemDataManager>();
-
-        // Store 클래스의 델리게이트를 구독
-        store.onMoneyEarned += Money;
+        
+        store = FindAnyObjectByType<Store>();        
+        store.onMoneyEarned += Money;       // Store 클래스의 델리게이트를 구독
     }
 
-    // Store 클래스의 델리게이트가 호출될 때 실행되는 함수
+    /// <summary>
+    /// Store 클래스의 델리게이트가 호출될 때 실행되는 함수
+    /// </summary>
+    /// <param name="totalPrice"></param>
+    /// <param name="totalMoney"></param>
     void Money(float totalPrice, float totalMoney)
     {
         Debug.Log($"GameManager에서 판매 정보를 받았다. 총 가격: {totalPrice}, 누적 금액: {totalMoney}");
