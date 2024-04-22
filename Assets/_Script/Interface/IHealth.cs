@@ -4,5 +4,6 @@ using UnityEngine;
 
 public interface IHealth 
 {
-
+    public float Hp { get; set; }
+    public void Die();
 }

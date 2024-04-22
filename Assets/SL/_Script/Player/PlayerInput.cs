@@ -105,4 +105,9 @@ public class PlayerInput : MonoBehaviour
     {
         onItemDrop?.Invoke();
     }
+    
+    public void OffInputActions()
+    {
+        inputActions.Player.Disable();
+    }
 }

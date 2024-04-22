@@ -13,6 +13,11 @@ using UnityEngine.Rendering.Universal;
 public class Player : MonoBehaviour, IBattler, IHealth
 {
     /// <summary>
+    /// 플레이어 공격력
+    /// </summary>
+    public float attackPower = 10.0f;
+
+    /// <summary>
     /// 플레이어 체력
     /// </summary>
     public float maxHp = 100.0f;
@@ -22,14 +27,30 @@ public class Player : MonoBehaviour, IBattler, IHealth
     public float Hp
     {
         get => currentHp;
-        private set
+        set
         {
             if (currentHp != value)
             {
-                currentHp = Math.Clamp(value, 0, maxHp);
-                onHealthChange?.Invoke(Hp);
+                if(value > 0)
+                {
+                    currentHp = Math.Clamp(value, 0, maxHp);
+                    onHealthChange?.Invoke(Hp);
+                }
+                else
+                {
+                    OnDie();
+                }
             }
         }
+    }
+
+    public void Die()
+    {
+        OnDie();
+    }
+    private void OnDie()
+    {
+        Debug.Log("사망");
     }
 
     /// <summary>
@@ -559,7 +580,7 @@ public class Player : MonoBehaviour, IBattler, IHealth
                     interaction.Interaction(transform.gameObject);
                     if(hit.collider.CompareTag("Terminal"))
                     {
-                        
+                        input.OffInputActions();
                     }
                 }
             }
@@ -773,5 +794,21 @@ public class Player : MonoBehaviour, IBattler, IHealth
         vignette.intensity.value = 0.3f;
         yield return new WaitForSeconds(0.1f);
         vignette.intensity.value = 0f;
+    }
+
+    public void Attack(IBattler target)
+    {
+        target.Defense(attackPower);
+    }
+
+    public void Defense(float Damage)
+    {
+        Hp -= Damage;
+        if (onDamageVignette != null)
+        {
+            StopCoroutine(onDamageVignette);
+        }
+        _source.GenerateImpulse(new Vector3(UnityEngine.Random.Range(-1.0f, 0.0f), UnityEngine.Random.Range(-1.0f, 0.0f), 0.0f));
+        onDamageVignette = StartCoroutine(OnDamageVignette());
     }
 }
