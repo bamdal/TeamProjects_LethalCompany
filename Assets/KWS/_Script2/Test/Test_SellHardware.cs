@@ -26,8 +26,6 @@ public class Test_SellHardware : TestBase
 
     /*private void OnEnable()
     {
-        //여기 앞에 뭐 쓰는거 있었는데 뭐였지...
-
         store = FindObjectOfType<Store>(); // Store 클래스의 인스턴스를 찾음
         if (store != null)
         {
