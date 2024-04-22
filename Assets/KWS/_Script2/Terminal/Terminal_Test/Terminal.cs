@@ -366,9 +366,18 @@ public class Terminal : MonoBehaviour,IInteraction
         if (!PressF_text.gameObject.activeSelf)
         {
             PressF_text.gameObject.SetActive(true);        // PressF_text 활성화
+
+            // 인풋필드 초기화
+            //enter.ClearText();        // 한글 한 글자 남는 문제 때문에 초기화가 안됨
+
             // 포커스 아웃
             enter.FocusOut();
-            
+
+            // 터미널 화면 원래대로 돌리기
+            storeText.gameObject.SetActive(false);          // storeText 비활성화
+            mainText.gameObject.SetActive(true);            // mainText 활성화
+            helpText.gameObject.SetActive(false);           // helpText 비활성화
+
             // 카메라 스위칭
             SwitchCamera();
 
