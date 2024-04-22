@@ -231,7 +231,6 @@ public class Store : MonoBehaviour, IInteraction
     /// <param name="target"></param>
     public void Interaction(GameObject target)
     {
-        Debug.Log("왜 안됨");
         if (collidedObjects.Count > 0)
         {
             //Debug.Log("트리거 범위에 Hardware가 있고, F가 활성화 되었습니다. ");

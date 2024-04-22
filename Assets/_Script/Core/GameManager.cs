@@ -14,6 +14,9 @@ public class GameManager : Singleton<GameManager>
     Store store;
     public Store Store => store;
 
+    Terminal terminal;
+    public Terminal Terminal => terminal;
+
     DungeonGenerator dungeonGenerator;
 
     /// <summary>
@@ -32,10 +35,16 @@ public class GameManager : Singleton<GameManager>
         player = FindAnyObjectByType<Player>();
         itemDataManager = GetComponent<ItemDataManager>();
         
+        store = FindAnyObjectByType<Store>();        
         if(store != null)
         {
-            store = FindAnyObjectByType<Store>();        
             store.onMoneyEarned += Money;       // Store 클래스의 델리게이트를 구독
+        }
+
+        terminal = FindAnyObjectByType<Terminal>();
+        if (terminal != null)
+        {
+            terminal.onFlashLight += UseMoney;
         }
     }
 
@@ -47,5 +56,14 @@ public class GameManager : Singleton<GameManager>
     void Money(float totalPrice, float totalMoney)
     {
         Debug.Log($"GameManager에서 판매 정보를 받았다. 총 가격: {totalPrice}, 누적 금액: {totalMoney}");
+    }
+
+    /// <summary>
+    /// 터미널 상점에서 물건을 구매했을 때 실행될 함수
+    /// </summary>
+    /// <exception cref="NotImplementedException"></exception>
+    private void UseMoney()
+    {
+        throw new NotImplementedException();
     }
 }

@@ -15,7 +15,6 @@ Material:
   - _EMISSION
   - _NORMALMAP
   - _SPECGLOSSMAP
-  - _SPECULAR_SETUP
   m_InvalidKeywords: []
   m_LightmapFlags: 0
   m_EnableInstancingVariants: 0
