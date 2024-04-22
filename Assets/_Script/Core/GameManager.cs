@@ -32,9 +32,9 @@ public class GameManager : Singleton<GameManager>
         player = FindAnyObjectByType<Player>();
         itemDataManager = GetComponent<ItemDataManager>();
         
+        store = FindAnyObjectByType<Store>();        
         if(store != null)
         {
-            store = FindAnyObjectByType<Store>();        
             store.onMoneyEarned += Money;       // Store 클래스의 델리게이트를 구독
         }
     }

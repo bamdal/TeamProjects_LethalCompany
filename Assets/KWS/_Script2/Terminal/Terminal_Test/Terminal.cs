@@ -70,7 +70,7 @@ public class Terminal : MonoBehaviour,IInteraction
     /// <summary>
     /// 터미널의 범위에 들어왔는지 확인하는 변수
     /// </summary>
-    bool TerminalRange = false;
+    //bool TerminalRange = false;
 
     /// <summary>
     /// 터미널에서 씬을 불러올 때 입력된 행성을 받아올 string
@@ -106,30 +106,23 @@ public class Terminal : MonoBehaviour,IInteraction
 
         // Enter 스크립트 찾음
         enter = FindAnyObjectByType<Enter>();
-
-
     }
 
     private void Start()
     {
         enter.TotalText += ChangePanel;
-
     }
 
 
 
     private void OnEnable()
     {
-
-
         //playerInputActions.Player.terminal.performed += OnEClick;
         //playerInputActions.Player.ESCInteract.performed += OnESCClick;        
     }
 
     private void OnDisable()
     {
-
-
         //playerInputActions.Player.ESCInteract.performed -= OnESCClick;
         //playerInputActions.Player.terminal.performed -= OnEClick;
     }
@@ -181,7 +174,7 @@ public class Terminal : MonoBehaviour,IInteraction
     
 
     // 터미널 진입 관련 -----------------------------------------------------------------------------------------------------
-
+/*
     /// <summary>
     /// 터미널에 진입하기 위한 함수
     /// </summary>
@@ -192,7 +185,7 @@ public class Terminal : MonoBehaviour,IInteraction
         {
 
         }
-    }
+    }*/
 
 
 
@@ -204,7 +197,7 @@ public class Terminal : MonoBehaviour,IInteraction
     {
         if (other.gameObject.tag == "Player")                   // 충돌한 상대 오브젝트의 태그가 Player이면
         {
-            TerminalRange = true;
+            //TerminalRange = true;
             Debug.Log($"[Player] 가 범위 안에 들어왔다.");
             PressF_text.gameObject.SetActive(true);             // TextMeshProUGUI를 활성화
         }
@@ -218,7 +211,7 @@ public class Terminal : MonoBehaviour,IInteraction
     {
         if (other.gameObject.tag == "Player")                   // 충돌한 상대 오브젝트의 태그가 Player이면
         {
-            TerminalRange = false;
+            //TerminalRange = false;
             Debug.Log($"[Player] 가 범위 밖으로 나갔다.");
             PressF_text.gameObject.SetActive(false);            // TextMeshProUGUI를 비활성화
         }
@@ -251,18 +244,6 @@ public class Terminal : MonoBehaviour,IInteraction
     /// <param name="obj">inputField에서 입력된 문자</param>
     void ChangePanel(string obj)
     {
-        /*//Debug.Log($"ChangePanel이 {obj}가 입력된 것을 확인했다.");
-        if (obj == "Store" || obj == "store" || obj == "스토어")               // 입력된 문자열이 store 라면
-        {
-            mainText.gameObject.SetActive(false);        // mainText 비활성화
-            storeText.gameObject.SetActive(true);           // storeText 활성화
-        }
-        if (obj == "Main" || obj == "main" || obj == "메인")           // 입력된 문자열이 default 라면
-        {
-            storeText.gameObject.SetActive(false);          // storeText 비활성화
-            mainText.gameObject.SetActive(true);         // mainText 활성화
-        }*/
-
         switch (obj.ToLower())
         {
             case "store":
