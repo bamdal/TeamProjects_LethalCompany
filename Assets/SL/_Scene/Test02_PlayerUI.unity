@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0, g: 0, b: 0, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657898, g: 0.4964133, b: 0.5748178, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -558,6 +558,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FakeTerminal
       objectReference: {fileID: 0}
+    - target: {fileID: 8291492785477504582, guid: 4474b02a3251baf4eac8269c491524fc, type: 3}
+      propertyPath: farVcam
+      value: 
+      objectReference: {fileID: 781456607}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -693,6 +697,17 @@ MonoBehaviour:
     m_FrequencyGain: 1
     m_Duration: 1
     m_NoiseOffsets: {x: 0, y: 0, z: 0}
+--- !u!114 &781456607 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 313521809468814936, guid: 8a4c3d49376b7c2409eb5d789349de18, type: 3}
+  m_PrefabInstance: {fileID: 8967974267728199143}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 781456604}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &922486450
 PrefabInstance:
   m_ObjectHideFlags: 0

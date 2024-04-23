@@ -232,7 +232,7 @@ public class Player : MonoBehaviour, IBattler, IHealth
     CinemachineImpulseSource _source;   // 카메라 흔들림을 위한 시네머신 임펄스 소스 컴포넌트
     Volume volume;
     Vignette vignette;
-
+    Terminal terminal;
     private void Awake()
     {
         input = GetComponent<PlayerInput>();
@@ -245,6 +245,7 @@ public class Player : MonoBehaviour, IBattler, IHealth
         input.onRClick += OnRClickInput;
         input.onScroll += OnScrollWheel;
         input.onItemDrop += OnItemDrop;
+        
         cam = FindAnyObjectByType<Camera>();
         inventoryTransform = transform.Find("Inventory");
 //        inventory = inventoryTransform.GetComponent<Inventory>();
@@ -262,10 +263,18 @@ public class Player : MonoBehaviour, IBattler, IHealth
         volume.profile.TryGet(out vignette);
     }
 
+
+
     private void Start()
     {
+        terminal = FindAnyObjectByType<Terminal>();
         CurrentItem = inventory.InvenSlots[0];
+        if(terminal != null)
+        {
+            terminal.request += OnInputAction;
+        }
     }
+
 
 
     private void Update()
@@ -595,6 +604,10 @@ public class Player : MonoBehaviour, IBattler, IHealth
         }
 
     }
+    private void OnInputAction()
+    {
+        input.OnInputActions();
+    }
 
     /// <summary>
     /// 아이템 버리는 함수
@@ -771,12 +784,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
     {
         // 터미널 진입시 인풋시스템 비활성화
     }
-
-    private void OnOutTerminal()
-    {
-        // 터미널에서 나올때 인풋시스템 활성화
-    }
-
     public void OnTestDamage()
     {
         Hp -= 10;

@@ -31,7 +31,8 @@ public class PlayerInput : MonoBehaviour
     public Action<Vector2> onScroll;
     public Action onItemDrop;
 
-    public Action onOutTerminal;
+
+
     private void Awake()
     {
         inputActions = new PlayerInputActions();
@@ -51,7 +52,6 @@ public class PlayerInput : MonoBehaviour
         inputActions.Player.Wheel.performed += OnScroll;
         inputActions.Player.ItemDrop.performed += OnItemDrop;
     }
-
 
     private void OnDisable()
     {
@@ -105,9 +105,13 @@ public class PlayerInput : MonoBehaviour
     {
         onItemDrop?.Invoke();
     }
-    
     public void OffInputActions()
     {
         inputActions.Player.Disable();
     }
+    public void OnInputActions()
+    {
+        inputActions.Player.Enable();
+    }
+
 }
