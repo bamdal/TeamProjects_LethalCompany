@@ -33,14 +33,26 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// 게임매니저가 현재 가지고 있는 돈
     /// </summary>
-    public float money;
+    float money;
+    public float Money
+    {
+        get => money;
+        set
+        {
+            if (money != value)
+            {
+                money = value;
+            }
+        }
+    }
+
 
     DungeonGenerator dungeonGenerator;
 
     /// <summary>
     /// 터미널 상점에서 산 아이템을 가질 리스트
     /// </summary>
-    public List<ItemCode> items;
+    List<ItemCode> items;
 
     /// <summary>
     /// 손전등 가격
@@ -71,7 +83,7 @@ public class GameManager : Singleton<GameManager>
         store = FindAnyObjectByType<Store>();        
         if(store != null)
         {
-            store.onMoneyEarned += Money;       // Store 클래스의 델리게이트를 구독
+            store.onMoneyEarned += MoneyAdd;       // Store 클래스의 델리게이트를 구독
         }
 
         terminal = FindAnyObjectByType<Terminal>();
@@ -86,9 +98,9 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     /// <param name="totalPrice"></param>
     /// <param name="totalMoney"></param>
-    void Money(float totalPrice, float totalMoney)
+    void MoneyAdd(float totalPrice, float totalMoney)
     {
-        money += totalPrice;
+        Money += totalPrice;
         Debug.Log($"GameManager에서 판매 정보를 받았다. 총 가격: {totalPrice}, 누적 금액: {totalMoney}");
     }
 
@@ -97,10 +109,17 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     /// <exception cref="NotImplementedException"></exception>
     private void UseMoney()
-    {        
-        money -= FlashLight;
-        items.Add(ItemCode.FlashLight);
+    {
+        if(Money >= FlashLight)
+        {
+            Money -= FlashLight;
+            items.Add(ItemCode.FlashLight);
 
-        Debug.Log($"{FlashLight}원 이 사용되었다. 현재 남은 돈{money}원");
+            Debug.Log($"{FlashLight}원 이 사용되었다. 현재 남은 돈{Money}원");
+        }
+        else
+        {
+            Debug.Log($"돈이 부족합니다. 현재 남은 돈 {Money}원");
+        }
     }
 }
