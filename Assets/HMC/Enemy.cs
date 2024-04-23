@@ -52,6 +52,7 @@ public class Enemy : MonoBehaviour
         if (Vector3.Distance(transform.position, target.position) <= attackRange)
         {
             currentState = State.CHASE;
+            Debug.Log("Chase");
         }
         else
         {
