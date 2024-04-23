@@ -57,7 +57,7 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// 손전등 가격
     /// </summary>
-    const float FlashLight = 10.0f;
+    const float FlashLightPrice = 10.0f;
 
     /// <summary>
     /// EnemyAI용 배회할 포지션 좌표들
@@ -110,12 +110,12 @@ public class GameManager : Singleton<GameManager>
     /// <exception cref="NotImplementedException"></exception>
     private void UseMoney()
     {
-        if(Money >= FlashLight)
+        if(Money >= FlashLightPrice)
         {
-            Money -= FlashLight;
+            Money -= FlashLightPrice;
             items.Add(ItemCode.FlashLight);
 
-            Debug.Log($"{FlashLight}원 이 사용되었다. 현재 남은 돈{Money}원");
+            Debug.Log($"{FlashLightPrice}원 이 사용되었다. 현재 남은 돈{Money}원");
         }
         else
         {
