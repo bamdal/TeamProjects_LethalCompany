@@ -2,27 +2,50 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEditor.Progress;
 
 public class GameManager : Singleton<GameManager>
 {
+    /// <summary>
+    /// 플레이어
+    /// </summary>
     Player player;
     public Player Player => player;
 
+    /// <summary>
+    /// 아이템 데이터 매니저
+    /// </summary>
     ItemDataManager itemDataManager;
     public ItemDataManager ItemData => itemDataManager;
 
+    /// <summary>
+    /// 스토어
+    /// </summary>
     Store store;
     public Store Store => store;
 
+    /// <summary>
+    /// 터미널
+    /// </summary>
     Terminal terminal;
     public Terminal Terminal => terminal;
-
-    DungeonGenerator dungeonGenerator;
-
+    
     /// <summary>
     /// 게임매니저가 현재 가지고 있는 돈
     /// </summary>
     public float money;
+
+    DungeonGenerator dungeonGenerator;
+
+    /// <summary>
+    /// 터미널 상점에서 산 아이템을 가질 리스트
+    /// </summary>
+    public List<ItemCode> items;
+
+    /// <summary>
+    /// 손전등 가격
+    /// </summary>
+    const float FlashLight = 10.0f;
 
     /// <summary>
     /// EnemyAI용 배회할 포지션 좌표들
@@ -33,6 +56,11 @@ public class GameManager : Singleton<GameManager>
     {
         dungeonGenerator = FindAnyObjectByType<DungeonGenerator>();
 
+    }
+
+    private void Awake()
+    {
+        items = new List<ItemCode>();
     }
 
     protected override void OnInitialize()
@@ -69,9 +97,9 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     /// <exception cref="NotImplementedException"></exception>
     private void UseMoney()
-    {
-        float FlashLight = 10.0f;
-        money -= 10;
+    {        
+        money -= FlashLight;
+        items.Add(ItemCode.FlashLight);
 
         Debug.Log($"{FlashLight}원 이 사용되었다. 현재 남은 돈{money}원");
     }
