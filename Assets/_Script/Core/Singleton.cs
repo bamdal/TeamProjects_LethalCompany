@@ -92,6 +92,15 @@ public class Singleton<T> : MonoBehaviour where T : Component
         {
             OnInitialize();
         }
+        if (mode == LoadSceneMode.Additive)
+        {
+            OnAddtiveInitialize();
+        }
+    }
+
+    protected virtual void OnAddtiveInitialize()
+    {
+
     }
 
     /// <summary>

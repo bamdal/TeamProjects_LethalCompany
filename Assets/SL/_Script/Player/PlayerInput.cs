@@ -30,7 +30,7 @@ public class PlayerInput : MonoBehaviour
 
     public Action<Vector2> onScroll;
     public Action onItemDrop;
-    public Action onInTerminal;
+
     public Action onOutTerminal;
     private void Awake()
     {
@@ -50,15 +50,11 @@ public class PlayerInput : MonoBehaviour
         inputActions.Player.Jump.performed += OnJump;
         inputActions.Player.Wheel.performed += OnScroll;
         inputActions.Player.ItemDrop.performed += OnItemDrop;
-        inputActions.Player.terminal.performed += OnInTerminal;
-        inputActions.Player.ESCInteract.performed += OnOutTerminal;
     }
 
 
     private void OnDisable()
     {
-        inputActions.Player.ESCInteract.performed -= OnOutTerminal;
-        inputActions.Player.terminal.performed -= OnInTerminal;
         inputActions.Player.ItemDrop.performed -= OnItemDrop;
         inputActions.Player.Wheel.performed -= OnScroll;
         inputActions.Player.Jump.performed -= OnJump;
@@ -109,12 +105,9 @@ public class PlayerInput : MonoBehaviour
     {
         onItemDrop?.Invoke();
     }
-    private void OnInTerminal(InputAction.CallbackContext context)
+    
+    public void OffInputActions()
     {
-        onInTerminal?.Invoke();
-    }
-    private void OnOutTerminal(InputAction.CallbackContext context)
-    {
-        onOutTerminal?.Invoke();
+        inputActions.Player.Disable();
     }
 }

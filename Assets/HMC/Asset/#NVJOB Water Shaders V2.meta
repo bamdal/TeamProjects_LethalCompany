@@ -1,6 +1,20 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
+<<<<<<<< HEAD:Assets/HMC/Asset/#NVJOB Water Shaders V2.meta
 guid: 07ab83e58279e444eb329e1e0de9bf63
 folderAsset: yes
+========
+<<<<<<<< HEAD:Assets/HorrorHospitalPackFJM.unitypackage.meta
+guid: fcdbec58ed3189e4a9392e6d08519d9f
+========
+guid: 219e418e8f0bc2e408f1370f12a3b686
+folderAsset: yes
+>>>>>>>> 6ac8dcd942c7ff3499c5e188465bf36749c94d93:Assets/HMC/Asset/#NVJOB Water Shaders V2/Example Scenes/Scenes.meta
+>>>>>>>> baf6d39cd81ca8437acb9b7077875144be788f60:Assets/HorrorHospitalPackFJM.unitypackage.meta
+=======
+guid: d6d86f3bcd2984d9aaa351bb939f033b
+folderAsset: yes
+>>>>>>> baf6d39cd81ca8437acb9b7077875144be788f60
 DefaultImporter:
   externalObjects: {}
   userData: 

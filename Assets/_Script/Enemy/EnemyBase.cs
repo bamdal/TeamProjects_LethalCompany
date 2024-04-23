@@ -46,6 +46,8 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler
         }
     }
 
+    public float Hp { get; set; }
+
     protected Action onEnemyStateUpdate;
 
     protected virtual void Update()
@@ -77,4 +79,19 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler
     {
 
     }
+
+    public void Die()
+    {
+    }
+
+    public void Attack(IBattler target)
+    {
+    }
+
+    public void Defense(float attackPower)
+    {
+    }
+
+
+    /// IBattler와 IHealth에 각각 Hp, Die() || Attack(), Defense() 추가되어있어요. 적 만드실 때 추가해주세요.
 }

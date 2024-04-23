@@ -21,6 +21,9 @@ public class Enter : MonoBehaviour
     /// </summary>
     public string totalText;
 
+    /// <summary>
+    /// totalText을 델리게이트로 터미널에 보내기 위한 델리게이트
+    /// </summary>
     public Action<string> TotalText;
 
     private void Awake()
@@ -96,12 +99,18 @@ public class Enter : MonoBehaviour
         EndEdit(totalText);
     }
 
+    /// <summary>
+    /// 인풋필드의 포커스를 유지하기 위한 함수
+    /// </summary>
     public void FocusOn()
     {
         // 메시지를 보내도 포커스 활성화
         inputField.ActivateInputField();
     }
 
+    /// <summary>
+    /// 터미널에 접속하기 전에는 인풋필드의 포커스를 내리기 위한 함수
+    /// </summary>
     public void FocusOut()
     {
         // 메시지를 보낸 후 비활성화

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -10,4 +11,6 @@ public interface IInteraction
     /// </summary>
     /// <param name="target">상호작용한 플레이어의 게임오브젝트</param>
     void Interaction(GameObject target);
+
+    Action request { get; set; }
 }

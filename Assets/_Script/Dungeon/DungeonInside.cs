@@ -1,10 +1,11 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class DungeonInside : MonoBehaviour, IInteraction
 {
-    
+    public Action request { get; set; }
 
     public void Interaction(GameObject target)
     {
