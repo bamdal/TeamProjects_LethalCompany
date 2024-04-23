@@ -20,6 +20,11 @@ public class GameManager : Singleton<GameManager>
     DungeonGenerator dungeonGenerator;
 
     /// <summary>
+    /// 게임매니저가 현재 가지고 있는 돈
+    /// </summary>
+    public float money;
+
+    /// <summary>
     /// EnemyAI용 배회할 포지션 좌표들
     /// </summary>
     public List<Modul> moduls => dungeonGenerator?.Moduls;
@@ -55,6 +60,7 @@ public class GameManager : Singleton<GameManager>
     /// <param name="totalMoney"></param>
     void Money(float totalPrice, float totalMoney)
     {
+        money += totalPrice;
         Debug.Log($"GameManager에서 판매 정보를 받았다. 총 가격: {totalPrice}, 누적 금액: {totalMoney}");
     }
 
@@ -64,6 +70,9 @@ public class GameManager : Singleton<GameManager>
     /// <exception cref="NotImplementedException"></exception>
     private void UseMoney()
     {
-        throw new NotImplementedException();
+        float FlashLight = 10.0f;
+        money -= 10;
+
+        Debug.Log($"{FlashLight}원 이 사용되었다. 현재 남은 돈{money}원");
     }
 }
