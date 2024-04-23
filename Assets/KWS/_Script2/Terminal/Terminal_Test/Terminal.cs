@@ -111,6 +111,8 @@ public class Terminal : MonoBehaviour,IInteraction
     private void Start()
     {
         enter.TotalText += ChangePanel;
+        GameObject temp = GameObject.Find("PlayerVC");
+        farVcam = temp.GetComponent<CinemachineVirtualCamera>();
     }
 
 

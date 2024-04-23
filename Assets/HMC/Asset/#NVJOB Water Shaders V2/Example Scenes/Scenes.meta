@@ -1,10 +1,15 @@
 fileFormatVersion: 2
+<<<<<<< HEAD
+guid: d8053a976929473a886e3720eb103888
+folderAsset: yes
+=======
 <<<<<<<< HEAD:Assets/HorrorHospitalPackFJM.unitypackage.meta
 guid: 6661052deb9c9d74a8f07f367ba64818
 ========
 guid: 219e418e8f0bc2e408f1370f12a3b686
 folderAsset: yes
 >>>>>>>> 6ac8dcd942c7ff3499c5e188465bf36749c94d93:Assets/HMC/Asset/#NVJOB Water Shaders V2/Example Scenes/Scenes.meta
+>>>>>>> baf6d39cd81ca8437acb9b7077875144be788f60
 DefaultImporter:
   externalObjects: {}
   userData: 
