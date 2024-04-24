@@ -14,6 +14,15 @@ public class ModulConnector : MonoBehaviour
     /// </summary>
     public Vector3 Connection => connection;
 
+
+    bool useConnector = true;
+
+    public bool UseConnector
+    {
+        get => useConnector;
+        set => useConnector = value;
+    }
+
     private void Start()
     {
         connection = transform.forward;

@@ -289,7 +289,7 @@ public class Terminal : MonoBehaviour,IInteraction
                 if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
                 {
                     Debug.Log("mainText가 활성화된 상태에서 행성의 입력을 확인");
-                    sceneNameToLoad = "09_Test_LoadSceen";              // 씬의 이름이 09_Test_LoadSceen 것 불러옴
+                    sceneNameToLoad = "IntegrationScenes";              // 씬의 이름이 IntegrationScenes 것 불러옴
                     ChangeSceen();
                 }
                 break;

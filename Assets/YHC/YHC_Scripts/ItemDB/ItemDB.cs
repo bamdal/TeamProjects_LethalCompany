@@ -16,6 +16,7 @@ public enum ItemCode
     GasTank,
     PalletJack,
     FlashLight = 100,
+    Shovel
 }
 
 [CreateAssetMenu(fileName = "new Item Data", menuName = "Scriptable Object/Item Data", order = 0)]
