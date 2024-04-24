@@ -30,6 +30,12 @@ public class Enter : MonoBehaviour
     {
         playerInput = new PlayerInputActions();
         inputField = GetComponent<TMP_InputField>();
+        inputField.onSubmit.AddListener((text) =>
+        {
+            TotalText?.Invoke(text);
+            ClearText();
+            inputField.ActivateInputField();
+        });
     }
 
     private void Start()
@@ -55,23 +61,24 @@ public class Enter : MonoBehaviour
         // 메시지를 보내도 포커스 활성화
         //inputField.ActivateInputField();
 
+        // 다른 곳을 클릭 했다가 엔터치면 포커스 활성화
         FocusOn();
 
-        // inputField가 공백이 아닐때
-        if (inputField.text != "")
-        {
-            // EnterInteract 이벤트가 발생했을 때 입력 필드의 텍스트를 가져와서 EndEdit 함수 호출
-            totalText = inputField.text;        // inputField에서 입력된 마지막 문자를 제외한 문자들을 totaltext에 저장하고
+        //// inputField가 공백이 아닐때
+        //if (inputField.text != "") 
+        //{
+        //    // EnterInteract 이벤트가 발생했을 때 입력 필드의 텍스트를 가져와서 EndEdit 함수 호출
+        //    totalText = inputField.text;        // inputField에서 입력된 마지막 문자를 제외한 문자들을 totaltext에 저장하고
 
-            // 입력 필드의 텍스트를 초기화
-            ClearText();                        // inputField 초기화 => 마지막 문자가 남음
-            StartCoroutine(LastWordChecdk());   // 코루틴 실행
-        }
+        //    // 입력 필드의 텍스트를 초기화
+        //    ClearText();                        // inputField 초기화 => 마지막 문자가 남음
+        //    StartCoroutine(LastWordChecdk());   // 코루틴 실행
+        //}
 
-        // 메시지를 보낸 후 비활성화
-        //inputField.Select();
+        //// 메시지를 보낸 후 비활성화
+        ////inputField.Select();
 
-        FocusOut();
+        //FocusOut();
     }
 
     /// <summary>
@@ -83,10 +90,10 @@ public class Enter : MonoBehaviour
     /// <param name="text">마지막 남은 한글 문자</param>
     private void EndEdit(string text)
     {
-        totalText += inputField.text;       // 마지막 문자를 totalText에 더해줌
-        Debug.Log(totalText);               // 디버그로 전체 문자 출력
-        ClearText();                        // 마지막 문자 초기화
-        TotalText?.Invoke(totalText);
+        //totalText += inputField.text;       // 마지막 문자를 totalText에 더해줌
+        //Debug.Log(totalText);               // 디버그로 전체 문자 출력
+        //ClearText();                        // 마지막 문자 초기화
+        //TotalText?.Invoke(totalText);
     }
 
     /// <summary>
@@ -96,7 +103,7 @@ public class Enter : MonoBehaviour
     IEnumerator LastWordChecdk()
     {
         yield return new WaitForSeconds(0.01f);
-        EndEdit(totalText);
+        //EndEdit(totalText);
     }
 
     /// <summary>

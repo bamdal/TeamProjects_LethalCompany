@@ -702,15 +702,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7836615871449156611, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 175.0759
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7836615871449156611, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 11.740696
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7836615871449156611, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 66.63889
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7836615871449156611, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
       propertyPath: m_LocalRotation.w
@@ -799,6 +799,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8291492785477504582, guid: 4474b02a3251baf4eac8269c491524fc, type: 3}
       propertyPath: farVcam
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 8291492785477504582, guid: 4474b02a3251baf4eac8269c491524fc, type: 3}
+      propertyPath: nearVcam
       value: 
       objectReference: {fileID: 0}
     m_RemovedComponents: []

@@ -214,7 +214,7 @@ public class DungeonGenerator : MonoBehaviour
                 }
                 else
                 {
-                    newConnectors.Add(existConnectors[exist]);  // 실패시 커넥터 다시 돌려주기
+                    //newConnectors.Add(existConnectors[exist]);  // 실패시 커넥터 다시 돌려주기
                 }
                 // 붙힐때 충돌 감지 되면 endmodul붙힘
 
@@ -254,6 +254,7 @@ public class DungeonGenerator : MonoBehaviour
     }
 
 
+
     /// <summary>
     /// 연결될 위치와 새 모듈을 입력하면 자동으로 연결하고 배치하는 함수
     /// </summary>
@@ -272,7 +273,7 @@ public class DungeonGenerator : MonoBehaviour
         index++;
         currentModul.transform.position = oldConnector.transform.position;
 
-
+        
         float angle = Vector3.SignedAngle(newConnector.transform.forward, -oldConnector.transform.forward, Vector3.up);
         //float angle = Quaternion.Angle(newConnector.transform.rotation, oldConnector.transform.rotation);
         Quaternion rotation = Quaternion.AngleAxis(angle, Vector3.up);
@@ -287,6 +288,7 @@ public class DungeonGenerator : MonoBehaviour
         if (!closeConnector && CheckOverlapping(currentModul))
         {
             currentModul.gameObject.SetActive(false); // 겹치는 모듈이 있으면 새로 생성한 모듈을 파괴하고 종료
+            oldConnector.UseConnector = false;
             //Modul modul = oldConnector.transform.parent.gameObject.GetComponent<Modul>();   // 연결자 다시 돌려주기
             // 삭제된경우 커넥터가 지워져서 그 부분에 마무리 입구 막기가 제대로 안되는 상황
             return null;

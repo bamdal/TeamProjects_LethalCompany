@@ -46,7 +46,7 @@ public class Timer : MonoBehaviour
         {
             lastEmittedTime = CurrentTime;
             OnTimeChanged?.Invoke(CurrentTime);
-            Debug.Log("바뀜" + CurrentTime);
+            //Debug.Log("바뀜" + CurrentTime);
         }
     }
 }
