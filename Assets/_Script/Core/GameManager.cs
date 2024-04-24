@@ -89,13 +89,13 @@ public class GameManager : Singleton<GameManager>
         store = FindAnyObjectByType<Store>();        
         if(store != null)
         {
-            store.onMoneyEarned += OnMoneyAdd;       // Store 클래스의 델리게이트를 구독
+            store.onMoneyEarned += OnMoneyAdd;       // Store 클래스의 델리게이트 연결
         }
 
         terminal = FindAnyObjectByType<Terminal>();
         if (terminal != null)
         {
-            terminal.onFlashLight += OnUseMoney;
+            terminal.onFlashLight += OnUseMoney;    // Terminal 클래스의 델리게이트 연결
         }
     }
 
@@ -119,8 +119,14 @@ public class GameManager : Singleton<GameManager>
     {
         if(Money >= FlashLightPrice)
         {
+            // 돈 차감하고
             Money -= FlashLightPrice;
+
+            // 리스트에 손전등 추가
             items.Add(ItemCode.FlashLight);
+
+            // 팩토리에서 손전등 생성
+            //Factory.Instance.GetItem();
 
             Debug.Log($"{FlashLightPrice}원 이 사용되었다. 현재 남은 돈{Money}원");
         }
