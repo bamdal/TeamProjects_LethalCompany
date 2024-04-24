@@ -4,54 +4,54 @@ using UnityEngine;
 public class ItemDrop : MonoBehaviour, IInteraction
 {
     GameManager gameManager;
-    ItemDB itemDatabase;
-    ItemDataManager itemDataManager;
-    ItemCode[] tempItemCode;
 
     public GameObject ItemBoxPrepab;
 
     public Action requestItem;
 
-    public Action request { get; set; }
-
     Transform[] itemLocation;
+
+    bool isOpen = true;
+
+    public Action request { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+
     void Awake()
     {
-        tempItemCode = new ItemCode[4];
         itemLocation = new Transform[4];
-        for(int i = 0; i < 4; i++)
+        for (int i = 0; i < 4; i++)
         {
             itemLocation[i] = transform.GetChild(i);
         }
+        transform.position = new Vector3(0, 100, 0);
     }
-    
+
     private void Start()
     {
         gameManager = GameManager.Instance;
-        itemDataManager = GameManager.Instance.ItemData;
     }
+    private void Update()
+    {
 
+    }
     public void Interaction(GameObject target)
     {
+        isOpen = false;   
         if (gameManager.ItemsQueue.Count > 4)
         {
-            for( int i = 0; i < 4; i++)
+            for (int i = 0; i < 4; i++)
             {
-                tempItemCode[i] = gameManager.ItemsQueue.Dequeue();
+                Factory.Instance.GetItem(gameManager.ItemsQueue.Dequeue(), itemLocation[i].position).transform.SetParent(itemLocation[i]);
             }
-            
+
         }
         else
         {
+            int count = 0;
             foreach (var item in gameManager.ItemsQueue)
             {
-                int i = 0;
-                tempItemCode[i] = item;
+                Factory.Instance.GetItem(item, itemLocation[count].position).transform.SetParent(itemLocation[count]);
+                count++;
             }
-        }
-        foreach (var itemCode in tempItemCode)
-        {
-            
         }
     }
 }

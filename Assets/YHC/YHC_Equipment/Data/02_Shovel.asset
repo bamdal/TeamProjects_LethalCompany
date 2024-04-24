@@ -22,5 +22,5 @@ MonoBehaviour:
   itemCode: 2
   isConductive: 0
   itemIcon: {fileID: 0}
-  itemPrefab: {fileID: 0}
+  itemModel: {fileID: 722632824591328399, guid: 6490b6b664395d146ad14efb07d24c4f, type: 3}
   damage: 10
