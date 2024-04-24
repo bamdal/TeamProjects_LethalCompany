@@ -42,9 +42,15 @@ public class GameManager : Singleton<GameManager>
             if (money != value)
             {
                 money = value;
+                OnMoneyChange?.Invoke(money);       // 사용하는 곳 일단 없음
             }
         }
     }
+
+    /// <summary>
+    /// 게임매니저가 현재 가지고 있는 돈이 변화하면 실행할 델리게이트
+    /// </summary>
+    public Action<float> OnMoneyChange;
 
 
     DungeonGenerator dungeonGenerator;
@@ -94,13 +100,13 @@ public class GameManager : Singleton<GameManager>
         store = FindAnyObjectByType<Store>();        
         if(store != null)
         {
-            store.onMoneyEarned += MoneyAdd;       // Store 클래스의 델리게이트를 구독
+            store.onMoneyEarned += OnMoneyAdd;       // Store 클래스의 델리게이트 연결
         }
 
         terminal = FindAnyObjectByType<Terminal>();
         if (terminal != null)
         {
-            terminal.onFlashLight += UseMoney;
+            terminal.onFlashLight += OnUseMoney;    // Terminal 클래스의 델리게이트 연결
         }
     }
 
@@ -109,8 +115,9 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     /// <param name="totalPrice"></param>
     /// <param name="totalMoney"></param>
-    void MoneyAdd(float totalPrice, float totalMoney)
+    void OnMoneyAdd(float totalPrice, float totalMoney)
     {
+        // 게임 매니저에서 관리하는 돈에 store에서 판매된 금액을 더함
         Money += totalPrice;
         Debug.Log($"GameManager에서 판매 정보를 받았다. 총 가격: {totalPrice}, 누적 금액: {totalMoney}");
     }
@@ -119,12 +126,16 @@ public class GameManager : Singleton<GameManager>
     /// 터미널 상점에서 물건을 구매했을 때 실행될 함수
     /// </summary>
     /// <exception cref="NotImplementedException"></exception>
-    private void UseMoney()
+    private void OnUseMoney()
     {
         if(Money >= FlashLightPrice)
         {
+            // 돈 차감하고
             Money -= FlashLightPrice;
             ItemsQueue.Enqueue(ItemCode.FlashLight);
+
+            // 팩토리에서 손전등 생성
+            //Factory.Instance.GetItem();
 
             Debug.Log($"{FlashLightPrice}원 이 사용되었다. 현재 남은 돈{Money}원");
         }
