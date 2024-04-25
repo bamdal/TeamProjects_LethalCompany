@@ -29,7 +29,7 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     Terminal terminal;
     public Terminal Terminal => terminal;
-    
+
     /// <summary>
     /// 게임매니저가 현재 가지고 있는 돈
     /// </summary>
@@ -58,8 +58,19 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// 터미널 상점에서 산 아이템을 가질 리스트
     /// </summary>
-    public List<ItemCode> items;
+    Queue<ItemCode> items;
 
+    public Queue<ItemCode> ItemsQueue
+    {
+        get => items;
+        private set
+        {
+            if (items != value)
+            {
+                items = value;
+            }
+        }
+    }
     /// <summary>
     /// 손전등 가격
     /// </summary>
@@ -78,16 +89,16 @@ public class GameManager : Singleton<GameManager>
 
     private void Awake()
     {
-        items = new List<ItemCode>();
+        items = new Queue<ItemCode>();
     }
 
     protected override void OnInitialize()
     {
         player = FindAnyObjectByType<Player>();
         itemDataManager = GetComponent<ItemDataManager>();
-        
-        store = FindAnyObjectByType<Store>();        
-        if(store != null)
+
+        store = FindAnyObjectByType<Store>();
+        if (store != null)
         {
             store.onMoneyEarned += OnMoneyAdd;       // Store 클래스의 델리게이트 연결
         }
@@ -117,13 +128,11 @@ public class GameManager : Singleton<GameManager>
     /// <exception cref="NotImplementedException"></exception>
     private void OnUseMoney()
     {
-        if(Money >= FlashLightPrice)
+        if (Money >= FlashLightPrice)
         {
             // 돈 차감하고
             Money -= FlashLightPrice;
-
-            // 리스트에 손전등 추가
-            items.Add(ItemCode.FlashLight);
+            ItemsQueue.Enqueue(ItemCode.FlashLight);
 
             // 팩토리에서 손전등 생성
             //Factory.Instance.GetItem();

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -11,6 +12,8 @@ public class AsyncStartScene : MonoBehaviour
     {
         StartCoroutine(LoadDungenonScene());
     }
+
+    public Action onGameStart;
 
     IEnumerator LoadDungenonScene()
     {
@@ -34,6 +37,6 @@ public class AsyncStartScene : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log("Async operation is done after StartGame.");
+        onGameStart?.Invoke();
     }
 }

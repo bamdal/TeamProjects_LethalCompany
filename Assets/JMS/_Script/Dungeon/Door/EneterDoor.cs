@@ -3,9 +3,9 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class DungeonInside : MonoBehaviour, IInteraction
+public class EneterDoor : MonoBehaviour, IInteraction
 {
-    public Action request { get; set; }
+    public Action request { get ; set ; }
 
     /// <summary>
     /// 텔레포트시 이동할 장소
@@ -16,10 +16,11 @@ public class DungeonInside : MonoBehaviour, IInteraction
     {
         spawnPoint = transform.GetChild(0);
     }
+
     public void Interaction(GameObject target)
     {
         Debug.Log("누름");
-        EneterDoor tp = FindAnyObjectByType<EneterDoor>();
+        DungeonInside tp = FindAnyObjectByType<DungeonInside>();
         Player player = target.GetComponent<Player>();
         CharacterController c = player.GetComponent<CharacterController>();
         c.enabled = false;
@@ -35,5 +36,6 @@ public class DungeonInside : MonoBehaviour, IInteraction
     {
         return spawnPoint;
     }
+
 
 }

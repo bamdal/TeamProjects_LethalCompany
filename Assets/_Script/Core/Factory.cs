@@ -140,7 +140,7 @@ public class Factory : Singleton<Factory>
     public ItemBase GetRandomHardware(Vector3 position, float angle = 0.0f)
     {
         var enumValues = Enum.GetValues(enumType: typeof(ItemCode));
-        ItemCode itemCode = (ItemCode)enumValues.GetValue(UnityEngine.Random.Range(0, enumValues.Length-1));
+        ItemCode itemCode = (ItemCode)enumValues.GetValue(UnityEngine.Random.Range(0, enumValues.Length-2));
 
         switch (itemCode)
         {
