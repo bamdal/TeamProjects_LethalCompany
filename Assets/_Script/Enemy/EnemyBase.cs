@@ -27,18 +27,23 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler
                 switch (state)
                 {
                     case EnemyState.Stop:
+                        Debug.Log("정지 상태");
                         onEnemyStateUpdate = Update_Stop;
                         break;
                     case EnemyState.Patrol:
+                        Debug.Log("정찰 상태");
                         onEnemyStateUpdate = Update_Patrol;
                         break;
                     case EnemyState.Chase:
+                        Debug.Log("추적 상태");
                         onEnemyStateUpdate = Update_Chase;
                         break;
                     case EnemyState.Attack:
+                        Debug.Log("공격 상태");
                         onEnemyStateUpdate = Update_Attack;
                         break;
                     case EnemyState.Die:
+                        Debug.Log("사망 상태");
                         onEnemyStateUpdate = Update_Die;
                         break;
                 }
@@ -82,14 +87,17 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler
 
     public void Die()
     {
+
     }
 
     public void Attack(IBattler target)
     {
+
     }
 
     public void Defense(float attackPower)
     {
+
     }
 
 
