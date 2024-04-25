@@ -4,23 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class CoilHead : EnemyBase, IHealth
+public class CoilHead : EnemyBase
 {
-    /// <summary>
-    /// CoilHead의 공격력
-    /// </summary>
-    int attackDamage = 0;
-    public int AttackDamage => attackDamage;
+    // 이동 관련 -----------------------------------------------------------
 
-    /// <summary>
-    /// 공격 쿨타임
-    /// </summary>
-    float attackCoolTime;
-
-    /// <summary>
-    /// 현재 남아있는 쿨타임, 0이 되면 공격
-    /// </summary>
-    float currentAttackCoolTime;
+    const float waitTime = 3.0f;
+    float wait = 0.0f;
 
     /// <summary>
     /// CoilHead의 이동속도
@@ -31,7 +20,7 @@ public class CoilHead : EnemyBase, IHealth
         get => moveSpeed;
         set
         {
-            if(moveSpeed != value)
+            if (moveSpeed != value)
             {
                 moveSpeed = value;
                 agent.speed = moveSpeed;
@@ -52,89 +41,152 @@ public class CoilHead : EnemyBase, IHealth
     /// </summary>
     public float chasePatrolTransitionRange = 20.0f;
 
-    /// <summary>
-    /// 눈 마주칠때 범위
-    /// </summary>
-    public float cognitionRange = 10.0f;
+    // 공격 관련 -----------------------------------------------------------
 
-    Action onStateTransition_Patrol_Chase;
+    /// <summary>
+    /// CoilHead의 공격력
+    /// </summary>
+    int attackDamage = 9999;
+
+    public int AttackDamage => attackDamage;
+
+    /// <summary>
+    /// 공격 쿨타임
+    /// </summary>
+    public float attackCoolTime = 5.0f;
+
+    /// <summary>
+    /// 현재 남아있는 쿨타임, 0이 되면 공격가능
+    /// </summary>
+    float currentAttackCoolTime;
+
+    /// <summary>
+    /// 공격이 가능한 상태(남아있는 쿨타임이 0 미만이다)
+    /// </summary>
+    bool IsCoolTime => currentAttackCoolTime < 0;
+
+    /// <summary>
+    /// 눈이 마주쳤다고 할 수 있는 시야 각도(25도 미만이면 눈이 마주쳤다.
+    /// </summary>
+    public float cognitionAngle = 25.0f;
+
+    /// <summary>
+    /// 현재 플레이어와 적 사이의 시야 각도
+    /// </summary>
+    float currentAngle = -1.0f;
+
+    /// <summary>
+    /// 플레이어의 트랜스폼
+    /// </summary>
+    Transform playerTransform;
+
+    /// <summary>
+    /// 공격 대상(필요시 playerTransform에서 GetCompnent실행)
+    /// </summary>
+    IBattler attackTarget;
 
     // 컴포넌트
     NavMeshAgent agent;
     SphereCollider chaseArea;
-
-    Player player;
+    CoilHead_AttackArea attackArea;
     
     private void Awake()
     {
         attackDamage = 90;
-        attackCoolTime = 2.0f;
         currentAttackCoolTime = attackCoolTime;
 
         agent = GetComponent<NavMeshAgent>();
         chaseArea = GetComponent<SphereCollider>();
-        chaseArea.radius = chasePatrolTransitionRange;
+        attackArea = GetComponentInChildren<CoilHead_AttackArea>();
     }
 
     private void Start()
     {
-        agent.SetDestination(SetRandomDestination());
+        agent.SetDestination(GetRandomDestination());
         MoveSpeed = patrolMoveSpeed;
         agent.speed = MoveSpeed;
+        wait = waitTime;
+
+        chaseArea.radius = chasePatrolTransitionRange;
+        attackArea.onPlayerApproach += AttackAreaApproach;
+        attackArea.onPlayerOut += (() =>
+        {
+            State = EnemyState.Chase;
+        });
     }
 
     protected override void Update()
     {
         base.Update();
-        attackCoolTime -= Time.deltaTime;
     }
 
     private void OnTriggerEnter(Collider other)
     {
         if(other.CompareTag("Player"))
         {
-            State = EnemyState.Chase;
+            playerTransform = other.transform;
             MoveSpeed = chaseMoveSpeed;
-            player = GameManager.Instance.Player;
+            State = EnemyState.Chase;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        State = EnemyState.Patrol;
-        MoveSpeed = patrolMoveSpeed;
-        player = null;
+        if (playerTransform != null)
+        {
+            MoveSpeed = patrolMoveSpeed;
+            State = EnemyState.Patrol;
+            attackTarget = null;
+            playerTransform = null;
+        }
     }
 
     // 업데이트 함수들 ----------------------------------------------------------------------------------------------------------------
     protected override void Update_Stop()
     {
-
+        wait -= Time.deltaTime;
+        if(wait < 0.0f)
+        {
+            agent.SetDestination(GetRandomDestination());
+            wait = waitTime;
+        }
     }
 
     protected override void Update_Patrol()
     {
         if (agent.remainingDistance < agent.stoppingDistance)
         {
-            agent.SetDestination(SetRandomDestination());
+            agent.SetDestination(GetRandomDestination());
         }
     }
 
     protected override void Update_Chase()
     {
-        if(PlayerEncounter())
-        {
-            agent.speed = 0.0f;
-        }
-        else
-        {
-            agent.speed = chaseMoveSpeed;
-        }
+        agent.SetDestination(playerTransform.position);
     }
 
     protected override void Update_Attack()
     {
         currentAttackCoolTime -= Time.deltaTime;
+
+        agent.SetDestination(playerTransform.position);
+
+        currentAngle = GetSightAngle(playerTransform);
+
+        if (currentAngle > cognitionAngle)
+        {
+            agent.isStopped = true;
+            agent.velocity = Vector3.zero;
+        }
+        else
+        {
+            agent.isStopped = false;
+            if(IsCoolTime && IsSightCheck(playerTransform))
+            {
+                Attack(attackTarget);
+                currentAttackCoolTime = attackCoolTime;
+            }
+        }
     }
 
     protected override void Update_Die()
@@ -142,11 +194,13 @@ public class CoilHead : EnemyBase, IHealth
 
     }
 
+    // 이동 관련 ----------------------------------------------------------------------------------------------------
+
     /// <summary>
     /// 새로운 랜덤 목적지 생성
     /// </summary>
     /// <returns></returns>
-    Vector3 SetRandomDestination()
+    Vector3 GetRandomDestination()
     {
         Vector3 random = UnityEngine.Random.insideUnitSphere * patrolRange;
         random += transform.position;
@@ -162,29 +216,53 @@ public class CoilHead : EnemyBase, IHealth
         }
     }
 
+    // 공격 관련 --------------------------------------------------------------------------------------------------------
+
     /// <summary>
-    /// Patrol 상태와 Chase 상태 전환용 함수
+    /// 플레이어가 공격 범위 내에 들어왔을 때 상태 변경용 함수
     /// </summary>
-    void PatrolChaseMutualTranstion()
+    /// <param name="player">범위 내에 들어온 플레이어</param>
+    private void AttackAreaApproach(Transform player)
     {
-        
+        // 플레이어일때만 실행되기때문에 추가 확인 필요 X
+        playerTransform = player;
+        attackTarget = player.GetComponent<IBattler>();
+        State = EnemyState.Attack;
+    }
+
+    // 적과 플레이어 시야 관련 ------------------------------------------------------------------------------------------
+
+    /// <summary>
+    /// 플레이어의 시야 범위 내에 적이 있는지 확인하는 함수
+    /// </summary>
+    /// <param name="player"></param>
+    /// <returns>플레이어와 적 사이의 각도</returns>
+    float GetSightAngle(Transform player)
+    {
+        Vector3 dir = transform.position - player.transform.position;
+        float angle = Vector3.Angle(player.transform.forward, dir);
+
+        return angle;
     }
 
     /// <summary>
-    /// 적과 플레이어가 눈을 마주쳤는지 확인하는 함수
+    /// 적과 플레이어 사이에 물체가 있는지 확인하는 함수
     /// </summary>
-    bool PlayerEncounter()
+    /// <param name="player"></param>
+    /// <returns>true면 사이에 물체가 없다, false면 사이에 물체가 있다.</returns>
+    public bool IsSightCheck(Transform player)
     {
         bool result = false;
-        RaycastHit hit;
-        if (Physics.Raycast(transform.position, transform.forward, out hit, cognitionRange, LayerMask.GetMask("Player")))
+        Vector3 dir = player.transform.position - transform.position;
+        Ray ray = new(transform.position, dir);
+        if (Physics.Raycast(ray, out RaycastHit hitInfo))
         {
-            if((player.transform.forward - transform.position).sqrMagnitude < 30.0f)
+            if (hitInfo.collider.CompareTag("Player"))
             {
                 result = true;
             }
         }
-        
+
         return result;
     }
 }
