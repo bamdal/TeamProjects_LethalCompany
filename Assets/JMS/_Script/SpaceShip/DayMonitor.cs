@@ -1,10 +1,18 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class DayMonitor : MonoBehaviour
 {
-    // Start is called before the first frame update
+    TextMeshPro DayText;
+
+    private void Awake()
+    {
+        DayText = GetComponentInChildren<TextMeshPro>();
+    }
+
+
     void Start()
     {
         

@@ -1,18 +1,30 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
 public class MoneyCountMonitor : MonoBehaviour
 {
-    // Start is called before the first frame update
-    void Start()
+
+    TextMeshPro MoneyText;
+
+    private void Awake()
     {
-        
+        MoneyText = GetComponentInChildren<TextMeshPro>();
     }
 
-    // Update is called once per frame
-    void Update()
+    void Start()
     {
-        
+        GameManager.Instance.OnMoneyChange += OnMoneyChange;
+
+
     }
+
+    private void OnMoneyChange(float money)
+    {
+        MoneyText.text = $"${money}";
+    }
+
+
 }

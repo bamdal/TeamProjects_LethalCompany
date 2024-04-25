@@ -42,7 +42,7 @@ public class GameManager : Singleton<GameManager>
             if (money != value)
             {
                 money = value;
-                OnMoneyChange?.Invoke(money);       // 사용하는 곳 일단 없음
+                OnMoneyChange?.Invoke(money);       // MoneyCountMonitor에서 사용
             }
         }
     }
