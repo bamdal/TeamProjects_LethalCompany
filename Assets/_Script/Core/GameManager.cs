@@ -138,12 +138,20 @@ public class GameManager : Singleton<GameManager>
             //Factory.Instance.GetItem();
 
             Debug.Log($"{FlashLightPrice}원 이 사용되었다. 현재 남은 돈{Money}원");
+
+            // 아이템을 샀다고 델리게이트로 알림
+            onBuy?.Invoke();
         }
         else
         {
             Debug.Log($"돈이 부족합니다. 현재 남은 돈 {Money}원");
         }
     }
+
+    /// <summary>
+    /// 아이템을 샀다고 알릴 델리게이트
+    /// </summary>
+    public Action onBuy;
 
 
 
