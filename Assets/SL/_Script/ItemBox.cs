@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemBox : MonoBehaviour, IInteraction
@@ -11,9 +9,9 @@ public class ItemBox : MonoBehaviour, IInteraction
 
     Transform[] itemLocation;
 
-    bool isOpen = true;
-
-    public Action request { get => throw new NotImplementedException(); set => throw new NotImplementedException(); }
+    bool isOpen = false;
+    Rigidbody rb;
+    public Action request { get; set; }
 
     void Awake()
     {
@@ -22,7 +20,8 @@ public class ItemBox : MonoBehaviour, IInteraction
         {
             itemLocation[i] = transform.GetChild(i);
         }
-        transform.position = new Vector3(0, 100, 0);
+        transform.position = new Vector3(0, 1, 0);
+        rb = GetComponent<Rigidbody>();
     }
 
     private void Start()
@@ -31,24 +30,31 @@ public class ItemBox : MonoBehaviour, IInteraction
     }
     public void Interaction(GameObject target)
     {
-
-        isOpen = false;
-        if (gameManager.ItemsQueue.Count > 4)
+        if (!isOpen)
         {
-            for (int i = 0; i < 4; i++)
+            if (gameManager.ItemsQueue.Count > 4)
             {
-                Factory.Instance.GetItem(gameManager.ItemsQueue.Dequeue(), itemLocation[i].position).transform.SetParent(itemLocation[i]);
-            }
+                for (int i = 0; i < 4; i++)
+                {
+                    Factory.Instance.GetItem(gameManager.ItemsQueue.Dequeue(), itemLocation[i].position);
+                }
 
-        }
-        else
-        {
-            int count = 0;
-            foreach (var item in gameManager.ItemsQueue)
+            }
+            else
             {
-                Factory.Instance.GetItem(item, itemLocation[count].position).transform.SetParent(itemLocation[count]);
-                count++;
+                for (int i = 0; i < gameManager.ItemsQueue.Count; i++)
+                {
+                    Factory.Instance.GetItem(gameManager.ItemsQueue.Dequeue(), itemLocation[i].position);
+                }
+            }
+            if (gameManager.ItemsQueue.Count > 0)
+            {
+                request?.Invoke();
             }
         }
+        rb.AddForce(new Vector3(UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1)) * 1000f, ForceMode.Impulse);
+        isOpen = true;
+        Destroy(this.transform.gameObject, 1f);
+        Debug.Log(gameManager.ItemsQueue.Count);
     }
 }

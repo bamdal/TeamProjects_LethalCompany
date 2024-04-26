@@ -27,7 +27,7 @@ public class Test_Qupang : TestBase
 
     protected override void OnTest3(InputAction.CallbackContext context)
     {
-        
+        gameManager.OnUse();
         Debug.Log(gameManager.ItemsQueue);
     }
 

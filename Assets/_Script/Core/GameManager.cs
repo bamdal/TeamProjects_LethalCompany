@@ -154,6 +154,13 @@ public class GameManager : Singleton<GameManager>
     public Action onBuy;
 
 
+    /// <summary>
+    /// 테스트용
+    /// </summary>
+    public void OnUse()
+    {
+        onBuy.Invoke();
+    }
 
 
 }
