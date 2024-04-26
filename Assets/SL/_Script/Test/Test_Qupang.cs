@@ -6,12 +6,12 @@ using UnityEngine.InputSystem;
 public class Test_Qupang : TestBase
 {
     Player player;
-    ItemDrop itemDrop;
+    DropBox itemDrop;
     GameManager gameManager;
     private void Start()
     {
         player = GameManager.Instance.Player;
-        itemDrop = FindAnyObjectByType<ItemDrop>();
+        itemDrop = FindAnyObjectByType<DropBox>();
         gameManager = GameManager.Instance;
     }
     protected override void OnTest1(InputAction.CallbackContext context)
