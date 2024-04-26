@@ -192,6 +192,8 @@ public class DungeonGenerator : MonoBehaviour
         Modul Start = Instantiate(startModul, generationStartPoint);   // 맵 시작 지점 스폰
 
         List<ModulConnector> existConnectors = new List<ModulConnector>(Start.Connectors); // 시작지점의 연결지점 가져오기
+        List<ModulConnector> failConnectors = new List<ModulConnector>();   // 실패한 커넥터 가져오기
+        
 
         for (int generation = 0; generation < generationCount; generation++)    // 반복 재생 횟수
         {
@@ -214,7 +216,7 @@ public class DungeonGenerator : MonoBehaviour
                 }
                 else
                 {
-                    //newConnectors.Add(existConnectors[exist]);  // 실패시 커넥터 다시 돌려주기
+                    failConnectors.Add(existConnectors[exist]);  // 실패시 커넥터 저장
                 }
                 // 붙힐때 충돌 감지 되면 endmodul붙힘
 
@@ -229,6 +231,12 @@ public class DungeonGenerator : MonoBehaviour
             MatchConntectors(connector, endModul,out _);  // 하나는 비상탈출구로 만들어야함,
                                                           // 첫번째connector중 아무나 한개는 비상 탈출구
             //yield return new WaitForSeconds(1);
+            yield return null;
+        }
+
+        foreach (ModulConnector connector in failConnectors)
+        {
+            MatchConntectors(connector, endModul, out _);
             yield return null;
         }
 

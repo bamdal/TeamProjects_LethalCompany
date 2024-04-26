@@ -22,6 +22,7 @@ public class EneterDoor : MonoBehaviour, IInteraction
         Debug.Log("누름");
         DungeonInside tp = FindAnyObjectByType<DungeonInside>();
         Player player = target.GetComponent<Player>();
+        player.IsInDungeon = true;
         CharacterController c = player.GetComponent<CharacterController>();
         c.enabled = false;
         target.transform.position = tp.TPPosition().position;
