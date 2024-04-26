@@ -1,11 +1,11 @@
 using System;
+using System.Collections;
+using System.Collections.Generic;
 using UnityEngine;
 
-public class ItemDrop : MonoBehaviour, IInteraction
+public class ItemBox : MonoBehaviour, IInteraction
 {
     GameManager gameManager;
-
-    public GameObject ItemBoxPrepab;
 
     public Action requestItem;
 
@@ -29,13 +29,10 @@ public class ItemDrop : MonoBehaviour, IInteraction
     {
         gameManager = GameManager.Instance;
     }
-    private void Update()
-    {
-
-    }
     public void Interaction(GameObject target)
     {
-        isOpen = false;   
+
+        isOpen = false;
         if (gameManager.ItemsQueue.Count > 4)
         {
             for (int i = 0; i < 4; i++)

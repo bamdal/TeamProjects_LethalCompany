@@ -12,6 +12,7 @@ using UnityEngine.Rendering.Universal;
 
 public class Player : MonoBehaviour, IBattler, IHealth
 {
+
     /// <summary>
     /// 플레이어 공격력
     /// </summary>
@@ -199,6 +200,18 @@ public class Player : MonoBehaviour, IBattler, IHealth
 
     Transform currentItem = null;
 
+    bool isInDungeon = false;
+    public bool IsInDungeon
+    {
+        get => isInDungeon;
+        set
+        {
+            if(isInDungeon !=  value)
+            {
+                isInDungeon = value;
+            }
+        }
+    }
     public Transform CurrentItem
     {
         get => currentItem;
@@ -521,7 +534,7 @@ public class Player : MonoBehaviour, IBattler, IHealth
 
             if (Physics.Raycast(ray, out hit, 3.0f))
             {
-                if (hit.collider.CompareTag("Item"))
+                if (hit.collider.CompareTag("Item") || hit.collider.CompareTag("Hardware"))
                 {
                     Debug.Log(hit);
 
