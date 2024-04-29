@@ -35,7 +35,6 @@ Transform:
   - {fileID: 2150999215418024910}
   - {fileID: 2445669056635750187}
   - {fileID: 9044635481195868695}
-  - {fileID: 2844279906183503698}
   - {fileID: 3125963175067899426}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -125,6 +124,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HardwarePalletJackPool
       objectReference: {fileID: 0}
+    - target: {fileID: 3899185433927705827, guid: 38044ffc6d7fecf47851618959cf9207, type: 3}
+      propertyPath: recycleObject
+      value: 
+      objectReference: {fileID: 8525937002105480877, guid: 1eb7f422af5f4784d9e8d31a0329fe39, type: 3}
     - target: {fileID: 8381140570020676102, guid: 38044ffc6d7fecf47851618959cf9207, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -227,6 +230,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HardwareCableDrumPool
       objectReference: {fileID: 0}
+    - target: {fileID: 9017752345587714279, guid: 43fcfdfcb704eb54a919bc56c2b6b89c, type: 3}
+      propertyPath: recycleObject
+      value: 
+      objectReference: {fileID: 7462886075213171895, guid: 238f36ced7c28824b950e204592a0e2b, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -245,6 +252,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 7836615871449156611}
     m_Modifications:
+    - target: {fileID: 879796442522353634, guid: d590ba1627e8b354e9b93f0db064cf97, type: 3}
+      propertyPath: recycleObject
+      value: 
+      objectReference: {fileID: 4674976765829000592, guid: f5ee2c6c009a9454eb7c1ea95844d2d1, type: 3}
     - target: {fileID: 3041338585144086597, guid: d590ba1627e8b354e9b93f0db064cf97, type: 3}
       propertyPath: m_Name
       value: HardwareGasTankPool
@@ -347,6 +358,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 6404849991440358139, guid: 5b8153e4d613b9743bd8c22d8fd44955, type: 3}
+      propertyPath: recycleObject
+      value: 
+      objectReference: {fileID: 2326054007167524961, guid: 6abded51937dd4b498f514d024554cec, type: 3}
     - target: {fileID: 8288582323384575215, guid: 5b8153e4d613b9743bd8c22d8fd44955, type: 3}
       propertyPath: m_Name
       value: HardwareBarrelPool
@@ -361,68 +376,6 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3340950845052407838, guid: 5b8153e4d613b9743bd8c22d8fd44955, type: 3}
   m_PrefabInstance: {fileID: 8146765717944186460}
   m_PrefabAsset: {fileID: 0}
---- !u!1001 &8525016612146892962
-PrefabInstance:
-  m_ObjectHideFlags: 0
-  serializedVersion: 2
-  m_Modification:
-    serializedVersion: 3
-    m_TransformParent: {fileID: 7836615871449156611}
-    m_Modifications:
-    - target: {fileID: 5851892192377343984, guid: e81d0f2ca50d8b14d9e5ddcf0d017501, type: 3}
-      propertyPath: m_LocalPosition.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5851892192377343984, guid: e81d0f2ca50d8b14d9e5ddcf0d017501, type: 3}
-      propertyPath: m_LocalPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5851892192377343984, guid: e81d0f2ca50d8b14d9e5ddcf0d017501, type: 3}
-      propertyPath: m_LocalPosition.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5851892192377343984, guid: e81d0f2ca50d8b14d9e5ddcf0d017501, type: 3}
-      propertyPath: m_LocalRotation.w
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 5851892192377343984, guid: e81d0f2ca50d8b14d9e5ddcf0d017501, type: 3}
-      propertyPath: m_LocalRotation.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5851892192377343984, guid: e81d0f2ca50d8b14d9e5ddcf0d017501, type: 3}
-      propertyPath: m_LocalRotation.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5851892192377343984, guid: e81d0f2ca50d8b14d9e5ddcf0d017501, type: 3}
-      propertyPath: m_LocalRotation.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5851892192377343984, guid: e81d0f2ca50d8b14d9e5ddcf0d017501, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.x
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5851892192377343984, guid: e81d0f2ca50d8b14d9e5ddcf0d017501, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5851892192377343984, guid: e81d0f2ca50d8b14d9e5ddcf0d017501, type: 3}
-      propertyPath: m_LocalEulerAnglesHint.z
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6889225566026073852, guid: e81d0f2ca50d8b14d9e5ddcf0d017501, type: 3}
-      propertyPath: m_Name
-      value: FlashPool
-      objectReference: {fileID: 0}
-    m_RemovedComponents: []
-    m_RemovedGameObjects: []
-    m_AddedGameObjects: []
-    m_AddedComponents: []
-  m_SourcePrefab: {fileID: 100100000, guid: e81d0f2ca50d8b14d9e5ddcf0d017501, type: 3}
---- !u!4 &2844279906183503698 stripped
-Transform:
-  m_CorrespondingSourceObject: {fileID: 5851892192377343984, guid: e81d0f2ca50d8b14d9e5ddcf0d017501, type: 3}
-  m_PrefabInstance: {fileID: 8525016612146892962}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &8600308133081000108
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -435,6 +388,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: HardwareGarbageCartPool
       objectReference: {fileID: 0}
+    - target: {fileID: 5675176918801569329, guid: d0c869632258c3b4f9f706d84a875211, type: 3}
+      propertyPath: recycleObject
+      value: 
+      objectReference: {fileID: 7094939920829769503, guid: 3d9e50044206dd9478abd5b27a9440da, type: 3}
     - target: {fileID: 7675133006026148706, guid: d0c869632258c3b4f9f706d84a875211, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

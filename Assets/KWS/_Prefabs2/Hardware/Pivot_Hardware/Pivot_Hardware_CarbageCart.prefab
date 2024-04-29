@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4446617241615899433}
+  - component: {fileID: 4827431326267661476}
   m_Layer: 0
   m_Name: Pivot_Hardware_CarbageCart
   m_TagString: Untagged
@@ -32,6 +33,19 @@ Transform:
   - {fileID: 7454878616060129248}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &4827431326267661476
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7094939920829769503}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 75f54659209a5714a847c4adf863c7b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemDB: {fileID: 11400000, guid: 1f849d578fb84394396384bd2c533f15, type: 2}
 --- !u!1001 &3324823283696874207
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -78,6 +92,10 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5283049689415441727, guid: d32601a35664ee84c9ba80b16556e914, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6751603501485298458, guid: d32601a35664ee84c9ba80b16556e914, type: 3}
+      propertyPath: m_Enabled
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8347303088536995330, guid: d32601a35664ee84c9ba80b16556e914, type: 3}

@@ -9,8 +9,8 @@ public class Test_Factory : TestBase
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
-        Factory.Instance.GetHardware(ItemCode.Barrel, new Vector3(0f,2f,0f));
-        //Factory.Instance.GetHardware(ItemCode.Barrel);
+        //Factory.Instance.GetHardware(ItemCode.Barrel, new Vector3(0f,2f,0f));
+        Factory.Instance.GetHardware(ItemCode.Barrel);
     }
 
     protected override void OnTest2(InputAction.CallbackContext context)

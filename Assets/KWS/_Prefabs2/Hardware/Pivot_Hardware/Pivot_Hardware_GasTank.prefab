@@ -9,6 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 863768094103665140}
+  - component: {fileID: 1820884788933027972}
   m_Layer: 0
   m_Name: Pivot_Hardware_GasTank
   m_TagString: Untagged
@@ -32,6 +33,19 @@ Transform:
   - {fileID: 3036809897682838178}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1820884788933027972
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4674976765829000592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 8f43ad96dd8c4ed4bb2884b71981b313, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemDB: {fileID: 11400000, guid: 6dfe7fdc4b482e54fa993f415e06e464, type: 2}
 --- !u!1001 &2872735834302022386
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -40,6 +54,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 863768094103665140}
     m_Modifications:
+    - target: {fileID: 144233505070152951, guid: 866bc2484e6908241800660e3f939602, type: 3}
+      propertyPath: m_Enabled
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1007373130921746512, guid: 866bc2484e6908241800660e3f939602, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
