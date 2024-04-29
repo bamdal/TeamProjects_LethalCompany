@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 4446617241615899433}
   - component: {fileID: 4827431326267661476}
   m_Layer: 0
-  m_Name: Pivot_Hardware_CarbageCart
+  m_Name: Pivot_Hardware_GarbageCart
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

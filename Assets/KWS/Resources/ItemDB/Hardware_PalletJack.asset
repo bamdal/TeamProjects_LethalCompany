@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: facc51cb9b2f0f445a621c3fc26935a3, type: 3}
   m_Name: Hardware_PalletJack
   m_EditorClassIdentifier: 
-  itemName: Hardware_PalletJack
-  itemText: "\uC544\uC774\uD15C \uC815\uBCF4"
+  itemName: "\uD314\uB808\uD2B8\uC7AD"
+  itemText: "\uBB3C\uAC74\uC744 \uC62E\uAE38\uB54C \uC37C\uB358 \uD314\uB808\uD2B8
+    \uC7AD\uC774\uB2E4. \uC9C0\uAE08\uC740 \uC791\uB3D9\uD558\uC9C0 \uC54A\uB294\uB2E4."
   weight: 50
   price: 50
   stackCount: 1
