@@ -11,7 +11,7 @@ public class ItemBox : MonoBehaviour, IInteraction
 
     bool isOpen = false;
     Rigidbody rb;
-    public Action request { get; set; }
+    public Action onRequest { get; set; }
 
     void Awake()
     {
@@ -49,7 +49,7 @@ public class ItemBox : MonoBehaviour, IInteraction
             }
             if (gameManager.ItemsQueue.Count > 0)
             {
-                request?.Invoke();
+                onRequest?.Invoke();
             }
         }
         rb.AddForce(new Vector3(UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1), UnityEngine.Random.Range(0, 1)) * 1000f, ForceMode.Impulse);

@@ -16,12 +16,13 @@ public class SpaceShip : MonoBehaviour
     {
         animator = GetComponent<Animator>();
         redButton =GetComponentInChildren<RedButton>();
-        redButton.request += ButtonClick;
+        redButton.onRequest += ButtonClick;
     }
 
     private void ButtonClick()
     {
-        
+        Collider[] colliders = Physics.OverlapBox(transform.position, new Vector3(10, 5, 15) * 0.5f);
+        Debug.Log(colliders);
     }
 
     private void Start()

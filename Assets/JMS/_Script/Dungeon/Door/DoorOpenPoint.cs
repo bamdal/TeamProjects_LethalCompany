@@ -7,7 +7,7 @@ public class DoorOpenPoint : MonoBehaviour, IInteraction
 {
     public Door door;
 
-    public Action request { get; set; }
+    public Action onRequest { get; set; }
 
     private void Awake()
     {

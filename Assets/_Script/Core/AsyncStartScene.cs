@@ -10,7 +10,16 @@ public class AsyncStartScene : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(LoadDungenonScene());
+        if (SceneManager.GetActiveScene().name != "Company")
+        {
+            StartCoroutine(LoadDungenonScene());
+
+        }
+        else
+        {
+            StartCoroutine(Delay());
+          
+        }
     }
 
     public Action onGameStart;
@@ -37,6 +46,12 @@ public class AsyncStartScene : MonoBehaviour
             yield return null;
         }
 
+        onGameStart?.Invoke();
+    }
+
+    IEnumerator Delay()
+    {
+        yield return null;
         onGameStart?.Invoke();
     }
 }

@@ -286,7 +286,7 @@ public class Player : MonoBehaviour, IBattler, IHealth
         CurrentItem = inventory.InvenSlots[0];
         if(terminal != null)
         {
-            terminal.request += OnInputAction;
+            terminal.onRequest += OnInputAction;
         }
         itemRader.gameObject.SetActive(false);
     }

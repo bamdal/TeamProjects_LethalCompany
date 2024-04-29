@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,7 +7,7 @@ public class ItemDataManager : Singleton<ItemDataManager>
 {
     public ItemDB[] itemDataBases = null;
 
-    public ItemDB this[ItemCode code] => itemDataBases[(int)code];
+    // public ItemDB this[ItemCode code] => itemDataBases[(int)code];
     public ItemDB this[int index] => itemDataBases[index];
 
     // 아이템의 이름을 받아 해당 아이템의 ItemDB를 반환하는 메서드
@@ -25,5 +26,11 @@ public class ItemDataManager : Singleton<ItemDataManager>
             Debug.LogWarning($"ItemDB에서 {itemName}을 찾을 수 없습니다.");
             return null;
         }
+    }
+    
+    public ItemDB GetItemDB(ItemCode itemCode)
+    {
+        int index = Array.IndexOf(itemDataBases, itemCode);
+        return itemDataBases[index];
     }
 }

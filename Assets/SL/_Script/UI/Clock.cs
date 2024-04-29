@@ -17,7 +17,8 @@ public class Clock : MonoBehaviour
     void Start()
     {
         timer = FindAnyObjectByType<Timer>();
-        timer.OnTimeChanged += TimerChange;
+        if(timer != null )  
+            timer.OnTimeChanged += TimerChange;
         timeText.text = timer.CurrentTime.ToString("HH:mm");
     }
 

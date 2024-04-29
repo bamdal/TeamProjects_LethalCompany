@@ -24,6 +24,6 @@ public class DropBox : MonoBehaviour
         yield return new WaitForSeconds(3f);
         GameObject itemTemp = Instantiate(ItemBoxPrepab);
          temp = itemTemp.GetComponent<IInteraction>();
-        temp.request += DropItemBox;
+        temp.onRequest += DropItemBox;
     }
 }
