@@ -321,7 +321,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
         characterController.Move(currentSpeed * Time.deltaTime * moveDirection);
         // 중력 처리
         characterController.Move(1f * Time.deltaTime * gravityDir);
-        //Debug.Log(IsGrounded());
     }
 
     private void FixedUpdate()
@@ -415,7 +414,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
     {
         if (IsGrounded())
         {
-            Debug.Log("점프");
             gravityY = 5f;
         }
     }
@@ -485,7 +483,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
             Stamina = 0.0f;
             CurrentMoveMode = MoveMode.Walk;
             isCanRecovery = false;
-            Debug.Log("3초간 스테미나를 회복할 수 없습니다.");
             Invoke(nameof(EnableStaminaRecovery), 3.0f);
         }
     }
@@ -529,8 +526,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
     {
         if (isClick)
         {
-            Debug.Log("f키 눌렀음!");
-
             // 카메라의 정 중앙을 기준으로 레이를 쏩니다.
             Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
             RaycastHit hit;
@@ -539,8 +534,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
             {
                 if (hit.collider.CompareTag("Item") || hit.collider.CompareTag("Hardware"))
                 {
-                    Debug.Log(hit);
-
                     for (int i = 0; i < inventory.InvenSlots.Length; i++)
                     {
                         if (inventory.InvenSlots[i].childCount == 0)
@@ -563,9 +556,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
                             {
                                 inventory.InvenSlots[CurrentItemIndex].GetChild(0).gameObject.SetActive(true);
                             }
-
-
-                            Debug.Log("아이템을 획득했습니다!");
                             break;
                         }
 
@@ -577,14 +567,11 @@ public class Player : MonoBehaviour, IBattler, IHealth
                             Transform currentItem = inventory.InvenSlots[j].GetChild(0);
                             if (currentItem != null)
                             {
-                                Debug.Log(currentItem);
                                 IItemDataBase itemData = currentItem.GetComponent<IItemDataBase>();
                                 if (itemData != null)
                                 {
-                                    Debug.Log(itemData);
                                     inventory.ItemDBs[j] = itemData.GetItemDB();
                                     invenUI.ItemImages[j].sprite = inventory.ItemDBs[j].itemIcon;
-                                    Debug.Log(inventory.ItemDBs[j].itemIcon);
                                 }
                                 
                             }
@@ -616,7 +603,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
         }
         if (!isClick)
         {
-            Debug.Log("f키 떨어짐!");
         }
 
     }
@@ -648,14 +634,11 @@ public class Player : MonoBehaviour, IBattler, IHealth
                     Transform tempItem = inventory.InvenSlots[j].GetChild(0);
                     if (tempItem != null)
                     {
-                        Debug.Log(tempItem);
                         IItemDataBase itemData = tempItem.GetComponent<IItemDataBase>();
                         if (itemData != null)
                         {
-                            Debug.Log(itemData);
                             inventory.ItemDBs[j] = itemData.GetItemDB();                    // ItemDB에서 데이터를 가져와
                             invenUI.ItemImages[j].sprite = inventory.ItemDBs[j].itemIcon;   // 이미지를 인벤토리창에 띄움
-                            Debug.Log(inventory.ItemDBs[j].itemIcon);
                         }
 
                     }
@@ -718,7 +701,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
         // 아이템 사용 처리
         if (CurrentItem != null && isPressed)
         {
-            Debug.Log("찾았음" + CurrentItem);
             IEquipable equipable = CurrentItem.GetComponent<IEquipable>();
             if (equipable != null)
             {
@@ -726,14 +708,12 @@ public class Player : MonoBehaviour, IBattler, IHealth
             }
             else
             {
-                Debug.Log("이큅터블 없음!");
             }
         }
     }
 
     private void OnScrollWheel(Vector2 vector)
     {
-        Debug.Log(vector.normalized);
         foreach (Transform obj in inventory.InvenSlots)
         {
             if (obj != null && obj.childCount > 0 && obj.GetChild(0).gameObject.activeSelf)
@@ -745,7 +725,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
         if (vector.y > 0)
         {
             CurrentItemIndex = PrevIndex(CurrentItemIndex);
-            Debug.Log(CurrentItemIndex + " 감소");
         }
         else if (vector.y < 0)
         {

@@ -38,7 +38,7 @@ public class ItemRader : MonoBehaviour
             Vector3 itemPosition = itemTransform.position;
 
             // 아이템의 위치와 플레이어의 위치 사이의 방향 벡터를 구합니다.
-            Vector3 directionToItem = itemPosition - transform.position;
+            Vector3 directionToItem = itemPosition - player.transform.position;
 
             // 플레이어 위치에서 아이템까지의 레이를 생성합니다.
             Ray ray = new Ray(transform.position + transform.forward * 0.5f, directionToItem);
@@ -47,13 +47,14 @@ public class ItemRader : MonoBehaviour
 
             if (Physics.Raycast(ray, out hit))
             {
+                Debug.Log("hit target:" + hit.collider.gameObject.name);
                 // 레이가 충돌한 객체가 벽인지 확인합니다.
                 if (hit.collider.CompareTag("Obstacle"))
                 {
                     // 벽 뒤에 있는 아이템을 제거합니다.
                     Debug.Log("벽 뒤에 있는 아이템: " + itemTransform.gameObject.name);
                 }
-                else if (hit.collider.CompareTag("Item") || collision.CompareTag("Hardware"))
+                else if (hit.collider.CompareTag("Item") || hit.collider.CompareTag("Hardware"))
                 {
                     // 벽 뒤에 없는 아이템을 목록에 추가합니다.
                     ItemTransforms.Enqueue(itemTransform);

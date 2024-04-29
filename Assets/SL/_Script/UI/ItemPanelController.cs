@@ -69,7 +69,7 @@ public class ItemPanelController : MonoBehaviour
             TextMeshProUGUI priceText = newItemPanel.transform.GetChild(1).GetComponent<TextMeshProUGUI>();
 
             nameText.text = tempItemDataBase.GetItemDB().itemName;
-            priceText.text = $"{tempItemDataBase.GetItemDB().price.ToString()}$";
+            priceText.text = $"{tempItemDataBase.GetItemDB().price}$";
 
             // 생성된 아이템 패널을 리스트에 추가
             itemPanels.Add(newItemPanel);
