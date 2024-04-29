@@ -19,7 +19,8 @@ public class ItemPanelController : MonoBehaviour
     }
     private void Start()
     {
-        itemRader = FindAnyObjectByType<ItemRader>();
+        Transform child = GameManager.Instance.Player.transform.GetChild(2);
+        itemRader = child.GetComponent<ItemRader>();
         itemRader.onItemView += OnItemViewPanel;
         player = GameManager.Instance.Player;
         player.onRclickIsNotPressed += OnItemViewPanelDelete;

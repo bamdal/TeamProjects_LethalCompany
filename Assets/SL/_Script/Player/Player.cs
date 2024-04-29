@@ -259,17 +259,16 @@ public class Player : MonoBehaviour, IBattler, IHealth
         input.onScroll += OnScrollWheel;
         input.onItemDrop += OnItemDrop;
         
-        cam = FindAnyObjectByType<Camera>();
-        inventoryTransform = transform.Find("Inventory");
-//        inventory = inventoryTransform.GetComponent<Inventory>();
-        inventory = FindAnyObjectByType<Inventory>();
+        cam = Camera.main;
+        inventoryTransform = transform.GetChild(1);
+        inventory = inventoryTransform.GetComponent<Inventory>();
         Stamina = maxStamina;
         Hp = maxHp;
         characterController = GetComponent<CharacterController>();
         itemRader = transform.GetChild(2);
         groundCheckPosition = transform.GetChild(4);
         gravityY = -1f;
-        invenUI = FindAnyObjectByType<InventoryUI>();
+        invenUI = FindObjectOfType<InventoryUI>();
         Transform child = transform.GetChild(0);
         _source = child.GetComponent<CinemachineImpulseSource>();
         volume = FindObjectOfType<Volume>();
