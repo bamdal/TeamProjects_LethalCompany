@@ -57,7 +57,7 @@ public class ObjectPool<T> : MonoBehaviour where T : Recycle
         }
         else
         {
-            // 큐에 빈공간 없으면 큐 확장하고 재귀
+            // 큐에 빈공간 없으면 큐 확장
             PoolExpand();
             return GetObject(position, angle);
         }
@@ -86,7 +86,7 @@ public class ObjectPool<T> : MonoBehaviour where T : Recycle
     /// </summary>
     /// <param name="startIndex">시작 인덱스</param>
     /// <param name="endIndex">마지막 인덱스 + 1(for문에서 사용)</param>
-    /// <param name="expandedPool">확장될 풀</param>
+    /// <param name="expandedPool">확장할 풀</param>
     void GenerateRecycleObjects(int startIndex, int endIndex, T[] expandedPool)
     {
         for(int i = startIndex; i < endIndex; i++)

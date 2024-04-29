@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class CoilHead : EnemyBase
+public class CoilHead : EnemyBase, IBattler, IHealth
 {
     // 이동 관련 -----------------------------------------------------------
 
@@ -42,6 +42,9 @@ public class CoilHead : EnemyBase
     public float chasePatrolTransitionRange = 20.0f;
 
     // 공격 관련 -----------------------------------------------------------
+
+    float hp = 100.0f;
+    
 
     /// <summary>
     /// CoilHead의 공격력
@@ -84,6 +87,31 @@ public class CoilHead : EnemyBase
     /// 공격 대상(필요시 playerTransform에서 GetCompnent실행)
     /// </summary>
     IBattler attackTarget;
+
+    /// <summary>
+    /// 적이 죽어있는지 살아있는지 확인하는 변수
+    /// </summary>
+    bool isAlive = true;
+
+    /// <summary>
+    /// 적이 죽었는지 살았는지 확인하고 설정하는 프로퍼티
+    /// </summary>
+    public bool IsAlive
+    {
+        get => isAlive;
+        set
+        {
+            if(isAlive != value)
+            {
+                isAlive = value;
+            }
+        }
+    }
+
+    /// <summary>
+    /// 플레이어가 죽었는지 살았는지 확인하는 변수
+    /// </summary>
+    bool isPlayerDie = false;
 
     // 컴포넌트
     NavMeshAgent agent;
@@ -145,10 +173,19 @@ public class CoilHead : EnemyBase
     protected override void Update_Stop()
     {
         wait -= Time.deltaTime;
-        if(wait < 0.0f)
+        if (!isPlayerDie)
         {
-            agent.SetDestination(GetRandomDestination());
-            wait = waitTime;
+
+            if (wait < 0.0f)
+            {
+                agent.SetDestination(GetRandomDestination());
+                wait = waitTime;
+            }
+        }
+        else
+        {
+            agent.speed = 0.0f;
+            agent.velocity = Vector3.zero;
         }
     }
 
@@ -162,7 +199,14 @@ public class CoilHead : EnemyBase
 
     protected override void Update_Chase()
     {
-        agent.SetDestination(playerTransform.position);
+        if (playerTransform != null)
+        {
+            agent.SetDestination(playerTransform.position);
+        }
+        else
+        {
+            State = EnemyState.Patrol;
+        }
     }
 
     protected override void Update_Attack()
@@ -172,6 +216,9 @@ public class CoilHead : EnemyBase
         agent.SetDestination(playerTransform.position);
 
         currentAngle = GetSightAngle(playerTransform);
+
+        transform.rotation = Quaternion.Slerp(transform.rotation
+            , Quaternion.LookRotation(playerTransform.transform.position - transform.position), 0.1f);
 
         if (currentAngle > cognitionAngle)
         {
@@ -191,7 +238,6 @@ public class CoilHead : EnemyBase
 
     protected override void Update_Die()
     {
-
     }
 
     // 이동 관련 ----------------------------------------------------------------------------------------------------
@@ -265,4 +311,16 @@ public class CoilHead : EnemyBase
 
         return result;
     }
+
+    public void CoilHeadDie()
+    {
+        State = EnemyState.Die;
+        IsAlive = false;
+    }
+
+    public void PlayerDie()
+    {
+        State = EnemyState.Stop;
+    }
+
 }

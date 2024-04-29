@@ -16,6 +16,7 @@ public enum ItemCode
     GasTank,
     PalletJack,
     FlashLight = 100,
+    FlashLightUp,
     Shovel
 }
 

@@ -4,5 +4,4 @@ using UnityEngine;
 
 public class ToolBase : ItemBase
 {
-    public ToolData toolData;
 }
