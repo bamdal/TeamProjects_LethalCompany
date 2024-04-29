@@ -238,7 +238,7 @@ public class Player : MonoBehaviour, IBattler, IHealth
 
     public Action<float> onHealthChange;
     public Action<float> onStaminaChange;
-
+    public Action onRclickIsNotPressed;
 
     InventoryUI invenUI;
 
@@ -276,7 +276,10 @@ public class Player : MonoBehaviour, IBattler, IHealth
         volume.profile.TryGet(out vignette);
     }
 
-
+    private void OnEnable()
+    {
+        
+    }
 
     private void Start()
     {
@@ -286,6 +289,7 @@ public class Player : MonoBehaviour, IBattler, IHealth
         {
             terminal.request += OnInputAction;
         }
+        itemRader.gameObject.SetActive(false);
     }
 
 
@@ -664,23 +668,35 @@ public class Player : MonoBehaviour, IBattler, IHealth
                 }
             }
         }
+        CurrentItem = null;
     }
 
 
     /// <summary>
     /// 아이템 레이더를 켜고 끌수있게 오른쪽 마우스 버튼 입력에 대한 델리게이트로 연결되어있는 함수
     /// </summary>
-    private void OnRClickInput()
+    private void OnRClickInput(bool isPressed)
     {
-        itemRader.gameObject.SetActive(true);
+        if(isPressed)
+        {
+            itemRader.gameObject.SetActive(true);
+        }
+        else
+        {
+            onRclickIsNotPressed?.Invoke();
+            itemRader.gameObject.SetActive(false);
+        }
+        /*itemRader.gameObject.SetActive(true);
         if (DisableItemRaderAfterDelayCoroutine != null)
         {
             StopCoroutine(DisableItemRaderAfterDelayCoroutine);
         }
-        DisableItemRaderAfterDelayCoroutine = StartCoroutine(DisableItemRaderAfterDelay());
+        DisableItemRaderAfterDelayCoroutine = StartCoroutine(DisableItemRaderAfterDelay());*/
+
+
     }
 
-    Coroutine DisableItemRaderAfterDelayCoroutine;
+   /* Coroutine DisableItemRaderAfterDelayCoroutine;
     /// <summary>
     /// 아이템 레이더 오브젝트를 아주잠깐 켜기위한 코루틴 함수
     /// </summary>
@@ -690,7 +706,7 @@ public class Player : MonoBehaviour, IBattler, IHealth
         yield return new WaitForSeconds(0.05f); // 변경하고자 하는 시간으로 수정 가능
         itemRader.gameObject.SetActive(false);
 
-    }
+    }*/
 
 
 

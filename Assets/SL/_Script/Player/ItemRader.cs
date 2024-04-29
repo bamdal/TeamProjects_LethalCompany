@@ -1,13 +1,38 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemRader : MonoBehaviour
 {
-    List<Transform> itemTransforms = new List<Transform>();
+    Queue<Transform> itemTransforms = new Queue<Transform>();
+    public Action<Queue<Transform>> onItemView;
+    Player player;
+    Queue<Transform> ItemTransforms
+    {
+        get => itemTransforms;
+        set
+        {
+            if (itemTransforms != null)
+            {
+                itemTransforms = value;
+            }
+        }
+    }
+    private void Start()
+    {
+        player = GameManager.Instance.Player;
+        player.onRclickIsNotPressed += ItemQueueClear;
+    }
+
+    private void ItemQueueClear()
+    {
+        ItemTransforms.Clear();
+    }
+
     private void OnTriggerEnter(Collider collision)
     {
-        if (collision.CompareTag("Item"))
+        if (collision.CompareTag("Item") || collision.CompareTag("Hardware"))
         {
             Transform itemTransform = collision.transform;
             Vector3 itemPosition = itemTransform.position;
@@ -28,24 +53,19 @@ public class ItemRader : MonoBehaviour
                     // 벽 뒤에 있는 아이템을 제거합니다.
                     Debug.Log("벽 뒤에 있는 아이템: " + itemTransform.gameObject.name);
                 }
-                else if (hit.collider.CompareTag("Item"))
+                else if (hit.collider.CompareTag("Item") || collision.CompareTag("Hardware"))
                 {
                     // 벽 뒤에 없는 아이템을 목록에 추가합니다.
-                    itemTransforms.Add(itemTransform);
+                    ItemTransforms.Enqueue(itemTransform);
                 }
             }
             else
             {
                 // 레이가 아이템에 닿지 않은 경우 아이템을 목록에 추가합니다.
-                itemTransforms.Add(itemTransform);
+                ItemTransforms.Enqueue(itemTransform);
             }
-
-            foreach (Transform item in itemTransforms)
-            {
-                Debug.Log(item.gameObject.name);
-            }
-            itemTransforms.Clear();
         }
+        onItemView?.Invoke(ItemTransforms);
 
 
     }
