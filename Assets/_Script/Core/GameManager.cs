@@ -96,7 +96,8 @@ public class GameManager : Singleton<GameManager>
     {
         player = FindAnyObjectByType<Player>();
         itemDataManager = GetComponent<ItemDataManager>();
-
+        Cursor.visible = false;
+        Cursor.lockState = CursorLockMode.Locked;
         store = FindAnyObjectByType<Store>();
         if (store != null)
         {
