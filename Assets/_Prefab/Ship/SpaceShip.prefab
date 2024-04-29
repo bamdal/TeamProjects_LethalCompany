@@ -326,7 +326,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 6964
+  m_VersionIndex: 6967
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -675,7 +675,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3806
+  m_VersionIndex: 3809
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -973,14 +973,14 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6825048713082305215}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: -1.43, y: -2, z: 6.24}
+  m_LocalRotation: {x: 0, y: 0, z: -0.7071068, w: 0.7071068}
+  m_LocalPosition: {x: -4, y: -1.076, z: 5.402}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4540114957666599786}
   m_Father: {fileID: 5222434457387526350}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: -90}
 --- !u!114 &1057985716470120207
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1205,7 +1205,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 908
+  m_VersionIndex: 911
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1424,6 +1424,7 @@ GameObject:
   - component: {fileID: 5222434457387526350}
   - component: {fileID: 3180124512212646061}
   - component: {fileID: 7418698368020481064}
+  - component: {fileID: 2786839072892309596}
   m_Layer: 0
   m_Name: SpaceShip
   m_TagString: Untagged
@@ -1486,6 +1487,27 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 32dc4b0e6e576414789434eba1402f5c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!65 &2786839072892309596
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7763088936451043420}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 1
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 10, y: 5, z: 15}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!1 &8255558233125359456
 GameObject:
   m_ObjectHideFlags: 0
@@ -1617,7 +1639,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8587275481333184931, guid: 27cc385e110546543b409fcab6de929e, type: 3}
       propertyPath: m_VersionIndex
-      value: 2111
+      value: 2114
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1334406193975719263, guid: 27cc385e110546543b409fcab6de929e, type: 3}
@@ -1688,7 +1710,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8587275481333184931, guid: 27cc385e110546543b409fcab6de929e, type: 3}
       propertyPath: m_VersionIndex
-      value: 2111
+      value: 2114
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1334406193975719263, guid: 27cc385e110546543b409fcab6de929e, type: 3}

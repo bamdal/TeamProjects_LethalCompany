@@ -80,7 +80,7 @@ public class Terminal : MonoBehaviour,IInteraction
     // 델리게이트들 -----------------------------------------------------------------------------------------------------
 
     public Action ESC;
-    public Action request { get; set; }
+    public Action onRequest { get; set; }
 
     private void Awake()
     {
@@ -393,7 +393,7 @@ public class Terminal : MonoBehaviour,IInteraction
             playerInputActions.Disable();
 
             // IInteraction 인터페이스에 알림
-            request?.Invoke();
+            onRequest?.Invoke();
         }
     }
 }

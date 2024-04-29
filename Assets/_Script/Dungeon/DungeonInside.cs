@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class DungeonInside : MonoBehaviour, IInteraction
 {
-    public Action request { get; set; }
+    public Action onRequest { get; set; }
 
     /// <summary>
     /// 텔레포트시 이동할 장소
