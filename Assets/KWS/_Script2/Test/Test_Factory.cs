@@ -5,11 +5,12 @@ using UnityEngine.InputSystem;
 
 public class Test_Factory : TestBase
 {
-    Vector3 position = new Vector3(5.0f, 0.0f, 5.0f);
+    //Vector3 position = new Vector3(5.0f, 0.0f, 5.0f);
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
-        Factory.Instance.GetHardware(ItemCode.Barrel);
+        Factory.Instance.GetHardware(ItemCode.Barrel, new Vector3(0f,2f,0f));
+        //Factory.Instance.GetHardware(ItemCode.Barrel);
     }
 
     protected override void OnTest2(InputAction.CallbackContext context)
@@ -28,6 +29,6 @@ public class Test_Factory : TestBase
     }
     protected override void OnTest5(InputAction.CallbackContext context)
     {
-        Factory.Instance.GetHardware(ItemCode.PalletJack, position);
+        Factory.Instance.GetHardware(ItemCode.PalletJack);
     }
 }
