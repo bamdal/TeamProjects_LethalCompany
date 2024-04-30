@@ -43,7 +43,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
 
     // 공격 관련 -----------------------------------------------------------
 
-    float hp = 100.0f;
+    // float hp = 100.0f;
     
 
     /// <summary>

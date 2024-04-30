@@ -6,6 +6,9 @@ using UnityEngine.InputSystem;
 
 public class Flash : ToolBase, IEquipable, IItemDataBase
 {
+    /// <summary>
+    /// 후레쉬의 데이터
+    /// </summary>
     ItemDB flashData;
 
     /// <summary>

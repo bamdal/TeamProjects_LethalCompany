@@ -9,7 +9,7 @@ public class ZapGun : WeaponBase, IEquipable
     /// <summary>
     /// 총이 릴리즈중인지 아닌지 확인하는 변수
     /// </summary>
-    bool isRelease = false;
+    // bool isRelease = false;
 
     /// <summary>
     /// 스캔한 장소에 적이 있는지 없는지 확인하는 변수, true면 적이 있다, false면 적이 없다.
