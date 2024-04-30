@@ -1259,7 +1259,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   interfaceOffset: {x: 0.5, y: 0.5, z: 0}
   farVcam: {fileID: 0}
-  nearVcam: {fileID: 8628352185833220155}
+  nearVcam: {fileID: 0}
 --- !u!1 &7064731083207038717
 GameObject:
   m_ObjectHideFlags: 0
@@ -1520,14 +1520,3 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 4087819041953683165, guid: c3dbce9cd438f154aa52053f17caeba2, type: 3}
   m_PrefabInstance: {fileID: 8918891048454678775}
   m_PrefabAsset: {fileID: 0}
---- !u!114 &8628352185833220155 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 898561302358687948, guid: c3dbce9cd438f154aa52053f17caeba2, type: 3}
-  m_PrefabInstance: {fileID: 8918891048454678775}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 45e653bab7fb20e499bda25e1b646fea, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
