@@ -85,12 +85,15 @@ public class GameManager : Singleton<GameManager>
                     case GameState.GameReady:
                         Dday = maxDay;
                         Money = 0;
+                        Debug.Log("게임레디");
                         onGameReady?.Invoke();
                         break;
                     case GameState.GameStart:
+                        Debug.Log("게임스타트");
                         onGameStart?.Invoke();
                         break;
                     case GameState.GameOver:
+                        Debug.Log("게임오버");
                         onGameOver?.Invoke();   
                         break;
                 }
