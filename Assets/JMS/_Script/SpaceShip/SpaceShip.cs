@@ -15,14 +15,23 @@ public class SpaceShip : MonoBehaviour
     private void Awake()
     {
         animator = GetComponent<Animator>();
-        redButton =GetComponentInChildren<RedButton>();
+        redButton = GetComponentInChildren<RedButton>();
         redButton.onRequest += ButtonClick;
     }
 
     private void ButtonClick()
     {
         Collider[] colliders = Physics.OverlapBox(transform.position, new Vector3(10, 5, 15) * 0.5f);
-        Debug.Log(colliders);
+        foreach (Collider collider in colliders)
+        {
+            if (collider.CompareTag("Item") || collider.CompareTag("Hardware"))
+            {
+                Debug.Log(collider.name);
+
+            }
+
+
+        }
     }
 
     private void Start()

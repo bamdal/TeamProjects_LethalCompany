@@ -47,11 +47,125 @@ public class GameManager : Singleton<GameManager>
         }
     }
 
+
     /// <summary>
     /// 게임매니저가 현재 가지고 있는 돈이 변화하면 실행할 델리게이트
     /// </summary>
     public Action<float> OnMoneyChange;
 
+
+    /// <summary>
+    /// 게임상태
+    /// </summary>
+    public enum GameState
+    {
+        GameReady,
+        GameStart,
+        GameOver
+    }
+
+    /// <summary>
+    /// 현재 게임상태
+    /// </summary>
+    GameState onGameState = GameState.GameReady;
+
+    /// <summary>
+    /// 현재 게임상태 변경시 알리는 프로퍼티
+    /// </summary>
+    public GameState OnGameState
+    {
+        get => onGameState;
+        set
+        {
+            if (onGameState != value)
+            {
+                onGameState = value;
+                switch (onGameState) 
+                {
+                    case GameState.GameReady:
+                        Dday = maxDay;
+                        Money = 0;
+                        onGameReady?.Invoke();
+                        break;
+                    case GameState.GameStart:
+                        onGameStart?.Invoke();
+                        break;
+                    case GameState.GameOver:
+                        onGameOver?.Invoke();   
+                        break;
+                }
+            }
+        }
+    }
+    // 게임상태 델리게이트
+    public Action onGameReady;
+    public Action onGameStart;
+    public Action onGameOver;
+
+    /// <summary>
+    /// 현재 날짜
+    /// </summary>
+    int dday = 3;
+
+    /// <summary>
+    /// 최대 날짜
+    /// </summary>
+    int maxDay = 3;
+
+    /// <summary>
+    /// 현재 날짜를 알리는 프로퍼티
+    /// </summary>
+    public int Dday
+    {
+        get => dday;
+        set
+        {
+            if(dday != value)
+            {
+                if (dday < value)       // 기간이 증가되면 목표금액 증가
+                {
+                    TargetAmountMoney *= MoneyMagnification;
+                }
+
+                dday = Mathf.Clamp(value,0,maxDay);
+                
+                onDayChange?.Invoke(dday);
+
+                if (dday == 0)
+                {
+                    OnGameState = GameState.GameOver;   // 남은날짜 0일시 사망 상태 변화
+                }
+            }
+        }
+    }
+
+    public Action<int> onDayChange;
+
+    /// <summary>
+    /// 목표 금액
+    /// </summary>
+    float targetAmountMoney;
+
+    /// <summary>
+    /// 돈 증감 배율
+    /// </summary>
+    float MoneyMagnification = 1.2f;
+
+
+    float TargetAmountMoney
+    {
+        get => targetAmountMoney;
+        set
+        {
+            if(targetAmountMoney != value)
+            {
+                targetAmountMoney = value;
+                onTargetAmountMoneyChange?.Invoke(targetAmountMoney);
+            }
+        }
+    }
+
+    public Action<float> onTargetAmountMoneyChange;
 
     DungeonGenerator dungeonGenerator;
 

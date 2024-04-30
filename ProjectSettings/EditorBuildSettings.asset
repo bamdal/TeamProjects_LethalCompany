@@ -26,4 +26,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scene/IntegrationScenes/StartScene.unity
     guid: 8b829b89322576c4e873976629820820
+  - enabled: 1
+    path: Assets/_Scene/IntegrationScenes/Company.unity
+    guid: c43f1f83b6218d04f84e38e8fd6d27e1
   m_configObjects: {}
