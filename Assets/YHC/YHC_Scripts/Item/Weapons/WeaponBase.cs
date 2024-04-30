@@ -4,5 +4,5 @@ using UnityEngine;
 
 public class WeaponBase : ItemBase
 {
-    public WeaponData weaponData;
+
 }

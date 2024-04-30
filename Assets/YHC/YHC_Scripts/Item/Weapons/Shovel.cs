@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Shovel : WeaponBase, IEquipable, IItemDataBase
 {
+    ItemDB shovelData;
+
     uint damage = 0;
     public uint Damage => damage;
 
@@ -15,12 +17,13 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase
     private void Awake()
     {
         mesh = GetComponent<MeshCollider>();
+        shovelData = GameManager.Instance.ItemData.GetItemDB(ItemCode.Shovel);
     }
 
     private void OnEnable()
     {
-        weight = weaponData.weight;
-        damage = weaponData.damage;
+        weight = shovelData.weight;
+        damage = shovelData.damage;
     }
     private void Start()
     {
@@ -47,6 +50,6 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase
 
     public ItemDB GetItemDB()
     {
-        return weaponData;
+        return shovelData;
     }
 }
