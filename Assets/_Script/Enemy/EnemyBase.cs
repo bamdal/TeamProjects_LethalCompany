@@ -62,7 +62,7 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler
 
     protected Action onEnemyStateUpdate;
 
-    private void Start()
+    protected virtual void Start()
     {
         onDebuffAttack += OnDebuff;
     }

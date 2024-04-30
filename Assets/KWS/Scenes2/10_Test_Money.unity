@@ -539,15 +539,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 7822879004496559298, guid: a263acd7407007f48aa63f570b01a9f7, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 175.0759
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7822879004496559298, guid: a263acd7407007f48aa63f570b01a9f7, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 11.740696
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7822879004496559298, guid: a263acd7407007f48aa63f570b01a9f7, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 66.63889
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 7822879004496559298, guid: a263acd7407007f48aa63f570b01a9f7, type: 3}
       propertyPath: m_LocalRotation.w
@@ -639,6 +639,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 5315031776282501344, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 7404700355697594526, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
       propertyPath: m_Name
       value: Factory
