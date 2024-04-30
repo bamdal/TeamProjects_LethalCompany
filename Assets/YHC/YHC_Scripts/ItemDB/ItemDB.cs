@@ -35,4 +35,8 @@ public class ItemDB : ScriptableObject
     public bool isConductive = false;
     public Sprite itemIcon;
     public GameObject itemModel;
+
+    [Header("무기 관련 데이터")]
+    public uint damage = 0;
 }
+
