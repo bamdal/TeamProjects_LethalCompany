@@ -9,17 +9,17 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 684b853137bb6d749ace7fede6ce3690, type: 3}
+  m_Script: {fileID: 11500000, guid: facc51cb9b2f0f445a621c3fc26935a3, type: 3}
   m_Name: 02_Shovel
   m_EditorClassIdentifier: 
-  itemName: "\uC0BD"
-  itemText: "\uC0BD, \uBB34\uAE30"
-  weight: 10
+  itemName: _
+  itemText: "\uC544\uC774\uD15C \uC815\uBCF4"
+  weight: 0
   price: 0
   stackCount: 1
   battery: 0
   itemType: 1
-  itemCode: 2
+  itemCode: 102
   isConductive: 0
   itemIcon: {fileID: 0}
   itemModel: {fileID: 722632824591328399, guid: 6490b6b664395d146ad14efb07d24c4f, type: 3}
