@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using TMPro;
@@ -15,12 +16,13 @@ public class DayMonitor : MonoBehaviour
 
     void Start()
     {
-        
+        GameManager.Instance.onDayChange += OnDayChange;
     }
 
-    // Update is called once per frame
-    void Update()
+    private void OnDayChange(int day)
     {
-        
+        DayText.text = $"D-{day}";
     }
+
+ 
 }
