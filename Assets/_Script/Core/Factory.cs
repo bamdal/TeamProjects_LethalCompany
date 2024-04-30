@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum PoolObjectType
@@ -139,8 +140,8 @@ public class Factory : Singleton<Factory>
     /// <exception cref="ArgumentException"></exception>
     public ItemBase GetRandomHardware(Vector3 position, float angle = 0.0f)
     {
-        var enumValues = Enum.GetValues(enumType: typeof(ItemCode));
-        ItemCode itemCode = (ItemCode)enumValues.GetValue(UnityEngine.Random.Range(0, enumValues.Length-2));
+        var enumValues = Enum.GetValues(typeof(ItemCode)).Cast<ItemCode>().Where(itemCode => (int)itemCode < 100).ToArray();
+        ItemCode itemCode = (ItemCode)enumValues.GetValue(UnityEngine.Random.Range(0, enumValues.Length));
 
         switch (itemCode)
         {
