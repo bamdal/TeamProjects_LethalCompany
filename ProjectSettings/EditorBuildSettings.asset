@@ -18,7 +18,7 @@ EditorBuildSettings:
     path: Assets/KWS/Scenes2/09_Test_LoadSceen.unity
     guid: f245b98741d143947bb4c89be9f88b63
   - enabled: 1
-    path: Assets/KWS/Scenes2/planet.unity
+    path: Assets/KWS/Scenes2/11_Test_Enemy.unity
     guid: 25df7c63f799e804f8b256032091fabc
   - enabled: 1
     path: "Assets/KWS/Scenes2/\uD589\uC131.unity"
