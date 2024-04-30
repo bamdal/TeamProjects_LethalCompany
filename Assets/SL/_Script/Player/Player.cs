@@ -44,7 +44,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
             }
         }
     }
-
     public void Die()
     {
         OnDie();
@@ -52,6 +51,8 @@ public class Player : MonoBehaviour, IBattler, IHealth
     private void OnDie()
     {
         Debug.Log("사망");
+        input.onDie?.Invoke();
+        
     }
 
     /// <summary>
@@ -76,7 +77,7 @@ public class Player : MonoBehaviour, IBattler, IHealth
             }
         }
     }
-
+    
     /// <summary>
     /// 걷는 속도
     /// </summary>

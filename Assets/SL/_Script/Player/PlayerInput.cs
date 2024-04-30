@@ -30,7 +30,7 @@ public class PlayerInput : MonoBehaviour
 
     public Action<Vector2> onScroll;
     public Action onItemDrop;
-
+    public Action onDie;
 
 
     private void Awake()
@@ -52,6 +52,7 @@ public class PlayerInput : MonoBehaviour
         inputActions.Player.Jump.performed += OnJump;
         inputActions.Player.Wheel.performed += OnScroll;
         inputActions.Player.ItemDrop.performed += OnItemDrop;
+        onDie += OnDisable;
     }
 
     private void OnDisable()

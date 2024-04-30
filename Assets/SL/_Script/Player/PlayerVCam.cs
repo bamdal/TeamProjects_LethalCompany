@@ -9,7 +9,6 @@ public class PlayerVCam : MonoBehaviour
     {
         CinemachineVirtualCamera vcam = GetComponent<CinemachineVirtualCamera>();
         vcam.Follow = GameManager.Instance.Player.transform.GetChild(3).transform;
-        int i = 0;
         
     }
 }
