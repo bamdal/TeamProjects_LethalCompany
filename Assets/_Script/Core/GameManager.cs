@@ -30,17 +30,28 @@ public class GameManager : Singleton<GameManager>
     Terminal terminal;
     public Terminal Terminal => terminal;
 
+    float totalMoney = 0;
+
+    public float TotalMoney => totalMoney;
+
     /// <summary>
     /// 게임매니저가 현재 가지고 있는 돈
     /// </summary>
     float money;
+
+    
     public float Money
     {
         get => money;
         set
         {
+
             if (money != value)
             {
+                if (value > 0)
+                {
+                    totalMoney += value;
+                }
                 money = value;
                 OnMoneyChange?.Invoke(money);       // MoneyCountMonitor에서 사용
             }
@@ -118,17 +129,14 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// 현재 날짜를 알리는 프로퍼티
     /// </summary>
-    public int Dday
+    int Dday
     {
         get => dday;
         set
         {
             if(dday != value)
             {
-                if (dday < value)       // 기간이 증가되면 목표금액 증가
-                {
-                    TargetAmountMoney *= MoneyMagnification;
-                }
+
 
                 dday = Mathf.Clamp(value,0,maxDay);
                 
@@ -136,7 +144,7 @@ public class GameManager : Singleton<GameManager>
 
                 if (dday == 0)
                 {
-                    OnGameState = GameState.GameOver;   // 남은날짜 0일시 사망 상태 변화
+                    Quest();
                 }
             }
         }
@@ -271,7 +279,30 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public Action onBuy;
 
+    /// <summary>
+    /// 하루 감소 시키는 함수
+    /// </summary>
+    public void NextDay()
+    {
+        Dday--;
+    }
 
+    /// <summary>
+    /// 목표금액 체크
+    /// </summary>
+    public void Quest()
+    {
+        if (TargetAmountMoney > totalMoney)
+        {
+            OnGameState = GameState.GameOver;   
+        }
+        else
+        {
+            Dday = maxDay;
+        }
+    }
+
+#if UNITY_EDITOR
     /// <summary>
     /// 테스트용
     /// </summary>
@@ -280,5 +311,5 @@ public class GameManager : Singleton<GameManager>
         onBuy.Invoke();
     }
 
-
+#endif
 }

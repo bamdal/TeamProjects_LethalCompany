@@ -11,12 +11,12 @@ public class Test_MiddeScene : TestBase
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
-        GameManager.Instance.Dday += 1;
+        //GameManager.Instance.Dday += 1;
     }
 
     protected override void OnTest2(InputAction.CallbackContext context)
     {
-        GameManager.Instance.Dday -= 1;
+        //GameManager.Instance.Dday -= 1;
     }
 
 
