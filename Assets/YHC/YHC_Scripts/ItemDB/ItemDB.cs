@@ -16,6 +16,8 @@ public enum ItemCode
     GasTank,
     PalletJack,
     FlashLight = 100,
+    FlashLightUp,
+    Shovel
 }
 
 [CreateAssetMenu(fileName = "new Item Data", menuName = "Scriptable Object/Item Data", order = 0)]
@@ -33,4 +35,8 @@ public class ItemDB : ScriptableObject
     public bool isConductive = false;
     public Sprite itemIcon;
     public GameObject itemModel;
+
+    [Header("무기 관련 데이터")]
+    public uint damage = 0;
 }
+

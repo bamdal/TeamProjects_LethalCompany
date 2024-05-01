@@ -12,8 +12,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: facc51cb9b2f0f445a621c3fc26935a3, type: 3}
   m_Name: Hardware_CableDrum
   m_EditorClassIdentifier: 
-  itemName: Hardware_CableDrum
-  itemText: "\uC544\uC774\uD15C \uC815\uBCF4"
+  itemName: "\uCF00\uC774\uBE14\uB4DC\uB7FC"
+  itemText: "\uC804\uC120\uC744 \uC815\uB9AC\uD574 \uB193\uC740 \uCF00\uC774\uBE14
+    \uB4DC\uB7FC\uC774\uB2E4."
   weight: 20
   price: 20
   stackCount: 1

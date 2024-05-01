@@ -12,6 +12,7 @@ using UnityEngine.Rendering.Universal;
 
 public class Player : MonoBehaviour, IBattler, IHealth
 {
+
     /// <summary>
     /// 플레이어 공격력
     /// </summary>
@@ -43,7 +44,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
             }
         }
     }
-
     public void Die()
     {
         OnDie();
@@ -51,6 +51,8 @@ public class Player : MonoBehaviour, IBattler, IHealth
     private void OnDie()
     {
         Debug.Log("사망");
+        input.onDie?.Invoke();
+        
     }
 
     /// <summary>
@@ -75,7 +77,7 @@ public class Player : MonoBehaviour, IBattler, IHealth
             }
         }
     }
-
+    
     /// <summary>
     /// 걷는 속도
     /// </summary>
@@ -199,6 +201,18 @@ public class Player : MonoBehaviour, IBattler, IHealth
 
     Transform currentItem = null;
 
+    bool isInDungeon = false;
+    public bool IsInDungeon
+    {
+        get => isInDungeon;
+        set
+        {
+            if(isInDungeon !=  value)
+            {
+                isInDungeon = value;
+            }
+        }
+    }
     public Transform CurrentItem
     {
         get => currentItem;
@@ -225,14 +239,14 @@ public class Player : MonoBehaviour, IBattler, IHealth
 
     public Action<float> onHealthChange;
     public Action<float> onStaminaChange;
-
+    public Action onRclickIsNotPressed;
 
     InventoryUI invenUI;
 
     CinemachineImpulseSource _source;   // 카메라 흔들림을 위한 시네머신 임펄스 소스 컴포넌트
     Volume volume;
     Vignette vignette;
-
+    Terminal terminal;
     private void Awake()
     {
         input = GetComponent<PlayerInput>();
@@ -245,27 +259,39 @@ public class Player : MonoBehaviour, IBattler, IHealth
         input.onRClick += OnRClickInput;
         input.onScroll += OnScrollWheel;
         input.onItemDrop += OnItemDrop;
-        cam = FindAnyObjectByType<Camera>();
-        inventoryTransform = transform.Find("Inventory");
-//        inventory = inventoryTransform.GetComponent<Inventory>();
-        inventory = FindAnyObjectByType<Inventory>();
+        
+        cam = Camera.main;
+        inventoryTransform = transform.GetChild(1);
+        inventory = inventoryTransform.GetComponent<Inventory>();
         Stamina = maxStamina;
         Hp = maxHp;
         characterController = GetComponent<CharacterController>();
         itemRader = transform.GetChild(2);
         groundCheckPosition = transform.GetChild(4);
         gravityY = -1f;
-        invenUI = FindAnyObjectByType<InventoryUI>();
+        invenUI = FindObjectOfType<InventoryUI>();
         Transform child = transform.GetChild(0);
         _source = child.GetComponent<CinemachineImpulseSource>();
         volume = FindObjectOfType<Volume>();
         volume.profile.TryGet(out vignette);
     }
 
+    private void OnEnable()
+    {
+        
+    }
+
     private void Start()
     {
+        terminal = FindAnyObjectByType<Terminal>();
         CurrentItem = inventory.InvenSlots[0];
+        if(terminal != null)
+        {
+            terminal.onRequest += OnInputAction;
+        }
+        itemRader.gameObject.SetActive(false);
     }
+
 
 
     private void Update()
@@ -296,7 +322,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
         characterController.Move(currentSpeed * Time.deltaTime * moveDirection);
         // 중력 처리
         characterController.Move(1f * Time.deltaTime * gravityDir);
-        //Debug.Log(IsGrounded());
     }
 
     private void FixedUpdate()
@@ -390,7 +415,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
     {
         if (IsGrounded())
         {
-            Debug.Log("점프");
             gravityY = 5f;
         }
     }
@@ -460,7 +484,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
             Stamina = 0.0f;
             CurrentMoveMode = MoveMode.Walk;
             isCanRecovery = false;
-            Debug.Log("3초간 스테미나를 회복할 수 없습니다.");
             Invoke(nameof(EnableStaminaRecovery), 3.0f);
         }
     }
@@ -504,18 +527,14 @@ public class Player : MonoBehaviour, IBattler, IHealth
     {
         if (isClick)
         {
-            Debug.Log("f키 눌렀음!");
-
             // 카메라의 정 중앙을 기준으로 레이를 쏩니다.
             Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0));
             RaycastHit hit;
 
             if (Physics.Raycast(ray, out hit, 3.0f))
             {
-                if (hit.collider.CompareTag("Item"))
+                if (hit.collider.CompareTag("Item") || hit.collider.CompareTag("Hardware"))
                 {
-                    Debug.Log(hit);
-
                     for (int i = 0; i < inventory.InvenSlots.Length; i++)
                     {
                         if (inventory.InvenSlots[i].childCount == 0)
@@ -538,9 +557,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
                             {
                                 inventory.InvenSlots[CurrentItemIndex].GetChild(0).gameObject.SetActive(true);
                             }
-
-
-                            Debug.Log("아이템을 획득했습니다!");
                             break;
                         }
 
@@ -552,14 +568,11 @@ public class Player : MonoBehaviour, IBattler, IHealth
                             Transform currentItem = inventory.InvenSlots[j].GetChild(0);
                             if (currentItem != null)
                             {
-                                Debug.Log(currentItem);
                                 IItemDataBase itemData = currentItem.GetComponent<IItemDataBase>();
                                 if (itemData != null)
                                 {
-                                    Debug.Log(itemData);
                                     inventory.ItemDBs[j] = itemData.GetItemDB();
                                     invenUI.ItemImages[j].sprite = inventory.ItemDBs[j].itemIcon;
-                                    Debug.Log(inventory.ItemDBs[j].itemIcon);
                                 }
                                 
                             }
@@ -591,9 +604,12 @@ public class Player : MonoBehaviour, IBattler, IHealth
         }
         if (!isClick)
         {
-            Debug.Log("f키 떨어짐!");
         }
 
+    }
+    private void OnInputAction()
+    {
+        input.OnInputActions();
     }
 
     /// <summary>
@@ -619,14 +635,11 @@ public class Player : MonoBehaviour, IBattler, IHealth
                     Transform tempItem = inventory.InvenSlots[j].GetChild(0);
                     if (tempItem != null)
                     {
-                        Debug.Log(tempItem);
                         IItemDataBase itemData = tempItem.GetComponent<IItemDataBase>();
                         if (itemData != null)
                         {
-                            Debug.Log(itemData);
                             inventory.ItemDBs[j] = itemData.GetItemDB();                    // ItemDB에서 데이터를 가져와
                             invenUI.ItemImages[j].sprite = inventory.ItemDBs[j].itemIcon;   // 이미지를 인벤토리창에 띄움
-                            Debug.Log(inventory.ItemDBs[j].itemIcon);
                         }
 
                     }
@@ -638,23 +651,35 @@ public class Player : MonoBehaviour, IBattler, IHealth
                 }
             }
         }
+        CurrentItem = null;
     }
 
 
     /// <summary>
     /// 아이템 레이더를 켜고 끌수있게 오른쪽 마우스 버튼 입력에 대한 델리게이트로 연결되어있는 함수
     /// </summary>
-    private void OnRClickInput()
+    private void OnRClickInput(bool isPressed)
     {
-        itemRader.gameObject.SetActive(true);
+        if(isPressed)
+        {
+            itemRader.gameObject.SetActive(true);
+        }
+        else
+        {
+            onRclickIsNotPressed?.Invoke();
+            itemRader.gameObject.SetActive(false);
+        }
+        /*itemRader.gameObject.SetActive(true);
         if (DisableItemRaderAfterDelayCoroutine != null)
         {
             StopCoroutine(DisableItemRaderAfterDelayCoroutine);
         }
-        DisableItemRaderAfterDelayCoroutine = StartCoroutine(DisableItemRaderAfterDelay());
+        DisableItemRaderAfterDelayCoroutine = StartCoroutine(DisableItemRaderAfterDelay());*/
+
+
     }
 
-    Coroutine DisableItemRaderAfterDelayCoroutine;
+   /* Coroutine DisableItemRaderAfterDelayCoroutine;
     /// <summary>
     /// 아이템 레이더 오브젝트를 아주잠깐 켜기위한 코루틴 함수
     /// </summary>
@@ -664,7 +689,7 @@ public class Player : MonoBehaviour, IBattler, IHealth
         yield return new WaitForSeconds(0.05f); // 변경하고자 하는 시간으로 수정 가능
         itemRader.gameObject.SetActive(false);
 
-    }
+    }*/
 
 
 
@@ -677,7 +702,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
         // 아이템 사용 처리
         if (CurrentItem != null && isPressed)
         {
-            Debug.Log("찾았음" + CurrentItem);
             IEquipable equipable = CurrentItem.GetComponent<IEquipable>();
             if (equipable != null)
             {
@@ -685,14 +709,12 @@ public class Player : MonoBehaviour, IBattler, IHealth
             }
             else
             {
-                Debug.Log("이큅터블 없음!");
             }
         }
     }
 
     private void OnScrollWheel(Vector2 vector)
     {
-        Debug.Log(vector.normalized);
         foreach (Transform obj in inventory.InvenSlots)
         {
             if (obj != null && obj.childCount > 0 && obj.GetChild(0).gameObject.activeSelf)
@@ -704,7 +726,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
         if (vector.y > 0)
         {
             CurrentItemIndex = PrevIndex(CurrentItemIndex);
-            Debug.Log(CurrentItemIndex + " 감소");
         }
         else if (vector.y < 0)
         {
@@ -771,12 +792,6 @@ public class Player : MonoBehaviour, IBattler, IHealth
     {
         // 터미널 진입시 인풋시스템 비활성화
     }
-
-    private void OnOutTerminal()
-    {
-        // 터미널에서 나올때 인풋시스템 활성화
-    }
-
     public void OnTestDamage()
     {
         Hp -= 10;

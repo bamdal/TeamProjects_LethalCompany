@@ -131,13 +131,17 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2959719176521310790, guid: cfa66f38eae07c34da03cb05cd314180, type: 3}
+      propertyPath: m_UseGravity
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8105451360337611128, guid: cfa66f38eae07c34da03cb05cd314180, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0
       objectReference: {fileID: 0}
     - target: {fileID: 8105451360337611128, guid: cfa66f38eae07c34da03cb05cd314180, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 1
+      value: 5
       objectReference: {fileID: 0}
     - target: {fileID: 8105451360337611128, guid: cfa66f38eae07c34da03cb05cd314180, type: 3}
       propertyPath: m_LocalPosition.z
@@ -174,10 +178,6 @@ PrefabInstance:
     - target: {fileID: 8105451360337974616, guid: cfa66f38eae07c34da03cb05cd314180, type: 3}
       propertyPath: m_Name
       value: ZapGun
-      objectReference: {fileID: 0}
-    - target: {fileID: 8105451360337974616, guid: cfa66f38eae07c34da03cb05cd314180, type: 3}
-      propertyPath: m_IsActive
-      value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -994,7 +994,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e0234e28bd1ca94792159fbef28085f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  patrolMoveSpeed: 5
+  chaseMoveSpeed: 7
   chasePatrolTransitionRange: 20
+  attackCoolTime: 5
+  cognitionAngle: 25
 --- !u!135 &1392174779
 SphereCollider:
   m_ObjectHideFlags: 0

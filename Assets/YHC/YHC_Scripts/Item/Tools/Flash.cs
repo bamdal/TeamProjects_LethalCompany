@@ -6,7 +6,19 @@ using UnityEngine.InputSystem;
 
 public class Flash : ToolBase, IEquipable, IItemDataBase
 {
-    public float currentBattery;
+    /// <summary>
+    /// 후레쉬의 데이터
+    /// </summary>
+    ItemDB flashData;
+
+    /// <summary>
+    /// 현재 남아있는 배터리
+    /// </summary>
+    float currentBattery;
+
+    /// <summary>
+    /// 배터리 확인, 설정용 프로퍼티
+    /// </summary>
     public float CurrentBattery
     {
         get => currentBattery;
@@ -26,11 +38,11 @@ public class Flash : ToolBase, IEquipable, IItemDataBase
 
     float maxBattery;
 
+    /// <summary>
+    /// 후레쉬의 무게
+    /// </summary>
     float weight;
     public float Weight => weight;
-
-    // float rotateSpeed = 60.0f;
-    // int rotateDirection = 1;
 
     public Action<float> onBatteryChange;
 
@@ -42,10 +54,11 @@ public class Flash : ToolBase, IEquipable, IItemDataBase
         inputActions = new PlayerInputActions();
         lightTransform = transform.GetChild(0);
 
+        flashData = GameManager.Instance.ItemData.GetItemDB(ItemCode.FlashLight);
 
-        maxBattery = toolData.battery;
+        maxBattery = flashData.battery;
         CurrentBattery = maxBattery;
-        weight = toolData.weight;
+        weight = flashData.weight;
     }
 
     private void Start()
@@ -60,46 +73,6 @@ public class Flash : ToolBase, IEquipable, IItemDataBase
         if(lightTransform.gameObject)
         {
             CurrentBattery -= Time.deltaTime;
-
-        }
-        // float rotateValue = Time.deltaTime * rotateDirection;
-        // if (rotateValue > 60)
-        // {
-        //     rotateDirection = -1;
-        // }
-        // 
-        // if (rotateValue < -60)
-        // {
-        //     rotateDirection = 1;
-        // }
-        // lightTransform.rotation = Quaternion.Euler(-90 + rotateValue, 0, 0);
-    }
-    
-    /// <summary>
-    /// 임시용 인풋시스템
-    /// </summary>
-    private void OnEnable()
-    {
-        inputActions.Player.Interact.Enable();
-        inputActions.Player.Interact.performed += OnUse;
-    }
-
-    protected override void OnDisable()
-    {
-        base.OnDisable();
-        inputActions.Player.Interact.performed -= OnUse;
-        inputActions.Player.Interact?.Disable();
-    }
-
-    /// <summary>
-    /// 임시용 인풋시스템 실제 처리는 플레이어에서 델리게이트 신호받아 사용 예정
-    /// </summary>
-    /// <param name="context"></param>
-    private void OnUse(InputAction.CallbackContext context)
-    {
-        if(IsAvailable)
-        {
-            Use();
         }
     }
 
@@ -125,23 +98,8 @@ public class Flash : ToolBase, IEquipable, IItemDataBase
         }
     }
 
-    // private void OnMouseDrag()
-    // {
-    //     float rotateValue = Time.deltaTime * rotateSpeed * rotateDirection;
-    //     if(rotateValue > 60)
-    //     {
-    //         rotateDirection = -1;
-    //     }
-    //     
-    //     if(rotateValue < -60) 
-    //     {
-    //         rotateDirection = 1;
-    //     }
-    //     lightTransform.rotation = Quaternion.Euler(-90 + rotateValue, 0, 0);
-    // }
-
     public ItemDB GetItemDB()
     {
-        return toolData;
+        return flashData;
     }
 }

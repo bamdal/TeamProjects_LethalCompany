@@ -21,7 +21,7 @@ public class PlayerInput : MonoBehaviour
 
     public Action<bool> onLClick;
 
-    public Action onRClick;
+    public Action<bool> onRClick;
 
     public Action<bool> onInteract;
 
@@ -30,8 +30,9 @@ public class PlayerInput : MonoBehaviour
 
     public Action<Vector2> onScroll;
     public Action onItemDrop;
+    public Action onDie;
 
-    public Action onOutTerminal;
+
     private void Awake()
     {
         inputActions = new PlayerInputActions();
@@ -47,17 +48,19 @@ public class PlayerInput : MonoBehaviour
         inputActions.Player.MouseLClick.performed += OnLClick;
         inputActions.Player.MouseLClick.canceled += OnLClick;
         inputActions.Player.MouseRClick.performed += OnRClick;
+        inputActions.Player.MouseRClick.canceled += OnRClick;
         inputActions.Player.Jump.performed += OnJump;
         inputActions.Player.Wheel.performed += OnScroll;
         inputActions.Player.ItemDrop.performed += OnItemDrop;
+        onDie += OnDisable;
     }
-
 
     private void OnDisable()
     {
         inputActions.Player.ItemDrop.performed -= OnItemDrop;
         inputActions.Player.Wheel.performed -= OnScroll;
         inputActions.Player.Jump.performed -= OnJump;
+        inputActions.Player.MouseRClick.canceled -= OnRClick;
         inputActions.Player.MouseRClick.performed -= OnRClick;
         inputActions.Player.MouseLClick.canceled -= OnLClick;
         inputActions.Player.MouseLClick.performed -= OnLClick;
@@ -85,7 +88,7 @@ public class PlayerInput : MonoBehaviour
     }
     private void OnRClick(UnityEngine.InputSystem.InputAction.CallbackContext _)
     {
-        onRClick?.Invoke();
+        onRClick?.Invoke(!_.canceled);
     }
     private void OnLClick(UnityEngine.InputSystem.InputAction.CallbackContext _)
     {
@@ -105,9 +108,13 @@ public class PlayerInput : MonoBehaviour
     {
         onItemDrop?.Invoke();
     }
-    
     public void OffInputActions()
     {
         inputActions.Player.Disable();
     }
+    public void OnInputActions()
+    {
+        inputActions.Player.Enable();
+    }
+
 }

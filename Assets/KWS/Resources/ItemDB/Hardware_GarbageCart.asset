@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: facc51cb9b2f0f445a621c3fc26935a3, type: 3}
   m_Name: Hardware_GarbageCart
   m_EditorClassIdentifier: 
-  itemName: Hardware_GarbageCart
-  itemText: "\uC544\uC774\uD15C \uC815\uBCF4"
+  itemName: "\uC4F0\uB808\uAE30\uC218\uAC70\uD568"
+  itemText: "\uC4F0\uB808\uAE30\uB97C \uBAA8\uC544 \uB193\uB294 \uC218\uAC70\uD568\uC774\uB2E4."
   weight: 30
   price: 30
   stackCount: 1

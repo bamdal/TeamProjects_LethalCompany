@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 
 public enum PoolObjectType
@@ -13,7 +14,8 @@ public enum PoolObjectType
 public class Factory : Singleton<Factory>
 {
     //SlimePool slimePool;
-    ItemPool itemPool;
+    ShovelPool shovelPool;
+    FlashPool flashPool;    
     HardwareBarrelPool hardwareBarrelPool;
     HardwareCableDrumPool hardwareCableDrumPool;
     HardwareGarbageCartPool hardwareGarbageCartPool;
@@ -26,9 +28,12 @@ public class Factory : Singleton<Factory>
 
         //slimePool = GetComponentInChildren<SlimePool>();
         //if( slimePool != null ) slimePool.Initialize();
-        itemPool = GetComponentInChildren<ItemPool>();
-        if(itemPool != null )
-                itemPool.Initialize();
+        shovelPool = GetComponentInChildren<ShovelPool>();
+        if(shovelPool != null )
+                shovelPool.Initialize();
+        flashPool = GetComponentInChildren<FlashPool>();
+        if( flashPool != null )
+            flashPool.Initialize();
 
         hardwareBarrelPool = GetComponentInChildren<HardwareBarrelPool>();
         if(hardwareBarrelPool != null ) hardwareBarrelPool.Initialize();
@@ -67,7 +72,7 @@ public class Factory : Singleton<Factory>
     /*public GameObject GetHardware(ItemCode itemCode)
     {
         ItemDB data = GameManager.Instance.ItemData[itemCode];
-        // ItemObject obj = itemPool.GetObject();
+        // ItemObject obj = shovelPool.GetObject();
         // obj.ItemData = data;                    // 풀에서 하나 꺼내고 데이터 설정
         return null;
     }*/
@@ -117,12 +122,12 @@ public class Factory : Singleton<Factory>
 
     public ItemBase GetItem()
     {
-        return itemPool.GetObject();
+        return shovelPool.GetObject();
     }
 
     public ItemBase GetItem(Vector3 position, float angle = 0.0f)
     {
-        return itemPool.GetObject(position, angle * Vector3.forward);
+        return shovelPool.GetObject(position, angle * Vector3.forward);
     }
 
 
@@ -135,8 +140,8 @@ public class Factory : Singleton<Factory>
     /// <exception cref="ArgumentException"></exception>
     public ItemBase GetRandomHardware(Vector3 position, float angle = 0.0f)
     {
-        var enumValues = Enum.GetValues(enumType: typeof(ItemCode));
-        ItemCode itemCode = (ItemCode)enumValues.GetValue(UnityEngine.Random.Range(0, enumValues.Length-1));
+        var enumValues = Enum.GetValues(typeof(ItemCode)).Cast<ItemCode>().Where(itemCode => (int)itemCode < 100).ToArray();
+        ItemCode itemCode = (ItemCode)enumValues.GetValue(UnityEngine.Random.Range(0, enumValues.Length));
 
         switch (itemCode)
         {
@@ -152,6 +157,20 @@ public class Factory : Singleton<Factory>
                 return hardwarePalletJackPool.GetObject(position, angle * Vector3.forward);
             default:
                 throw new ArgumentException("Invalid item code", nameof(itemCode));
+        }
+    }
+
+    public ItemBase GetItem(ItemCode itemCode, Vector3 position, float angle = 0.0f)
+    {
+        switch(itemCode)
+        {
+            case ItemCode.Shovel:
+                return shovelPool.GetObject(position, angle* Vector3.forward);
+            case ItemCode.FlashLight:
+                return flashPool.GetObject(position, angle* Vector3.forward);
+            default:
+                throw new ArgumentException("Invalid item code", nameof(itemCode));
+      
         }
     }
 }

@@ -48,7 +48,7 @@ public class Store : MonoBehaviour, IInteraction
     /// </summary>
     public Action<float, float> onMoneyEarned;
 
-    public Action request { get; set; }
+    public Action onRequest { get; set; }
 
     private void Awake()
     {

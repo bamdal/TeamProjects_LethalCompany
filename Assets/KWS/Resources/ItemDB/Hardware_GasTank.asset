@@ -12,8 +12,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: facc51cb9b2f0f445a621c3fc26935a3, type: 3}
   m_Name: Hardware_GasTank
   m_EditorClassIdentifier: 
-  itemName: Hardware_GasTank
-  itemText: "\uC544\uC774\uD15C \uC815\uBCF4"
+  itemName: "\uAC00\uC2A4\uD0F1\uD06C"
+  itemText: "\uAC00\uC2A4\uAC00 \uB4E4\uC5B4\uC788\uB358 \uD0F1\uD06C\uC774\uB2E4."
   weight: 40
   price: 40
   stackCount: 1

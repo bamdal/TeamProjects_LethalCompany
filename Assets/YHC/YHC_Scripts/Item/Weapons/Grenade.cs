@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grenade : WeaponBase, IEquipable
+public class Grenade : WeaponBase, IEquipable, IBattler
 {
     /// <summary>
     /// 폭발 데미지
@@ -19,11 +19,16 @@ public class Grenade : WeaponBase, IEquipable
     /// </summary>
     public float explosionRadius;
 
+    Rigidbody rigid;
+
     TestInputActions inputActions;
+
+    public float Hp { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
     private void Awake()
     {
         explosionRadius = 5.0f;
+        rigid = GetComponent<Rigidbody>();
     }
 
     public void Equip()
@@ -34,6 +39,7 @@ public class Grenade : WeaponBase, IEquipable
     public void Use()
     {
         StopAllCoroutines();
+        rigid.AddForce(transform.forward, ForceMode.Impulse);
         StartCoroutine(Bomb());
     }
 
@@ -43,16 +49,28 @@ public class Grenade : WeaponBase, IEquipable
         yield return new WaitForSeconds(delay);
 
         Collider[] collders = Physics.OverlapSphere(transform.position, explosionRadius, LayerMask.GetMask("Ememy"));
-        IHealth[] enemies;
+        EnemyBase[] enemies;
+        IBattler[] battlers;
         int index = 0;
         foreach (Collider coll in collders)
         {
             Debug.Log("적 충돌");
-            enemies = new IHealth[collders.Length];
-            if(coll.GetComponent<IHealth>() != null)
+            enemies = new EnemyBase[collders.Length];
+            battlers = new IBattler[collders.Length];
+            if(coll.GetComponent<IBattler>() != null)
             {
-                enemies[index] = coll.GetComponent<IHealth>();
+                enemies[index] = coll.GetComponent<EnemyBase>();
+                battlers[index] = coll.GetComponent<IBattler>();
                 index++;
+            }
+
+            foreach(IBattler battler in enemies)
+            {
+                battler.Defense(damage);
+            }
+            foreach(EnemyBase enemy in enemies)
+            {
+                enemy.onDebuffAttack?.Invoke();
             }
         }
 
@@ -60,6 +78,14 @@ public class Grenade : WeaponBase, IEquipable
         Debug.Log("오브젝트 비활성화");
         
         gameObject.SetActive(false);
-        // IHealth를 통해 데미지
+    }
+    public void Attack(IBattler target)
+    {
+
+    }
+
+    public void Defense(float attackPower)
+    {
+
     }
 }

@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Threading;
@@ -9,8 +10,19 @@ public class AsyncStartScene : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        StartCoroutine(LoadDungenonScene());
+        if (SceneManager.GetActiveScene().name != "Company")
+        {
+            StartCoroutine(LoadDungenonScene());
+
+        }
+        else
+        {
+            StartCoroutine(Delay());
+          
+        }
     }
+
+    public Action onGameStart;
 
     IEnumerator LoadDungenonScene()
     {
@@ -34,6 +46,12 @@ public class AsyncStartScene : MonoBehaviour
             yield return null;
         }
 
-        Debug.Log("Async operation is done after StartGame.");
+        onGameStart?.Invoke();
+    }
+
+    IEnumerator Delay()
+    {
+        yield return null;
+        onGameStart?.Invoke();
     }
 }

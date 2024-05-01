@@ -80,7 +80,7 @@ public class Terminal : MonoBehaviour,IInteraction
     // 델리게이트들 -----------------------------------------------------------------------------------------------------
 
     public Action ESC;
-    public Action request { get; set; }
+    public Action onRequest { get; set; }
 
     private void Awake()
     {
@@ -111,6 +111,14 @@ public class Terminal : MonoBehaviour,IInteraction
     private void Start()
     {
         enter.TotalText += ChangePanel;
+
+        // 게임 시작 시 farVcam에 PlayerVC 자동 할당
+        GameObject temp = GameObject.Find("PlayerVC");
+        farVcam = temp.GetComponent<CinemachineVirtualCamera>();
+
+        // 게임 시작 시 nearVcam 자동 할당
+        Transform near = transform.GetChild(1);
+        nearVcam = near.GetComponent<CinemachineVirtualCamera>();
     }
 
 
@@ -287,7 +295,7 @@ public class Terminal : MonoBehaviour,IInteraction
                 if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
                 {
                     Debug.Log("mainText가 활성화된 상태에서 행성의 입력을 확인");
-                    sceneNameToLoad = "09_Test_LoadSceen";              // 씬의 이름이 09_Test_LoadSceen 것 불러옴
+                    sceneNameToLoad = "IntegrationScenes";              // 씬의 이름이 IntegrationScenes 것 불러옴
                     ChangeSceen();
                 }
                 break;
@@ -296,7 +304,7 @@ public class Terminal : MonoBehaviour,IInteraction
                 if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
                 {
                     Debug.Log("mainText가 활성화된 상태에서 원래 행성의 입력을 확인");
-                    sceneNameToLoad = "08_Test_Terminal_Player";              // 씬의 이름이 08_Test_Terminal_Player 것 불러옴
+                    sceneNameToLoad = "10_Test_Money";              // 씬의 이름이 10_Test_Money 것 불러옴
                     ChangeSceen();
                 }
                 break;
@@ -367,8 +375,7 @@ public class Terminal : MonoBehaviour,IInteraction
         {
             PressF_text.gameObject.SetActive(true);        // PressF_text 활성화
 
-            // 인풋필드 초기화
-            //enter.ClearText();        // 한글 한 글자 남는 문제 때문에 초기화가 안됨
+            enter.ClearText();        // 혹시 텍스트 남아있으면 비우기
 
             // 포커스 아웃
             enter.FocusOut();
@@ -386,7 +393,7 @@ public class Terminal : MonoBehaviour,IInteraction
             playerInputActions.Disable();
 
             // IInteraction 인터페이스에 알림
-            request?.Invoke();
+            onRequest?.Invoke();
         }
     }
 }
