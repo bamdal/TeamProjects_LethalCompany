@@ -16,14 +16,22 @@ public class MoneyCountMonitor : MonoBehaviour
 
     void Start()
     {
-        GameManager.Instance.OnMoneyChange += OnMoneyChange;
-
+        GameManager.Instance.onMoneyChange += OnMoneyChange;
+        GameManager.Instance.onTargetAmountMoneyChange += OnTargetAmountMoneyChange;
 
     }
 
-    private void OnMoneyChange(float money)
+    private void OnTargetAmountMoneyChange(float Target)
     {
-        MoneyText.text = $"${money}";
+        int money = (int)GameManager.Instance.TotalMoney;
+        MoneyText.text = $"${(int)Target}\n/ ${money}";
+    }
+
+    private void OnMoneyChange(float _)
+    {
+        int TargetMoney = (int)GameManager.Instance.TargetAmountMoney;
+        int money = (int)GameManager.Instance.TotalMoney;
+        MoneyText.text = $"${TargetMoney}\n/ ${(int)money}";
     }
 
 

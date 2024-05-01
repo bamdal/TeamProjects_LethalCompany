@@ -53,7 +53,7 @@ public class GameManager : Singleton<GameManager>
                     totalMoney += value;
                 }
                 money = value;
-                OnMoneyChange?.Invoke(money);       // MoneyCountMonitor에서 사용
+                onMoneyChange?.Invoke(money);       // MoneyCountMonitor에서 사용
             }
         }
     }
@@ -62,7 +62,7 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// 게임매니저가 현재 가지고 있는 돈이 변화하면 실행할 델리게이트
     /// </summary>
-    public Action<float> OnMoneyChange;
+    public Action<float> onMoneyChange;
 
 
     /// <summary>
@@ -94,8 +94,7 @@ public class GameManager : Singleton<GameManager>
                 switch (onGameState) 
                 {
                     case GameState.GameReady:
-                        Dday = maxDay;
-                        Money = 0;
+                        ResetGame();
                         Debug.Log("게임레디");
                         onGameReady?.Invoke();
                         break;
@@ -111,6 +110,8 @@ public class GameManager : Singleton<GameManager>
             }
         }
     }
+
+
     // 게임상태 델리게이트
     public Action onGameReady;
     public Action onGameStart;
@@ -153,6 +154,11 @@ public class GameManager : Singleton<GameManager>
     public Action<int> onDayChange;
 
     /// <summary>
+    /// 시작 목표 금액
+    /// </summary>
+    float startTargetAmountMoney = 256;
+
+    /// <summary>
     /// 목표 금액
     /// </summary>
     float targetAmountMoney;
@@ -163,10 +169,10 @@ public class GameManager : Singleton<GameManager>
     float MoneyMagnification = 1.2f;
 
 
-    float TargetAmountMoney
+    public float TargetAmountMoney
     {
         get => targetAmountMoney;
-        set
+        private set
         {
             if(targetAmountMoney != value)
             {
@@ -204,7 +210,7 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// EnemyAI용 배회할 포지션 좌표들
     /// </summary>
-    public List<Modul> moduls => dungeonGenerator?.Moduls;
+    public List<Modul> enemyTargetPositions => dungeonGenerator?.Moduls;
 
     protected override void OnAddtiveInitialize()
     {
@@ -224,6 +230,7 @@ public class GameManager : Singleton<GameManager>
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         store = FindAnyObjectByType<Store>();
+        TargetAmountMoney = startTargetAmountMoney;
         if (store != null)
         {
             store.onMoneyEarned += OnMoneyAdd;       // Store 클래스의 델리게이트 연결
@@ -290,17 +297,29 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// 목표금액 체크
     /// </summary>
-    public void Quest()
+    void Quest()
     {
-        if (TargetAmountMoney > totalMoney)
+        if (TargetAmountMoney > totalMoney) // 목표금액 도달 실패시 게임오버
         {
             OnGameState = GameState.GameOver;   
         }
         else
-        {
+        {   // 퀘스트 달성시 목표금액 증가, 기간 초기화
             Dday = maxDay;
+            TargetAmountMoney *= MoneyMagnification;
         }
     }
+
+    /// <summary>
+    /// 게임 초기화 함수
+    /// </summary>
+    private void ResetGame()
+    {
+        Dday = maxDay;
+        Money = 0;
+        targetAmountMoney = startTargetAmountMoney;
+    }
+
 
 #if UNITY_EDITOR
     /// <summary>
