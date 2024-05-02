@@ -1,11 +1,8 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-
 
 public class RandomSkybox : MonoBehaviour
 {
-    /**public Material Sunrise;
+    public Material Sunrise;
     public Material Sunset;
     public Material Night_Moonless;
     public Material Night;
@@ -13,30 +10,31 @@ public class RandomSkybox : MonoBehaviour
     public Material Day_Sunless;
 
     public delegate float TimeDelegate();
-    public TimeDelegate getTime;
+    public TimeDelegate getTime; // 현재 시간을 가져오는 델리게이트
 
     void Start()
     {
-        //getTime = ExternalTimeProvider.GetTime;   //시간을 받아 올 클래스.
+        // 초기에 한 번 스카이박스 설정
         UpdateSkybox();
     }
 
     void UpdateSkybox()
     {
-        float currentTime = getTime(); //현재 시간 얻기
+        // 현재 시간 얻기
+        float currentTime = getTime();
 
-        //시간에 따른 스카이박스 설정
-        if(Issunrise(currentTime))
+        // 시간에 따른 스카이박스 설정
+        if (IsSunrise(currentTime))
         {
-            RenderSettings.skybox = Sunrise; //03~06
+            RenderSettings.skybox = Sunrise; // 03~06
         }
-        else if(Issunset(currentTime))    
+        else if (IsSunset(currentTime))
         {
-            RenderSettings.skybox = Sunset;  //15~18
+            RenderSettings.skybox = Sunset; // 15~18
         }
-        else if(IsDay(currentTime))
+        else if (IsDay(currentTime))
         {
-            if(Random.value < 0.5f)          //18~03
+            if (Random.value < 0.5f) // 18~03
             {
                 RenderSettings.skybox = Day;
             }
@@ -45,9 +43,9 @@ public class RandomSkybox : MonoBehaviour
                 RenderSettings.skybox = Day_Sunless;
             }
         }
-        else
+        else if(IsNight(currentTime))
         {
-            if(Random.value < 0.5f)           //03~06
+            if (Random.value < 0.5f) // 03~06
             {
                 RenderSettings.skybox = Night;
             }
@@ -57,19 +55,23 @@ public class RandomSkybox : MonoBehaviour
             }
         }
     }
+
     bool IsDay(float currentTime)
     {
-        //시간대 여부 결정 코드
-        return false;
+        return currentTime >= 10 && currentTime < 13;
     }
-    bool Issunrise(float currentTime)
+
+    bool IsSunrise(float currentTime)
     {
-        //시간대 여부 결정 코드
-        return false;
+        return currentTime >= 7 && currentTime < 10;
     }
-    bool Issunset(float currentTime)
+
+    bool IsSunset(float currentTime)
     {
-        //시간대 여부 결정 코드 
-        return false;
+        return currentTime >= 13 && currentTime < 16;
+    }
+    bool IsNight(float currentTime)
+    {
+        return currentTime >= 16 && currentTime < 19;
     }
 }
