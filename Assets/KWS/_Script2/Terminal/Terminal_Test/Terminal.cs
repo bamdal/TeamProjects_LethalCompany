@@ -230,6 +230,11 @@ public class Terminal : MonoBehaviour,IInteraction
     /// </summary>
     void SwitchCamera()
     {
+        if (farVcam == null)    // 씬이동시 놓친 카메라 다시 맞춰주기
+        {
+            GameObject temp = GameObject.Find("PlayerVC");
+            farVcam = temp.GetComponent<CinemachineVirtualCamera>();
+        }
         if (nearVcam != null && farVcam != null)
         {
             // 초기에 nearVcam.Priority = 11, farVcam.Priority = 10
@@ -313,6 +318,7 @@ public class Terminal : MonoBehaviour,IInteraction
 
     void ChangeSceen()
     {
+        pressESC();
         StartCoroutine(LoadSceneAsync());
         enter.FocusOut();
     }
@@ -325,21 +331,24 @@ public class Terminal : MonoBehaviour,IInteraction
     {
         // 다음 씬 비동기 로드 시작
         AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneNameToLoad, LoadSceneMode.Single);
-
+        nearVcam.Priority = 9;
         // 씬 로드 완료를 기다림
         while (!loadOperation.isDone)
         {
+ 
             yield return null;
         }
 
-        // 현재 씬의 비동기 로드 시작
+/*        // 현재 씬의 비동기 로드 시작
         AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);
 
         // 씬 언로드 완료를 기다림
         while (!unloadOperation.isDone)
         {
             yield return null;
-        }
+        }*/
+
+ 
 
     }
 
@@ -373,28 +382,33 @@ public class Terminal : MonoBehaviour,IInteraction
         Debug.Log($"ESC 키가 눌렸습니다");
         if (!PressF_text.gameObject.activeSelf)
         {
-            PressF_text.gameObject.SetActive(true);        // PressF_text 활성화
-
-            enter.ClearText();        // 혹시 텍스트 남아있으면 비우기
-
-            // 포커스 아웃
-            enter.FocusOut();
-
-            // 터미널 화면 원래대로 돌리기
-            storeText.gameObject.SetActive(false);          // storeText 비활성화
-            mainText.gameObject.SetActive(true);            // mainText 활성화
-            helpText.gameObject.SetActive(false);           // helpText 비활성화
-
-            // 카메라 스위칭
-            SwitchCamera();
-
-            // OnESCClick 연결해제
-            playerInputActions.Option.ESC.performed -= OnESCClick;
-            playerInputActions.Disable();
-
-            // IInteraction 인터페이스에 알림
-            onRequest?.Invoke();
+            pressESC();
         }
+    }
+
+    private void pressESC()
+    {
+        PressF_text.gameObject.SetActive(true);        // PressF_text 활성화
+
+        enter.ClearText();        // 혹시 텍스트 남아있으면 비우기
+
+        // 포커스 아웃
+        enter.FocusOut();
+
+        // 터미널 화면 원래대로 돌리기
+        storeText.gameObject.SetActive(false);          // storeText 비활성화
+        mainText.gameObject.SetActive(true);            // mainText 활성화
+        helpText.gameObject.SetActive(false);           // helpText 비활성화
+
+        // 카메라 스위칭
+        SwitchCamera();
+
+        // OnESCClick 연결해제
+        playerInputActions.Option.ESC.performed -= OnESCClick;
+        playerInputActions.Disable();
+
+        // IInteraction 인터페이스에 알림
+        onRequest?.Invoke();
     }
 }
 

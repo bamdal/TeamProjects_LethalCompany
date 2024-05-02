@@ -8,6 +8,13 @@ using UnityEngine.SceneManagement;
 public class AsyncStartScene : MonoBehaviour
 {
     // Start is called before the first frame update
+    Transform landPosition;
+
+    private void Awake()
+    {
+        landPosition = transform.GetChild(0);
+    }
+
     void Start()
     {
         if (SceneManager.GetActiveScene().name != "Company")
@@ -26,6 +33,8 @@ public class AsyncStartScene : MonoBehaviour
 
     IEnumerator LoadDungenonScene()
     {
+        GameManager.Instance.SpaceShip.transform.position = landPosition.position;
+        GameManager.Instance.SpaceShip.transform.rotation = landPosition.rotation;
         AsyncOperation async = SceneManager.LoadSceneAsync("DungenonScene", LoadSceneMode.Additive);
 
         while (!async.isDone)
@@ -47,11 +56,14 @@ public class AsyncStartScene : MonoBehaviour
         }
 
         onGameStart?.Invoke();
+        GameManager.Instance.SpaceShip.SpaceShipDoorOpen();
     }
 
     IEnumerator Delay()
     {
         yield return null;
         onGameStart?.Invoke();
+        GameManager.Instance.SpaceShip.SpaceShipDoorOpen();
+
     }
 }

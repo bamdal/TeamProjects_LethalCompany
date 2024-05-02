@@ -326,7 +326,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 6970
+  m_VersionIndex: 6973
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -675,7 +675,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3812
+  m_VersionIndex: 3815
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1205,7 +1205,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 914
+  m_VersionIndex: 917
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1526,11 +1526,29 @@ MonoBehaviour:
     m_ImpulseShape: 3
     m_CustomImpulseShape:
       serializedVersion: 2
-      m_Curve: []
+      m_Curve:
+      - serializedVersion: 3
+        time: 0
+        value: 0
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
+      - serializedVersion: 3
+        time: 1
+        value: 1
+        inSlope: 0
+        outSlope: 0
+        tangentMode: 0
+        weightedMode: 0
+        inWeight: 0
+        outWeight: 0
       m_PreInfinity: 2
       m_PostInfinity: 2
       m_RotationOrder: 4
-    m_ImpulseDuration: 2
+    m_ImpulseDuration: 0.2
     m_ImpulseType: 0
     m_DissipationRate: 0.25
     m_RawSignal: {fileID: 0}
@@ -1693,7 +1711,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8587275481333184931, guid: 27cc385e110546543b409fcab6de929e, type: 3}
       propertyPath: m_VersionIndex
-      value: 2117
+      value: 2120
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1334406193975719263, guid: 27cc385e110546543b409fcab6de929e, type: 3}
@@ -1716,7 +1734,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 6269582489636167092, guid: 27cc385e110546543b409fcab6de929e, type: 3}
       propertyPath: m_text
-      value: "$9999\n / $0"
+      value: "$256\n / $0"
       objectReference: {fileID: 0}
     - target: {fileID: 6269582489636167092, guid: 27cc385e110546543b409fcab6de929e, type: 3}
       propertyPath: m_fontSize
@@ -1772,7 +1790,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8587275481333184931, guid: 27cc385e110546543b409fcab6de929e, type: 3}
       propertyPath: m_VersionIndex
-      value: 2117
+      value: 2120
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1334406193975719263, guid: 27cc385e110546543b409fcab6de929e, type: 3}
