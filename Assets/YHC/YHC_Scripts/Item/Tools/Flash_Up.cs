@@ -71,6 +71,12 @@ public class Flash_Up : ToolBase, IEquipable, IItemDataBase
 
     private void Start()
     {
+        flashUpData = GameManager.Instance.ItemData.GetItemDB(ItemCode.FlashLightUp);
+
+        maxBattery = flashUpData.battery;
+        CurrentBattery = maxBattery;
+        weight = flashUpData.weight;
+
         lightTransform.gameObject.SetActive(true);
         isActivated = true;
     }

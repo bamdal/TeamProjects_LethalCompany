@@ -81,7 +81,6 @@ public class Flash : ToolBase, IEquipable, IItemDataBase
 
     private void Start()
     {
-        int i = 0;
         flashData = GameManager.Instance.ItemData.GetItemDB(ItemCode.FlashLight);
 
         maxBattery = flashData.battery;
