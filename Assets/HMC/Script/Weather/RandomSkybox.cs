@@ -60,16 +60,16 @@ public class RandomSkybox : MonoBehaviour
     bool IsDay(float currentTime)
     {
         //시간대 여부 결정 코드
-        //return;
+        return false;
     }
     bool Issunrise(float currentTime)
     {
         //시간대 여부 결정 코드
-        return;
+        return false;
     }
     bool Issunset(float currentTime)
     {
         //시간대 여부 결정 코드 
-        return;
-    }**/
+        return false;
+    }
 }

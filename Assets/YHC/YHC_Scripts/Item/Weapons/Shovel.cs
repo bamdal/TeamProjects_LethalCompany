@@ -17,15 +17,15 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase
     private void Awake()
     {
         mesh = GetComponent<MeshCollider>();
-        shovelData = GameManager.Instance.ItemData.GetItemDB(ItemCode.Shovel);
     }
-
-    private void OnEnable()
+    private void Start()
     {
+        shovelData = GameManager.Instance.ItemData.GetItemDB(ItemCode.Shovel);
         weight = shovelData.weight;
         damage = shovelData.damage;
     }
-    private void Start()
+
+    private void OnEnable()
     {
 
     }

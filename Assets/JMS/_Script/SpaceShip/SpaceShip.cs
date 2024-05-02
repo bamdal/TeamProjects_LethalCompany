@@ -1,4 +1,4 @@
-using System;
+using Cinemachine;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -12,11 +12,14 @@ public class SpaceShip : MonoBehaviour
     /// </summary>
     RedButton redButton;
 
+
+    CinemachineImpulseSource cinemachineImpulse;
     private void Awake()
     {
         animator = GetComponent<Animator>();
         redButton = GetComponentInChildren<RedButton>();
         redButton.onRequest += ButtonClick;
+        cinemachineImpulse = GetComponent<CinemachineImpulseSource>();
     }
 
     private void ButtonClick()
@@ -37,13 +40,23 @@ public class SpaceShip : MonoBehaviour
     private void Start()
     {
 
-            AsyncStartScene asyncStart = FindAnyObjectByType<AsyncStartScene>();
-            if(asyncStart != null)
-            {
-                asyncStart.onGameStart += () => { animator.SetTrigger("Open"); };
-            }
+        AsyncStartScene asyncStart = FindAnyObjectByType<AsyncStartScene>();
+        if (asyncStart != null)
+        {
+            asyncStart.onGameStart += () => { animator.SetTrigger("Open"); };
+        }
 
+        GameManager.Instance.onGameOver += OnGameOver;
 
+    }
+
+    private void OnGameOver()
+    {
+        animator.SetTrigger("Open");
+        Light light = transform.GetChild(5).GetComponent<Light>();
+        light.enabled = false;
+        cinemachineImpulse.GenerateImpulseWithVelocity(Random.onUnitSphere);
+        cinemachineImpulse.GenerateImpulse();
 
     }
 }

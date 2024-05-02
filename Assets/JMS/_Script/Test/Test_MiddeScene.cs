@@ -11,12 +11,12 @@ public class Test_MiddeScene : TestBase
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
-        GameManager.Instance.Dday += 1;
+        GameManager.Instance.NextDay();
     }
 
     protected override void OnTest2(InputAction.CallbackContext context)
     {
-        GameManager.Instance.Dday -= 1;
+        GameManager.Instance.Money += 100;
     }
 
 

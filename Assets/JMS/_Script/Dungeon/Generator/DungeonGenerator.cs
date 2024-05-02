@@ -326,7 +326,7 @@ public class DungeonGenerator : MonoBehaviour
         //    return false; // 콜라이더가 없으면 겹침을 판단하지 않고 바로 false 반환
         //}
 
-        //Modul[] moduls = pointNav.GetComponentsInChildren<Modul>(); // 이미 깔려있는 모듈 가져오기
+        //Modul[] enemyTargetPositions = pointNav.GetComponentsInChildren<Modul>(); // 이미 깔려있는 모듈 가져오기
 
 
         // 기존 콜라이더로 비교하기
@@ -380,8 +380,8 @@ public class DungeonGenerator : MonoBehaviour
 
 
     /// <summary>
-    /// 연결될 모듈을 랜덤으로 꺼내서 정해줌 moduls, uniqueModuls
-    /// moduls 90%, uniqueModuls 10%
+    /// 연결될 모듈을 랜덤으로 꺼내서 정해줌 enemyTargetPositions, uniqueModuls
+    /// enemyTargetPositions 90%, uniqueModuls 10%
     /// uniqueModuls이 이미 소환되면 소환에서 제외
     /// </summary>
     private Modul RandomSelectModul()
