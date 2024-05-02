@@ -128,8 +128,10 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         attackArea = GetComponentInChildren<CoilHead_AttackArea>();
     }
 
-    private void Start()
+    protected override void Start()
     {
+        base.Start();
+        
         agent.SetDestination(GetRandomDestination());
         MoveSpeed = patrolMoveSpeed;
         agent.speed = MoveSpeed;

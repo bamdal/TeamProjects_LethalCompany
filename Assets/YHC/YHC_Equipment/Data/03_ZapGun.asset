@@ -9,16 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d174dda186c864f40a7af398b29a3fd1, type: 3}
-  m_Name: Labber
+  m_Script: {fileID: 11500000, guid: facc51cb9b2f0f445a621c3fc26935a3, type: 3}
+  m_Name: 03_ZapGun
   m_EditorClassIdentifier: 
-  itemName: _
-  itemText: "\uC544\uC774\uD15C \uC815\uBCF4"
-  weight: 0
-  price: 0
+  itemName: "\uC7BD\uAC74"
+  itemText: "\uCD1D"
+  weight: 11
+  price: 400
   stackCount: 1
-  battery: 0
-  itemType: 0
+  battery: 500
+  itemType: 1
+  itemCode: 103
   isConductive: 0
   itemIcon: {fileID: 0}
-  itemModel: {fileID: 0}
+  itemModel: {fileID: 8105451360337974616, guid: cfa66f38eae07c34da03cb05cd314180, type: 3}
+  damage: 0

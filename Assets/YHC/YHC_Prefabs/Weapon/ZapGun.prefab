@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 5080896296636906511}
   m_Layer: 0
   m_Name: ZapGun
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -101,9 +101,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemDB: {fileID: 0}
-  weaponData: {fileID: 0}
-  shootingRange: 15
-  shootingAngle: 30
 --- !u!1 &8105451360337974618
 GameObject:
   m_ObjectHideFlags: 0

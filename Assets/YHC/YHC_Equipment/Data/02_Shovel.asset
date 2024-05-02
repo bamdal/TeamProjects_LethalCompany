@@ -12,10 +12,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: facc51cb9b2f0f445a621c3fc26935a3, type: 3}
   m_Name: 02_Shovel
   m_EditorClassIdentifier: 
-  itemName: _
-  itemText: "\uC544\uC774\uD15C \uC815\uBCF4"
-  weight: 0
-  price: 0
+  itemName: "\uC0BD"
+  itemText: "\uC0BD"
+  weight: 14
+  price: 30
   stackCount: 1
   battery: 0
   itemType: 1
