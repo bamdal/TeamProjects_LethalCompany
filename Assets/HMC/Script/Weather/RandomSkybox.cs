@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class RandomSkybox : MonoBehaviour
 {
-    public Material Sunrise;
+    /**public Material Sunrise;
     public Material Sunset;
     public Material Night_Moonless;
     public Material Night;
@@ -60,7 +60,7 @@ public class RandomSkybox : MonoBehaviour
     bool IsDay(float currentTime)
     {
         //시간대 여부 결정 코드
-        return;
+        //return;
     }
     bool Issunrise(float currentTime)
     {
@@ -71,5 +71,5 @@ public class RandomSkybox : MonoBehaviour
     {
         //시간대 여부 결정 코드 
         return;
-    }
+    }**/
 }
