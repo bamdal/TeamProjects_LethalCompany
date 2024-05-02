@@ -2300,42 +2300,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 2092231456}
-    - target: {fileID: 4361893604165429921, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_ImpulseDefinition.m_ImpulseShape
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 4361893604165429921, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_ImpulseDefinition.m_ImpulseDuration
-      value: 0.2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4361893604165429921, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_ImpulseDefinition.m_CustomImpulseShape.m_Curve.Array.size
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 4361893604165429921, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_ImpulseDefinition.m_CustomImpulseShape.m_Curve.Array.data[1].time
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4361893604165429921, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_ImpulseDefinition.m_CustomImpulseShape.m_Curve.Array.data[1].value
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4361893604165429921, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_ImpulseDefinition.m_CustomImpulseShape.m_Curve.Array.data[0].inSlope
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4361893604165429921, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_ImpulseDefinition.m_CustomImpulseShape.m_Curve.Array.data[1].inSlope
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4361893604165429921, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_ImpulseDefinition.m_CustomImpulseShape.m_Curve.Array.data[0].outSlope
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4361893604165429921, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_ImpulseDefinition.m_CustomImpulseShape.m_Curve.Array.data[1].outSlope
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5222434457387526350, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

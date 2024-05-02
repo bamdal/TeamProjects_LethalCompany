@@ -16,6 +16,7 @@ public class SpaceShip : MonoBehaviour
     CinemachineImpulseSource cinemachineImpulse;
     private void Awake()
     {
+        DontDestroyOnLoad(this.gameObject);
         animator = GetComponent<Animator>();
         redButton = GetComponentInChildren<RedButton>();
         redButton.onRequest += ButtonClick;
@@ -48,6 +49,11 @@ public class SpaceShip : MonoBehaviour
 
         GameManager.Instance.onGameOver += OnGameOver;
 
+    }
+
+    public void SpaceShipDoorOpen()
+    {
+        animator.SetTrigger("Open"); 
     }
 
     private void OnGameOver()

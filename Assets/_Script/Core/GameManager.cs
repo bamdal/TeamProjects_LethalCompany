@@ -2,7 +2,6 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-using static UnityEditor.Progress;
 
 public class GameManager : Singleton<GameManager>
 {
@@ -11,6 +10,10 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     Player player;
     public Player Player => player;
+
+    SpaceShip spaceShip;
+
+    public SpaceShip SpaceShip => spaceShip;
 
     /// <summary>
     /// 아이템 데이터 매니저
@@ -221,6 +224,12 @@ public class GameManager : Singleton<GameManager>
     private void Awake()
     {
         items = new Queue<ItemCode>();
+    }
+
+    protected override void OnPreInitialize()
+    {
+        base.OnPreInitialize();
+        spaceShip = FindAnyObjectByType<SpaceShip>();
     }
 
     protected override void OnInitialize()
