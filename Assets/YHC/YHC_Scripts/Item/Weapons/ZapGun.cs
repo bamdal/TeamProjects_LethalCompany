@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 
 public class ZapGun : WeaponBase, IEquipable
 {
+    ItemDB zapGunDB;
+
     /// <summary>
     /// 총이 릴리즈중인지 아닌지 확인하는 변수
     /// </summary>
@@ -36,6 +38,12 @@ public class ZapGun : WeaponBase, IEquipable
         bulletRigid = bullet.GetComponent<Rigidbody>();
 
         bulletRigid.useGravity = false;
+    }
+
+    private void Start()
+    {
+
+        zapGunDB = GameManager.Instance.ItemData.GetItemDB(ItemCode.ZapGun);
     }
 
     private void Update()

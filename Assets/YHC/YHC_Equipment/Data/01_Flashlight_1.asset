@@ -12,12 +12,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: facc51cb9b2f0f445a621c3fc26935a3, type: 3}
   m_Name: 01_Flashlight_1
   m_EditorClassIdentifier: 
-  itemName: _
-  itemText: "\uC544\uC774\uD15C \uC815\uBCF4"
-  weight: 0
-  price: 0
+  itemName: FlashLightUp
+  itemText: "\uD5A5\uC0C1\uB41C\uC190\uC804\uB4F1"
+  weight: 2.5
+  price: 25
   stackCount: 1
-  battery: 100
+  battery: 285
   itemType: 1
   itemCode: 101
   isConductive: 0

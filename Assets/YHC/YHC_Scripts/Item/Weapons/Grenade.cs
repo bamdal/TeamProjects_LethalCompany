@@ -4,6 +4,9 @@ using UnityEngine;
 
 public class Grenade : WeaponBase, IEquipable, IBattler
 {
+
+    ItemDB grenadeDB;
+
     /// <summary>
     /// 폭발 데미지
     /// </summary>
@@ -29,6 +32,11 @@ public class Grenade : WeaponBase, IEquipable, IBattler
     {
         explosionRadius = 5.0f;
         rigid = GetComponent<Rigidbody>();
+    }
+
+    private void Start()
+    {
+        grenadeDB = GameManager.Instance.ItemData.GetItemDB(ItemCode.Grenade);
     }
 
     public void Equip()

@@ -9,16 +9,18 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d174dda186c864f40a7af398b29a3fd1, type: 3}
-  m_Name: JetPack
+  m_Script: {fileID: 11500000, guid: facc51cb9b2f0f445a621c3fc26935a3, type: 3}
+  m_Name: 04_Grenade
   m_EditorClassIdentifier: 
-  itemName: _
-  itemText: "\uC544\uC774\uD15C \uC815\uBCF4"
-  weight: 0
-  price: 0
+  itemName: "\uAE30\uC808\uC218\uB958\uD0C4"
+  itemText: "\uC801\uAE30\uC808"
+  weight: 4
+  price: 30
   stackCount: 1
   battery: 0
-  itemType: 0
+  itemType: 1
+  itemCode: 104
   isConductive: 0
   itemIcon: {fileID: 0}
-  itemModel: {fileID: 0}
+  itemModel: {fileID: 583643471763167562, guid: 23f4fe5a79a8b2e44a2be158788f95e7, type: 3}
+  damage: 0

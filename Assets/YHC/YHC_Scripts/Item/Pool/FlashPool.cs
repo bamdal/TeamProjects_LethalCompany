@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class FlashPool : ObjectPool<ItemBase>
+public class FlashPool : ObjectPool<Flash>
 {
-    public ItemDB[] itemDBs;
+
 }
