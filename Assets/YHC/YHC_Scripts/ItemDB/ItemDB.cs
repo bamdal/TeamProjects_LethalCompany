@@ -17,7 +17,10 @@ public enum ItemCode
     PalletJack,
     FlashLight = 100,
     FlashLightUp,
-    Shovel
+    Shovel,
+    ZapGun,
+    Grenade,
+    Labber,
 }
 
 [CreateAssetMenu(fileName = "new Item Data", menuName = "Scriptable Object/Item Data", order = 0)]

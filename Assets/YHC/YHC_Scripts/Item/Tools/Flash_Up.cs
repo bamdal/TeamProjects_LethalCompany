@@ -4,12 +4,12 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-public class Flash : ToolBase, IEquipable, IItemDataBase
+public class Flash_Up : ToolBase, IEquipable, IItemDataBase
 {
     /// <summary>
-    /// 후레쉬의 데이터
+    /// 프로손전등의 데이터
     /// </summary>
-    ItemDB flashData;
+    ItemDB flashUpData;
 
     // 배터리 관련 ----------------------------------------------------------------------------------------------------------
 
@@ -26,7 +26,7 @@ public class Flash : ToolBase, IEquipable, IItemDataBase
         get => currentBattery;
         set
         {
-            if(currentBattery != value)
+            if (currentBattery != value)
             {
                 currentBattery = value;
                 currentBattery = Math.Clamp(value, 0, maxBattery);
@@ -45,26 +45,9 @@ public class Flash : ToolBase, IEquipable, IItemDataBase
     /// </summary>
     public Action<float> onBatteryChange;
 
-    /// <summary>
-    /// 배터리가 사용 가능한 상태인지 아닌지 확인할 프로퍼티
-    /// </summary>
     bool IsAvailable => currentBattery > 0;
-
-    /// <summary>
-    /// 손전등이 켜진 상태, 꺼져있는 상태가 기본
-    /// </summary>
     bool isActivated = false;
-    bool IsActivated
-    {
-        get => isActivated;
-        set
-        {
-            if (IsActivated != value)
-            {
-                IsActivated = value;                
-            }
-        }
-    }
+
 
     /// <summary>
     /// 후레쉬의 무게
@@ -72,30 +55,30 @@ public class Flash : ToolBase, IEquipable, IItemDataBase
     float weight;
     public float Weight => weight;
 
-    Light lightComp;
+
+    Transform lightTransform;
 
     private void Awake()
     {
-        lightComp = GetComponentInChildren<Light>();
+        lightTransform = transform.GetChild(0);
+
+        flashUpData = GameManager.Instance.ItemData.GetItemDB(ItemCode.FlashLightUp);
+
+        maxBattery = flashUpData.battery;
+        CurrentBattery = maxBattery;
+        weight = flashUpData.weight;
     }
 
     private void Start()
     {
-        int i = 0;
-        flashData = GameManager.Instance.ItemData.GetItemDB(ItemCode.FlashLight);
-
-        maxBattery = flashData.battery;
-        CurrentBattery = maxBattery;
-        weight = flashData.weight;
-
-        IsActivated = false;
-        lightComp.enabled = IsActivated;
+        lightTransform.gameObject.SetActive(true);
+        isActivated = true;
     }
 
 
     private void Update()
     {
-        if(IsActivated)
+        if (lightTransform.gameObject)
         {
             CurrentBattery -= Time.deltaTime;
         }
@@ -108,15 +91,23 @@ public class Flash : ToolBase, IEquipable, IItemDataBase
 
     public void Use()
     {
-        if (IsAvailable)
+        if (isActivated)
         {
-            lightComp.enabled = !lightComp.enabled;
-            IsActivated = lightComp.enabled;
+            // 켜져있다.
+            lightTransform.gameObject.SetActive(false);  // 불 끄기
+            isActivated = false;
+
+        }
+        else
+        {
+            // 꺼져있다.
+            lightTransform.gameObject.SetActive(true);   // 불 켜기
+            isActivated = true;
         }
     }
 
     public ItemDB GetItemDB()
     {
-        return flashData;
+        return flashUpData;
     }
 }

@@ -111,7 +111,7 @@ GameObject:
   - component: {fileID: 1062346560711833013}
   m_Layer: 0
   m_Name: Flashlight_0
-  m_TagString: Untagged
+  m_TagString: Item
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -219,8 +219,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemDB: {fileID: 0}
-  toolData: {fileID: 11400000, guid: 707549a0952ee214082e0f107a9a9a25, type: 2}
-  currentBattery: 0
 --- !u!65 &8259015822190863093
 BoxCollider:
   m_ObjectHideFlags: 0
