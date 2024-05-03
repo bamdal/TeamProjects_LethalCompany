@@ -32,4 +32,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scene/IntegrationScenes/MiddleScene.unity
     guid: 9bf2fff3420de9c419076fb7a1ffc8fb
+  - enabled: 1
+    path: Assets/_Scene/IntegrationScenes/AsyncLoadScene.unity
+    guid: e86792f6e4401db4cab33e4058cdc280
   m_configObjects: {}

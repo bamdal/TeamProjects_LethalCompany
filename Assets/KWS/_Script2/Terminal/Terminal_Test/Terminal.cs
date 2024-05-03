@@ -303,13 +303,21 @@ public class Terminal : MonoBehaviour,IInteraction
                     sceneNameToLoad = "IntegrationScenes";              // 씬의 이름이 IntegrationScenes 것 불러옴
                     ChangeSceen();
                 }
-                break;
+                break; 
 
             case "원래행성":
                 if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
                 {
                     Debug.Log("mainText가 활성화된 상태에서 원래 행성의 입력을 확인");
                     sceneNameToLoad = "10_Test_Money";              // 씬의 이름이 10_Test_Money 것 불러옴
+                    ChangeSceen();
+                }
+                break;
+            case "회사":
+                if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
+                {
+                    Debug.Log("mainText가 활성화된 상태에서 원래 행성의 입력을 확인");
+                    sceneNameToLoad = "Company";              // 씬의 이름이 10_Test_Money 것 불러옴
                     ChangeSceen();
                 }
                 break;
@@ -323,6 +331,7 @@ public class Terminal : MonoBehaviour,IInteraction
         enter.FocusOut();
     }
 
+
     /// <summary>
     /// 씬을 비동기로 로드하기 위한 코루틴
     /// </summary>
@@ -330,6 +339,8 @@ public class Terminal : MonoBehaviour,IInteraction
     IEnumerator LoadSceneAsync()
     {
         // 다음 씬 비동기 로드 시작
+        SceneManager.LoadScene("AsyncLoadScene", LoadSceneMode.Additive);
+
         AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneNameToLoad, LoadSceneMode.Single);
         nearVcam.Priority = 9;
         // 씬 로드 완료를 기다림

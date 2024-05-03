@@ -29,7 +29,7 @@ public class AsyncStartScene : MonoBehaviour
         }
     }
 
-    public Action onGameStart;
+    public Action onSceneLoadComplite;
 
     IEnumerator LoadDungenonScene()
     {
@@ -57,14 +57,17 @@ public class AsyncStartScene : MonoBehaviour
             yield return null;
         }
 
-        onGameStart?.Invoke();
+        onSceneLoadComplite?.Invoke();
         GameManager.Instance.SpaceShip.SpaceShipDoorOpen();
     }
 
     IEnumerator Delay()
     {
         yield return null;
-        onGameStart?.Invoke();
+        GameManager.Instance.SpaceShip.transform.position = landPosition.position;
+        GameManager.Instance.SpaceShip.transform.rotation = landPosition.rotation;
+        GameManager.Instance.Player.ControllerTPPosition(landPosition.position);
+        onSceneLoadComplite?.Invoke();
         GameManager.Instance.SpaceShip.SpaceShipDoorOpen();
 
     }
