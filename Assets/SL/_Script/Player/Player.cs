@@ -10,7 +10,7 @@ using UnityEngine.InputSystem.XInput;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
 
-public class Player : MonoBehaviour, IBattler, IHealth
+public class Player : Singleton<Player>, IBattler, IHealth
 {
 
     /// <summary>

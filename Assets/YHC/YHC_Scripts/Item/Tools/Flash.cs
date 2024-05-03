@@ -48,7 +48,7 @@ public class Flash : ToolBase, IEquipable, IItemDataBase
     /// <summary>
     /// 배터리가 사용 가능한 상태인지 아닌지 확인할 프로퍼티
     /// </summary>
-    bool IsAvailable => currentBattery > 0;
+    bool IsAvailable => CurrentBattery > 0;
 
     /// <summary>
     /// 손전등이 켜진 상태, 꺼져있는 상태가 기본
@@ -59,9 +59,13 @@ public class Flash : ToolBase, IEquipable, IItemDataBase
         get => isActivated;
         set
         {
-            if (IsActivated != value)
+            /*if (IsActivated != value)
             {
                 IsActivated = value;                
+            }*/
+            if(isActivated != value)
+            {
+                isActivated = value;
             }
         }
     }
@@ -111,6 +115,8 @@ public class Flash : ToolBase, IEquipable, IItemDataBase
         {
             lightComp.enabled = !lightComp.enabled;
             IsActivated = lightComp.enabled;
+/*            string temp = IsActivated ? "켜짐" : "꺼짐";
+            Debug.Log($"{temp}");*/
         }
     }
 
