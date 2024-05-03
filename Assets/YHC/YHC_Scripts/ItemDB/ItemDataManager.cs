@@ -1,6 +1,4 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class ItemDataManager : Singleton<ItemDataManager>
@@ -30,7 +28,14 @@ public class ItemDataManager : Singleton<ItemDataManager>
     
     public ItemDB GetItemDB(ItemCode itemCode)
     {
-        int index = Array.IndexOf(itemDataBases, itemCode);
-        return itemDataBases[index];
+        /*int index = Array.IndexOf(itemDataBases, itemCode);
+        return itemDataBases[index];*/
+
+        foreach (ItemDB itemDB in itemDataBases)
+        {
+            if (itemDB.itemCode == itemCode)
+                return itemDB;
+        }
+        return null;
     }
 }
