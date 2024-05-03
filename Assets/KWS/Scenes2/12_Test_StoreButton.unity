@@ -722,30 +722,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 3021274763329006759, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
-      propertyPath: recycleObject
-      value: 
-      objectReference: {fileID: 371826997391568018, guid: 137bfbb17bab5ba45959ed6727901443, type: 3}
-    - target: {fileID: 4150113205602746013, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
-      propertyPath: recycleObject
-      value: 
-      objectReference: {fileID: 8347303088536995330, guid: d32601a35664ee84c9ba80b16556e914, type: 3}
-    - target: {fileID: 4503654492485143685, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
-      propertyPath: recycleObject
-      value: 
-      objectReference: {fileID: 8822895717547138697, guid: 80f013efeb290054c9dbc4c63211f129, type: 3}
-    - target: {fileID: 4599998774704805106, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
-      propertyPath: recycleObject
-      value: 
-      objectReference: {fileID: 6482104205489665552, guid: f268a33c89e27e64facad3414a1b915e, type: 3}
-    - target: {fileID: 5315031776282501344, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
-      propertyPath: m_IsActive
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 6533576035810237565, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
-      propertyPath: recycleObject
-      value: 
-      objectReference: {fileID: 2231581111867255905, guid: 866bc2484e6908241800660e3f939602, type: 3}
     - target: {fileID: 7404700355697594526, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
       propertyPath: m_Name
       value: Factory
