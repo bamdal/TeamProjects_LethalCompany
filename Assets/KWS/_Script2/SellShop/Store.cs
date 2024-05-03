@@ -8,7 +8,7 @@ using UnityEngine.InputSystem;
 using UnityEngine.InputSystem.XInput;
 using static UnityEditor.Progress;
 
-public class Store : MonoBehaviour, IInteraction
+public class Store : MonoBehaviour
 {
     /// <summary>
     /// Store에 올려진 오브젝트의 무게를 누적할 변수
@@ -28,7 +28,7 @@ public class Store : MonoBehaviour, IInteraction
     /// <summary>
     /// 충돌한 모든 오브젝트를 추적하기 위한 리스트
     /// </summary>
-    private List<GameObject> collidedObjects = new List<GameObject>();        
+    public List<GameObject> collidedObjects = new List<GameObject>();        
 
 
     /// <summary>
@@ -229,8 +229,9 @@ public class Store : MonoBehaviour, IInteraction
     /// 상호작용 인터페이스
     /// </summary>
     /// <param name="target"></param>
-    public void Interaction(GameObject target)
+    public void StoreInteraction()
     {
+        //Debug.Log("실행");
         if (collidedObjects.Count > 0)
         {
             //Debug.Log("트리거 범위에 Hardware가 있고, F가 활성화 되었습니다. ");
