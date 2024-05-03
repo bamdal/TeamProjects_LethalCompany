@@ -22,10 +22,7 @@ public class DungeonInside : MonoBehaviour, IInteraction
         EneterDoor tp = FindAnyObjectByType<EneterDoor>();
         Player player = target.GetComponent<Player>();
         player.IsInDungeon = false;
-        CharacterController c = player.GetComponent<CharacterController>();
-        c.enabled = false;
-        target.transform.position = tp.TPPosition().position;
-        c.enabled = true;
+        player.ControllerTPPosition(tp.TPPosition().position);
     }
 
     /// <summary>

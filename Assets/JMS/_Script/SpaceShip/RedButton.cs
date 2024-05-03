@@ -12,8 +12,15 @@ public class RedButton : MonoBehaviour,IInteraction
 
     public void Interaction(GameObject target)
     {
-        
+        GameManager.Instance.SpaceShip.SpaceShipDoorClose();
         animator.SetTrigger(Hash_Click);
+
+        StartCoroutine(ButtonClick());
+    }
+
+    IEnumerator ButtonClick()
+    {
+        yield return new WaitForSeconds(1.0f);
         onRequest?.Invoke();
     }
 

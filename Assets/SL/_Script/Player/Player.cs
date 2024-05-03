@@ -241,7 +241,7 @@ public class Player : Singleton<Player>, IBattler, IHealth
     public Action<float> onStaminaChange;
     public Action onRclickIsNotPressed;
 
-    InventoryUI invenUI;
+    public InventoryUI invenUI;
 
     CinemachineImpulseSource _source;   // 카메라 흔들림을 위한 시네머신 임펄스 소스 컴포넌트
     Volume volume;
@@ -274,6 +274,9 @@ public class Player : Singleton<Player>, IBattler, IHealth
         _source = child.GetComponent<CinemachineImpulseSource>();
         volume = FindObjectOfType<Volume>();
         volume.profile.TryGet(out vignette);
+
+        DontDestroyOnLoad(this.gameObject);
+
     }
 
     private void OnEnable()
@@ -647,6 +650,7 @@ public class Player : Singleton<Player>, IBattler, IHealth
                 }
                 else
                 {
+                    inventory.ItemDBs[j] = null;
                     invenUI.ItemImages[j].sprite = null;            // 인벤토리 인벤슬롯에 아이템이 비어있으면 인벤토리 이미지 비움
                 }
             }
@@ -826,4 +830,13 @@ public class Player : Singleton<Player>, IBattler, IHealth
         _source.GenerateImpulse(new Vector3(UnityEngine.Random.Range(-1.0f, 0.0f), UnityEngine.Random.Range(-1.0f, 0.0f), 0.0f));
         onDamageVignette = StartCoroutine(OnDamageVignette());
     }
+
+
+    public void ControllerTPPosition(Vector3 pos)
+    {
+        characterController.enabled = false;
+        transform.position = pos;
+        characterController.enabled = true;
+    }
+
 }

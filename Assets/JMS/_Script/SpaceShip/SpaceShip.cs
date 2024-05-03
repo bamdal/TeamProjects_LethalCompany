@@ -69,6 +69,12 @@ public class SpaceShip : MonoBehaviour
         animator.SetTrigger("Open"); 
     }
 
+    public void SpaceShipDoorClose()
+    {
+        animator.SetTrigger("Close");
+    }
+
+
     private void OnGameOver()
     {
         animator.SetTrigger("Open");
@@ -83,6 +89,8 @@ public class SpaceShip : MonoBehaviour
     {
         GameManager.Instance.SpaceShip.transform.position = Vector3.zero;
         GameManager.Instance.SpaceShip.transform.rotation = Quaternion.identity;
+        GameManager.Instance.Player.ControllerTPPosition(Vector3.zero);
+
         AsyncOperation async = SceneManager.LoadSceneAsync("MiddleScene", LoadSceneMode.Single);
 
         while (!async.isDone)
