@@ -62,6 +62,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Hardware_CableDrum
       objectReference: {fileID: 0}
+    - target: {fileID: 1764364270564362890, guid: 47fdfa313629a4942aa263b7da5783d5, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 8138392230233359646, guid: 47fdfa313629a4942aa263b7da5783d5, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
