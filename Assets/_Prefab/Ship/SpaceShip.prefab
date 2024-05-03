@@ -326,7 +326,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 6973
+  m_VersionIndex: 6976
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -675,7 +675,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 3815
+  m_VersionIndex: 3818
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1205,7 +1205,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 917
+  m_VersionIndex: 920
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1330,6 +1330,37 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1.0000004, y: 0.5, z: 1.0000004}
   m_Center: {x: 0.0000038146973, y: 0, z: 0}
+--- !u!1 &6986810595455429202
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 7369170301348888624}
+  m_Layer: 0
+  m_Name: ItemBox
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &7369170301348888624
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6986810595455429202}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 5222434457387526350}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &7673177430254868164
 GameObject:
   m_ObjectHideFlags: 0
@@ -1453,6 +1484,7 @@ Transform:
   - {fileID: 6228401491280007045}
   - {fileID: 1526805154127126984}
   - {fileID: 8609490133952093948}
+  - {fileID: 7369170301348888624}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!95 &3180124512212646061
@@ -1711,7 +1743,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8587275481333184931, guid: 27cc385e110546543b409fcab6de929e, type: 3}
       propertyPath: m_VersionIndex
-      value: 2120
+      value: 2123
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1334406193975719263, guid: 27cc385e110546543b409fcab6de929e, type: 3}
@@ -1790,7 +1822,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8587275481333184931, guid: 27cc385e110546543b409fcab6de929e, type: 3}
       propertyPath: m_VersionIndex
-      value: 2120
+      value: 2123
       objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 1334406193975719263, guid: 27cc385e110546543b409fcab6de929e, type: 3}
