@@ -28,8 +28,8 @@ public class Store : MonoBehaviour
     /// <summary>
     /// 충돌한 모든 오브젝트를 추적하기 위한 리스트
     /// </summary>
-    public List<GameObject> collidedObjects = new List<GameObject>();        
-
+    public List<GameObject> collidedObjects = new List<GameObject>();
+    public List<GameObject> collidedparentObjects = new List<GameObject>();
 
     /// <summary>
     /// 아이템 데이터 매니저를 참조하기 위한 변수
@@ -116,6 +116,10 @@ public class Store : MonoBehaviour
         {
             // 충돌한 오브젝트의 ItemBase 컴포넌트 가져오기
             ItemBase itemBase = other.gameObject.GetComponent<ItemBase>();      // 충돌한 오브젝트는 공통적으로 ItemBase를 상속받고 있음
+
+            // 충돌한 오브젝트의 부모
+            Transform parentObject = other.transform.parent;
+
             if (itemBase != null)
             {
                 // 충돌한 오브젝트의 ItemDB 가져오기
@@ -136,6 +140,7 @@ public class Store : MonoBehaviour
                     Debug.Log($"누적된 가격: {totalPrice}");
 
                     collidedObjects.Add(other.gameObject);
+                    collidedparentObjects.Add(parentObject.gameObject);
                 }
                 else
                 {
@@ -154,6 +159,10 @@ public class Store : MonoBehaviour
     {
         // 충돌한 오브젝트의 ItemBase 컴포넌트 가져오기
         ItemBase itemBase = other.gameObject.GetComponent<ItemBase>();
+
+        // 충돌한 오브젝트의 부모
+        Transform parentObject = other.transform.parent;
+
         if (itemBase != null)
         {
             // 충돌한 오브젝트의 ItemDB 가져오기
@@ -174,6 +183,7 @@ public class Store : MonoBehaviour
 
                 // 충돌이 끝난 오브젝트를 리스트에서 제거
                 collidedObjects.Remove(other.gameObject);
+                collidedparentObjects.Remove(parentObject.gameObject);
             }
             else
             {
@@ -194,15 +204,21 @@ public class Store : MonoBehaviour
         totalMoney += totalPrice;
         // 판매 처리
         onMoneyEarned?.Invoke(totalPrice, totalMoney); // 총 가격과 금액을 델리게이트로 전달
+        
+        // 충돌한 오브젝트의 부모
+        GameObject parentObject = hardwareObject.transform.parent != null ? hardwareObject.transform.parent.gameObject : null;
+
 
         // 판매가 이루어졌으므로 누적된 무게와 가격 초기화
         totalWeight = 0.0f;
         totalPrice = 0.0f;
 
         hardwareObject.SetActive(false);
+        parentObject.SetActive(false);
 
         // 판매 후에 리스트에서 해당 오브젝트 제거
         collidedObjects.Remove(hardwareObject);
+        collidedparentObjects.Remove(parentObject);
 
         Debug.Log($"판매된 총 금액: [{totalPrice}]");
         Debug.Log($"판매된 누적 금액: [{totalMoney}]");
