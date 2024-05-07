@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4739258891596840923}
   m_Layer: 0
   m_Name: Pivot_Hardware_Barrel
-  m_TagString: Untagged
+  m_TagString: Hardware
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -106,6 +106,10 @@ PrefabInstance:
       propertyPath: m_Enabled
       value: 1
       objectReference: {fileID: 0}
+    - target: {fileID: 8651242643717137877, guid: 137bfbb17bab5ba45959ed6727901443, type: 3}
+      propertyPath: itemDB
+      value: 
+      objectReference: {fileID: 11400000, guid: b34bf6ce26025244db8eb4daa783b471, type: 2}
     - target: {fileID: 8651242643717137877, guid: 137bfbb17bab5ba45959ed6727901443, type: 3}
       propertyPath: m_Enabled
       value: 0

@@ -102,6 +102,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: ShovelPool
       objectReference: {fileID: 0}
+    - target: {fileID: 5567118978963425272, guid: bd0294a235c1c564d811dd62025e10fd, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -127,7 +131,7 @@ PrefabInstance:
     - target: {fileID: 3899185433927705827, guid: 38044ffc6d7fecf47851618959cf9207, type: 3}
       propertyPath: recycleObject
       value: 
-      objectReference: {fileID: 8525937002105480877, guid: 1eb7f422af5f4784d9e8d31a0329fe39, type: 3}
+      objectReference: {fileID: 6482104205489665552, guid: f268a33c89e27e64facad3414a1b915e, type: 3}
     - target: {fileID: 8381140570020676102, guid: 38044ffc6d7fecf47851618959cf9207, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -233,7 +237,7 @@ PrefabInstance:
     - target: {fileID: 9017752345587714279, guid: 43fcfdfcb704eb54a919bc56c2b6b89c, type: 3}
       propertyPath: recycleObject
       value: 
-      objectReference: {fileID: 7462886075213171895, guid: 238f36ced7c28824b950e204592a0e2b, type: 3}
+      objectReference: {fileID: 8822895717547138697, guid: 80f013efeb290054c9dbc4c63211f129, type: 3}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -255,7 +259,7 @@ PrefabInstance:
     - target: {fileID: 879796442522353634, guid: d590ba1627e8b354e9b93f0db064cf97, type: 3}
       propertyPath: recycleObject
       value: 
-      objectReference: {fileID: 4674976765829000592, guid: f5ee2c6c009a9454eb7c1ea95844d2d1, type: 3}
+      objectReference: {fileID: 2231581111867255905, guid: 866bc2484e6908241800660e3f939602, type: 3}
     - target: {fileID: 3041338585144086597, guid: d590ba1627e8b354e9b93f0db064cf97, type: 3}
       propertyPath: m_Name
       value: HardwareGasTankPool
@@ -361,7 +365,7 @@ PrefabInstance:
     - target: {fileID: 6404849991440358139, guid: 5b8153e4d613b9743bd8c22d8fd44955, type: 3}
       propertyPath: recycleObject
       value: 
-      objectReference: {fileID: 2326054007167524961, guid: 6abded51937dd4b498f514d024554cec, type: 3}
+      objectReference: {fileID: 371826997391568018, guid: 137bfbb17bab5ba45959ed6727901443, type: 3}
     - target: {fileID: 8288582323384575215, guid: 5b8153e4d613b9743bd8c22d8fd44955, type: 3}
       propertyPath: m_Name
       value: HardwareBarrelPool
@@ -391,7 +395,7 @@ PrefabInstance:
     - target: {fileID: 5675176918801569329, guid: d0c869632258c3b4f9f706d84a875211, type: 3}
       propertyPath: recycleObject
       value: 
-      objectReference: {fileID: 7094939920829769503, guid: 3d9e50044206dd9478abd5b27a9440da, type: 3}
+      objectReference: {fileID: 8347303088536995330, guid: d32601a35664ee84c9ba80b16556e914, type: 3}
     - target: {fileID: 7675133006026148706, guid: d0c869632258c3b4f9f706d84a875211, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

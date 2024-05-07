@@ -28,8 +28,7 @@ public class Store : MonoBehaviour
     /// <summary>
     /// 충돌한 모든 오브젝트를 추적하기 위한 리스트
     /// </summary>
-    public List<GameObject> collidedObjects = new List<GameObject>();        
-
+    public List<GameObject> collidedObjects = new List<GameObject>();
 
     /// <summary>
     /// 아이템 데이터 매니저를 참조하기 위한 변수
@@ -116,6 +115,7 @@ public class Store : MonoBehaviour
         {
             // 충돌한 오브젝트의 ItemBase 컴포넌트 가져오기
             ItemBase itemBase = other.gameObject.GetComponent<ItemBase>();      // 충돌한 오브젝트는 공통적으로 ItemBase를 상속받고 있음
+
             if (itemBase != null)
             {
                 // 충돌한 오브젝트의 ItemDB 가져오기
@@ -154,6 +154,7 @@ public class Store : MonoBehaviour
     {
         // 충돌한 오브젝트의 ItemBase 컴포넌트 가져오기
         ItemBase itemBase = other.gameObject.GetComponent<ItemBase>();
+
         if (itemBase != null)
         {
             // 충돌한 오브젝트의 ItemDB 가져오기
@@ -194,11 +195,12 @@ public class Store : MonoBehaviour
         totalMoney += totalPrice;
         // 판매 처리
         onMoneyEarned?.Invoke(totalPrice, totalMoney); // 총 가격과 금액을 델리게이트로 전달
-
+        
         // 판매가 이루어졌으므로 누적된 무게와 가격 초기화
         totalWeight = 0.0f;
         totalPrice = 0.0f;
 
+        // 판매된 폐철물 비활성화
         hardwareObject.SetActive(false);
 
         // 판매 후에 리스트에서 해당 오브젝트 제거

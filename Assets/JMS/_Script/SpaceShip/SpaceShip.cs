@@ -30,22 +30,26 @@ public class SpaceShip : MonoBehaviour
 
     private void ButtonClick()
     {
-        if (SceneManager.GetActiveScene().name != "MiddleScene" || SceneManager.GetActiveScene().name != "StartScene")
+        if (SceneManager.GetActiveScene().name != "StartScene")
         {
-            Collider[] colliders = Physics.OverlapBox(transform.position, new Vector3(10, 5, 15) * 0.5f);
-            foreach (Collider collider in colliders)
+            if (SceneManager.GetActiveScene().name != "MiddleScene")
             {
-                if (collider.CompareTag("Item") || collider.CompareTag("Hardware"))
+                Collider[] colliders = Physics.OverlapBox(transform.position, new Vector3(10, 5, 15) * 0.5f);
+                foreach (Collider collider in colliders)
                 {
-                    Debug.Log(collider.name);
-                    collider.gameObject.transform.parent = itemBox;
+                    if (collider.CompareTag("Item") || collider.CompareTag("Hardware"))
+                    {
+                        Debug.Log(collider.name);
+                        collider.gameObject.transform.parent = itemBox;
+
+                    }
+
 
                 }
 
+                StartCoroutine(LoadSpaceScene());
 
             }
-
-            StartCoroutine(LoadDungenonScene());
 
         }
 
@@ -54,11 +58,6 @@ public class SpaceShip : MonoBehaviour
     private void Start()
     {
 
-        AsyncStartScene asyncStart = FindAnyObjectByType<AsyncStartScene>();
-        if (asyncStart != null)
-        {
-            asyncStart.onGameStart += () => { animator.SetTrigger("Open"); };
-        }
 
         GameManager.Instance.onGameOver += OnGameOver;
 
@@ -68,6 +67,12 @@ public class SpaceShip : MonoBehaviour
     {
         animator.SetTrigger("Open"); 
     }
+
+    public void SpaceShipDoorClose()
+    {
+        animator.SetTrigger("Close");
+    }
+
 
     private void OnGameOver()
     {
@@ -79,16 +84,20 @@ public class SpaceShip : MonoBehaviour
 
     }
 
-    IEnumerator LoadDungenonScene()
+    IEnumerator LoadSpaceScene()
     {
-        GameManager.Instance.SpaceShip.transform.position = Vector3.zero;
-        GameManager.Instance.SpaceShip.transform.rotation = Quaternion.identity;
+
+
         AsyncOperation async = SceneManager.LoadSceneAsync("MiddleScene", LoadSceneMode.Single);
 
         while (!async.isDone)
         {
-            yield return null;
+            yield return new WaitForSeconds(1.0f);
         }
+
+        GameManager.Instance.SpaceShip.transform.position = Vector3.zero;
+        GameManager.Instance.SpaceShip.transform.rotation = Quaternion.identity;
+        GameManager.Instance.Player.ControllerTPPosition(Vector3.zero);
 
     }
 }

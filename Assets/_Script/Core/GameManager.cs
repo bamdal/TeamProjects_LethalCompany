@@ -230,12 +230,15 @@ public class GameManager : Singleton<GameManager>
     {
         base.OnPreInitialize();
         spaceShip = FindAnyObjectByType<SpaceShip>();
+        player = FindAnyObjectByType<Player>();
+
     }
 
     protected override void OnInitialize()
     {
-        player = FindAnyObjectByType<Player>();
         itemDataManager = GetComponent<ItemDataManager>();
+        Player.cam = Camera.main;
+        Player.invenUI = FindAnyObjectByType<InventoryUI>();
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         store = FindAnyObjectByType<Store>();
