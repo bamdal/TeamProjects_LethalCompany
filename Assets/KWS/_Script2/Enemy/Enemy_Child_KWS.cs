@@ -12,6 +12,12 @@ public class Enemy_Child_KWS : MonoBehaviour
 
     public float cooltime = 0;
 
+    public float currentY = 9;
+
+    public float groundCheckDistance = 1.0f;
+
+    public LayerMask groundLayer;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
@@ -20,10 +26,10 @@ public class Enemy_Child_KWS : MonoBehaviour
 
     private void Update()
     {
-        if (cooltime >= 0.5f)
+        /*if (cooltime >= 0.5f)
         {
             Jump();
-        }
+        }*/
     }
 
     private void FixedUpdate()
@@ -32,11 +38,12 @@ public class Enemy_Child_KWS : MonoBehaviour
         Vector3 parentPosition = transform.parent.position;
 
         // 부모 오브젝트의 x와 z 값을 자식 오브젝트에게 적용
-        transform.position = new Vector3(parentPosition.x, transform.position.y, parentPosition.z);
+        //transform.position = new Vector3(parentPosition.x, transform.position.y, parentPosition.z);
     }
 
     private void Jump()
     {
+        Debug.Log("점프 실행");
         cooltime = 0;
 
         // 점프할 방향과 힘 설정
@@ -49,20 +56,19 @@ public class Enemy_Child_KWS : MonoBehaviour
         rigid.angularVelocity = Vector3.zero;
     }
     
-    private void OnCollisionEnter(Collision collision)
+    public bool IsGrounded()
     {
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            Jump();
-            cooltime += Time.deltaTime;
-        }
+        // 캐릭터의 아래에 레이캐스트를 쏴서 바닥에 닿았는지 확인
+        return Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, layerMask: groundLayer);
     }
 
-    private void OnCollisionExit(Collision collision)
+    public IEnumerator RaiseTrap()
     {
-        if (collision.gameObject.CompareTag("Ground"))
+        while (transform.position.y < currentY)
         {
-            
+            float newY = transform.position.y + 1.0f * Time.deltaTime;
+            transform.position = new Vector3(transform.position.x, Mathf.Min(newY, currentY), transform.position.z);
+            yield return null;
         }
     }
 
