@@ -163,6 +163,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: StartModul1
       objectReference: {fileID: 0}
+    - target: {fileID: 5109982652895324842, guid: a2a7f1b851ad4154980b7db0d7b71f3c, type: 3}
+      propertyPath: m_TagString
+      value: Ground
+      objectReference: {fileID: 0}
     - target: {fileID: 5219768203013913904, guid: a2a7f1b851ad4154980b7db0d7b71f3c, type: 3}
       propertyPath: m_VersionIndex
       value: 96
