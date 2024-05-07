@@ -11,7 +11,7 @@ public class TrapTrigger : MonoBehaviour
     public float trapLowerPosition = -5f; // 트랩이 내려갈 위치 (y값)
     public float gravityAcceleration = 9.8f; // 중력 가속도
     private bool isLowering = false;
-    Coroutine lowerTrap = null;
+    public Coroutine lowerTrap = null;
     public bool IsLowering
     {
         get => isLowering;
@@ -58,6 +58,13 @@ public class TrapTrigger : MonoBehaviour
             float newY = trap.position.y - currentSpeed * Time.deltaTime;
             trap.position = new Vector3(trap.position.x, Mathf.Max(newY, trapLowerPosition), trap.position.z);
             yield return null;
+        }
+    }
+    public void StopLowerTrap()
+    {
+        if (lowerTrap != null)
+        {
+            StopCoroutine(lowerTrap);
         }
     }
 }
