@@ -17,6 +17,8 @@ public class SpaceShip : MonoBehaviour
     CinemachineImpulseSource cinemachineImpulse;
 
     Transform itemBox;
+
+    public Transform ItemBox => itemBox;
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -41,7 +43,8 @@ public class SpaceShip : MonoBehaviour
                     {
                         Debug.Log(collider.name);
                         collider.gameObject.transform.parent = itemBox;
-
+                        
+                       
                     }
 
 
@@ -98,6 +101,9 @@ public class SpaceShip : MonoBehaviour
         GameManager.Instance.SpaceShip.transform.position = Vector3.zero;
         GameManager.Instance.SpaceShip.transform.rotation = Quaternion.identity;
         GameManager.Instance.Player.ControllerTPPosition(Vector3.zero);
-
+        for (int i = 0; i < itemBox.childCount; i++)
+        {
+            itemBox.GetChild(i).gameObject.SetActive(true);
+        }
     }
 }
