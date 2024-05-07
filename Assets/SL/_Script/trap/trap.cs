@@ -1,18 +1,34 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 
-public class trap : MonoBehaviour
+public class Trap : MonoBehaviour
 {
     TrapTrigger trapTrigger;
     float currentY;
     Coroutine raiseTrap = null;
+    public LayerMask groundLayer;
+    
+
     private void Awake()
     {
         trapTrigger = GetComponentInParent<TrapTrigger>();
         currentY = transform.position.y;
     }
-
+    void Update()
+    {
+        if(IsGrounded())
+        {
+            trapTrigger.StopLowerTrap();
+            if (raiseTrap != null)
+            {
+                StopCoroutine(raiseTrap);
+            }
+            raiseTrap = StartCoroutine(RaiseTrap());
+        }
+        Debug.Log(IsGrounded());
+    }
     IEnumerator RaiseTrap()
     {
         while (transform.position.y < currentY)
@@ -31,5 +47,13 @@ public class trap : MonoBehaviour
             IBattler player = other.gameObject.GetComponent<IBattler>();
             player.Defense(99999999);
         }
+        else
+        {
+            StartCoroutine(RaiseTrap());
+        }
+    }
+    bool IsGrounded()
+    {
+        return Physics.Raycast(transform.position, Vector3.down, 1f, layerMask: groundLayer);
     }
 }

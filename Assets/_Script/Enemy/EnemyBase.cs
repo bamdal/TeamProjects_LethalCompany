@@ -69,7 +69,7 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler
 
     protected virtual void Update()
     {
-        // onEnemyStateUpdate();
+        onEnemyStateUpdate();
     }
 
     protected virtual void Update_Stop()

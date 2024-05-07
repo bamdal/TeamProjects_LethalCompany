@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : MonoBehaviour
+public class Enemy_KWS : MonoBehaviour
 {
     // 몬스터의 상태를 나타내는 열거형
     public enum State
