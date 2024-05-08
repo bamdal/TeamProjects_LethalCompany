@@ -349,6 +349,11 @@ public class Terminal : MonoBehaviour,IInteraction
  
             yield return null;
         }
+        int count = GameManager.Instance.SpaceShip.ItemBox.childCount;
+        for (int i = 0; i < count; i++)
+        {
+            GameManager.Instance.SpaceShip.ItemBox.GetChild(i).gameObject.SetActive(true);
+        }
 
 /*        // 현재 씬의 비동기 로드 시작
         AsyncOperation unloadOperation = SceneManager.UnloadSceneAsync(SceneManager.GetActiveScene().buildIndex);

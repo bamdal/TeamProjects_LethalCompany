@@ -15,6 +15,8 @@ public class GameManager : Singleton<GameManager>
 
     public SpaceShip SpaceShip => spaceShip;
 
+    
+
     /// <summary>
     /// 아이템 데이터 매니저
     /// </summary>

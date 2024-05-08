@@ -25,7 +25,7 @@ public class RedButton : MonoBehaviour,IInteraction
 
     IEnumerator ButtonClick()
     {
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(1.5f);
         onRequest?.Invoke();
     }
 
