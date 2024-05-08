@@ -13,6 +13,11 @@ public class Modul : MonoBehaviour
 
     ItemSpawnPoint[] itemSpawnPoint;
 
+    public ItemSpawnPoint[] ItemSpawnPoints => itemSpawnPoint;
+
+    EnemySpawnPoint[] enemySpawnPoint;    
+    public EnemySpawnPoint[] EnemySpawnPoints => enemySpawnPoint;
+
     public int ConnectorsCount
     {
         get => connectors.Length;
@@ -59,6 +64,7 @@ public class Modul : MonoBehaviour
         }
 
         itemSpawnPoint = child.GetComponentsInChildren<ItemSpawnPoint>();
+        enemySpawnPoint = child.GetComponentsInChildren<EnemySpawnPoint>();
         //if (rend == null)
         //{
 

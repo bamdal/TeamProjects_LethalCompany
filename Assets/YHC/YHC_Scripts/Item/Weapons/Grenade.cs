@@ -56,7 +56,7 @@ public class Grenade : WeaponBase, IEquipable, IBattler
         Debug.Log("발사");
         yield return new WaitForSeconds(delay);
 
-        Collider[] collders = Physics.OverlapSphere(transform.position, explosionRadius, LayerMask.GetMask("Ememy"));
+        Collider[] collders = Physics.OverlapSphere(transform.position, explosionRadius, LayerMask.GetMask("Enemy"));
         EnemyBase[] enemies;
         IBattler[] battlers;
         int index = 0;

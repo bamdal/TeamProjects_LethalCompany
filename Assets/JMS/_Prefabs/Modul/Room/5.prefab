@@ -13,7 +13,7 @@ GameObject:
   m_Layer: 0
   m_Name: ItemSpawnPoint
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -500,7 +500,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1551
+  m_VersionIndex: 1554
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -5977,7 +5977,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1194
+  m_VersionIndex: 1197
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -6099,11 +6099,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 852255206704673636, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_VersionIndex
-      value: 93
+      value: 96
       objectReference: {fileID: 0}
     - target: {fileID: 1857871675188080846, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_VersionIndex
-      value: 678
+      value: 681
       objectReference: {fileID: 0}
     - target: {fileID: 1857871675188080846, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_SelectedEdges.Array.size
@@ -6119,11 +6119,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5084306335988796681, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_VersionIndex
-      value: 5652
+      value: 5655
       objectReference: {fileID: 0}
     - target: {fileID: 6136302067186319080, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_VersionIndex
-      value: 1765
+      value: 1768
       objectReference: {fileID: 0}
     - target: {fileID: 7140785842161266343, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -6185,11 +6185,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 852255206704673636, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_VersionIndex
-      value: 93
+      value: 96
       objectReference: {fileID: 0}
     - target: {fileID: 1857871675188080846, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_VersionIndex
-      value: 678
+      value: 681
       objectReference: {fileID: 0}
     - target: {fileID: 1857871675188080846, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_SelectedEdges.Array.size
@@ -6205,7 +6205,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5084306335988796681, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_VersionIndex
-      value: 5652
+      value: 5655
       objectReference: {fileID: 0}
     - target: {fileID: 5084306335988796681, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_SelectedEdges.Array.size
@@ -6217,7 +6217,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6136302067186319080, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_VersionIndex
-      value: 1765
+      value: 1768
       objectReference: {fileID: 0}
     - target: {fileID: 7140785842161266343, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_LocalPosition.x

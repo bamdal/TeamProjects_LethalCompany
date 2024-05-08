@@ -21,7 +21,7 @@ public class DungeonGenerator : MonoBehaviour
 
     public Difficulty difficulty = Difficulty.D;
 
-
+    EnemySpawner enemySpawner;
 
     /// <summary>
     /// 사용할 모듈들 인스펙터에서 넣어두기
@@ -80,6 +80,12 @@ public class DungeonGenerator : MonoBehaviour
     /// 아이템 생성 포인트 리스트
     /// </summary>
     List<ItemSpawnPoint> itemSpawnPoints = new List<ItemSpawnPoint>();
+
+
+    /// <summary>
+    /// enemy 생성 포인트 리스트
+    /// </summary>
+    List<EnemySpawnPoint> enemySpawnPoints = new List<EnemySpawnPoint>();
 
     /// <summary>
     /// 스폰될 아이템 개수
@@ -160,6 +166,7 @@ public class DungeonGenerator : MonoBehaviour
 
     public void StartGame()
     {
+        enemySpawner = GetComponent<EnemySpawner>();
         doMakeComplite = false;
         if (pointNav == null)
         {
@@ -210,7 +217,8 @@ public class DungeonGenerator : MonoBehaviour
                 //newConnectors.AddRange(newModul.Connectors.Where(e => e != 현재 이미 연결된 커넥터));
                 if (currentModul != null)
                 {
-                    itemSpawnPoints.AddRange(currentModul.GetComponentsInChildren<ItemSpawnPoint>());   //아이템 스폰포인터를 목록 넣기
+                    itemSpawnPoints.AddRange(currentModul.ItemSpawnPoints);   //아이템 스폰포인터를 목록 넣기
+                    enemySpawnPoints.AddRange(currentModul.EnemySpawnPoints);   // 적 스폰포인트를 목록에 넣기
                     newConnectors.AddRange(AddValuesWithoutDuplicates(dc, currentModul));
 
                 }
@@ -243,6 +251,7 @@ public class DungeonGenerator : MonoBehaviour
         pointNav.CompliteGenerationDungeon();   // 던전 생성 완료후 네비메시를 깔게 함
 
         ItemGeneration();  // 아이템 스폰 코드 작성
+        enemySpawner.OnSpawnEnemy(enemySpawnPoints, difficulty);    // 아이템 스폰 좌표들과 난이도 보내기
     }
 
     /// <summary>
