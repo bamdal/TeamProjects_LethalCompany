@@ -12,9 +12,9 @@ GameObject:
   - component: {fileID: 7056639625058282365}
   - component: {fileID: 650047073038153131}
   - component: {fileID: 8900349220752472315}
-  - component: {fileID: -1571112613773847286}
   - component: {fileID: -5061738105655205596}
   - component: {fileID: 7602230485542719855}
+  - component: {fileID: 4152568936502952858}
   m_Layer: 0
   m_Name: Flashlight_1
   m_TagString: Item
@@ -112,19 +112,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-1571112613773847286
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1716725125594668205}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 76c77dcf6a2939d4dbaa226de9e3e8c4, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  itemDB: {fileID: 0}
 --- !u!65 &-5061738105655205596
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -173,6 +160,19 @@ Rigidbody:
   m_Interpolate: 0
   m_Constraints: 0
   m_CollisionDetection: 0
+--- !u!114 &4152568936502952858
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1716725125594668205}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 08830544ceb5a9b42a9b063414dfe5a7, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  itemDB: {fileID: 0}
 --- !u!1 &2013477300390627978
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,12 +18,10 @@ public class ZapGun : WeaponBase, IEquipable
     /// </summary>
     bool isTargetOn = false;
 
-    float scanRadius = 5.0f;
-
-    float damage = 10.0f;
+    float damage = 0.0f;
 
     float damageTick = 1.0f;
-    float battery = 100.0f;
+    float battery = 0.0f;
     
     Transform bullet;
     SphereCollider bulletCollider;
@@ -42,7 +40,6 @@ public class ZapGun : WeaponBase, IEquipable
 
     private void Start()
     {
-
         zapGunDB = GameManager.Instance.ItemData.GetItemDB(ItemCode.ZapGun);
     }
 
@@ -68,13 +65,13 @@ public class ZapGun : WeaponBase, IEquipable
 
     void ObjectScan()
     {
-        Collider[] colliders = Physics.OverlapSphere(transform.position, scanRadius);
+        // Collider[] colliders = Physics.OverlapBox(transform.position);
         targetEnemy = null;
 
-        foreach(Collider collider in colliders)
-        {
-            targetEnemy = collider.GetComponent<EnemyBase>();
-        }
+        //foreach(Collider collider in colliders)
+        //{
+        //    targetEnemy = collider.GetComponent<EnemyBase>();
+        //}
 
         if(targetEnemy != null)
         {

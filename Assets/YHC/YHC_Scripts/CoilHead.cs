@@ -131,6 +131,9 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     protected override void Start()
     {
         base.Start();
+
+        State = EnemyState.Stop;
+        State = EnemyState.Patrol;
         
         agent.SetDestination(GetRandomDestination());
         MoveSpeed = patrolMoveSpeed;
@@ -138,11 +141,11 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         wait = waitTime;
 
         chaseArea.radius = chasePatrolTransitionRange;
-        attackArea.onPlayerApproach += AttackAreaApproach;
-        attackArea.onPlayerOut += (() =>
-        {
-            State = EnemyState.Chase;
-        });
+        // attackArea.onPlayerApproach += AttackAreaApproach;
+        // attackArea.onPlayerOut += (() =>
+        // {
+        //     State = EnemyState.Chase;
+        // });
     }
 
     protected override void Update()

@@ -2,7 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Shovel : WeaponBase, IEquipable, IItemDataBase
+public class Shovel : WeaponBase, IEquipable, IItemDataBase, IBattler
 {
     ItemDB shovelData;
 
@@ -12,11 +12,11 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase
     float weight;
     public float Weight => weight;
 
-    MeshCollider mesh;
+    BoxCollider boxCollider;
 
     private void Awake()
     {
-        mesh = GetComponent<MeshCollider>();
+        boxCollider = GetComponent<BoxCollider>();
     }
     private void Start()
     {
@@ -25,14 +25,10 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase
         damage = shovelData.damage;
     }
 
-    private void OnEnable()
-    {
-
-    }
 
     public void Equip()
     {
-
+        
     }
 
     public void Use()
@@ -40,16 +36,31 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase
         
     }
 
-    /// <summary>
-    /// 애니메이션 트리거용, 플레이어에게 델리게이트 받아서 사용
-    /// </summary>
-    void OnColliderEnable(bool isEnabled)
+    private void OnTriggerEnter(Collider other)
     {
-        mesh.enabled = isEnabled;
+        if(other.CompareTag("Enemy"))
+        {
+            IBattler target = other.GetComponent<IBattler>();
+            if(target != null)
+            {
+                Attack(target);
+            }
+        }
     }
+
 
     public ItemDB GetItemDB()
     {
         return shovelData;
+    }
+
+    public void Attack(IBattler target)
+    {
+        throw new System.NotImplementedException();
+    }
+
+    public void Defense(float attackPower)
+    {
+        throw new System.NotImplementedException();
     }
 }
