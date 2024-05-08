@@ -16,7 +16,7 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler
         Die,
     }
 
-    EnemyState state = EnemyState.Patrol;
+    EnemyState state = EnemyState.Stop;
 
     protected EnemyState State
     {
