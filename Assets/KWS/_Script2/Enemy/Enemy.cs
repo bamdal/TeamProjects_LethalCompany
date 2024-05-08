@@ -23,15 +23,26 @@ public class Enemy : EnemyBase
             }
         }
     }
+
+    /// <summary>
+    /// 자식 오브젝트의 트랜스폼
+    /// </summary>
     Transform childEnemy;
 
+    /// <summary>
+    /// 자식으로 붙어있는 오브젝트
+    /// </summary>
     Enemy_Child_KWS enemy_Child;
-
-    //protected GameObject player; // 플레이어 오브젝트를 저장할 변수
+    
+    /// <summary>
+    /// 플레이어
+    /// </summary>
     Player player;
 
+    /// <summary>
+    /// 네브메시 에이전트
+    /// </summary>
     private NavMeshAgent agent;
-    Rigidbody enemyRigid;
 
     [Range(1f, 5f)]
     public float moveSpeed = 1.0f;
@@ -54,7 +65,6 @@ public class Enemy : EnemyBase
     {
         childEnemy = transform.GetChild(0);       // 0번째 자식 Enemy
         enemy_Child = childEnemy.GetComponent<Enemy_Child_KWS>();
-        enemyRigid = childEnemy.GetComponent<Rigidbody>();
         Collider collider = transform.GetComponent<Collider>();  // 플레이어를 탐지할 콜라이더
 
     }
@@ -87,8 +97,10 @@ public class Enemy : EnemyBase
         StopCoroutine(enemy_Child.RaiseTrap());
         if(enemy_Child.IsGrounded())
         {
-            StartCoroutine(enemy_Child.RaiseTrap());
+            Debug.Log("중력 조작");
             onRaise?.Invoke();
+            
+            StartCoroutine(enemy_Child.RaiseTrap());
         }
     }
 
@@ -101,7 +113,7 @@ public class Enemy : EnemyBase
 
     protected override void Update_Chase()
     {
-        Debug.Log("Update_Chase 상태 실행");
+        //Debug.Log("Update_Chase 상태 실행");
         onRaise?.Invoke();
         OnChase?.Invoke();
         if (player != null)

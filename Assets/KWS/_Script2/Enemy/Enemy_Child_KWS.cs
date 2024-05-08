@@ -40,6 +40,7 @@ public class Enemy_Child_KWS : MonoBehaviour
 
     private void GravityChange()
     {
+        Debug.Log("GravityChange 실행");
         switch (rigid.useGravity)
         {
             case true:
