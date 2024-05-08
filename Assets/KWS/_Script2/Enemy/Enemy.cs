@@ -44,7 +44,12 @@ public class Enemy : EnemyBase
 
     [Range(1f, 10f)]
     public float rotationSpeed = 10.0f;
-    
+
+    /// <summary>
+    /// rigid의 gravity를 조작하기 위한 델리게이트
+    /// </summary>
+    public Action onRaise;
+
     private void Awake()
     {
         childEnemy = transform.GetChild(0);       // 0번째 자식 Enemy
@@ -76,17 +81,14 @@ public class Enemy : EnemyBase
     {
         onEnemyStateUpdate();
     }
-
+    
     protected override void Update_Stop()
     {
-        // 자식 오브젝트인 Enemy_Child_KWS의 IsGrounded 메서드를 호출하여 적이 땅에 있는지 판단
-        bool isGrounded = enemy_Child.IsGrounded();
-        Debug.Log("들어옴");
-        Debug.Log($"{isGrounded}");
-
-        if(isGrounded)
+        StopCoroutine(enemy_Child.RaiseTrap());
+        if(enemy_Child.IsGrounded())
         {
             StartCoroutine(enemy_Child.RaiseTrap());
+            onRaise?.Invoke();
         }
     }
 
@@ -95,8 +97,13 @@ public class Enemy : EnemyBase
 
     }
 
+    public Action OnChase;
+
     protected override void Update_Chase()
     {
+        Debug.Log("Update_Chase 상태 실행");
+        onRaise?.Invoke();
+        OnChase?.Invoke();
         if (player != null)
         {
             // 플레이어를 향해 회전
@@ -118,6 +125,7 @@ public class Enemy : EnemyBase
             {
                 // 플레이어를 향해 이동
                 agent.SetDestination(player.transform.position);
+                enemy_Child.Jump();
             }
             else
             {
@@ -159,7 +167,14 @@ public class Enemy : EnemyBase
                 {
                     StopCoroutine(lowerTrap);
                 }
-                lowerTrap = StartCoroutine(LowerTrap());
+                if (!enemy_Child.IsGrounded())      // 땅이 아니면
+                {
+                    lowerTrap = StartCoroutine(LowerTrap());
+                }
+                else
+                {
+                    StopCoroutine(LowerTrap());
+                }
             }
             State = EnemyState.Chase;
         }

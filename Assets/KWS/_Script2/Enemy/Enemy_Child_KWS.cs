@@ -1,6 +1,8 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using System.Xml.Serialization;
+using UnityEditorInternal;
 using UnityEngine;
 
 public class Enemy_Child_KWS : MonoBehaviour
@@ -18,10 +20,44 @@ public class Enemy_Child_KWS : MonoBehaviour
 
     public LayerMask groundLayer;
 
+    /// <summary>
+    /// 부모 오브젝트
+    /// </summary>
+    Enemy enemyParent;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
         rigid.constraints = RigidbodyConstraints.FreezeRotation;
+    }
+
+    private void Start()
+    {
+        enemyParent = transform.parent.GetComponent<Enemy>();
+        enemyParent.onRaise += GravityChange;
+        enemyParent.OnChase += samePosition;
+    }
+
+    private void GravityChange()
+    {
+        switch (rigid.useGravity)
+        {
+            case true:
+                rigid.useGravity = false;
+                break;
+            case false:
+                rigid.useGravity = true;
+                break;
+        }
+    }
+
+    private void samePosition()
+    {
+        // 부모 오브젝트의 위치 정보 가져오기
+        Vector3 parentPosition = transform.parent.position;
+
+        // 부모 오브젝트의 x와 z 값을 자식 오브젝트에게 적용
+        transform.position = new Vector3(parentPosition.x, transform.position.y, parentPosition.z);
     }
 
     private void Update()
@@ -30,30 +66,32 @@ public class Enemy_Child_KWS : MonoBehaviour
         {
             Jump();
         }*/
+        if (IsGrounded())
+        {
+            cooltime += Time.deltaTime;
+        }
     }
 
     private void FixedUpdate()
     {
-        // 부모 오브젝트의 위치 정보 가져오기
-        Vector3 parentPosition = transform.parent.position;
-
-        // 부모 오브젝트의 x와 z 값을 자식 오브젝트에게 적용
-        //transform.position = new Vector3(parentPosition.x, transform.position.y, parentPosition.z);
+        samePosition();
     }
 
-    private void Jump()
+    public void Jump()
     {
-        Debug.Log("점프 실행");
-        cooltime = 0;
+        if(cooltime > 0.5f)
+        {
+            Debug.Log("점프 실행");
+            cooltime = 0;
+            // 점프할 방향과 힘 설정
+            Vector3 jumpDirection = Vector3.up * jumpHeight;
 
-        // 점프할 방향과 힘 설정
-        Vector3 jumpDirection = Vector3.up * jumpHeight;
+            // Rigidbody에 힘을 가해서 점프시킴
+            rigid.AddForce(jumpDirection, ForceMode.Impulse);
 
-        // Rigidbody에 힘을 가해서 점프시킴
-        rigid.AddForce(jumpDirection, ForceMode.Impulse);
-
-        // 점프할 때 회전을 막기 위해 angularVelocity를 0으로 설정
-        rigid.angularVelocity = Vector3.zero;
+            // 점프할 때 회전을 막기 위해 angularVelocity를 0으로 설정
+            rigid.angularVelocity = Vector3.zero;
+        }
     }
     
     public bool IsGrounded()
@@ -66,6 +104,7 @@ public class Enemy_Child_KWS : MonoBehaviour
     {
         while (transform.position.y < currentY)
         {
+            rigid.velocity = Vector3.zero;
             float newY = transform.position.y + 1.0f * Time.deltaTime;
             transform.position = new Vector3(transform.position.x, Mathf.Min(newY, currentY), transform.position.z);
             yield return null;
