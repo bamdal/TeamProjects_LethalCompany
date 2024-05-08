@@ -8,7 +8,7 @@ public class Test_Modul : TestBase
     public GameObject target;
     public Door Door;
     public GenerationPointNav generationPointNav;
-
+    public CoilHead coilHeadPrefab;
     private void Start()
     {
         DungeonGenerator dungeonGenerator = FindAnyObjectByType<DungeonGenerator>();
@@ -31,5 +31,10 @@ public class Test_Modul : TestBase
             if(child2.gameObject != generationPointNav.gameObject)
                 Destroy(child2.gameObject);
         }
+    }
+
+    protected override void OnTest3(InputAction.CallbackContext context)
+    {
+        Instantiate(coilHeadPrefab, generationPointNav.transform);
     }
 }

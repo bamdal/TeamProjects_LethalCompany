@@ -527,7 +527,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 1531
+  m_VersionIndex: 1537
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -644,7 +644,7 @@ GameObject:
   m_Layer: 0
   m_Name: ItemSpawnPoint
   m_TagString: Untagged
-  m_Icon: {fileID: 0}
+  m_Icon: {fileID: 5721338939258241955, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
   m_IsActive: 1
@@ -685,11 +685,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 852255206704673636, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_VersionIndex
-      value: 93
+      value: 99
       objectReference: {fileID: 0}
     - target: {fileID: 1857871675188080846, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_VersionIndex
-      value: 784
+      value: 790
       objectReference: {fileID: 0}
     - target: {fileID: 1857871675188080846, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_SelectedEdges.Array.size
@@ -705,7 +705,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5084306335988796681, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_VersionIndex
-      value: 5911
+      value: 5917
       objectReference: {fileID: 0}
     - target: {fileID: 5084306335988796681, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_Tangents.Array.data[0].z
@@ -1005,7 +1005,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6136302067186319080, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_VersionIndex
-      value: 1860
+      value: 1866
       objectReference: {fileID: 0}
     - target: {fileID: 7140785842161266343, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1067,11 +1067,11 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 852255206704673636, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_VersionIndex
-      value: 93
+      value: 99
       objectReference: {fileID: 0}
     - target: {fileID: 1857871675188080846, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_VersionIndex
-      value: 784
+      value: 790
       objectReference: {fileID: 0}
     - target: {fileID: 1857871675188080846, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_SelectedEdges.Array.size
@@ -1087,7 +1087,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5084306335988796681, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_VersionIndex
-      value: 5994
+      value: 6000
       objectReference: {fileID: 0}
     - target: {fileID: 5084306335988796681, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_Faces.Array.size
@@ -2031,7 +2031,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6136302067186319080, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_VersionIndex
-      value: 1860
+      value: 1866
       objectReference: {fileID: 0}
     - target: {fileID: 7140785842161266343, guid: f1e8dcb158f9ebe40b028fe812dbd07b, type: 3}
       propertyPath: m_LocalPosition.x
