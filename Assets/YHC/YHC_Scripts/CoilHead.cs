@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -28,8 +29,8 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         }
     }
 
-    public float patrolMoveSpeed = 5.0f;
-    public float chaseMoveSpeed = 7.0f;
+    public float patrolMoveSpeed = 2.0f;
+    public float chaseMoveSpeed = 5.0f;
 
     /// <summary>
     /// CoilHead의 패트롤 범위, 목적지에 도작하면 patrolRange 범위 안에 새로운 랜덤 목적지 생성
@@ -39,12 +40,12 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     /// <summary>
     /// 추적상태 돌입 범위
     /// </summary>
-    public float chasePatrolTransitionRange = 20.0f;
+    public float chasePatrolTransitionRange = 10.0f;
 
     // 공격 관련 -----------------------------------------------------------
 
     // float hp = 100.0f;
-    
+
 
     /// <summary>
     /// CoilHead의 공격력
@@ -101,7 +102,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         get => isAlive;
         set
         {
-            if(isAlive != value)
+            if (isAlive != value)
             {
                 isAlive = value;
             }
@@ -117,7 +118,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     NavMeshAgent agent;
     SphereCollider chaseArea;
     CoilHead_AttackArea attackArea;
-    
+
     private void Awake()
     {
         attackDamage = 90;
@@ -134,44 +135,78 @@ public class CoilHead : EnemyBase, IBattler, IHealth
 
         State = EnemyState.Stop;
         State = EnemyState.Patrol;
-        
+
         agent.SetDestination(GetRandomDestination());
         MoveSpeed = patrolMoveSpeed;
         agent.speed = MoveSpeed;
         wait = waitTime;
 
         chaseArea.radius = chasePatrolTransitionRange;
-        // attackArea.onPlayerApproach += AttackAreaApproach;
-        // attackArea.onPlayerOut += (() =>
-        // {
-        //     State = EnemyState.Chase;
-        // });
+        attackArea.onPlayerApproach += AttackAreaApproach;
+        attackArea.onPlayerOut += (() =>
+        {
+            State = EnemyState.Chase;
+        });
+
+        StartCoroutine(SpawnTimeTriggerActivate());
     }
 
     protected override void Update()
     {
         base.Update();
+        if (playerTransform != null)
+        {
+
+            currentAngle = GetSightAngle(playerTransform);              // 플레이어와 적 사이의 각도 측정
+
+            transform.rotation = Quaternion.Slerp(transform.rotation
+                , Quaternion.LookRotation(playerTransform.transform.position - transform.position), 0.1f);
+            
+            if(!IsSightCheck(playerTransform))
+            {
+                if (currentAngle < cognitionAngle)
+                {
+                    agent.speed = 0.0f;
+                    agent.velocity = Vector3.zero;
+                }
+                else
+                {
+                    agent.speed = chaseMoveSpeed;
+                }
+            }
+        }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if(other.CompareTag("Player"))
+        if (other.CompareTag("Player"))
         {
+            Debug.Log("플레이어 발견");
             playerTransform = other.transform;
             MoveSpeed = chaseMoveSpeed;
+            agent.speed = MoveSpeed;
             State = EnemyState.Chase;
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (playerTransform != null)
+        if (other.CompareTag("Player"))
         {
+            Debug.Log("플레이어 도망");
             MoveSpeed = patrolMoveSpeed;
             State = EnemyState.Patrol;
+            agent.speed = patrolMoveSpeed;
             attackTarget = null;
             playerTransform = null;
         }
+    }
+
+    IEnumerator SpawnTimeTriggerActivate()
+    {
+        chaseArea.enabled = false;
+        yield return null;
+        chaseArea.enabled = true;
     }
 
     // 업데이트 함수들 ----------------------------------------------------------------------------------------------------------------
@@ -180,9 +215,9 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         wait -= Time.deltaTime;
         if (!isPlayerDie)
         {
-
             if (wait < 0.0f)
             {
+                State = EnemyState.Patrol;
                 agent.SetDestination(GetRandomDestination());
                 wait = waitTime;
             }
@@ -190,7 +225,6 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         else
         {
             agent.speed = 0.0f;
-            agent.velocity = Vector3.zero;
         }
     }
 
@@ -218,31 +252,18 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     {
         currentAttackCoolTime -= Time.deltaTime;
 
-        agent.SetDestination(playerTransform.position);
+        agent.SetDestination(playerTransform.position + new Vector3 (1, 0, 1));
 
-        currentAngle = GetSightAngle(playerTransform);
-
-        transform.rotation = Quaternion.Slerp(transform.rotation
-            , Quaternion.LookRotation(playerTransform.transform.position - transform.position), 0.1f);
-
-        if (currentAngle > cognitionAngle)
+        if (IsCoolTime)
         {
-            agent.isStopped = true;
-            agent.velocity = Vector3.zero;
-        }
-        else
-        {
-            agent.isStopped = false;
-            if(IsCoolTime && IsSightCheck(playerTransform))
-            {
-                Attack(attackTarget);
-                currentAttackCoolTime = attackCoolTime;
-            }
+            Attack(attackTarget);
+            currentAttackCoolTime = attackCoolTime;
         }
     }
 
     protected override void Update_Die()
     {
+
     }
 
     // 이동 관련 ----------------------------------------------------------------------------------------------------
@@ -257,7 +278,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         random += transform.position;
 
         NavMeshHit hit;
-        if(NavMesh.SamplePosition(random, out hit, patrolRange, NavMesh.AllAreas))
+        if (NavMesh.SamplePosition(random, out hit, patrolRange, NavMesh.AllAreas))
         {
             return hit.position;
         }
@@ -327,5 +348,4 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     {
         State = EnemyState.Stop;
     }
-
 }
