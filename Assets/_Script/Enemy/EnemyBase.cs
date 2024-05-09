@@ -60,7 +60,7 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler
 
     public float Hp { get; set; }
 
-    protected Action onEnemyStateUpdate;
+    public Action onEnemyStateUpdate;
 
     protected virtual void Start()
     {
