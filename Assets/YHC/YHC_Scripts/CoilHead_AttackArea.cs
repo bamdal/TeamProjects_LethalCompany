@@ -8,6 +8,8 @@ public class CoilHead_AttackArea : MonoBehaviour
     bool playerInSight;
     bool playerInAngle;
 
+    public float attackRadius = 5.0f;
+
     /// <summary>
     /// 플레이어가 공격 범위 내에 들어왔을 때 실행될 델리게이트
     /// </summary>
@@ -20,6 +22,13 @@ public class CoilHead_AttackArea : MonoBehaviour
     private void Awake()
     {
         attackArea = GetComponent<SphereCollider>();
+        attackArea.radius = attackRadius;
+    }
+
+    private void Start()
+    {
+        attackArea.enabled = false;
+        attackArea.enabled = true;
     }
 
     private void OnTriggerEnter(Collider other)
