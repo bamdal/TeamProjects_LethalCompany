@@ -9,19 +9,43 @@ public class RandomSkybox : MonoBehaviour
     public Material Day;
     public Material Day_Sunless;
 
-    public delegate float TimeDelegate();
-    public TimeDelegate getTime; // 현재 시간을 가져오는 델리게이트
+    public Timer timer; // Timer 객체에 직접 접근
 
     void Start()
     {
+        if (timer == null)
+        {
+            Debug.LogError("Timer is not initialized");
+            return;
+        }
+
         // 초기에 한 번 스카이박스 설정
+        UpdateSkybox();
+    }
+
+    void Awake()
+    {
+        timer = FindObjectOfType<Timer>();
+
+        if (timer == null)
+        {
+            Debug.LogError("Timer script not found");
+            return;
+        }
+
         UpdateSkybox();
     }
 
     void UpdateSkybox()
     {
+        if (timer == null)
+        {
+            Debug.LogError("Timer is not initialized");
+            return;
+        }
+
         // 현재 시간 얻기
-        float currentTime = getTime();
+        float currentTime = timer.CurrentTime.Hour;
 
         // 시간에 따른 스카이박스 설정
         if (IsSunrise(currentTime))
@@ -43,7 +67,7 @@ public class RandomSkybox : MonoBehaviour
                 RenderSettings.skybox = Day_Sunless;
             }
         }
-        else if(IsNight(currentTime))
+        else if (IsNight(currentTime))
         {
             if (Random.value < 0.5f) // 03~06
             {
@@ -70,9 +94,9 @@ public class RandomSkybox : MonoBehaviour
     {
         return currentTime >= 13 && currentTime < 16;
     }
+
     bool IsNight(float currentTime)
     {
         return currentTime >= 16 && currentTime < 19;
     }
-    
 }
