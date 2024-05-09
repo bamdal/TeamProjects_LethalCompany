@@ -25,31 +25,35 @@ public class Enemy_Child_KWS : MonoBehaviour
     /// </summary>
     Enemy enemyParent;
 
+    Animator animator;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
         rigid.constraints = RigidbodyConstraints.FreezeRotation;
+        animator = GetComponent<Animator>();
     }
 
     private void Start()
     {
         enemyParent = transform.parent.GetComponent<Enemy>();
-        enemyParent.onRaise += GravityChange;
+        enemyParent.onRaise += GravityOff;
         enemyParent.OnChase += samePosition;
+        enemyParent.OnChase += GravityOn;
     }
 
-    private void GravityChange()
+    private void GravityOff()
     {
-        Debug.Log("GravityChange 실행");
-        switch (rigid.useGravity)
-        {
-            case true:
-                rigid.useGravity = false;
-                break;
-            case false:
-                rigid.useGravity = true;
-                break;
-        }
+        Debug.Log("GravityOff 실행");
+        rigid.useGravity = false;
+        animator.SetTrigger("Idle");
+    }
+
+    private void GravityOn()
+    {
+        Debug.Log("GravityOn 실행");
+        rigid.useGravity = true;
+        animator.SetTrigger("Walk");
     }
 
     private void samePosition()
@@ -75,7 +79,7 @@ public class Enemy_Child_KWS : MonoBehaviour
 
     private void FixedUpdate()
     {
-        samePosition();
+        //samePosition();
     }
 
     public void Jump()
@@ -112,5 +116,15 @@ public class Enemy_Child_KWS : MonoBehaviour
         }
     }
 
+    private void OnTriggerEnter(Collider other)
+    {
+        // 자식의 트리거에 플레이어가 닿았으면 얼굴에 붙음
+    }
 
+    // 일정 시간 동안 플레이어를 잡지 못했으면 부모 스크립트의 NotCatch 코루틴 실행
+    // => 현재 플레이어가 부모의 트리거 영역에 들어오면 10초 기다리고 바로 위로 올라감(잡았는지 확인 안하고 있음)
+    // 일정 시간 동안 플레이어를 잡지 못했다? => 자식 스크립트의 OnTriggerEnter가 실행되지 않았다
+    // 코루틴으로 n초 기다리고 OnTriggerEnter가 실행되었는지 확인
+    // => 실행되지 않았으면 위로 올려야 함
+    // => 실행되었으면 플레이어의 얼굴에 붙어야 함
 }

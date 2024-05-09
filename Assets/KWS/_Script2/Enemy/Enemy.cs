@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
@@ -57,9 +58,20 @@ public class Enemy : EnemyBase
     public float rotationSpeed = 10.0f;
 
     /// <summary>
-    /// rigid의 gravity를 조작하기 위한 델리게이트
+    /// rigid의 gravity를 끄기 위한 델리게이트
     /// </summary>
     public Action onRaise;
+
+    /// <summary>
+    /// rigid의 gravity를 켜기 위한 델리게이트
+    /// </summary>
+    public Action onLower;
+
+    /// <summary>
+    /// 플레이어를 잡지 못하는 시간
+    /// </summary>
+    const float notCatchTime = 10.0f;
+
 
     private void Awake()
     {
@@ -114,7 +126,7 @@ public class Enemy : EnemyBase
     protected override void Update_Chase()
     {
         //Debug.Log("Update_Chase 상태 실행");
-        onRaise?.Invoke();
+        onLower?.Invoke();
         OnChase?.Invoke();
         if (player != null)
         {
@@ -141,13 +153,23 @@ public class Enemy : EnemyBase
             }
             else
             {
-                // 적이 플레이어 근처에 있을 때 가해지던 힘 제거
+                NoPath();
+                /*// 적이 플레이어 근처에 있을 때 가해지던 힘 제거
                 agent.velocity = Vector3.zero;
 
                 // 플레이어가 가까이 있을 때는 멈춤
-                agent.ResetPath();
+                agent.ResetPath();*/
             }
         }
+    }
+
+    void NoPath()
+    {
+        // 적이 플레이어 근처에 있을 때 가해지던 힘 제거
+        agent.velocity = Vector3.zero;
+
+        // 플레이어가 가까이 있을 때는 멈춤
+        agent.ResetPath();
     }
 
     protected override void Update_Attack()
@@ -171,24 +193,27 @@ public class Enemy : EnemyBase
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player"))     // 플레이어가 트리거 영역으로 들어오면
         {
+            StopCoroutine(NotCatch());      // NotCatch 코루틴 정지
             if (!IsLowering)
             {
                 if (lowerTrap != null)
                 {
                     StopCoroutine(lowerTrap);
                 }
-                if (!enemy_Child.IsGrounded())      // 땅이 아니면
+                if (!enemy_Child.IsGrounded())                  // 땅이 아니면
                 {
-                    lowerTrap = StartCoroutine(LowerTrap());
+                    lowerTrap = StartCoroutine(LowerTrap());    // 땅으로 떨어지기
                 }
                 else
                 {
-                    StopCoroutine(LowerTrap());
+                    StopCoroutine(lowerTrap);
                 }
             }
             State = EnemyState.Chase;
+
+            StartCoroutine(NotCatch());
         }
     }
 
@@ -204,5 +229,16 @@ public class Enemy : EnemyBase
             childEnemy.position = new Vector3(childEnemy.position.x, Mathf.Max(newY, trapLowerPosition), childEnemy.position.z);
             yield return null;
         }
+    }
+
+    /// <summary>
+    /// 플레이어를 일정 시간동안 잡지 못했을 경우 실행될 코루틴
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator NotCatch()
+    {
+        yield return new WaitForSeconds(notCatchTime);
+        NoPath();
+        State = EnemyState.Stop;
     }
 }
