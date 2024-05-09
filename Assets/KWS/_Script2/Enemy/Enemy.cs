@@ -66,18 +66,18 @@ public class Enemy : EnemyBase
         childEnemy = transform.GetChild(0);       // 0번째 자식 Enemy
         enemy_Child = childEnemy.GetComponent<Enemy_Child_KWS>();
         Collider collider = transform.GetComponent<Collider>();  // 플레이어를 탐지할 콜라이더
-
+        onEnemyStateUpdate = Update_Stop;
     }
 
     protected override void Start()
-    {
+    {        
         base.Start();
         agent = GetComponent<NavMeshAgent>();
         agent.speed = moveSpeed; // 이동 속도 설정
         //player = GameObject.FindWithTag("Player");
         player = GameManager.Instance.Player;
         agent.stoppingDistance = stopDistance;
-        State = EnemyState.Stop;
+        //State = EnemyState.Stop;
     }
 
     protected override void Update()
@@ -85,11 +85,11 @@ public class Enemy : EnemyBase
         base.Update();
         //bool isGrounded = enemy_Child.IsGrounded();
         //onEnemyStateUpdate();
-    }    
+    }
 
     private void FixedUpdate()
     {
-        onEnemyStateUpdate();
+        //onEnemyStateUpdate();
     }
     
     protected override void Update_Stop()
