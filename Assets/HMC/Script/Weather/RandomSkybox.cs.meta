@@ -3,7 +3,13 @@ guid: b822a298f7e434aee9c31d745895f6d0
 MonoImporter:
   externalObjects: {}
   serializedVersion: 2
-  defaultReferences: []
+  defaultReferences:
+  - Sunrise: {fileID: 2100000, guid: 3a253cab252a165478338fba0f03e63a, type: 2}
+  - Sunset: {fileID: 2100000, guid: 44d0573bf6d91e447b62f3aff840f2ae, type: 2}
+  - Night_Moonless: {fileID: 2100000, guid: 42dc3b9b0dd2040fc9ef0182fdea0e50, type: 2}
+  - Night: {fileID: 2100000, guid: f8a60d169ab8a46b09c9b01a3e51601f, type: 2}
+  - Day: {fileID: 2100000, guid: 12ccb828343c3405fb94289774b51aad, type: 2}
+  - Day_Sunless: {fileID: 2100000, guid: d48a7646f5d0547e889733d84b50cb9f, type: 2}
   executionOrder: 0
   icon: {instanceID: 0}
   userData: 
