@@ -28,7 +28,7 @@ public class Enemy_Child_KWS : MonoBehaviour
     /// <summary>
     /// 부모 오브젝트
     /// </summary>
-    Enemy enemyParent;
+    Enemy_Spider enemyParent;
 
     /// <summary>
     /// 애니메이터
@@ -48,7 +48,7 @@ public class Enemy_Child_KWS : MonoBehaviour
 
     private void Start()
     {
-        enemyParent = transform.parent.GetComponent<Enemy>();
+        enemyParent = transform.parent.GetComponent<Enemy_Spider>();
         enemyParent.onRaise += GravityOff;
         enemyParent.OnChase += samePosition;
         enemyParent.OnChase += GravityOn;

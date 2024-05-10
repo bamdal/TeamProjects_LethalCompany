@@ -5,10 +5,19 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : EnemyBase
+public class Enemy_Spider : EnemyBase
 {
-    public float loweringSpeed = 1f; // 트랩이 내려가는 속도
-    public float raisingSpeed = 1f; // 트랩이 올라가는 속도
+    /// <summary>
+    /// 트랩이 내려가는 속도
+    /// </summary>
+    public float loweringSpeed = 1f;
+
+    /// <summary>
+    /// 트랩이 올라가는 속도
+    /// </summary>
+    public float raisingSpeed = 1f;
+
+
     public float trapLowerPosition = 1f; // 트랩이 내려갈 위치 (y값)
     public float gravityAcceleration = 9.8f; // 중력 가속도
     private bool isLowering = false;
@@ -24,6 +33,8 @@ public class Enemy : EnemyBase
             }
         }
     }
+
+
 
     /// <summary>
     /// 자식 오브젝트의 트랜스폼
@@ -75,7 +86,7 @@ public class Enemy : EnemyBase
 
     private void Awake()
     {
-        childEnemy = transform.GetChild(0);       // 0번째 자식 Enemy
+        childEnemy = transform.GetChild(0);       // 0번째 자식 Enemy_Spider
         enemy_Child = childEnemy.GetComponent<Enemy_Child_KWS>();
         Collider collider = transform.GetComponent<Collider>();  // 플레이어를 탐지할 콜라이더
         onEnemyStateUpdate = Update_Stop;
