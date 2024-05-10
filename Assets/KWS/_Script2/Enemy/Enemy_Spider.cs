@@ -27,6 +27,46 @@ public class Enemy_Spider : EnemyBase
     /// </summary>
     public float gravityAcceleration = 9.8f;
 
+    /// <summary>
+    /// 최대 HP
+    /// </summary>
+    public float MaxHp = 20.0f;
+
+    /// <summary>
+    /// 최대 HP
+    /// </summary>
+    public override float Hp
+    {
+        get => MaxHp;
+        set
+        {
+            if(value < 1)
+            {
+                State = EnemyState.Die;
+                NoPath();
+            }
+        }
+        //set => base.Hp = value;
+    }
+
+    /// <summary>
+    /// 최대 스폰 가능한 마릿수
+    /// </summary>
+    public override int MaxSpawnCount
+    {
+        get => UnityEngine.Random.Range(3,6);       // 최대 3 ~ 5마리
+        //set => base.MaxSpawnCount = value;
+    }
+
+    /// <summary>
+    /// 게임내에 1개의 개체가 스폰될 확률(0~1)
+    /// </summary>
+    public override float SpawnPercent
+    {
+        get => 0.5f;        // 50%의 확률로 스폰
+        //set => base.SpawnPercent = value;
+    }
+
     private bool isLowering = false;
     Coroutine lowerTrap = null;
     public bool IsLowering
@@ -84,11 +124,6 @@ public class Enemy_Spider : EnemyBase
     /// rigid의 gravity를 켜기 위한 델리게이트
     /// </summary>
     public Action onLower;
-
-    /// <summary>
-    /// 플레이어를 잡지 못하는 시간
-    /// </summary>
-    const float notCatchTime = 10.0f;
 
 
     private void Awake()

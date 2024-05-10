@@ -115,7 +115,7 @@ public class Enemy_Jester : EnemyBase
         if (changeTimer <= 0f)
         {
             changeTimer = changeModeTime;
-            transform.GetChild(2).gameObject.SetActive(false);
+            transform.GetChild(2).gameObject.SetActive(true);
             State = EnemyState.Attack;
         }
     }

@@ -45,7 +45,24 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     // HP 관련 -----------------------------------------------------------
 
 
-    float hp = 100.0f;
+    float coilHeadHp = 100.0f;
+
+    public override float Hp
+    {
+        get => coilHeadHp;
+        set
+        {
+            if (coilHeadHp != value)
+            {
+                coilHeadHp = value;
+                coilHeadHp = Mathf.Clamp(coilHeadHp, 0, MaxHP);
+                if (coilHeadHp <= 0)
+                {
+                    State = EnemyState.Die;
+                }
+            }
+        }
+    }
 
     const float MaxHP = 100.0f;
 
@@ -118,6 +135,29 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     /// </summary>
     bool isPlayerDie = false;
 
+    // 스폰 관련 -----------------------------------------------------------------------------
+
+    /// <summary>
+    /// Coilhead의 최대 스폰 수
+    /// </summary>
+    public int coilheadMaxSpawnCount = 5;
+    public override int MaxSpawnCount
+    {
+        get => coilheadMaxSpawnCount;
+        set => coilheadMaxSpawnCount = value;
+    }
+
+    /// <summary>
+    /// Coilhead의 스폰 확률
+    /// </summary>
+    public float coilHeadSpawnRate = 0.06f;
+
+    public override float SpawnPercent
+    {
+        get => coilHeadSpawnRate;
+        set => coilHeadSpawnRate = value;
+    }
+
     // 컴포넌트
     NavMeshAgent agent;
     SphereCollider chaseArea;
@@ -127,6 +167,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     {
         attackDamage = 90;
         currentAttackCoolTime = attackCoolTime;
+        coilHeadHp = MaxHP;
 
         agent = GetComponent<NavMeshAgent>();
         chaseArea = GetComponent<SphereCollider>();
@@ -165,8 +206,8 @@ public class CoilHead : EnemyBase, IBattler, IHealth
 
             transform.rotation = Quaternion.Slerp(transform.rotation
                 , Quaternion.LookRotation(playerTransform.transform.position - transform.position), 0.1f);
-            
-            if(!IsSightCheck(playerTransform))
+
+            if (!IsSightCheck(playerTransform))
             {
                 if (currentAngle < cognitionAngle)
                 {
@@ -256,7 +297,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     {
         currentAttackCoolTime -= Time.deltaTime;
 
-        agent.SetDestination(playerTransform.position + new Vector3 (1, 0, 1));
+        agent.SetDestination(playerTransform.position + new Vector3(1, 0, 1));
 
         if (IsCoolTime)
         {
