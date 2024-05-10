@@ -37,7 +37,7 @@ public class Enemy_Child_KWS : MonoBehaviour
 
     Rigidbody rigid;
 
-
+    //Transform spiderPosition;
 
     private void Awake()
     {
@@ -50,8 +50,11 @@ public class Enemy_Child_KWS : MonoBehaviour
     {
         enemyParent = transform.parent.GetComponent<Enemy_Spider>();
         enemyParent.onRaise += GravityOff;
-        enemyParent.OnChase += samePosition;
+        //enemyParent.OnChase += samePosition;
         enemyParent.OnChase += GravityOn;
+
+        //Player player = GameManager.Instance.Player;
+        //spiderPosition = player.transform.GetChild(5);
     }
 
     private void GravityOff()
@@ -83,11 +86,32 @@ public class Enemy_Child_KWS : MonoBehaviour
         {
             cooltime += Time.deltaTime;     // 쿨타임 누적
         }
+
+        if (isCatch)
+        {
+            //Player player = GameManager.Instance.Player;
+            //spiderPosition = player.transform.GetChild(5);
+
+            GameObject playerVCam = GameObject.Find("PlayerVC");            
+            GravityOff();
+            this.gameObject.transform.position = playerVCam.transform.position;
+
+            // 회전 조절 필요
+            //this.gameObject.transform.rotation = playerVCam.transform.rotation;
+
+            // 플레이어한테 붙을게 아니라 Vcam에 붙어야 하나?
+        }
     }
 
     private void FixedUpdate()
     {
-        //samePosition();
+        /*if (isCatch)
+        {
+            Player player = GameManager.Instance.Player;
+            spiderPosition = player.transform.GetChild(5);
+            GravityOff();
+            this.gameObject.transform.position = spiderPosition.transform.position;
+        }*/
     }
 
     public void Jump()
@@ -144,6 +168,16 @@ public class Enemy_Child_KWS : MonoBehaviour
         }
     }
 
+    /*private void OnCollisionEnter(Collision collision)
+    {
+        // 자식의 트리거에 플레이어가 닿았으면 얼굴에 붙음
+        if (CompareTag("Player"))
+        {
+            isCatch = true;
+            CheckChatch();
+        }
+    }*/
+
     void CheckChatch()
     {
         if (isCatch)
@@ -152,6 +186,11 @@ public class Enemy_Child_KWS : MonoBehaviour
             Debug.Log("OnTriggerEnter가 활성화");
             Debug.Log("플레이어를 잡았다");
             StopCoroutine(Timer()); // OnTriggerEnter가 발생하면 타이머 중단
+
+            Debug.Log("위치 조정 실행");
+            //this.gameObject.transform.position = spiderPosition.transform.position;
+
+            //enemyParent.NoPath();
             // 플레이어를 잡으면 아예 타이머를 중단 시켜서 플레이어가 빠져나오면 다시 코루틴이 실행안됨
         }
         else if(timerFinished)
