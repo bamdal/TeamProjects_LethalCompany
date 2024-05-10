@@ -19,6 +19,8 @@ public class Enemy_KWS : MonoBehaviour
     private Transform target; // 추적할 대상 (플레이어)
     private NavMeshAgent agent; // NavMeshAgent 컴포넌트
     private float lastAttackTime; // 마지막 공격 시간 기록 변수
+    private bool isWalking = false;
+    private bool needToIdle = false;
 
     private void Start()
     {
@@ -44,26 +46,44 @@ public class Enemy_KWS : MonoBehaviour
                 Die();
                 break;
         }
+
+        // 다음 Update에서 Idle() 메서드를 호출
+        if (needToIdle)
+        {
+            needToIdle = false;
+            Idle();
+        }
     }
 
     private void Idle()
+{
+    // 플레이어가 일정 범위 내에 있으면 추적 상태로 변경
+    if (Vector3.Distance(transform.position, target.position) <= attackRange)
     {
-        // 플레이어가 일정 범위 내에 있으면 추적 상태로 변경
-        if (Vector3.Distance(transform.position, target.position) <= attackRange)
+        currentState = State.CHASE;
+        Debug.Log("Chase");
+    }
+    else
+    {
+        if (!isWalking)
         {
-            currentState = State.CHASE;
-            Debug.Log("Chase");
-        }
-        else
-        {
-            // 제한된 이동 범위 내에서 랜덤하게 이동
-            Vector3 randomPoint = UnityEngine.Random.insideUnitSphere * 10f;
-            randomPoint += transform.position;
+            // 새로운 랜덤 방향 선택
+            Vector3 randomDirection = Random.insideUnitCircle.normalized;
+            Vector3 targetPosition = transform.position + new Vector3(randomDirection.x, 0, randomDirection.y) * 10f;
             NavMeshHit hit;
-            NavMesh.SamplePosition(randomPoint, out hit, 10f, NavMesh.AllAreas);
+            NavMesh.SamplePosition(targetPosition, out hit, 10f, NavMesh.AllAreas);
             agent.SetDestination(hit.position);
+
+            isWalking = true; // 이동 시작
+        }
+        else if (!agent.pathPending && agent.remainingDistance <= 0.1f)
+        {
+            isWalking = false; // 이동 끝
         }
     }
+}
+
+
 
     private void Chase()
     {
