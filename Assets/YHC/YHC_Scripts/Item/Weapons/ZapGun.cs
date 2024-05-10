@@ -4,9 +4,22 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ZapGun : WeaponBase, IEquipable
+public class ZapGun : WeaponBase, IEquipable, IItemDataBase
 {
-    ItemDB zapGunDB;
+    enum GunState
+    {
+        Load = 0,
+        Scan,
+        Release,
+        Shot
+    }
+
+    GunState state = GunState.Load;
+
+    /// <summary>
+    /// 총의 데이터
+    /// </summary>
+    ItemDB zapGunData;
 
     /// <summary>
     /// 총이 릴리즈중인지 아닌지 확인하는 변수
@@ -40,12 +53,15 @@ public class ZapGun : WeaponBase, IEquipable
 
     private void Start()
     {
-        zapGunDB = GameManager.Instance.ItemData.GetItemDB(ItemCode.ZapGun);
+        zapGunData = GameManager.Instance.ItemData.GetItemDB(ItemCode.ZapGun);
     }
 
     private void Update()
     {
-        
+        if(state == GunState.Shot)
+        {
+
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -60,7 +76,22 @@ public class ZapGun : WeaponBase, IEquipable
 
     public void Use()
     {
-        Shot();
+        switch(state)
+        {
+            case GunState.Load:
+                state = GunState.Scan;
+                break;
+            case GunState.Scan:
+                state = GunState.Release;
+                break;
+            case GunState.Release:
+                state = GunState.Shot;
+                break;
+            case GunState.Shot:
+                state = GunState.Load;
+                break;
+                
+        }
     }
 
     void ObjectScan()
@@ -103,5 +134,10 @@ public class ZapGun : WeaponBase, IEquipable
                 targetEnemy.onDebuffAttack?.Invoke();
             }
         }
+    }
+
+    public ItemDB GetItemDB()
+    {
+        return zapGunData;
     }
 }

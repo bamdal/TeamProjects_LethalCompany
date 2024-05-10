@@ -17,9 +17,16 @@ public class Enemy_Spider : EnemyBase
     /// </summary>
     public float raisingSpeed = 1f;
 
+    /// <summary>
+    /// 트랩이 내려갈 위치(y값)
+    /// </summary>
+    public float trapLowerPosition = 1f;
 
-    public float trapLowerPosition = 1f; // 트랩이 내려갈 위치 (y값)
-    public float gravityAcceleration = 9.8f; // 중력 가속도
+    /// <summary>
+    /// 중력 가속도
+    /// </summary>
+    public float gravityAcceleration = 9.8f;
+
     private bool isLowering = false;
     Coroutine lowerTrap = null;
     public bool IsLowering
