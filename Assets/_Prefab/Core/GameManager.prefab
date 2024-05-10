@@ -11,6 +11,7 @@ GameObject:
   - component: {fileID: 7822879004496559298}
   - component: {fileID: 3667524131926236890}
   - component: {fileID: 7491428867835737546}
+  - component: {fileID: 6471023079869006499}
   m_Layer: 0
   m_Name: GameManager
   m_TagString: Untagged
@@ -66,3 +67,19 @@ MonoBehaviour:
   - {fileID: 11400000, guid: 707549a0952ee214082e0f107a9a9a25, type: 2}
   - {fileID: 11400000, guid: 0d61bd8a71a8f7a43b53008d6faaff1e, type: 2}
   - {fileID: 11400000, guid: 3d18f7f4ca06ea943a85a647623cd1c9, type: 2}
+  - {fileID: 11400000, guid: d652dd276ba26e246842b6c962afb586, type: 2}
+  - {fileID: 11400000, guid: 762f8f576161b214a83ffb3abad831a9, type: 2}
+  - {fileID: 11400000, guid: 523b1bcd9a1a2944b882f94aa957a250, type: 2}
+--- !u!114 &6471023079869006499
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1251587097392931990}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 64b1fe66701600d4bb5f92c498944a8c, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  ItemBoxPrepab: {fileID: 8224964642994939039, guid: 0d57e6c2ba73cc24da8ca974adb9ab25, type: 3}

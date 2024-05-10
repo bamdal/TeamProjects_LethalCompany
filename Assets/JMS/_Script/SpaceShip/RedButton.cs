@@ -13,7 +13,7 @@ public class RedButton : MonoBehaviour,IInteraction
     public void Interaction(GameObject target)
     {
         animator.SetTrigger(Hash_Click);
-        if (GameManager.Instance.OnGameState != GameManager.GameState.GameOver)
+        if (GameManager.Instance.OnGameState != GameState.GameOver)
         {
             GameManager.Instance.SpaceShip.SpaceShipDoorClose();
 

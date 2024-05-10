@@ -2,12 +2,13 @@ using System;
 using System.Collections;
 using UnityEngine;
 
-public class DropBox : MonoBehaviour
+public class DropBoxManager : MonoBehaviour
 {
     GameManager gameManager;
 
     public GameObject ItemBoxPrepab;
 
+    Coroutine dropItem;
 
     private void Start()
     {
@@ -17,7 +18,11 @@ public class DropBox : MonoBehaviour
     IInteraction temp;
     void DropItemBox()
     {
-        StartCoroutine(Drop());
+        if(gameManager.ItemsQueue.Count > 0 && gameManager.OnGameState == GameState.GameStart && dropItem ==null) 
+        {
+
+            dropItem = StartCoroutine(Drop());
+        }
     }
     IEnumerator Drop()
     {
@@ -25,5 +30,6 @@ public class DropBox : MonoBehaviour
         GameObject itemTemp = Instantiate(ItemBoxPrepab);
          temp = itemTemp.GetComponent<IInteraction>();
         temp.onRequest += DropItemBox;
+        dropItem = null;
     }
 }
