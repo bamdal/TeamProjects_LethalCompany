@@ -121,9 +121,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   stunnedTime: 5
-  patrolMoveSpeed: 3
+  patrolMoveSpeed: 2
   chaseMoveSpeed: 5
-  chasePatrolTransitionRange: 20
+  chasePatrolTransitionRange: 10
   attackCoolTime: 5
   cognitionAngle: 25
 --- !u!195 &6985961006641805892

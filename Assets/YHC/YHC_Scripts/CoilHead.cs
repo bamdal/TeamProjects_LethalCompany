@@ -42,15 +42,19 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     /// </summary>
     public float chasePatrolTransitionRange = 10.0f;
 
+    // HP 관련 -----------------------------------------------------------
+
+
+    float hp = 100.0f;
+
+    const float MaxHP = 100.0f;
+
     // 공격 관련 -----------------------------------------------------------
-
-    // float hp = 100.0f;
-
 
     /// <summary>
     /// CoilHead의 공격력
     /// </summary>
-    int attackDamage = 9999;
+    public int attackDamage = 9999;
 
     public int AttackDamage => attackDamage;
 
