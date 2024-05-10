@@ -18,8 +18,8 @@ public class Enemy_Jester : EnemyBase
     public int maxSpawnCount = 1;
     public float spawnPercent = 0.3f;
 
-    public override int MaxSpawnCount { get => maxSpawnCount; }
-    public override float SpawnPercent { get => spawnPercent; }
+    public override int MaxSpawnCount { get => maxSpawnCount; set { } }
+    public override float SpawnPercent { get => spawnPercent; set { } }
 
 
     private Vector3 walkPoint;      // 다음 이동 지점
@@ -115,6 +115,7 @@ public class Enemy_Jester : EnemyBase
         if (changeTimer <= 0f)
         {
             changeTimer = changeModeTime;
+            transform.GetChild(2).gameObject.SetActive(true);
             State = EnemyState.Attack;
         }
     }
