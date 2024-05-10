@@ -1476,7 +1476,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 6455801229053208336, guid: 11017ff584c353d4eb323ea8139d15f0, type: 3}
       propertyPath: changeModeTime
-      value: 23
+      value: 5
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
