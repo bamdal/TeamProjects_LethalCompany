@@ -2,10 +2,10 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class Grenade : WeaponBase, IEquipable, IBattler
+public class Grenade : WeaponBase, IEquipable, IBattler, IItemDataBase
 {
 
-    ItemDB grenadeDB;
+    ItemDB grenadeData;
 
     /// <summary>
     /// 폭발 데미지
@@ -36,7 +36,7 @@ public class Grenade : WeaponBase, IEquipable, IBattler
 
     private void Start()
     {
-        grenadeDB = GameManager.Instance.ItemData.GetItemDB(ItemCode.Grenade);
+        grenadeData = GameManager.Instance.ItemData.GetItemDB(ItemCode.Grenade);
     }
 
     public void Equip()
@@ -95,5 +95,10 @@ public class Grenade : WeaponBase, IEquipable, IBattler
     public void Defense(float attackPower)
     {
 
+    }
+
+    public ItemDB GetItemDB()
+    {
+        return grenadeData;
     }
 }
