@@ -7,31 +7,61 @@ public class EnemySpawner : MonoBehaviour
     public EnemyBase[] enemyPrefabs;
     public GameObject[] trapPrefabs;
 
-    [Range(0f, 1f)]
-    public float Spawn = 0.2f;
+    Queue<EnemyBase> enemyCount;
+    Queue<GameObject> trapCount;
+
+    public Transform enemys;
+
+    private void Awake()
+    {
+        if (enemys == null)
+        {
+            enemys = transform.GetChild(0);
+        }
+    }
     public void OnSpawnEnemy(List<EnemySpawnPoint> spawnPoints, Difficulty difficulty)
     {
-        int maxSpawnCount = 4 * (int)difficulty;
+        foreach (EnemyBase enemyBase in enemyPrefabs)
+        {
+            IDuengenSpawn duengenSpawn = enemyBase.GetComponent<IDuengenSpawn>();
+            for(int i = 0; i < duengenSpawn.MaxSpawnCount; i++)
+            {
+                
+                if(Random.value<duengenSpawn.SpawnPercent+ 0.05 * (int)difficulty)
+                {
+                    enemyCount.Enqueue(enemyBase);
+                }
+            }
+        }
+
+        foreach (GameObject temp in trapPrefabs)
+        {
+            IDuengenSpawn duengenSpawn = temp.GetComponent<IDuengenSpawn>();
+            for (int i = 0; i < duengenSpawn.MaxSpawnCount; i++)
+            {
+
+                if (Random.value < duengenSpawn.SpawnPercent + 0.05 * (int)difficulty)
+                {
+                    trapCount.Enqueue(temp);
+                }
+               
+            }
+        }
+
         int spawnCount = 0;
-        foreach (EnemySpawnPoint spawnPoint in spawnPoints)
+        while (enemyCount.Count > 0)
         {
-            if (spawnCount < maxSpawnCount && Random.value * (int)difficulty < Spawn)
-            {
-                GameObject obj = Instantiate(enemyPrefabs[Random.Range(0, enemyPrefabs.Length - 1)].gameObject, spawnPoint.transform);
-                spawnCount++;
-                obj.transform.position = spawnPoint.transform.position;
-            }
+            EnemyBase obj = Instantiate(enemyCount.Dequeue(), enemys);
+            obj.transform.position = spawnPoints[Random.Range(0, spawnPoints.Count)].transform.position; spawnCount++;
         }
-        spawnCount = 0;
-        foreach (EnemySpawnPoint spawnPoint in spawnPoints)
+
+        while (trapCount.Count > 0)
         {
-            if (spawnCount < maxSpawnCount && Random.value * (int)difficulty < Spawn)
-            {
-                GameObject obj = Instantiate(trapPrefabs[Random.Range(0, enemyPrefabs.Length - 1)].gameObject, spawnPoint.transform);
-                spawnCount++;
-                obj.transform.position = spawnPoint.transform.position;
-            }
+            GameObject obj = Instantiate(trapCount.Dequeue(), enemys);
+            obj.transform.position = spawnPoints[Random.Range(0, spawnPoints.Count)].transform.position; spawnCount++;
         }
+
+    
 
         Debug.Log($"적 소환 수 : {spawnCount}");
     }
