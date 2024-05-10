@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UIElements;
 
-public class TrapTrigger : MonoBehaviour
+public class TrapTrigger : MonoBehaviour, IDuengenSpawn
 {
     public float loweringSpeed = 1f; // 트랩이 내려가는 속도
     public float raisingSpeed = 1f; // 트랩이 올라가는 속도
@@ -23,6 +23,18 @@ public class TrapTrigger : MonoBehaviour
             }
         }
     }
+
+
+    /// <summary>
+    /// 최대 스폰 가능한 마릿수
+    /// </summary>
+    public int MaxSpawnCount { get; set; }
+
+    /// <summary>
+    /// 게임내에 1개의 개체가 스폰될 확률(0~1)
+    /// </summary>
+    public float SpawnPercent { get; set; }
+
     Transform trap;
 
 
