@@ -4,48 +4,58 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.EventSystems;
 
-public class ZapGun : WeaponBase, IEquipable
+public class ZapGun : WeaponBase, IEquipable, IItemDataBase
 {
-    ItemDB zapGunDB;
+    enum GunState
+    {
+        Load = 0,
+        Scan,
+        Release,
+        Shot
+    }
+
+    GunState state = GunState.Load;
 
     /// <summary>
-    /// 총이 릴리즈중인지 아닌지 확인하는 변수
+    /// 총의 데이터
     /// </summary>
-    // bool isRelease = false;
+    ItemDB zapGunData;
 
-    /// <summary>
-    /// 스캔한 장소에 적이 있는지 없는지 확인하는 변수, true면 적이 있다, false면 적이 없다.
-    /// </summary>
-    bool isTargetOn = false;
+    float stunnedTick = 1.0f;
 
-    float damage = 0.0f;
+    float currentBattery;
+    float CurrentBattery
+    {
+        get => currentBattery;
+        set
+        {
+            if(currentBattery != value)
+            {
+                currentBattery = value;
+            }
+        }
+    }
 
-    float damageTick = 1.0f;
-    float battery = 0.0f;
-    
-    Transform bullet;
-    SphereCollider bulletCollider;
-    Rigidbody bulletRigid;
+    float MaxBattery;
 
     EnemyBase targetEnemy;
 
     private void Awake()
     {
-        bullet = transform.GetChild(3);
-        bulletCollider = bullet.GetComponent<SphereCollider>();
-        bulletRigid = bullet.GetComponent<Rigidbody>();
-
-        bulletRigid.useGravity = false;
+        MaxBattery = zapGunData.battery;
     }
 
     private void Start()
     {
-        zapGunDB = GameManager.Instance.ItemData.GetItemDB(ItemCode.ZapGun);
+        zapGunData = GameManager.Instance.ItemData.GetItemDB(ItemCode.ZapGun);
     }
 
     private void Update()
     {
-        
+        if(state == GunState.Shot)
+        {
+
+        }
     }
 
     private void OnTriggerEnter(Collider other)
@@ -60,48 +70,71 @@ public class ZapGun : WeaponBase, IEquipable
 
     public void Use()
     {
-        Shot();
+        switch(state)
+        {
+            case GunState.Load:
+                state = GunState.Scan;
+                break;
+            case GunState.Scan:
+                if(ObjectScan())
+                {
+                    state = GunState.Release;
+                }
+                else
+                {
+                    state = GunState.Load;
+                }
+                break;
+            case GunState.Release:
+                state = GunState.Shot;
+                break;
+            case GunState.Shot:
+                state = GunState.Load;
+                break;
+                
+        }
     }
 
-    void ObjectScan()
+    bool ObjectScan()
     {
-        // Collider[] colliders = Physics.OverlapBox(transform.position);
+        bool result = false;
+        Collider[] colliders = Physics.OverlapBox(transform.position + transform.forward * 5.0f, Vector3.one * 0.5f);
         targetEnemy = null;
 
-        //foreach(Collider collider in colliders)
-        //{
-        //    targetEnemy = collider.GetComponent<EnemyBase>();
-        //}
+        foreach(Collider collider in colliders)
+        {
+            targetEnemy = collider.GetComponent<EnemyBase>();
+            if(targetEnemy != null)
+            {
+                result = true;
+                break;
+            }
+        }
 
-        if(targetEnemy != null)
-        {
-            isTargetOn = true;
-        }
-        else
-        {
-            isTargetOn = false;
-        }
+        return result;
     }
 
     void Shot()
     {
-        bulletRigid.AddForce(transform.forward * 5.0f, ForceMode.Impulse);
+
     }
 
     void Release()
     {
-        damageTick -= Time.deltaTime;
-
-        if (isTargetOn && targetEnemy != null)
+        if(targetEnemy != null)
         {
-            IBattler attackTarget = targetEnemy.GetComponent<IBattler>();
-            if(damageTick < 0.0f && battery > 0.0f)
-            {
-                attackTarget.Defense(damage);
-                damageTick = 1.0f;
-                battery -= 20.0f;
-                targetEnemy.onDebuffAttack?.Invoke();
-            }
+            // if(damageTick < 0.0f && battery > 0.0f)
+            // {
+            //     attackTarget.Defense(damage);
+            //     damageTick = 1.0f;
+            //     battery -= 20.0f;
+            //     targetEnemy.onDebuffAttack?.Invoke();
+            // }
         }
+    }
+
+    public ItemDB GetItemDB()
+    {
+        return zapGunData;
     }
 }

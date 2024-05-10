@@ -5,12 +5,68 @@ using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy : EnemyBase
+public class Enemy_Spider : EnemyBase
 {
-    public float loweringSpeed = 1f; // 트랩이 내려가는 속도
-    public float raisingSpeed = 1f; // 트랩이 올라가는 속도
-    public float trapLowerPosition = 1f; // 트랩이 내려갈 위치 (y값)
-    public float gravityAcceleration = 9.8f; // 중력 가속도
+    /// <summary>
+    /// 트랩이 내려가는 속도
+    /// </summary>
+    public float loweringSpeed = 1f;
+
+    /// <summary>
+    /// 트랩이 올라가는 속도
+    /// </summary>
+    public float raisingSpeed = 1f;
+
+    /// <summary>
+    /// 트랩이 내려갈 위치(y값)
+    /// </summary>
+    public float trapLowerPosition = 1f;
+
+    /// <summary>
+    /// 중력 가속도
+    /// </summary>
+    public float gravityAcceleration = 9.8f;
+
+    /// <summary>
+    /// 최대 HP
+    /// </summary>
+    public float MaxHp = 20.0f;
+
+    /// <summary>
+    /// 최대 HP
+    /// </summary>
+    public override float Hp
+    {
+        get => MaxHp;
+        set
+        {
+            if(value < 1)
+            {
+                State = EnemyState.Die;
+                NoPath();
+            }
+        }
+        //set => base.Hp = value;
+    }
+
+    /// <summary>
+    /// 최대 스폰 가능한 마릿수
+    /// </summary>
+    public override int MaxSpawnCount
+    {
+        get => UnityEngine.Random.Range(3,6);       // 최대 3 ~ 5마리
+        //set => base.MaxSpawnCount = value;
+    }
+
+    /// <summary>
+    /// 게임내에 1개의 개체가 스폰될 확률(0~1)
+    /// </summary>
+    public override float SpawnPercent
+    {
+        get => 0.5f;        // 50%의 확률로 스폰
+        //set => base.SpawnPercent = value;
+    }
+
     private bool isLowering = false;
     Coroutine lowerTrap = null;
     public bool IsLowering
@@ -24,6 +80,8 @@ public class Enemy : EnemyBase
             }
         }
     }
+
+
 
     /// <summary>
     /// 자식 오브젝트의 트랜스폼
@@ -67,15 +125,10 @@ public class Enemy : EnemyBase
     /// </summary>
     public Action onLower;
 
-    /// <summary>
-    /// 플레이어를 잡지 못하는 시간
-    /// </summary>
-    const float notCatchTime = 10.0f;
-
 
     private void Awake()
     {
-        childEnemy = transform.GetChild(0);       // 0번째 자식 Enemy
+        childEnemy = transform.GetChild(0);       // 0번째 자식 Enemy_Spider
         enemy_Child = childEnemy.GetComponent<Enemy_Child_KWS>();
         Collider collider = transform.GetComponent<Collider>();  // 플레이어를 탐지할 콜라이더
         onEnemyStateUpdate = Update_Stop;
@@ -163,7 +216,7 @@ public class Enemy : EnemyBase
         }
     }
 
-    void NoPath()
+    public void NoPath()
     {
         // 적이 플레이어 근처에 있을 때 가해지던 힘 제거
         agent.velocity = Vector3.zero;
@@ -195,7 +248,7 @@ public class Enemy : EnemyBase
     {
         if (other.CompareTag("Player"))     // 플레이어가 트리거 영역으로 들어오면
         {
-            StopCoroutine(NotCatch());      // NotCatch 코루틴 정지
+            StopCoroutine(enemy_Child.Timer());      // Timer 코루틴 정지
             if (!IsLowering)
             {
                 if (lowerTrap != null)
@@ -213,7 +266,7 @@ public class Enemy : EnemyBase
             }
             State = EnemyState.Chase;
 
-            StartCoroutine(NotCatch());
+            StartCoroutine(enemy_Child.Timer());
         }
     }
 
@@ -231,7 +284,7 @@ public class Enemy : EnemyBase
         }
     }
 
-    /// <summary>
+    /*/// <summary>
     /// 플레이어를 일정 시간동안 잡지 못했을 경우 실행될 코루틴
     /// </summary>
     /// <returns></returns>
@@ -239,6 +292,11 @@ public class Enemy : EnemyBase
     {
         yield return new WaitForSeconds(notCatchTime);
         NoPath();
+        State = EnemyState.Stop;
+    }*/
+
+    public void StateStop()
+    {
         State = EnemyState.Stop;
     }
 }

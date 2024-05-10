@@ -15,9 +15,12 @@ public class Test_Jester : TestBase
     protected override void OnTest1(InputAction.CallbackContext context)
     {
         player.IsInDungeon = true;
+        Debug.Log(player.IsInDungeon + "상태");
     }
     protected override void OnTest2(InputAction.CallbackContext context)
     {
         player.IsInDungeon = false;
+        Debug.Log(player.IsInDungeon + "상태");
+
     }
 }

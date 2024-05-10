@@ -418,7 +418,7 @@ GameObject:
   - component: {fileID: 3543039131369697247}
   - component: {fileID: 674564353194450984}
   - component: {fileID: 6967086077650563969}
-  m_Layer: 0
+  m_Layer: 8
   m_Name: Player
   m_TagString: Player
   m_Icon: {fileID: 0}
@@ -470,6 +470,7 @@ MonoBehaviour:
   groundLayer:
     serializedVersion: 2
     m_Bits: 136
+  invenUI: {fileID: 0}
 --- !u!114 &674564353194450984
 MonoBehaviour:
   m_ObjectHideFlags: 0

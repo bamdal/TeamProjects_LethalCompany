@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.UIElements;
 
 public class Enemy_Jester : EnemyBase
 {
@@ -11,14 +12,25 @@ public class Enemy_Jester : EnemyBase
     public float changeModeTime = 5f;
     public float attackPower = 9999f;
     public float popingSpeed = 10.0f;
+    public float modeChangeProbability = 0.3f;
+    public LayerMask playerLayerMask;
+    public float maxSpeed = 8.0f;
+    public int maxSpawnCount = 1;
+    public float spawnPercent = 0.3f;
+
+    public override int MaxSpawnCount { get => maxSpawnCount; set { } }
+    public override float SpawnPercent { get => spawnPercent; set { } }
+
 
     private Vector3 walkPoint;      // 다음 이동 지점
     private NavMeshAgent agent;
     private float timer;
     private float changeTimer;
     float originSpeed;
-
+    private Transform layStartPosition;
     bool isPlayerDetected = false;
+
+    
 
     private void Awake()
     {
@@ -27,6 +39,8 @@ public class Enemy_Jester : EnemyBase
         timer = patrolTime;
         changeTimer = changeModeTime;
         originSpeed = agent.speed;
+        onEnemyStateUpdate = Update_Patrol;
+        layStartPosition = transform.GetChild(0);
     }
     protected override void Start()
     {
@@ -38,19 +52,10 @@ public class Enemy_Jester : EnemyBase
 
     protected override void Update()
     {
-        
-        if(player != null)
+
+        if (player != null)
         {
-            if (player.IsInDungeon && State != EnemyState.Attack)
-            {
-                State = EnemyState.Chase;
-                if(isPlayerDetected && State == EnemyState.Chase)
-                {
-                    State = EnemyState.Stop;
-                    Debug.Log("찾음");
-                }
-            }
-            else if(!player.IsInDungeon)
+            if (!player.IsInDungeon)
             {
                 agent.speed = originSpeed;
                 isPlayerDetected = false;
@@ -58,13 +63,21 @@ public class Enemy_Jester : EnemyBase
             }
             else
             {
-                State = EnemyState.Attack;
+                if (State != EnemyState.Attack && State != EnemyState.Stop)
+                {
+                    if (isPlayerDetected)
+                    {
+                        State = EnemyState.Chase;
+                    }
+                    else
+                    {
+                        State = EnemyState.Patrol;
+                    }
+                }
             }
 
+            base.Update();
         }
-
-        base.Update();
-        
     }
     protected override void Update_Patrol()
     {
@@ -81,34 +94,51 @@ public class Enemy_Jester : EnemyBase
     protected override void Update_Chase()
     {
         agent.SetDestination(player.transform.position);
+        RaycastHit hit;
+        if (Physics.Raycast(layStartPosition.transform.position, (player.transform.position - transform.position).normalized, out hit, 5.0f, playerLayerMask))
+        {
+            if (hit.collider.CompareTag("Player"))
+            {
+                float randomValue = Random.value;
+                if (randomValue <= modeChangeProbability)
+                {
+                    State = EnemyState.Stop;
+                }
+            }
+        }
     }
     protected override void Update_Stop()
     {
+        agent.isStopped = true;
         agent.velocity = Vector3.zero;
         changeTimer -= Time.deltaTime;
-        if(changeTimer <= 0f)
+        if (changeTimer <= 0f)
         {
-            agent.speed = popingSpeed;
             changeTimer = changeModeTime;
+            transform.GetChild(2).gameObject.SetActive(true);
             State = EnemyState.Attack;
         }
     }
 
     protected override void Update_Attack()
     {
+        agent.isStopped = false;
+        agent.speed += popingSpeed * Time.deltaTime;
+        if (agent.speed > maxSpeed)
+        {
+            agent.speed = maxSpeed;
+        }
         agent.SetDestination(player.transform.position);
         transform.LookAt(player.transform.position);
     }
     void SetNewRandomDestination()
     {
-        // 현재 위치를 기준으로 무작위한 지점을 설정
         Vector3 randomDirection = Random.insideUnitSphere * patrolRange;
         randomDirection += transform.position;
         NavMeshHit hit;
         NavMesh.SamplePosition(randomDirection, out hit, patrolRange, 1);
         walkPoint = hit.position;
 
-        // 설정한 지점으로 이동
         agent.SetDestination(walkPoint);
     }
 
@@ -118,7 +148,7 @@ public class Enemy_Jester : EnemyBase
         if (other.gameObject.CompareTag("Player"))
         {
             isPlayerDetected = true;
-            
+
         }
 
     }

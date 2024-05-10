@@ -48,12 +48,6 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase, IBattler
         }
     }
 
-
-    public ItemDB GetItemDB()
-    {
-        return shovelData;
-    }
-
     public void Attack(IBattler target)
     {
         throw new System.NotImplementedException();
@@ -62,5 +56,10 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase, IBattler
     public void Defense(float attackPower)
     {
         throw new System.NotImplementedException();
+    }
+
+    public ItemDB GetItemDB()
+    {
+        return shovelData;
     }
 }
