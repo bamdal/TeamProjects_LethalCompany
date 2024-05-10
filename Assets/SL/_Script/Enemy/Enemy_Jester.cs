@@ -4,8 +4,7 @@ using UnityEngine;
 using UnityEngine.AI;
 using UnityEngine.UIElements;
 
-public class 
-    Enemy_Jester : EnemyBase
+public class Enemy_Jester : EnemyBase
 {
     Player player;
     public float patrolRange = 10f; // 배회 범위
@@ -16,6 +15,12 @@ public class
     public float modeChangeProbability = 0.3f;
     public LayerMask playerLayerMask;
     public float maxSpeed = 8.0f;
+    public int maxSpawnCount = 1;
+    public float spawnPercent = 0.3f;
+
+    public override int MaxSpawnCount { get => maxSpawnCount; }
+    public override float SpawnPercent { get => spawnPercent; }
+
 
     private Vector3 walkPoint;      // 다음 이동 지점
     private NavMeshAgent agent;
@@ -24,6 +29,8 @@ public class
     float originSpeed;
     private Transform layStartPosition;
     bool isPlayerDetected = false;
+
+    
 
     private void Awake()
     {
