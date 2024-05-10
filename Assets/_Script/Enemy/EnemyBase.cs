@@ -23,7 +23,7 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
         get => state;
         set
         {
-            if(state != value)
+            if (state != value)
             {
                 state = value;
                 switch (state)
@@ -87,7 +87,7 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
     {
 
     }
-    
+
     protected virtual void Update_Patrol()
     {
 
@@ -95,14 +95,14 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
 
     protected virtual void Update_Chase()
     {
-        
+
     }
 
     protected virtual void Update_Attack()
     {
 
     }
-    
+
     protected virtual void Update_Die()
     {
 
@@ -120,7 +120,7 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
 
     public void Defense(float attackPower)
     {
-        
+
     }
 
     /// <summary>

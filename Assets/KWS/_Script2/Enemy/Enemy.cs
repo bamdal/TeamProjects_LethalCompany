@@ -163,7 +163,7 @@ public class Enemy : EnemyBase
         }
     }
 
-    void NoPath()
+    public void NoPath()
     {
         // 적이 플레이어 근처에 있을 때 가해지던 힘 제거
         agent.velocity = Vector3.zero;
@@ -195,7 +195,7 @@ public class Enemy : EnemyBase
     {
         if (other.CompareTag("Player"))     // 플레이어가 트리거 영역으로 들어오면
         {
-            StopCoroutine(NotCatch());      // NotCatch 코루틴 정지
+            StopCoroutine(enemy_Child.Timer());      // Timer 코루틴 정지
             if (!IsLowering)
             {
                 if (lowerTrap != null)
@@ -213,7 +213,7 @@ public class Enemy : EnemyBase
             }
             State = EnemyState.Chase;
 
-            StartCoroutine(NotCatch());
+            StartCoroutine(enemy_Child.Timer());
         }
     }
 
@@ -231,7 +231,7 @@ public class Enemy : EnemyBase
         }
     }
 
-    /// <summary>
+    /*/// <summary>
     /// 플레이어를 일정 시간동안 잡지 못했을 경우 실행될 코루틴
     /// </summary>
     /// <returns></returns>
@@ -239,6 +239,11 @@ public class Enemy : EnemyBase
     {
         yield return new WaitForSeconds(notCatchTime);
         NoPath();
+        State = EnemyState.Stop;
+    }*/
+
+    public void StateStop()
+    {
         State = EnemyState.Stop;
     }
 }
