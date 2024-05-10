@@ -3,7 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
+public class EnemyBase : MonoBehaviour, IHealth, IBattler
 {
     public float stunnedTime = 5.0f;
 
@@ -57,21 +57,10 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
 
     public Action onDie;
     public Action onDebuffAttack;
-    public Action onEnemyStateUpdate;
 
     public float Hp { get; set; }
 
-    /// <summary>
-    /// 최대 스폰 가능한 마릿수
-    /// </summary>
-    public int MaxSpawnCount { get; set; }
-
-    /// <summary>
-    /// 게임내에 1개의 개체가 스폰될 확률(0~1)
-    /// </summary>
-    public float SpawnPercent { get; set; }
-
-
+    public Action onEnemyStateUpdate;
 
     protected virtual void Start()
     {
