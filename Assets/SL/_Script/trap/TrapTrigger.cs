@@ -12,6 +12,9 @@ public class TrapTrigger : MonoBehaviour, IDuengenSpawn
     public float gravityAcceleration = 9.8f; // 중력 가속도
     private bool isLowering = false;
     public Coroutine lowerTrap = null;
+    public int maxSpawnCount = 5;
+    public float spawnPercent = 0.5f;
+
     public bool IsLowering
     {
         get => isLowering;
@@ -28,12 +31,12 @@ public class TrapTrigger : MonoBehaviour, IDuengenSpawn
     /// <summary>
     /// 최대 스폰 가능한 마릿수
     /// </summary>
-    public int MaxSpawnCount { get; set; }
+    public int MaxSpawnCount { get => maxSpawnCount; set { } }
 
     /// <summary>
     /// 게임내에 1개의 개체가 스폰될 확률(0~1)
     /// </summary>
-    public float SpawnPercent { get; set; }
+    public float SpawnPercent { get => spawnPercent; set { } }
 
     Transform trap;
 

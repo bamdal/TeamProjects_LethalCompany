@@ -1434,10 +1434,6 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Jester
       objectReference: {fileID: 0}
-    - target: {fileID: 2119877979482830719, guid: 11017ff584c353d4eb323ea8139d15f0, type: 3}
-      propertyPath: m_Radius
-      value: 10
-      objectReference: {fileID: 0}
     - target: {fileID: 2658328980519095831, guid: 11017ff584c353d4eb323ea8139d15f0, type: 3}
       propertyPath: m_LocalPosition.x
       value: 9
@@ -1479,16 +1475,8 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 6455801229053208336, guid: 11017ff584c353d4eb323ea8139d15f0, type: 3}
-      propertyPath: popingSpeed
-      value: 2
-      objectReference: {fileID: 0}
-    - target: {fileID: 6455801229053208336, guid: 11017ff584c353d4eb323ea8139d15f0, type: 3}
-      propertyPath: modeChangeProbability
-      value: 0.1
-      objectReference: {fileID: 0}
-    - target: {fileID: 6455801229053208336, guid: 11017ff584c353d4eb323ea8139d15f0, type: 3}
-      propertyPath: playerLayerMask.m_Bits
-      value: 256
+      propertyPath: changeModeTime
+      value: 23
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
