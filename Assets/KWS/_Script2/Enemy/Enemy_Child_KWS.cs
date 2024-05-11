@@ -8,6 +8,9 @@ using static EnemyBase;
 
 public class Enemy_Child_KWS : MonoBehaviour
 {
+    /// <summary>
+    /// 점프 높이
+    /// </summary>
     [Range(1f, 10f)]
     public float jumpHeight = 1f;
 
@@ -16,8 +19,14 @@ public class Enemy_Child_KWS : MonoBehaviour
     /// </summary>
     public float cooltime = 0;
 
+    /// <summary>
+    /// stop 상태일때 올라갈 높이
+    /// </summary>
     public float currentY = 9;
 
+    /// <summary>
+    /// 땅인지 확인할 거리
+    /// </summary>
     public float groundCheckDistance = 1.0f;
 
     /// <summary>
@@ -26,7 +35,7 @@ public class Enemy_Child_KWS : MonoBehaviour
     public LayerMask groundLayer;
 
     /// <summary>
-    /// 부모 오브젝트
+    /// 부모 오브젝트(agent로 움직임)
     /// </summary>
     Enemy_Spider enemyParent;
 
@@ -37,12 +46,29 @@ public class Enemy_Child_KWS : MonoBehaviour
 
     Rigidbody rigid;
 
-    //Transform spiderPosition;
+    /// <summary>
+    /// 플레이어를 잡았는지 확인하기 위한 bool 변수
+    /// </summary>
+    bool isCatch = false;
+
+    /// <summary>
+    /// isCatch를 참조하기 위한 프로퍼티
+    /// </summary>
+    public bool IsCatch => isCatch;
+
+    /// <summary>
+    /// 정해진 시간이 지났는지 확인하기 위한 bool 변수
+    /// </summary>
+    bool timerFinished = false;
+
+    Transform spiderPosition;
+
+    //Player player;
 
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
-        rigid.constraints = RigidbodyConstraints.FreezeRotation;
+        rigid.constraints = RigidbodyConstraints.FreezeRotation;        // 물체에 충돌했을 때 회전이 틀어지는 것 방지
         animator = GetComponent<Animator>();
     }
 
@@ -50,13 +76,16 @@ public class Enemy_Child_KWS : MonoBehaviour
     {
         enemyParent = transform.parent.GetComponent<Enemy_Spider>();
         enemyParent.onRaise += GravityOff;
-        //enemyParent.OnChase += samePosition;
-        enemyParent.OnChase += GravityOn;
+        enemyParent.onLower += GravityOn;
+        //enemyParent.onChase += samePosition;
 
         //Player player = GameManager.Instance.Player;
         //spiderPosition = player.transform.GetChild(5);
     }
 
+    /// <summary>
+    /// 중력을 끄기 위한 함수
+    /// </summary>
     private void GravityOff()
     {
         Debug.Log("GravityOff 실행");
@@ -64,6 +93,9 @@ public class Enemy_Child_KWS : MonoBehaviour
         animator.SetTrigger("Idle");    // 중력 off 상태는 Idle 상태
     }
 
+    /// <summary>
+    /// 중력을 켜기 위한 함수
+    /// </summary>
     private void GravityOn()
     {
         Debug.Log("GravityOn 실행");
@@ -71,6 +103,9 @@ public class Enemy_Child_KWS : MonoBehaviour
         animator.SetTrigger("Walk");    // 중력이 on 되었을 때는 플레이어를 추적하고 있는 상태
     }
 
+    /// <summary>
+    /// 점프하면서 부모 오브젝트의 위치와 틀어지는 것을 막기 위한 함수
+    /// </summary>
     private void samePosition()
     {
         // 부모 오브젝트의 위치 정보 가져오기
@@ -92,14 +127,17 @@ public class Enemy_Child_KWS : MonoBehaviour
             //Player player = GameManager.Instance.Player;
             //spiderPosition = player.transform.GetChild(5);
 
-            GameObject playerVCam = GameObject.Find("PlayerVC");            
-            GravityOff();
-            this.gameObject.transform.position = playerVCam.transform.position;
+            Player player = GameManager.Instance.Player;                                    // 플레이어 찾기
+            spiderPosition = player.transform.GetChild(5);                                  // 플레이어의 5번째 자식 spiderPosition 찾기
+            GravityOff();                                                                   // 중력 끄기
+            Quaternion playerRotation = player.gameObject.transform.rotation;               // 플레이어의 회전
 
-            // 회전 조절 필요
-            //this.gameObject.transform.rotation = playerVCam.transform.rotation;
-
-            // 플레이어한테 붙을게 아니라 Vcam에 붙어야 하나?
+            // 플레이어의 회전 + x축으로 90도 회전
+            Quaternion adjustedRotation = Quaternion.Euler(90.0f, playerRotation.eulerAngles.y, playerRotation.eulerAngles.z);
+            this.gameObject.transform.rotation = adjustedRotation;                          // 이 오브젝트의 회전을 플레이어 + x축 90도
+            this.gameObject.transform.position = spiderPosition.transform.position;         // 이 오브젝트의 위치를 spiderPosition와 같게
+            //this.gameObject.transform.rotation = player.gameObject.transform.rotation;      // 이 오브젝트의 회전을 플레이어와 같게
+            enemyParent.StateAttack();                                                      // 적의 상태를 Attack으로 전환
         }
     }
 
@@ -111,6 +149,30 @@ public class Enemy_Child_KWS : MonoBehaviour
             spiderPosition = player.transform.GetChild(5);
             GravityOff();
             this.gameObject.transform.position = spiderPosition.transform.position;
+        }*/
+
+        /*if (IsGrounded())   // 땅이면
+        {
+            cooltime += Time.deltaTime;     // 쿨타임 누적
+        }
+
+        if (isCatch)
+        {
+            //Player player = GameManager.Instance.Player;
+            //spiderPosition = player.transform.GetChild(5);
+
+            GameObject playerVCam = GameObject.Find("PlayerVC");                    // PlayerVC의 위치를 찾고
+            GravityOff();                                                           // 중력 끄기
+            this.gameObject.transform.position = playerVCam.transform.position + new Vector3(0, 0, 1);     // 이 게임 오브젝트의 위치를 PlayerVC의으로 이동
+            //this.gameObject.transform.rotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
+            this.gameObject.transform.rotation = player.gameObject.transform.rotation;        // 이 게임 오브젝트의 rotation을 플레이어와 같게 하기
+                                                                                                // 여기에 Quaternion.Euler(90.0f, 0.0f, 0.0f) 를 더해야 하는데?
+            enemyParent.StateAttack();
+
+            // 회전 조절 필요
+            //this.gameObject.transform.rotation = playerVCam.transform.rotation;
+
+            // 플레이어한테 붙을게 아니라 Vcam에 붙어야 하나?
         }*/
     }
 
@@ -131,12 +193,20 @@ public class Enemy_Child_KWS : MonoBehaviour
         }
     }
 
+    /// <summary>
+    /// 바닥인지 확인하기 위한 bool 변수
+    /// </summary>
+    /// <returns>바닥이면 true, 바닥이 아니면 false</returns>
     public bool IsGrounded()
     {
         // 캐릭터의 아래에 레이캐스트를 쏴서 바닥에 닿았는지 확인
         return Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, layerMask: groundLayer);
     }
 
+    /// <summary>
+    /// 적을 위로 올리는 코루틴
+    /// </summary>
+    /// <returns></returns>
     public IEnumerator RaiseTrap()
     {
         while (transform.position.y < currentY)
@@ -147,16 +217,6 @@ public class Enemy_Child_KWS : MonoBehaviour
             yield return null;
         }
     }
-
-    /// <summary>
-    /// 플레이어를 잡았는지 확인하기 위한 bool 변수
-    /// </summary>
-    bool isCatch = false;
-
-    /// <summary>
-    /// 정해진 시간이 지났는지 확인하기 위한 bool 변수
-    /// </summary>
-    bool timerFinished = false;
 
     private void OnTriggerEnter(Collider other)
     {
@@ -188,10 +248,10 @@ public class Enemy_Child_KWS : MonoBehaviour
             StopCoroutine(Timer()); // OnTriggerEnter가 발생하면 타이머 중단
 
             Debug.Log("위치 조정 실행");
-            //this.gameObject.transform.position = spiderPosition.transform.position;
 
             //enemyParent.NoPath();
             // 플레이어를 잡으면 아예 타이머를 중단 시켜서 플레이어가 빠져나오면 다시 코루틴이 실행안됨
+            // 죽기 전까지 안떨어지므로 상관X
         }
         else if(timerFinished)
         {
@@ -199,11 +259,12 @@ public class Enemy_Child_KWS : MonoBehaviour
             Debug.Log("10초가 지났지만 플레이어를 못잡았다");
             enemyParent.NoPath();
             enemyParent.StateStop();
+            timerFinished = false;
         }
     }
 
     /// <summary>
-    /// 10초 동안 기다린 후
+    /// 부모 트리거에 닿았으면 10초 동안 기다린 후 실행될 코루틴
     /// </summary>
     /// <returns></returns>
     public IEnumerator Timer()
