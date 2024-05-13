@@ -134,6 +134,11 @@ public class Enemy_Spider : EnemyBase
     /// </summary>
     public Action onLower;
 
+    /// <summary>
+    /// 공격 쿨타임
+    /// </summary>
+    public float attackCoolTime = 0.0f;
+
 
     private void Awake()
     {
@@ -159,6 +164,8 @@ public class Enemy_Spider : EnemyBase
         base.Update();
         //bool isGrounded = enemy_Child.IsGrounded();
         //onEnemyStateUpdate();
+
+        attackCoolTime += Time.deltaTime;
     }
 
     private void FixedUpdate()
@@ -179,14 +186,6 @@ public class Enemy_Spider : EnemyBase
             
             StartCoroutine(enemy_Child.RaiseTrap());
         }
-    }
-
-    /// <summary>
-    /// 적의 상태가 Patrol일 때 실행될 함수
-    /// </summary>
-    protected override void Update_Patrol()
-    {
-
     }
 
     //public Action onChase;
@@ -235,23 +234,20 @@ public class Enemy_Spider : EnemyBase
     }
 
     /// <summary>
-    /// 멈출 때 실행될 함수
-    /// </summary>
-    public void NoPath()
-    {
-        // 적이 플레이어 근처에 있을 때 가해지던 힘 제거
-        agent.velocity = Vector3.zero;
-
-        // 플레이어가 가까이 있을 때는 멈춤
-        agent.ResetPath();
-    }
-
-    /// <summary>
     /// 적의 상태가 Attack일 때 실행될 함수
     /// </summary>
     protected override void Update_Attack()
     {
         // 플레이어의 체력을 깎는 부분 필요
+        Debug.Log("플레이어 공격 중");
+
+        if(attackCoolTime > 2.0f)
+        {
+            attackCoolTime = 0.0f;
+            player.Hp -= 5;
+            Debug.Log($"플레이어의 HP: {player.Hp}");
+        }
+
     }
 
     /// <summary>
@@ -272,11 +268,23 @@ public class Enemy_Spider : EnemyBase
         }
     }*/
 
+    /// <summary>
+    /// 멈출 때 실행될 함수
+    /// </summary>
+    public void NoPath()
+    {
+        // 적이 플레이어 근처에 있을 때 가해지던 힘 제거
+        agent.velocity = Vector3.zero;
+
+        // 플레이어가 가까이 있을 때는 멈춤
+        agent.ResetPath();
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))     // 플레이어가 트리거 영역으로 들어오면
+        if (other.CompareTag("Player"))                         // 플레이어가 트리거 영역으로 들어오면
         {
-            StopCoroutine(enemy_Child.Timer());      // Timer 코루틴 정지
+            StopCoroutine(enemy_Child.Timer());                 // Timer 코루틴 시작하기 전에 한번 정지
             if (!IsLowering)
             {
                 if (lowerTrap != null)
@@ -292,12 +300,16 @@ public class Enemy_Spider : EnemyBase
                     StopCoroutine(lowerTrap);
                 }
             }
-            State = EnemyState.Chase;
+            State = EnemyState.Chase;               // 상태를 Chase로 전환
 
-            StartCoroutine(enemy_Child.Timer());
+            StartCoroutine(enemy_Child.Timer());    // Timer 코루틴 시작
         }
     }
 
+    /// <summary>
+    /// 적을 땅으로 떨어뜨리는 코루틴
+    /// </summary>
+    /// <returns></returns>
     IEnumerator LowerTrap()
     {
         IsLowering = true;
@@ -331,6 +343,9 @@ public class Enemy_Spider : EnemyBase
         State = EnemyState.Stop;
     }
 
+    /// <summary>
+    /// 상태를 Attack으로 바꾸기 위한 함수
+    /// </summary>
     public void StateAttack()
     {
         State = EnemyState.Attack;
