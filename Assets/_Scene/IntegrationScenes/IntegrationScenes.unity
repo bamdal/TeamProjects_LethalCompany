@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -287,6 +287,17 @@ Transform:
   - {fileID: 1683265888}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &406567760 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 884618600861727906, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
+  m_PrefabInstance: {fileID: 1180535376}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f47f8a2c6e302dd4bb21a24fdffae346, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &640121210
 GameObject:
   m_ObjectHideFlags: 0
@@ -1002,6 +1013,7 @@ GameObject:
   - component: {fileID: 1683265888}
   - component: {fileID: 1683265890}
   - component: {fileID: 1683265889}
+  - component: {fileID: 1683265891}
   m_Layer: 3
   m_Name: Terrain_0_0_1a71c3b3-949b-42c1-907a-86e660da318d
   m_TagString: Ground
@@ -1083,6 +1095,25 @@ Terrain:
   m_EnableHeightmapRayTracing: 1
   m_EnableTreesAndDetailsRayTracing: 0
   m_TreeMotionVectorModeOverride: 3
+--- !u!114 &1683265891
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1683265887}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b822a298f7e434aee9c31d745895f6d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  Sunrise: {fileID: 2100000, guid: 3a253cab252a165478338fba0f03e63a, type: 2}
+  Sunset: {fileID: 2100000, guid: 44d0573bf6d91e447b62f3aff840f2ae, type: 2}
+  Night_Moonless: {fileID: 2100000, guid: 42dc3b9b0dd2040fc9ef0182fdea0e50, type: 2}
+  Night: {fileID: 2100000, guid: f8a60d169ab8a46b09c9b01a3e51601f, type: 2}
+  Day: {fileID: 2100000, guid: 12ccb828343c3405fb94289774b51aad, type: 2}
+  Day_Sunless: {fileID: 2100000, guid: d48a7646f5d0547e889733d84b50cb9f, type: 2}
+  timer: {fileID: 406567760}
 --- !u!1001 &1696186467
 PrefabInstance:
   m_ObjectHideFlags: 0
