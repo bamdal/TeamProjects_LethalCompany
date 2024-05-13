@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24879fe717cbaa74bbb0567ff9ea1ed6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 0
+  difficulty: 4
   moduls:
   - {fileID: 4564526961701584482, guid: 1138215f9dd50bb48a4377b49ce3db21, type: 3}
   - {fileID: 2468206507073093500, guid: d30871add4ee14548b4d3ba81c49880d, type: 3}
@@ -74,7 +74,7 @@ MonoBehaviour:
   - {fileID: 9173004761039666514, guid: 0224428c7d683df4f8139d4d6252d454, type: 3}
   trapPrefabs:
   - {fileID: 7092445322126236038, guid: 0758946b0a4d6ca4da59074cf19b00ee, type: 3}
-  Spawn: 0.2
+  enemys: {fileID: 0}
 --- !u!1 &4971912658237920506
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,7 +10,7 @@ public class EnemySpawner : MonoBehaviour
     Queue<EnemyBase> enemyCount;
     Queue<GameObject> trapCount;
 
-    public Transform enemys;
+    Transform enemys;
 
     private void Awake()
     {
