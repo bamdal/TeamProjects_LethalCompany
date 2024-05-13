@@ -63,6 +63,13 @@ public class Enemy_Child_KWS : MonoBehaviour
 
     Transform spiderPosition;
 
+    /// <summary>
+    /// 애니메이션을 실행할 트리거의 해쉬
+    /// </summary>
+    int idleHash = Animator.StringToHash("Idle");
+    int walkHash = Animator.StringToHash("Walk");
+    int attackHash = Animator.StringToHash("Attack");
+
     //Player player;
 
     private void Awake()
@@ -89,8 +96,9 @@ public class Enemy_Child_KWS : MonoBehaviour
     private void GravityOff()
     {
         Debug.Log("GravityOff 실행");
-        rigid.useGravity = false;       // 중력 off
-        animator.SetTrigger("Idle");    // 중력 off 상태는 Idle 상태
+        rigid.useGravity = false;           // 중력 off
+        animator.ResetTrigger(walkHash);    // 쌓여있던 트리거 초기화
+        animator.SetTrigger(idleHash);      // 중력 off 상태는 Idle 상태
     }
 
     /// <summary>
@@ -99,12 +107,14 @@ public class Enemy_Child_KWS : MonoBehaviour
     private void GravityOn()
     {
         Debug.Log("GravityOn 실행");
-        rigid.useGravity = true;        // 중력 on
-        animator.SetTrigger("Walk");    // 중력이 on 되었을 때는 플레이어를 추적하고 있는 상태
+        rigid.useGravity = true;            // 중력 on
+        animator.ResetTrigger(idleHash);    // 쌓여있던 트리거 초기화
+        animator.SetTrigger(walkHash);      // 중력이 on 되었을 때는 플레이어를 추적하고 있는 상태
     }
 
     /// <summary>
     /// 점프하면서 부모 오브젝트의 위치와 틀어지는 것을 막기 위한 함수
+    /// 현재는 사용 안함
     /// </summary>
     private void samePosition()
     {
@@ -117,63 +127,86 @@ public class Enemy_Child_KWS : MonoBehaviour
 
     private void Update()
     {
-        if (IsGrounded())   // 땅이면
-        {
-            cooltime += Time.deltaTime;     // 쿨타임 누적
-        }
-
-        if (isCatch)
-        {
-            //Player player = GameManager.Instance.Player;
-            //spiderPosition = player.transform.GetChild(5);
-
-            Player player = GameManager.Instance.Player;                                    // 플레이어 찾기
-            spiderPosition = player.transform.GetChild(5);                                  // 플레이어의 5번째 자식 spiderPosition 찾기
-            GravityOff();                                                                   // 중력 끄기
-            Quaternion playerRotation = player.gameObject.transform.rotation;               // 플레이어의 회전
-
-            // 플레이어의 회전 + x축으로 90도 회전
-            Quaternion adjustedRotation = Quaternion.Euler(90.0f, playerRotation.eulerAngles.y, playerRotation.eulerAngles.z);
-            this.gameObject.transform.rotation = adjustedRotation;                          // 이 오브젝트의 회전을 플레이어 + x축 90도
-            this.gameObject.transform.position = spiderPosition.transform.position;         // 이 오브젝트의 위치를 spiderPosition와 같게
-            //this.gameObject.transform.rotation = player.gameObject.transform.rotation;      // 이 오브젝트의 회전을 플레이어와 같게
-            enemyParent.StateAttack();                                                      // 적의 상태를 Attack으로 전환
-        }
-    }
-
-    private void FixedUpdate()
-    {
-        /*if (isCatch)
-        {
-            Player player = GameManager.Instance.Player;
-            spiderPosition = player.transform.GetChild(5);
-            GravityOff();
-            this.gameObject.transform.position = spiderPosition.transform.position;
-        }*/
-
         /*if (IsGrounded())   // 땅이면
         {
             cooltime += Time.deltaTime;     // 쿨타임 누적
         }
 
-        if (isCatch)
+        if (isCatch)        // 플레이어를 잡았을 경우
         {
             //Player player = GameManager.Instance.Player;
             //spiderPosition = player.transform.GetChild(5);
 
-            GameObject playerVCam = GameObject.Find("PlayerVC");                    // PlayerVC의 위치를 찾고
-            GravityOff();                                                           // 중력 끄기
-            this.gameObject.transform.position = playerVCam.transform.position + new Vector3(0, 0, 1);     // 이 게임 오브젝트의 위치를 PlayerVC의으로 이동
-            //this.gameObject.transform.rotation = Quaternion.Euler(90.0f, 0.0f, 0.0f);
-            this.gameObject.transform.rotation = player.gameObject.transform.rotation;        // 이 게임 오브젝트의 rotation을 플레이어와 같게 하기
-                                                                                                // 여기에 Quaternion.Euler(90.0f, 0.0f, 0.0f) 를 더해야 하는데?
+            Player player = GameManager.Instance.Player;                                    // 플레이어 찾기
+            spiderPosition = player.transform.GetChild(3);                                  // 플레이어의 5번째 자식 spiderPosition 찾기
+
+            // 이 오브젝트를 플레이어의 자식으로 변경
+            this.gameObject.transform.SetParent(player.transform);
+            this.gameObject.transform.localPosition = new Vector3(0, 1, 1);
+            
+            Quaternion playerRotation = player.transform.rotation;                          // 플레이어의 회전
+            Quaternion additionalRotation = Quaternion.Euler(90f, 0f, 0f);                  // x축으로 90도 회전
+            Quaternion finalRotation = playerRotation * additionalRotation;                 // 플레이어의 회전에 x축 90도 더하기
+            this.gameObject.transform.rotation = finalRotation;                             // 이 오브젝트의 회전 설정
+
+            *//*Quaternion playerRotation = player.gameObject.transform.rotation;               // 플레이어의 회전
+            //playerRotation.eulerAngles.z
+            // 플레이어의 회전 + x축으로 90도 회전
+            Quaternion adjustedRotation = Quaternion.Euler(90.0f, playerRotation.eulerAngles.y, playerRotation.eulerAngles.z);
+            this.gameObject.transform.rotation = adjustedRotation;                          // 이 오브젝트의 회전을 플레이어 + x축 90도
+            this.gameObject.transform.position = spiderPosition.transform.position + new Vector3(0, -0.5f, 1.0f);         // 이 오브젝트의 위치를 spiderPosition와 같게
+            //this.gameObject.transform.rotation = player.gameObject.transform.rotation;      // 이 오브젝트의 회전을 플레이어와 같게*//*
+            enemyParent.StateAttack();
+            
+            rigid.velocity = Vector3.zero;        // 가해지던 힘 제거
+            GravityOff();                         // 중력 끄기
+
+            animator.ResetTrigger(idleHash);      // 쌓여있던 트리거 초기화
+            animator.ResetTrigger(walkHash);      // 쌓여있던 트리거 초기화
+            animator.SetTrigger(attackHash);      // Attack 애니메이션 실행
+        }*/
+    }
+
+    private void FixedUpdate()
+    {
+        if (IsGrounded())   // 땅이면
+        {
+            cooltime += Time.deltaTime;     // 쿨타임 누적
+        }
+
+        if (isCatch)        // 플레이어를 잡았을 경우
+        {
+            //Player player = GameManager.Instance.Player;
+            //spiderPosition = player.transform.GetChild(5);
+
+            Player player = GameManager.Instance.Player;                                    // 플레이어 찾기
+            spiderPosition = player.transform.GetChild(3);                                  // 플레이어의 5번째 자식 spiderPosition 찾기
+
+            // 이 오브젝트를 플레이어의 자식으로 변경
+            this.gameObject.transform.SetParent(player.transform);
+            this.gameObject.transform.localPosition = new Vector3(0, 1, 1);
+
+            Quaternion playerRotation = player.transform.rotation;                          // 플레이어의 회전
+            Quaternion additionalRotation = Quaternion.Euler(90f, 0f, 0f);                  // x축으로 90도 회전
+            Quaternion finalRotation = playerRotation * additionalRotation;                 // 플레이어의 회전에 x축 90도 더하기
+            this.gameObject.transform.rotation = finalRotation;                             // 이 오브젝트의 회전 설정
+
+            /*Quaternion playerRotation = player.gameObject.transform.rotation;               // 플레이어의 회전
+            //playerRotation.eulerAngles.z
+            // 플레이어의 회전 + x축으로 90도 회전
+            Quaternion adjustedRotation = Quaternion.Euler(90.0f, playerRotation.eulerAngles.y, playerRotation.eulerAngles.z);
+            this.gameObject.transform.rotation = adjustedRotation;                          // 이 오브젝트의 회전을 플레이어 + x축 90도
+            this.gameObject.transform.position = spiderPosition.transform.position + new Vector3(0, -0.5f, 1.0f);         // 이 오브젝트의 위치를 spiderPosition와 같게
+            //this.gameObject.transform.rotation = player.gameObject.transform.rotation;      // 이 오브젝트의 회전을 플레이어와 같게*/
             enemyParent.StateAttack();
 
-            // 회전 조절 필요
-            //this.gameObject.transform.rotation = playerVCam.transform.rotation;
+            rigid.velocity = Vector3.zero;        // 가해지던 힘 제거
+            GravityOff();                         // 중력 끄기
 
-            // 플레이어한테 붙을게 아니라 Vcam에 붙어야 하나?
-        }*/
+            animator.ResetTrigger(idleHash);      // 쌓여있던 트리거 초기화
+            animator.ResetTrigger(walkHash);      // 쌓여있던 트리거 초기화
+            animator.SetTrigger(attackHash);      // Attack 애니메이션 실행
+        }
     }
 
     public void Jump()
@@ -238,16 +271,19 @@ public class Enemy_Child_KWS : MonoBehaviour
         }
     }*/
 
+    /// <summary>
+    /// 플레이어를 잡았는지 확인하는 함수
+    /// </summary>
     void CheckChatch()
     {
         if (isCatch)
         {
             // 플레이어를 잡았다
-            Debug.Log("OnTriggerEnter가 활성화");
-            Debug.Log("플레이어를 잡았다");
+            //Debug.Log("OnTriggerEnter가 활성화");
+            //Debug.Log("플레이어를 잡았다");
             StopCoroutine(Timer()); // OnTriggerEnter가 발생하면 타이머 중단
 
-            Debug.Log("위치 조정 실행");
+            //Debug.Log("위치 조정 실행");
 
             //enemyParent.NoPath();
             // 플레이어를 잡으면 아예 타이머를 중단 시켜서 플레이어가 빠져나오면 다시 코루틴이 실행안됨
@@ -281,51 +317,3 @@ public class Enemy_Child_KWS : MonoBehaviour
 // 코루틴으로 n초 기다리고 OnTriggerEnter가 실행되었는지 확인
 // => 실행되지 않았으면 위로 올려야 함
 // => 실행되었으면 플레이어의 얼굴에 붙어야 함
-
-/*
-*참고할 것
-using UnityEngine;
-using System.Collections;
-
-public class ExampleScript : MonoBehaviour
-{
-    private bool triggered = false;
-    private bool timerFinished = false;
-
-    IEnumerator Timer()
-    {
-        yield return new WaitForSeconds(10); // 10초 동안 대기
-        timerFinished = true;
-        CheckTriggerAndTimer();
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("YourTag")) // 필요한 경우 태그를 변경하세요
-        {
-            triggered = true;
-            CheckTriggerAndTimer();
-        }
-    }
-
-    void CheckTriggerAndTimer()
-    {
-        if (triggered)
-        {
-            Debug.Log("OnTriggerEnter가 활성화되었습니다.");
-            StopCoroutine(Timer()); // OnTriggerEnter가 발생하면 타이머 중단
-        }
-        else if (timerFinished)
-        {
-            Debug.Log("10초가 경과했지만 OnTriggerEnter가 활성화되지 않았습니다.");
-        }
-    }
-
-    void Start()
-    {
-        StartCoroutine(Timer());
-    }
-}
-
-*/
-
