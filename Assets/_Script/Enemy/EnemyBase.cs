@@ -76,6 +76,7 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
     protected virtual void Start()
     {
         onDebuffAttack += OnDebuff;
+        onEnemyStateUpdate = Update_Stop;
     }
 
     protected virtual void Update()
