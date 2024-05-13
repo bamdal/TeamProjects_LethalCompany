@@ -14,9 +14,9 @@ GameObject:
   - component: {fileID: 2119877979482830719}
   - component: {fileID: 839288278165058045}
   - component: {fileID: 4868274321809528434}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Enemy_Jester
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

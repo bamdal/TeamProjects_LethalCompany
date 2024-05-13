@@ -11,11 +11,12 @@ public class EnemySpawner : MonoBehaviour
     Queue<GameObject> trapCount;
 
     Transform enemys;
-
+    Queue<GameObject> enemies;
     private void Awake()
     {
         enemyCount = new Queue<EnemyBase>();
         trapCount = new Queue<GameObject>();
+        enemies = new Queue<GameObject>();
         if (enemys == null)
         {
             enemys = transform.GetChild(0);
@@ -49,22 +50,32 @@ public class EnemySpawner : MonoBehaviour
                
             }
         }
-
+        
         int spawnCount = 0;
         while (enemyCount.Count > 0)
         {
             EnemyBase obj = Instantiate(enemyCount.Dequeue(), enemys);
+            obj.gameObject.SetActive(false);
             obj.transform.position = spawnPoints[Random.Range(0, spawnPoints.Count)].transform.position; spawnCount++;
+            enemies.Enqueue(obj.gameObject);
         }
 
         while (trapCount.Count > 0)
         {
             GameObject obj = Instantiate(trapCount.Dequeue(), enemys);
+            obj.gameObject.SetActive(false);
             obj.transform.position = spawnPoints[Random.Range(0, spawnPoints.Count)].transform.position; spawnCount++;
+            enemies.Enqueue(obj);
         }
 
     
 
         Debug.Log($"적 소환 수 : {spawnCount}");
+
+        int count = enemies.Count;
+        for(int i = 0; i < count; i++)
+        {
+            enemies.Dequeue().SetActive(true);
+        }
     }
 }

@@ -18,10 +18,10 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
 
     EnemyState state = EnemyState.Stop;
 
-    protected EnemyState State
+    public EnemyState State
     {
         get => state;
-        set
+        protected set
         {
             if(state != value)
             {
@@ -108,6 +108,7 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
     {
 
     }
+
 
     public void Die()
     {

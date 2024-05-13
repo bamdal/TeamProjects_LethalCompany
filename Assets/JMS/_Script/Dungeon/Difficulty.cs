@@ -6,5 +6,10 @@ public enum Difficulty
     C = -1,
     B = 0,
     A = 1,
-    S = 2
+    S = 2,
+#if UNITY_EDITOR
+
+
+    EX = 500
+#endif
 }

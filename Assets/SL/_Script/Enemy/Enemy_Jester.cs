@@ -35,7 +35,6 @@ public class Enemy_Jester : EnemyBase
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
-        SetNewRandomDestination();
         timer = patrolTime;
         changeTimer = changeModeTime;
         originSpeed = agent.speed;
@@ -44,10 +43,12 @@ public class Enemy_Jester : EnemyBase
     }
     protected override void Start()
     {
+        base.Start();
         player = GameManager.Instance.Player;
         Debug.Log(player);
         State = EnemyState.Patrol;
-        base.Start();
+
+        SetNewRandomDestination();
     }
 
     protected override void Update()

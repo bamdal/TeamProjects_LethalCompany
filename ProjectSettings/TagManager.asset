@@ -12,6 +12,7 @@ TagManager:
   - Terminal
   - Store
   - Enemy
+  - NOT
   layers:
   - Default
   - TransparentFX

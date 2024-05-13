@@ -25,7 +25,6 @@ public class Door : MonoBehaviour
     Transform hinge;
 
 
-
     private void Awake()
     {
         connector = GetComponent<ModulConnector>();
