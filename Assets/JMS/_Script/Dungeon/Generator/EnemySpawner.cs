@@ -14,6 +14,8 @@ public class EnemySpawner : MonoBehaviour
 
     private void Awake()
     {
+        enemyCount = new Queue<EnemyBase>();
+        trapCount = new Queue<GameObject>();
         if (enemys == null)
         {
             enemys = transform.GetChild(0);

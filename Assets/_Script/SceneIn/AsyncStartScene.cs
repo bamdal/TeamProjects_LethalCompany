@@ -17,6 +17,8 @@ public class AsyncStartScene : MonoBehaviour
 
     void Start()
     {
+
+        GameManager.Instance.OnGameState = GameState.GameStart;
         if (SceneManager.GetActiveScene().name != "Company")
         {
             StartCoroutine(LoadDungenonScene());

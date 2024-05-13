@@ -27,7 +27,7 @@ public class Trap : MonoBehaviour
             }
             raiseTrap = StartCoroutine(RaiseTrap());
         }
-        Debug.Log(IsGrounded());
+        //Debug.Log(IsGrounded());
     }
     IEnumerator RaiseTrap()
     {

@@ -214,3 +214,5 @@ MonoBehaviour:
   raisingSpeed: 1
   trapLowerPosition: 0
   gravityAcceleration: 9.8
+  maxSpawnCount: 5
+  spawnPercent: 0.2

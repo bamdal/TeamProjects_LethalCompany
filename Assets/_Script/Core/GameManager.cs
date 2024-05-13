@@ -3,6 +3,16 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
+/// <summary>
+/// 게임상태
+/// </summary>
+public enum GameState
+{
+    GameReady,
+    GameStart,
+    GameOver
+}
+
 public class GameManager : Singleton<GameManager>
 {
     /// <summary>
@@ -70,15 +80,6 @@ public class GameManager : Singleton<GameManager>
     public Action<float> onMoneyChange;
 
 
-    /// <summary>
-    /// 게임상태
-    /// </summary>
-    public enum GameState
-    {
-        GameReady,
-        GameStart,
-        GameOver
-    }
 
     /// <summary>
     /// 현재 게임상태
@@ -105,6 +106,7 @@ public class GameManager : Singleton<GameManager>
                         break;
                     case GameState.GameStart:
                         Debug.Log("게임스타트");
+                        onBuy?.Invoke();
                         onGameStart?.Invoke();
                         break;
                     case GameState.GameOver:

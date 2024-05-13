@@ -82,6 +82,7 @@ public class Terminal : MonoBehaviour,IInteraction
     public Action ESC;
     public Action onRequest { get; set; }
 
+    GameManager gameManager;
     private void Awake()
     {
         sphere = GetComponent<SphereCollider>();                             // PressF_text의 감지범위 콜라이더
@@ -119,6 +120,8 @@ public class Terminal : MonoBehaviour,IInteraction
         // 게임 시작 시 nearVcam 자동 할당
         Transform near = transform.GetChild(1);
         nearVcam = near.GetComponent<CinemachineVirtualCamera>();
+
+        gameManager = GameManager.Instance;
     }
 
 
@@ -282,12 +285,52 @@ public class Terminal : MonoBehaviour,IInteraction
                 break;
 
             // 물건 구매하는 부분 -----------------------------------------------------------------------------------------
-            case "flashlight":
+            case "flashlight0":
             case "손전등":
                 if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf) // mainText 비활성화 storeText 활성화 상태이면
                 {
                     Debug.Log("스토어 입력 중 손전등 입력 확인");
-                    onFlashLight?.Invoke();
+                    gameManager.ItemsQueue.Enqueue(ItemCode.FlashLight);
+                }
+                break;
+            case "flashlight1":
+            case "프로손전등":
+                if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf) // mainText 비활성화 storeText 활성화 상태이면
+                {
+                    Debug.Log("스토어 입력 중 프로손전등 입력 확인");
+                    gameManager.ItemsQueue.Enqueue(ItemCode.FlashLightUp);
+                }
+                break;
+            case "Shovel":
+            case "삽":
+                if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf) // mainText 비활성화 storeText 활성화 상태이면
+                {
+                    Debug.Log("스토어 입력 중 삽 입력 확인");
+                    gameManager.ItemsQueue.Enqueue(ItemCode.Shovel);
+                }
+                break;
+            case "Zap":
+            case "ZapGun":
+                if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf) // mainText 비활성화 storeText 활성화 상태이면
+                {
+                    Debug.Log("스토어 입력 중 ZapGun 입력 확인");
+                    gameManager.ItemsQueue.Enqueue(ItemCode.ZapGun);
+                }
+                break;
+            case "Grenade":
+            case "섬광수류탄":
+                if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf) // mainText 비활성화 storeText 활성화 상태이면
+                {
+                    Debug.Log("스토어 입력 중 섬광수류탄 입력 확인");
+                    gameManager.ItemsQueue.Enqueue(ItemCode.Grenade);
+                }
+                break;
+            case "Labber":
+            case "사다리":
+                if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf) // mainText 비활성화 storeText 활성화 상태이면
+                {
+                    Debug.Log("스토어 입력 중 사다리 입력 확인");
+                    gameManager.ItemsQueue.Enqueue(ItemCode.Labber);
                 }
                 break;
             default:
@@ -322,6 +365,8 @@ public class Terminal : MonoBehaviour,IInteraction
                 }
                 break;
         }
+
+        gameManager.onBuy?.Invoke();
     }
 
     void ChangeSceen()

@@ -103,15 +103,24 @@ public class Enemy_Spider : EnemyBase
     /// </summary>
     private NavMeshAgent agent;
 
+    /// <summary>
+    /// 이동 속도
+    /// </summary>
     [Range(1f, 5f)]
     public float moveSpeed = 1.0f;
 
     /*[Range(0.01f, 1f)]
     public float jumpHeight = 0.01f;*/
 
+    /// <summary>
+    /// 플레이어와 거리를 판단해서 멈출 거리
+    /// </summary>
     [Range(1f, 10f)]
     public float stopDistance = 1.0f;
 
+    /// <summary>
+    /// 회전 속도
+    /// </summary>
     [Range(1f, 10f)]
     public float rotationSpeed = 10.0f;
 
@@ -157,9 +166,12 @@ public class Enemy_Spider : EnemyBase
         //onEnemyStateUpdate();
     }
     
+    /// <summary>
+    /// 적의 상태가 Stop일 때 실행될 함수
+    /// </summary>
     protected override void Update_Stop()
     {
-        StopCoroutine(enemy_Child.RaiseTrap());
+        StopCoroutine(enemy_Child.RaiseTrap());     // 코루틴 시작하기 전에 한번 정지
         if(enemy_Child.IsGrounded())
         {
             Debug.Log("중력 조작");
@@ -169,18 +181,24 @@ public class Enemy_Spider : EnemyBase
         }
     }
 
+    /// <summary>
+    /// 적의 상태가 Patrol일 때 실행될 함수
+    /// </summary>
     protected override void Update_Patrol()
     {
 
     }
 
-    public Action OnChase;
+    //public Action onChase;
 
+    /// <summary>
+    /// 적의 상태가 Chase일 때 실행될 함수
+    /// </summary>
     protected override void Update_Chase()
     {
         //Debug.Log("Update_Chase 상태 실행");
-        onLower?.Invoke();
-        OnChase?.Invoke();
+        onLower?.Invoke();      // 자식 오브젝트의 중력 켜고
+        //onChase?.Invoke();
         if (player != null)
         {
             // 플레이어를 향해 회전
@@ -216,6 +234,9 @@ public class Enemy_Spider : EnemyBase
         }
     }
 
+    /// <summary>
+    /// 멈출 때 실행될 함수
+    /// </summary>
     public void NoPath()
     {
         // 적이 플레이어 근처에 있을 때 가해지던 힘 제거
@@ -225,14 +246,21 @@ public class Enemy_Spider : EnemyBase
         agent.ResetPath();
     }
 
+    /// <summary>
+    /// 적의 상태가 Attack일 때 실행될 함수
+    /// </summary>
     protected override void Update_Attack()
     {
-
+        // 플레이어의 체력을 깎는 부분 필요
     }
 
+    /// <summary>
+    /// 적의 상태가 Die일 때 실행될 함수
+    /// </summary>
     protected override void Update_Die()
     {
         base.Update_Die();
+        Debug.Log("적이 죽었다");
     }
 
     /*private void OnCollisionEnter(Collision collision)
@@ -295,8 +323,16 @@ public class Enemy_Spider : EnemyBase
         State = EnemyState.Stop;
     }*/
 
+    /// <summary>
+    /// 상태를 stop으로 바꾸기 위한 함수
+    /// </summary>
     public void StateStop()
     {
         State = EnemyState.Stop;
+    }
+
+    public void StateAttack()
+    {
+        State = EnemyState.Attack;
     }
 }
