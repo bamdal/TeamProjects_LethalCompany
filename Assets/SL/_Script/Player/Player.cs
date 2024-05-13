@@ -673,28 +673,7 @@ public class Player : Singleton<Player>, IBattler, IHealth
             onRclickIsNotPressed?.Invoke();
             itemRader.gameObject.SetActive(false);
         }
-        /*itemRader.gameObject.SetActive(true);
-        if (DisableItemRaderAfterDelayCoroutine != null)
-        {
-            StopCoroutine(DisableItemRaderAfterDelayCoroutine);
-        }
-        DisableItemRaderAfterDelayCoroutine = StartCoroutine(DisableItemRaderAfterDelay());*/
-
-
     }
-
-   /* Coroutine DisableItemRaderAfterDelayCoroutine;
-    /// <summary>
-    /// 아이템 레이더 오브젝트를 아주잠깐 켜기위한 코루틴 함수
-    /// </summary>
-    /// <returns></returns>
-    private IEnumerator DisableItemRaderAfterDelay()
-    {
-        yield return new WaitForSeconds(0.05f); // 변경하고자 하는 시간으로 수정 가능
-        itemRader.gameObject.SetActive(false);
-
-    }*/
-
 
 
     /// <summary>
@@ -839,4 +818,8 @@ public class Player : Singleton<Player>, IBattler, IHealth
         characterController.enabled = true;
     }
 
+    public void DamageLog()
+    {
+        Debug.Log(Hp + "가 남았습니다.");
+    }
 }
