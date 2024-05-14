@@ -19,11 +19,11 @@ public class Clock : MonoBehaviour
         timer = FindAnyObjectByType<Timer>();
         if(timer != null )  
             timer.OnTimeChanged += TimerChange;
-        timeText.text = timer.CurrentTime.ToString("HH:mm");
+        timeText.text = timer.startTime.ToString("HH:mm");
     }
 
     private void TimerChange(DateTime time)
     {
-        timeText.text = timer.CurrentTime.ToString("HH:mm");
+        timeText.text = time.ToString("HH:mm");
     }
 }

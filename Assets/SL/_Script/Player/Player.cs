@@ -51,8 +51,8 @@ public class Player : Singleton<Player>, IBattler, IHealth
     private void OnDie()
     {
         Debug.Log("사망");
-        input.onDie?.Invoke();
-        
+        ResetItemInventory();
+        onDie?.Invoke();
     }
 
     /// <summary>
@@ -240,7 +240,8 @@ public class Player : Singleton<Player>, IBattler, IHealth
     public Action<float> onHealthChange;
     public Action<float> onStaminaChange;
     public Action onRclickIsNotPressed;
-
+    public Action onDie;
+    public Action onRefresh;
     public InventoryUI invenUI;
 
     CinemachineImpulseSource _source;   // 카메라 흔들림을 위한 시네머신 임펄스 소스 컴포넌트
@@ -248,6 +249,13 @@ public class Player : Singleton<Player>, IBattler, IHealth
     Vignette vignette;
     Terminal terminal;
     private void Awake()
+    {
+        
+        DontDestroyOnLoad(gameObject);
+
+    }
+
+    private void OnEnable()
     {
         input = GetComponent<PlayerInput>();
 
@@ -263,27 +271,30 @@ public class Player : Singleton<Player>, IBattler, IHealth
         cam = Camera.main;
         inventoryTransform = transform.GetChild(1);
         inventory = inventoryTransform.GetComponent<Inventory>();
-        Stamina = maxStamina;
-        Hp = maxHp;
         characterController = GetComponent<CharacterController>();
         itemRader = transform.GetChild(2);
         groundCheckPosition = transform.GetChild(4);
-        gravityY = -1f;
         invenUI = FindObjectOfType<InventoryUI>();
         Transform child = transform.GetChild(0);
         _source = child.GetComponent<CinemachineImpulseSource>();
         volume = FindObjectOfType<Volume>();
         volume.profile.TryGet(out vignette);
 
-        DontDestroyOnLoad(this.gameObject);
-
+        Stamina = maxStamina;
+        Hp = maxHp;
+        gravityY = -1f;
     }
-
-    private void OnEnable()
+    private void OnDisable()
     {
-        
+        input.onMove -= OnMoveInput;
+        input.onMoveModeChange -= OnMoveModeChageInput;
+        input.onInteract -= OnInteractInput;
+        input.onJump -= OnJumpInput;
+        input.onLClick -= OnLClickInput;
+        input.onRClick -= OnRClickInput;
+        input.onScroll -= OnScrollWheel;
+        input.onItemDrop -= OnItemDrop;
     }
-
     private void Start()
     {
         terminal = FindAnyObjectByType<Terminal>();
@@ -695,6 +706,21 @@ public class Player : Singleton<Player>, IBattler, IHealth
             }
         }
     }
+    void ResetItemInventory()
+    {
+        Transform tempItem;
+        for (int j = 0; j < 4; j++)
+        {
+            if (inventory.InvenSlots[j].childCount > 0)             // 인벤토리 인벤슬롯에 아이템이 들어있다면
+            {
+                tempItem = inventory.InvenSlots[j].GetChild(0);
+                Destroy(tempItem.gameObject);
+                inventory.ItemDBs[j] = null;
+                invenUI.ItemImages[j].sprite = null;
+                CurrentItem = null;
+            }
+        }
+    }
 
     private void OnScrollWheel(Vector2 vector)
     {
@@ -821,5 +847,14 @@ public class Player : Singleton<Player>, IBattler, IHealth
     public void DamageLog()
     {
         Debug.Log(Hp + "가 남았습니다.");
+    }
+
+
+    public void PlayerRefresh()
+    {
+        Stamina = maxStamina;
+        Hp = maxHp;
+        gravityY = -1f;
+        onRefresh?.Invoke();
     }
 }
