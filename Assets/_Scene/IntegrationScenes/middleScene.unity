@@ -1186,7 +1186,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1383135658258041653, guid: 5988e8ce917b4564d805daaf66d05244, type: 3}
       propertyPath: m_Name
-      value: StartmiddleScene
+      value: MiddleSceneController
       objectReference: {fileID: 0}
     - target: {fileID: 6480736638366550856, guid: 5988e8ce917b4564d805daaf66d05244, type: 3}
       propertyPath: m_LocalPosition.x

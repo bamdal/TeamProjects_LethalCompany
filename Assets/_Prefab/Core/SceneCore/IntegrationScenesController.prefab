@@ -43,7 +43,7 @@ GameObject:
   - component: {fileID: 9067516278861555671}
   - component: {fileID: 884618600861727906}
   m_Layer: 0
-  m_Name: AsyncStartScene
+  m_Name: IntegrationScenesController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
