@@ -15,7 +15,14 @@ public class Test_Damage : TestBase
     {
         player.OnTestDamage();
     }
-
+    protected override void OnTest2(InputAction.CallbackContext context)
+    {
+        player.Defense(100);
+    }
+    protected override void OnTest3(InputAction.CallbackContext context)
+    {
+        player.PlayerRefresh();
+    }
 
 
 }
