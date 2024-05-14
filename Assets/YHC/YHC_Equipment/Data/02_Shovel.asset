@@ -21,6 +21,6 @@ MonoBehaviour:
   itemType: 1
   itemCode: 102
   isConductive: 0
-  itemIcon: {fileID: 0}
+  itemIcon: {fileID: 21300000, guid: 85a444dacdd3b6b43a6e3791caaed0b1, type: 3}
   itemModel: {fileID: 722632824591328399, guid: 6490b6b664395d146ad14efb07d24c4f, type: 3}
   damage: 10

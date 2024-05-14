@@ -18,7 +18,7 @@ public class DropBoxManager : MonoBehaviour
     IInteraction temp;
     void DropItemBox()
     {
-        if(gameManager.ItemsQueue.Count > 0 && gameManager.OnGameState == GameState.GameStart && dropItem ==null) 
+        if(gameManager.ItemsQueue.Count > 0 && gameManager.GameState == GameState.GameStart && dropItem ==null) 
         {
 
             dropItem = StartCoroutine(Drop());

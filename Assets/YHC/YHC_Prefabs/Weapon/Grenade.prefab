@@ -13,7 +13,6 @@ GameObject:
   - component: {fileID: 583643471760967562}
   - component: {fileID: 2971489561851676168}
   - component: {fileID: 8082065648512361504}
-  - component: {fileID: 3590588535763539467}
   - component: {fileID: 3926329481050563264}
   m_Layer: 0
   m_Name: Grenade
@@ -126,27 +125,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   itemDB: {fileID: 0}
   explosionRadius: 0
---- !u!135 &3590588535763539467
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 583643471763167562}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Radius: 1
-  m_Center: {x: 0, y: 0, z: 0}
 --- !u!54 &3926329481050563264
 Rigidbody:
   m_ObjectHideFlags: 0

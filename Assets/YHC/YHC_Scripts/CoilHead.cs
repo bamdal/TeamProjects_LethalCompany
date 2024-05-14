@@ -59,6 +59,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
                 if (coilHeadHp <= 0)
                 {
                     State = EnemyState.Die;
+                    CoilHeadDie();
                 }
             }
         }
@@ -160,6 +161,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
 
     // 컴포넌트
     NavMeshAgent agent;
+    SphereCollider detectingArea;
     SphereCollider chaseArea;
     CoilHead_AttackArea attackArea;
 
@@ -170,7 +172,8 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         coilHeadHp = MaxHP;
 
         agent = GetComponent<NavMeshAgent>();
-        chaseArea = GetComponent<SphereCollider>();
+        detectingArea = GetComponent<SphereCollider>();
+        chaseArea = transform.GetChild(1).GetComponent<SphereCollider>();
         attackArea = GetComponentInChildren<CoilHead_AttackArea>();
     }
 
@@ -344,6 +347,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         // 플레이어일때만 실행되기때문에 추가 확인 필요 X
         playerTransform = player;
         attackTarget = player.GetComponent<IBattler>();
+        Debug.Log("공격모드");
         State = EnemyState.Attack;
     }
 
@@ -386,6 +390,9 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     public void CoilHeadDie()
     {
         State = EnemyState.Die;
+        agent.speed = 0.0f;
+        agent.velocity = Vector3.zero;
+
         IsAlive = false;
     }
 

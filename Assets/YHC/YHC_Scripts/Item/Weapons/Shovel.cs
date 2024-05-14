@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -13,6 +14,7 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase, IBattler
     public float Weight => weight;
 
     BoxCollider boxCollider;
+    Animator anim;
 
     private void Awake()
     {
@@ -50,12 +52,12 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase, IBattler
 
     public void Attack(IBattler target)
     {
-        throw new System.NotImplementedException();
+
     }
 
     public void Defense(float attackPower)
     {
-        throw new System.NotImplementedException();
+
     }
 
     public ItemDB GetItemDB()

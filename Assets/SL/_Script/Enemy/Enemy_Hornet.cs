@@ -7,6 +7,7 @@ using UnityEngine.AI;
 public class Enemy_Hornet : EnemyBase
 {
     Player player;
+    public float attackInterval = 0.3f;
     public float patrolRange = 10f; // 배회 범위
     public float patrolTime = 5f;   // 배회 시간
     public float attackPower = 10.0f;
@@ -58,7 +59,7 @@ public class Enemy_Hornet : EnemyBase
 
     protected override void Update()
     {
-        if(isPlayerDetected)
+        if (isPlayerDetected)
         {
             State = EnemyState.Chase;
         }
@@ -66,37 +67,27 @@ public class Enemy_Hornet : EnemyBase
         {
             State = EnemyState.Patrol;
         }
-        /*if(isAttacked)
+
+        if (isAttacked && onDamage == null)
         {
-            if(onDamage != null)
-            {
-                StopCoroutine(onDamage);
-            }
-            else
-            {
-                onDamage = StartCoroutine(AttackDamage());
-            }
+            onDamage = StartCoroutine(AttackDamage());
         }
-        else
+        else if (!isAttacked && onDamage != null)
         {
-            if (onDamage != null)
-            {
-                StopCoroutine(onDamage);
-            }
-        }*/
-        if(isAttacked)
-        {
-            player.Defense(1.0f);
+            StopCoroutine(onDamage);
+            onDamage = null;
         }
+
         base.Update();
     }
+
 
     IEnumerator AttackDamage()
     {
         while(true)
         {
             player.Defense(1.0f);
-            yield return new WaitForSeconds(1f);
+            yield return new WaitForSeconds(attackInterval);
         }
 
     }

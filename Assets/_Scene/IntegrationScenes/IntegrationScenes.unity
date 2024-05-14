@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481676, a: 1}
+  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -287,17 +287,6 @@ Transform:
   - {fileID: 1683265888}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!114 &406567760 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 884618600861727906, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
-  m_PrefabInstance: {fileID: 1180535376}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f47f8a2c6e302dd4bb21a24fdffae346, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &640121210
 GameObject:
   m_ObjectHideFlags: 0
@@ -465,52 +454,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &814186859
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 814186861}
-  - component: {fileID: 814186860}
-  m_Layer: 0
-  m_Name: TestCode
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!114 &814186860
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 814186859}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 850c70f9ed3dce74dbd792e96a4a76b7, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  seed: -1
-  count: 0
---- !u!4 &814186861
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 814186859}
-  serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 172.77147, y: 5.944845, z: 67.35008}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 0}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!850595691 &1109725342
 LightingSettings:
   m_ObjectHideFlags: 0
@@ -585,7 +528,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 5863868914747390054, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
       propertyPath: m_Name
-      value: AsyncStartScene
+      value: IntegrationScenesController
       objectReference: {fileID: 0}
     - target: {fileID: 8469042668604694402, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1013,7 +956,6 @@ GameObject:
   - component: {fileID: 1683265888}
   - component: {fileID: 1683265890}
   - component: {fileID: 1683265889}
-  - component: {fileID: 1683265891}
   m_Layer: 3
   m_Name: Terrain_0_0_1a71c3b3-949b-42c1-907a-86e660da318d
   m_TagString: Ground
@@ -1095,25 +1037,6 @@ Terrain:
   m_EnableHeightmapRayTracing: 1
   m_EnableTreesAndDetailsRayTracing: 0
   m_TreeMotionVectorModeOverride: 3
---- !u!114 &1683265891
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 1683265887}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b822a298f7e434aee9c31d745895f6d0, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  Sunrise: {fileID: 2100000, guid: 3a253cab252a165478338fba0f03e63a, type: 2}
-  Sunset: {fileID: 2100000, guid: 44d0573bf6d91e447b62f3aff840f2ae, type: 2}
-  Night_Moonless: {fileID: 2100000, guid: 42dc3b9b0dd2040fc9ef0182fdea0e50, type: 2}
-  Night: {fileID: 2100000, guid: f8a60d169ab8a46b09c9b01a3e51601f, type: 2}
-  Day: {fileID: 2100000, guid: 12ccb828343c3405fb94289774b51aad, type: 2}
-  Day_Sunless: {fileID: 2100000, guid: d48a7646f5d0547e889733d84b50cb9f, type: 2}
-  timer: {fileID: 406567760}
 --- !u!1001 &1696186467
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1358,6 +1281,7 @@ GameObject:
   - component: {fileID: 2009771392}
   - component: {fileID: 2009771391}
   - component: {fileID: 2009771394}
+  - component: {fileID: 2009771395}
   m_Layer: 0
   m_Name: Main Camera
   m_TagString: MainCamera
@@ -1473,6 +1397,50 @@ MonoBehaviour:
   m_CameraActivatedEvent:
     m_PersistentCalls:
       m_Calls: []
+--- !u!114 &2009771395
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2009771390}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a79441f348de89743a2939f4d699eac1, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_RenderShadows: 1
+  m_RequiresDepthTextureOption: 2
+  m_RequiresOpaqueTextureOption: 2
+  m_CameraType: 0
+  m_Cameras: []
+  m_RendererIndex: -1
+  m_VolumeLayerMask:
+    serializedVersion: 2
+    m_Bits: 1
+  m_VolumeTrigger: {fileID: 0}
+  m_VolumeFrameworkUpdateModeOption: 2
+  m_RenderPostProcessing: 0
+  m_Antialiasing: 0
+  m_AntialiasingQuality: 2
+  m_StopNaN: 0
+  m_Dithering: 0
+  m_ClearDepth: 1
+  m_AllowXRRendering: 1
+  m_AllowHDROutput: 1
+  m_UseScreenCoordOverride: 0
+  m_ScreenSizeOverride: {x: 0, y: 0, z: 0, w: 0}
+  m_ScreenCoordScaleBias: {x: 0, y: 0, z: 0, w: 0}
+  m_RequiresDepthTexture: 0
+  m_RequiresColorTexture: 0
+  m_Version: 2
+  m_TaaSettings:
+    quality: 3
+    frameInfluence: 0.1
+    jitterScale: 1
+    mipBias: 0
+    varianceClampScale: 0.9
+    contrastAdaptiveSharpening: 0
 --- !u!1001 &2247653184485165336
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1758,4 +1726,3 @@ SceneRoots:
   - {fileID: 1414317496}
   - {fileID: 1816509315}
   - {fileID: 1180535376}
-  - {fileID: 814186861}
