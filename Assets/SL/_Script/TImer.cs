@@ -6,9 +6,9 @@ using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
-    private DateTime startTime;
+    public DateTime startTime = DateTime.Parse("07:00");
     private TimeSpan totalTime = TimeSpan.FromMinutes(20);
-    public DateTime currentTime;
+    private DateTime currentTime;
     private DateTime lastEmittedTime;
     public Action<DateTime> OnTimeChanged;
     public Action OnHourChangeed;
@@ -34,7 +34,6 @@ public class Timer : MonoBehaviour
     void Awake()
     {
         // 시작 시간 설정
-        startTime = DateTime.Parse("07:00");
         CurrentTime = startTime;
     }
 
