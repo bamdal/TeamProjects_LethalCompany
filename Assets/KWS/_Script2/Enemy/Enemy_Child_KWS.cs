@@ -120,7 +120,7 @@ public class Enemy_Child_KWS : MonoBehaviour
             animator.ResetTrigger(attackHash);
 
             GravityOn();
-            // 다시 Enemy_Spider로 부모를 옮기기
+            // 부모를 옮기기
             this.gameObject.transform.SetParent(null);
 
             // 죽음 상태의 로테이션으로 변경
@@ -129,7 +129,7 @@ public class Enemy_Child_KWS : MonoBehaviour
             Debug.Log("다이 애니메이션 실행");
             animator.SetTrigger(dieHash);
 
-            enemyParent.NoPath();
+            //enemyParent.NoPath();
             enemyParent.StateDie();
 
             StartCoroutine(DisableCollider());

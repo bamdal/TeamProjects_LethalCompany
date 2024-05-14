@@ -48,19 +48,11 @@ public class Enemy_Spider : EnemyBase
     public override float Hp
     {
         get => currentHP;
-        /*set
-        {
-            if(value < 1)
-            {
-                State = EnemyState.Die;
-                NoPath();
-            }
-        }*/
         set
         {
             if (currentHP != value)
             {
-                if (value > 1)
+                if (value > 0)
                 {
                     currentHP = value;
                     currentHP = Math.Clamp(value, 0, MaxHP);
@@ -170,7 +162,6 @@ public class Enemy_Spider : EnemyBase
 
     private void Awake()
     {
-        currentHP = MaxHP;
         childEnemy = transform.GetChild(0);       // 0번째 자식 Enemy_Spider
         enemy_Child = childEnemy.GetComponent<Enemy_Child_KWS>();
         Collider collider = transform.GetComponent<Collider>();  // 플레이어를 탐지할 콜라이더
@@ -178,8 +169,9 @@ public class Enemy_Spider : EnemyBase
     }
 
     protected override void Start()
-    {        
+    {
         base.Start();
+        currentHP = MaxHP;      // 현재 HP를 최대치로 설정
         agent = GetComponent<NavMeshAgent>();
         agent.speed = moveSpeed; // 이동 속도 설정
         //player = GameObject.FindWithTag("Player");

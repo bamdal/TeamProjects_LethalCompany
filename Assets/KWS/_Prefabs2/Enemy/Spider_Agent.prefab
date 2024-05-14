@@ -69,13 +69,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d9939b179617e3b41a025d687748f3ac, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stunnedTime: 5
   loweringSpeed: 1
   raisingSpeed: 1
   trapLowerPosition: 1
   gravityAcceleration: 9.8
   MaxHP: 20
-  currentHP: 20
+  currentHP: 0
   moveSpeed: 2.5
   stopDistance: 1
   rotationSpeed: 10

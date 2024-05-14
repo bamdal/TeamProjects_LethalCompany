@@ -9,8 +9,11 @@ public class Test_EnemyAttack : TestBase
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
-        enemy.Hp -= 5;
-        Debug.Log(enemy.Hp);
+        if(enemy.Hp > 0)
+        {
+            enemy.Hp -= 5;
+            Debug.Log(enemy.Hp);
+        }
     }
 
     protected override void OnTest2(InputAction.CallbackContext context)

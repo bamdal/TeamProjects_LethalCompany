@@ -333,9 +333,6 @@ public class Terminal : MonoBehaviour,IInteraction
                     gameManager.ItemsQueue.Enqueue(ItemCode.Labber);
                 }
                 break;
-            default:
-                Debug.Log("정확히 입력해주세요.");
-                break;
 
             // 행성 이동하는 부분 -----------------------------------------------------------------------------------------
             case "행성":
@@ -364,11 +361,17 @@ public class Terminal : MonoBehaviour,IInteraction
                     ChangeSceen();
                 }
                 break;
+            default:
+                Debug.Log("정확히 입력해주세요.");
+                break;
         }
 
         gameManager.onBuy?.Invoke();
     }
 
+    /// <summary>
+    /// 씬을 변경하기 위한 함수
+    /// </summary>
     void ChangeSceen()
     {
         pressESC();
@@ -447,6 +450,9 @@ public class Terminal : MonoBehaviour,IInteraction
         }
     }
 
+    /// <summary>
+    /// ESC가 눌려지면 터미널에서 빠져나오는 함수
+    /// </summary>
     private void pressESC()
     {
         PressF_text.gameObject.SetActive(true);        // PressF_text 활성화
