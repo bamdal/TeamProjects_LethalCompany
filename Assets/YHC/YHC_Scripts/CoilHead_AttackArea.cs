@@ -5,9 +5,6 @@ using UnityEngine;
 
 public class CoilHead_AttackArea : MonoBehaviour
 {
-    bool playerInSight;
-    bool playerInAngle;
-
     public float attackRadius = 5.0f;
 
     /// <summary>

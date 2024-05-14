@@ -15,7 +15,10 @@ public class Factory : Singleton<Factory>
 {
     //SlimePool slimePool;
     ShovelPool shovelPool;
-    FlashPool flashPool;    
+    FlashPool flashPool;
+    FlashUpPool flashUpPool;
+    GrenadePool grenadePool;
+    ZapGunPool zapGunPool;
     HardwareBarrelPool hardwareBarrelPool;
     HardwareCableDrumPool hardwareCableDrumPool;
     HardwareGarbageCartPool hardwareGarbageCartPool;
@@ -31,9 +34,22 @@ public class Factory : Singleton<Factory>
         shovelPool = GetComponentInChildren<ShovelPool>();
         if(shovelPool != null )
                 shovelPool.Initialize();
+
         flashPool = GetComponentInChildren<FlashPool>();
         if( flashPool != null )
             flashPool.Initialize();
+
+        flashUpPool = GetComponentInChildren<FlashUpPool>();
+        if(flashUpPool != null )
+            flashUpPool.Initialize();
+
+        grenadePool = GetComponentInChildren<GrenadePool>();
+        if(grenadePool != null )
+            grenadePool.Initialize();
+
+        zapGunPool = GetComponentInChildren<ZapGunPool>();
+        if(zapGunPool != null )
+            zapGunPool.Initialize();
 
         hardwareBarrelPool = GetComponentInChildren<HardwareBarrelPool>();
         if(hardwareBarrelPool != null ) hardwareBarrelPool.Initialize();
@@ -168,9 +184,14 @@ public class Factory : Singleton<Factory>
                 return shovelPool.GetObject(position, angle* Vector3.forward);
             case ItemCode.FlashLight:
                 return flashPool.GetObject(position, angle* Vector3.forward);
+            case ItemCode.FlashLightUp:
+                return flashUpPool.GetObject(position, angle* Vector3.forward);
+            case ItemCode.Grenade:
+                return grenadePool.GetObject(position, angle* Vector3.forward);
+            case ItemCode.ZapGun:
+                return zapGunPool.GetObject(position, angle* Vector3.forward);
             default:
                 throw new ArgumentException("Invalid item code", nameof(itemCode));
-      
         }
     }
 }

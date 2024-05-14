@@ -7,10 +7,7 @@ public class Grenade : WeaponBase, IEquipable, IBattler, IItemDataBase
 
     ItemDB grenadeData;
 
-    /// <summary>
-    /// 폭발 데미지
-    /// </summary>
-    float damage;
+    int stunnedDuration = 15;
 
     /// <summary>
     /// 폭발 딜레이
@@ -21,6 +18,8 @@ public class Grenade : WeaponBase, IEquipable, IBattler, IItemDataBase
     /// 폭발 데미지 반경
     /// </summary>
     public float explosionRadius;
+
+    float throwWegiht = 10.0f;
 
     Rigidbody rigid;
 
@@ -36,18 +35,21 @@ public class Grenade : WeaponBase, IEquipable, IBattler, IItemDataBase
 
     private void Start()
     {
+        rigid.isKinematic = true;
         grenadeData = GameManager.Instance.ItemData.GetItemDB(ItemCode.Grenade);
     }
 
     public void Equip()
     {
-        throw new System.NotImplementedException();
+
     }
 
     public void Use()
     {
         StopAllCoroutines();
-        rigid.AddForce(transform.forward, ForceMode.Impulse);
+        Debug.Log("사용");
+        rigid.isKinematic = false;
+        rigid.AddForce(transform.forward * throwWegiht, ForceMode.VelocityChange);
         StartCoroutine(Bomb());
     }
 
@@ -72,20 +74,15 @@ public class Grenade : WeaponBase, IEquipable, IBattler, IItemDataBase
                 index++;
             }
 
-            foreach(IBattler battler in enemies)
-            {
-                battler.Defense(damage);
-            }
             foreach(EnemyBase enemy in enemies)
             {
-                enemy.onDebuffAttack?.Invoke();
+                enemy.onDebuffAttack?.Invoke(stunnedDuration);
             }
         }
 
         yield return new WaitForSeconds(delay);
         Debug.Log("오브젝트 비활성화");
         
-        gameObject.SetActive(false);
     }
     public void Attack(IBattler target)
     {

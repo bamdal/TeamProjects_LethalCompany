@@ -347,6 +347,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         // 플레이어일때만 실행되기때문에 추가 확인 필요 X
         playerTransform = player;
         attackTarget = player.GetComponent<IBattler>();
+        Debug.Log("공격모드");
         State = EnemyState.Attack;
     }
 

@@ -28,25 +28,53 @@ public class Enemy_Spider : EnemyBase
     public float gravityAcceleration = 9.8f;
 
     /// <summary>
-    /// 최대 HP
+    /// 이 몬스터의 최대 HP
     /// </summary>
-    public float MaxHp = 20.0f;
+    public float MaxHP = 20.0f;
 
     /// <summary>
-    /// 최대 HP
+    /// 이 몬스터의 현재 HP
+    /// </summary>
+    public float currentHP = 0.0f;
+
+    /// <summary>
+    /// HP가 변경되었을 때 실행될 델리게이트
+    /// </summary>
+    public Action<float> hpChange;
+
+    /// <summary>
+    /// 이 몬스터의 HP
     /// </summary>
     public override float Hp
     {
-        get => MaxHp;
-        set
+        get => currentHP;
+        /*set
         {
             if(value < 1)
             {
                 State = EnemyState.Die;
                 NoPath();
             }
+        }*/
+        set
+        {
+            if (currentHP != value)
+            {
+                if (value > 1)
+                {
+                    currentHP = value;
+                    currentHP = Math.Clamp(value, 0, MaxHP);
+                    hpChange?.Invoke(Hp);
+                }
+                else
+                {
+                    currentHP = value;
+                    hpChange?.Invoke(currentHP);
+                    State = EnemyState.Die;
+                    NoPath();
+                }
+            }
         }
-        //set => base.Hp = value;
     }
 
     /// <summary>
@@ -142,6 +170,7 @@ public class Enemy_Spider : EnemyBase
 
     private void Awake()
     {
+        currentHP = MaxHP;
         childEnemy = transform.GetChild(0);       // 0번째 자식 Enemy_Spider
         enemy_Child = childEnemy.GetComponent<Enemy_Child_KWS>();
         Collider collider = transform.GetComponent<Collider>();  // 플레이어를 탐지할 콜라이더
@@ -181,7 +210,7 @@ public class Enemy_Spider : EnemyBase
         StopCoroutine(enemy_Child.RaiseTrap());     // 코루틴 시작하기 전에 한번 정지
         if(enemy_Child.IsGrounded())
         {
-            Debug.Log("중력 조작");
+            //Debug.Log("중력 조작");
             onRaise?.Invoke();
             
             StartCoroutine(enemy_Child.RaiseTrap());
@@ -239,7 +268,7 @@ public class Enemy_Spider : EnemyBase
     protected override void Update_Attack()
     {
         // 플레이어의 체력을 깎는 부분 필요
-        Debug.Log("플레이어 공격 중");
+        //Debug.Log("플레이어 공격 중");
 
         if(attackCoolTime > 2.0f)
         {
@@ -255,18 +284,8 @@ public class Enemy_Spider : EnemyBase
     /// </summary>
     protected override void Update_Die()
     {
-        base.Update_Die();
-        Debug.Log("적이 죽었다");
+        //Debug.Log("적이 죽었다");
     }
-
-    /*private void OnCollisionEnter(Collision collision)
-    {
-        Debug.Log("바닥과 충돌");
-        if (collision.gameObject.CompareTag("Ground"))
-        {
-            Jump();
-        }
-    }*/
 
     /// <summary>
     /// 멈출 때 실행될 함수
@@ -349,5 +368,13 @@ public class Enemy_Spider : EnemyBase
     public void StateAttack()
     {
         State = EnemyState.Attack;
+    }
+
+    /// <summary>
+    /// 상태를 Die로 바꾸기 위한 함수
+    /// </summary>
+    public void StateDie()
+    {
+        State = EnemyState.Die;
     }
 }
