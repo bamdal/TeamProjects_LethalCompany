@@ -85,20 +85,20 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// 현재 게임상태
     /// </summary>
-    GameState onGameState = GameState.GameReady;
+    GameState gameState = GameState.GameReady;
 
     /// <summary>
     /// 현재 게임상태 변경시 알리는 프로퍼티
     /// </summary>
-    public GameState OnGameState
+    public GameState GameState
     {
-        get => onGameState;
+        get => gameState;
         set
         {
-            if (onGameState != value)
+            if (gameState != value)
             {
-                onGameState = value;
-                switch (onGameState) 
+                gameState = value;
+                switch (gameState) 
                 {
                     case GameState.GameReady:
                         ResetGame();
@@ -236,7 +236,7 @@ public class GameManager : Singleton<GameManager>
         base.OnPreInitialize();
         spaceShip = FindAnyObjectByType<SpaceShip>();
         player = FindAnyObjectByType<Player>();
-
+        player.onDie = OnDie;
     }
 
     protected override void OnInitialize()
@@ -266,7 +266,12 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     void OnDie()
     {
-        StartCoroutine(LoadSpaceScene());
+        if (GameState == GameState.GameStart)
+        {
+
+            StartCoroutine(LoadSpaceScene());
+
+        }
     }
 
     IEnumerator LoadSpaceScene()
@@ -277,13 +282,15 @@ public class GameManager : Singleton<GameManager>
 
         while (!async.isDone)
         {
-            yield return new WaitForSeconds(1.0f);
+            yield return null;
         }
+
+        yield return new WaitForSeconds(3.0f);
 
         SpaceShip.transform.position = Vector3.zero;
         SpaceShip.transform.rotation = Quaternion.identity;
         Player.ControllerTPPosition(Vector3.zero);
-
+        Player.PlayerRefresh();
     }
 
     /// <summary>
@@ -344,7 +351,7 @@ public class GameManager : Singleton<GameManager>
     {
         if (TargetAmountMoney > totalMoney) // 목표금액 도달 실패시 게임오버
         {
-            OnGameState = GameState.GameOver;   
+            GameState = GameState.GameOver;   
         }
         else
         {   // 퀘스트 달성시 목표금액 증가, 기간 초기화
