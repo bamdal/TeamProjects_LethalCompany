@@ -16,9 +16,9 @@ GameObject:
   - component: {fileID: 5205904725533900950}
   - component: {fileID: 3025207870710602350}
   - component: {fileID: 707754197275831917}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Enemy_Hornet
-  m_TagString: Untagged
+  m_TagString: Enemy
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0

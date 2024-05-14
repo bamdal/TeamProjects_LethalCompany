@@ -10,21 +10,20 @@ public class DoorOpenPoint : MonoBehaviour, IInteraction
 
     public Action onRequest { get; set; }
 
-    private void Awake()
-    {
-        
-    }
     public void Interaction(GameObject target)
     {
         door.Interaction(target);
     }
 
 
+
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log(collision.gameObject.name);
         if (collision.gameObject.CompareTag("Enemy"))
         {
             door.Interaction(collision.gameObject);
+            Debug.Log(collision.gameObject);
         }
     }
 
