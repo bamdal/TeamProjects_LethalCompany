@@ -5,6 +5,7 @@ using System.Xml.Serialization;
 using UnityEditorInternal;
 using UnityEngine;
 using static EnemyBase;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class Enemy_Child_KWS : MonoBehaviour
 {
@@ -61,7 +62,7 @@ public class Enemy_Child_KWS : MonoBehaviour
     /// </summary>
     bool timerFinished = false;
 
-    Transform spiderPosition;
+    //Transform spiderPosition;
 
     /// <summary>
     /// 애니메이션을 실행할 트리거의 해쉬
@@ -69,14 +70,17 @@ public class Enemy_Child_KWS : MonoBehaviour
     int idleHash = Animator.StringToHash("Idle");
     int walkHash = Animator.StringToHash("Walk");
     int attackHash = Animator.StringToHash("Attack");
+    int dieHash = Animator.StringToHash("Die");
 
-    //Player player;
+    BoxCollider box;
 
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
         rigid.constraints = RigidbodyConstraints.FreezeRotation;        // 물체에 충돌했을 때 회전이 틀어지는 것 방지
         animator = GetComponent<Animator>();
+
+        box = GetComponent<BoxCollider>();
     }
 
     private void Start()
@@ -84,6 +88,7 @@ public class Enemy_Child_KWS : MonoBehaviour
         enemyParent = transform.parent.GetComponent<Enemy_Spider>();
         enemyParent.onRaise += GravityOff;
         enemyParent.onLower += GravityOn;
+        enemyParent.hpChange += HPChange;
         //enemyParent.onChase += samePosition;
 
         //Player player = GameManager.Instance.Player;
@@ -91,13 +96,71 @@ public class Enemy_Child_KWS : MonoBehaviour
     }
 
     /// <summary>
+    /// 적이 죽었는지 확인하기 위한 변수 true면 죽었다, false면 안죽었다
+    /// </summary>
+    bool die = false;
+
+    /// <summary>
+    /// HP가 변경되었을 때 0이면 실행될 함수
+    /// </summary>
+    /// <param name="HP"></param>
+    /// <exception cref="NotImplementedException"></exception>
+    private void HPChange(float HP)
+    {
+        if(HP < 1)
+        {
+            StopCoroutine(DisableCollider());
+            Player player = GameManager.Instance.Player;
+            Quaternion playerRotation = player.transform.rotation;
+
+            die = true;
+            enemyParent.Hp = 0;
+            animator.ResetTrigger(idleHash);
+            animator.ResetTrigger(walkHash);
+            animator.ResetTrigger(attackHash);
+
+            GravityOn();
+            // 다시 Enemy_Spider로 부모를 옮기기
+            this.gameObject.transform.SetParent(null);
+
+            // 죽음 상태의 로테이션으로 변경
+            this.gameObject.transform.rotation = playerRotation;
+
+            Debug.Log("다이 애니메이션 실행");
+            animator.SetTrigger(dieHash);
+
+            enemyParent.NoPath();
+            enemyParent.StateDie();
+
+            StartCoroutine(DisableCollider());
+        }
+    }
+
+    /// <summary>
+    /// 콜라이더를 끄고 게임 오브젝트를 비활성화하는 코루틴
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator DisableCollider()
+    {
+        yield return new WaitForSeconds(3.0f);      // 3초 기다리고
+        
+        box.enabled = false;                        // 콜라이더 끄기
+
+        yield return new WaitForSeconds(1.0f);      // 1초 기다리고
+
+        this.gameObject.SetActive(false);           // 이 게임 오브젝트 비활성화
+        enemyParent.gameObject.SetActive(false);    // agent를 가지고 있는 부모오브젝트 비활성화
+    }
+
+    /// <summary>
     /// 중력을 끄기 위한 함수
     /// </summary>
     private void GravityOff()
     {
-        Debug.Log("GravityOff 실행");
+        //Debug.Log("GravityOff 실행");
         rigid.useGravity = false;           // 중력 off
         animator.ResetTrigger(walkHash);    // 쌓여있던 트리거 초기화
+        animator.ResetTrigger(dieHash);
         animator.SetTrigger(idleHash);      // 중력 off 상태는 Idle 상태
     }
 
@@ -106,9 +169,10 @@ public class Enemy_Child_KWS : MonoBehaviour
     /// </summary>
     private void GravityOn()
     {
-        Debug.Log("GravityOn 실행");
+        //Debug.Log("GravityOn 실행");
         rigid.useGravity = true;            // 중력 on
         animator.ResetTrigger(idleHash);    // 쌓여있던 트리거 초기화
+        animator.ResetTrigger(dieHash);
         animator.SetTrigger(walkHash);      // 중력이 on 되었을 때는 플레이어를 추적하고 있는 상태
     }
 
@@ -169,18 +233,18 @@ public class Enemy_Child_KWS : MonoBehaviour
 
     private void FixedUpdate()
     {
-        if (IsGrounded())   // 땅이면
+        if (IsGrounded() && !die)   // 땅이면
         {
             cooltime += Time.deltaTime;     // 쿨타임 누적
         }
 
-        if (isCatch)        // 플레이어를 잡았을 경우
+        if (isCatch && !die)        // 플레이어를 잡았을 경우
         {
             //Player player = GameManager.Instance.Player;
             //spiderPosition = player.transform.GetChild(5);
 
             Player player = GameManager.Instance.Player;                                    // 플레이어 찾기
-            spiderPosition = player.transform.GetChild(3);                                  // 플레이어의 5번째 자식 spiderPosition 찾기
+            //spiderPosition = player.transform.GetChild(3);                                  // 플레이어의 5번째 자식 spiderPosition 찾기
 
             // 이 오브젝트를 플레이어의 자식으로 변경
             this.gameObject.transform.SetParent(player.transform);
@@ -198,6 +262,7 @@ public class Enemy_Child_KWS : MonoBehaviour
             this.gameObject.transform.rotation = adjustedRotation;                          // 이 오브젝트의 회전을 플레이어 + x축 90도
             this.gameObject.transform.position = spiderPosition.transform.position + new Vector3(0, -0.5f, 1.0f);         // 이 오브젝트의 위치를 spiderPosition와 같게
             //this.gameObject.transform.rotation = player.gameObject.transform.rotation;      // 이 오브젝트의 회전을 플레이어와 같게*/
+
             enemyParent.StateAttack();
 
             rigid.velocity = Vector3.zero;        // 가해지던 힘 제거
@@ -205,6 +270,7 @@ public class Enemy_Child_KWS : MonoBehaviour
 
             animator.ResetTrigger(idleHash);      // 쌓여있던 트리거 초기화
             animator.ResetTrigger(walkHash);      // 쌓여있던 트리거 초기화
+            animator.ResetTrigger(dieHash);
             animator.SetTrigger(attackHash);      // Attack 애니메이션 실행
         }
     }
@@ -276,7 +342,7 @@ public class Enemy_Child_KWS : MonoBehaviour
     /// </summary>
     void CheckChatch()
     {
-        if (isCatch)
+        if (isCatch && !die)
         {
             // 플레이어를 잡았다
             //Debug.Log("OnTriggerEnter가 활성화");
@@ -289,7 +355,7 @@ public class Enemy_Child_KWS : MonoBehaviour
             // 플레이어를 잡으면 아예 타이머를 중단 시켜서 플레이어가 빠져나오면 다시 코루틴이 실행안됨
             // 죽기 전까지 안떨어지므로 상관X
         }
-        else if(timerFinished)
+        else if(timerFinished && !die)
         {
             // 플레이어를 못잡았다
             Debug.Log("10초가 지났지만 플레이어를 못잡았다");
