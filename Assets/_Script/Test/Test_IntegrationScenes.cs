@@ -5,8 +5,12 @@ using UnityEngine.InputSystem;
 
 public class Test_IntegrationScenes : TestBase
 {
+#if UNITY_EDITOR
     protected override void OnTest1(InputAction.CallbackContext context)
     {
         Factory.Instance.GetItem();
     }
+
+
+#endif
 }

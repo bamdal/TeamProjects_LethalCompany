@@ -12,7 +12,7 @@ GameObject:
   - component: {fileID: 4650881243557787870}
   - component: {fileID: 2809324254600666842}
   m_Layer: 0
-  m_Name: StartmiddleScene
+  m_Name: MiddleSceneController
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0

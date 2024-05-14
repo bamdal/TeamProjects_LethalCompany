@@ -71,22 +71,16 @@ public class SpaceShip : MonoBehaviour
         animator.SetTrigger("Open"); 
     }
 
+
     public void SpaceShipDoorClose()
     {
         animator.SetTrigger("Close");
     }
 
-
-    private void OnGameOver()
-    {
-        animator.SetTrigger("Open");
-        Light light = transform.GetChild(5).GetComponent<Light>();
-        light.enabled = false;
-        cinemachineImpulse.GenerateImpulseWithVelocity(Random.onUnitSphere);
-        cinemachineImpulse.GenerateImpulse();
-
-    }
-
+    /// <summary>
+    /// 버튼 눌렸을 때 시작되는 코루틴
+    /// </summary>
+    /// <returns></returns>
     IEnumerator LoadSpaceScene()
     {
 
@@ -104,6 +98,39 @@ public class SpaceShip : MonoBehaviour
         for (int i = 0; i < itemBox.childCount; i++)
         {
             itemBox.GetChild(i).gameObject.SetActive(true);
+        }
+    }
+
+
+    /// <summary>
+    /// 게임 오버시 이펙트들
+    /// </summary>
+    private void OnGameOver()
+    {
+        animator.SetTrigger("Open");
+        Light light = transform.GetChild(5).GetComponent<Light>();
+        light.enabled = false;
+        StartCoroutine(ExplosionShip());
+        Transform shipBase = transform.GetChild(1);
+        Collider[] shipCollider = shipBase.GetComponentsInChildren<Collider>();
+
+        foreach (Collider collider in shipCollider)
+        {
+            collider.enabled = false;
+        }
+
+        GameManager.Instance.Player.Die();
+    }
+
+    IEnumerator ExplosionShip()
+    {
+        int i = 0;
+        while (i <10)
+        {
+            i++;
+            cinemachineImpulse.GenerateImpulseWithVelocity(Random.onUnitSphere);
+            cinemachineImpulse.GenerateImpulse();
+            yield return new WaitForSeconds(Random.value);
         }
     }
 }

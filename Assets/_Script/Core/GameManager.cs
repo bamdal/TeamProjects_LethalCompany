@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 /// <summary>
 /// 게임상태
@@ -243,6 +244,7 @@ public class GameManager : Singleton<GameManager>
         itemDataManager = GetComponent<ItemDataManager>();
         Player.cam = Camera.main;
         Player.invenUI = FindAnyObjectByType<InventoryUI>();
+        
         Cursor.visible = false;
         Cursor.lockState = CursorLockMode.Locked;
         store = FindAnyObjectByType<Store>();
@@ -257,6 +259,31 @@ public class GameManager : Singleton<GameManager>
         {
             terminal.onFlashLight += OnUseMoney;    // Terminal 클래스의 델리게이트 연결
         }
+    }
+
+    /// <summary>
+    /// 플레이어 사망시 씬 이동
+    /// </summary>
+    void OnDie()
+    {
+        StartCoroutine(LoadSpaceScene());
+    }
+
+    IEnumerator LoadSpaceScene()
+    {
+
+
+        AsyncOperation async = SceneManager.LoadSceneAsync("MiddleScene", LoadSceneMode.Single);
+
+        while (!async.isDone)
+        {
+            yield return new WaitForSeconds(1.0f);
+        }
+
+        SpaceShip.transform.position = Vector3.zero;
+        SpaceShip.transform.rotation = Quaternion.identity;
+        Player.ControllerTPPosition(Vector3.zero);
+
     }
 
     /// <summary>
