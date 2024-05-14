@@ -1,10 +1,9 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Enemy_Hornet : EnemyBase
+public class Enemy_Leviathan : EnemyBase
 {
     Player player;
     public float attackInterval = 0.3f;
@@ -36,7 +35,7 @@ public class Enemy_Hornet : EnemyBase
         playerRader.findPlayer += IsPlaeyrDetected;
         attackRange = transform.GetComponentInChildren<AttackRange>();
         attackRange.isAttack += IsAttack;
-        
+
     }
 
     private void IsAttack(bool value)
@@ -52,7 +51,6 @@ public class Enemy_Hornet : EnemyBase
     protected override void Start()
     {
         player = GameManager.Instance.Player;
-        Debug.Log(player);
         SetNewRandomDestination();
         base.Start();
     }
@@ -67,30 +65,10 @@ public class Enemy_Hornet : EnemyBase
         {
             State = EnemyState.Patrol;
         }
-
-        if (isAttacked && onDamage == null)
-        {
-            onDamage = StartCoroutine(AttackDamage());
-        }
-        else if (!isAttacked && onDamage != null)
-        {
-            StopCoroutine(onDamage);
-            onDamage = null;
-        }
-
         base.Update();
     }
 
 
-    IEnumerator AttackDamage()
-    {
-        while(true)
-        {
-            player.Defense(1.0f);
-            yield return new WaitForSeconds(attackInterval);
-        }
-
-    }
     protected override void Update_Patrol()
     {
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
@@ -118,5 +96,8 @@ public class Enemy_Hornet : EnemyBase
 
         agent.SetDestination(walkPoint);
     }
-    
+    private void OnTriggerEnter(Collider other)
+    {
+        //몇초이상 있으면 레비아탄 튀어나오고 데미지
+    }
 }

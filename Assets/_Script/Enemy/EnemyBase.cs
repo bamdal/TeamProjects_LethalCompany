@@ -5,8 +5,6 @@ using UnityEngine;
 
 public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
 {
-    public float stunnedTime = 5.0f;
-
     public enum EnemyState
     {
         Stop = 0,
@@ -56,7 +54,7 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
     }
 
     public Action onDie;
-    public Action onDebuffAttack;
+    public Action<int> onDebuffAttack;
     public Action onEnemyStateUpdate;
 
     public virtual float Hp { get; set; }
@@ -70,8 +68,6 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
     /// 게임내에 1개의 개체가 스폰될 확률(0~1)
     /// </summary>
     public virtual float SpawnPercent { get; set; }
-
-
 
     protected virtual void Start()
     {
@@ -128,15 +124,15 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
     /// <summary>
     /// 적이 디버프 공격을 맞았을때 실행될 함수(잽건과 수류탄의 스턴용)
     /// </summary>
-    public void OnDebuff()
+    public void OnDebuff(int debufftime)
     {
-        StartCoroutine(StunnedEnemy());
+        StartCoroutine(StunnedEnemy(debufftime));
     }
 
-    IEnumerator StunnedEnemy()
+    IEnumerator StunnedEnemy(int debuffTime)
     {
         State = EnemyState.Stop;
-        yield return new WaitForSeconds(stunnedTime);
+        yield return new WaitForSeconds(debuffTime);
         State = EnemyState.Patrol;
     }
 

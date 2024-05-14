@@ -6,6 +6,8 @@ using UnityEngine.EventSystems;
 
 public class ZapGun : WeaponBase, IEquipable, IItemDataBase
 {
+    int enemyStunnedTime = 15;
+
     enum GunState
     {
         Load = 0,
@@ -21,8 +23,9 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
     /// </summary>
     ItemDB zapGunData;
 
-    float stunnedTick = 1.0f;
-
+    /// <summary>
+    /// 배터리 잔량
+    /// </summary>
     float currentBattery;
     float CurrentBattery
     {
@@ -32,35 +35,35 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
             if(currentBattery != value)
             {
                 currentBattery = value;
+                onBatterChange?.Invoke(currentBattery / MaxBattery);
             }
         }
     }
 
     float MaxBattery;
 
+    public Action<float> onBatterChange;
+
+    float batteryUse = 5.0f;
+
     EnemyBase targetEnemy;
 
     private void Awake()
     {
-        MaxBattery = zapGunData.battery;
     }
 
     private void Start()
     {
         zapGunData = GameManager.Instance.ItemData.GetItemDB(ItemCode.ZapGun);
+        MaxBattery = zapGunData.battery;
     }
 
     private void Update()
     {
         if(state == GunState.Shot)
         {
-
+            CurrentBattery -= Time.deltaTime * batteryUse;
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        ObjectScan();
     }
 
     public void Equip()
@@ -73,12 +76,14 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
         switch(state)
         {
             case GunState.Load:
+                targetEnemy = null;
                 state = GunState.Scan;
                 break;
             case GunState.Scan:
                 if(ObjectScan())
                 {
                     state = GunState.Release;
+                    Release();
                 }
                 else
                 {
@@ -87,6 +92,7 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
                 break;
             case GunState.Release:
                 state = GunState.Shot;
+                Shot();
                 break;
             case GunState.Shot:
                 state = GunState.Load;
@@ -116,20 +122,24 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
 
     void Shot()
     {
-
+        if (targetEnemy != null)
+        {
+            StartCoroutine(EnemyStunned(enemyStunnedTime));
+        }
     }
 
     void Release()
     {
-        if(targetEnemy != null)
+        Debug.Log("적 스캔 완료");
+
+    }
+
+    IEnumerator EnemyStunned(int stunnedTime)
+    {
+        while (true)
         {
-            // if(damageTick < 0.0f && battery > 0.0f)
-            // {
-            //     attackTarget.Defense(damage);
-            //     damageTick = 1.0f;
-            //     battery -= 20.0f;
-            //     targetEnemy.onDebuffAttack?.Invoke();
-            // }
+            targetEnemy.OnDebuff(stunnedTime);
+            yield return new WaitForSeconds(stunnedTime);
         }
     }
 
