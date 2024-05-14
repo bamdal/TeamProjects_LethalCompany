@@ -11,6 +11,9 @@ public class Test_IntegrationScenes : TestBase
         Factory.Instance.GetItem();
     }
 
-
+    protected override void OnTest2(InputAction.CallbackContext context)
+    {
+        GameManager.Instance.Player.Defense(50.0f);
+    }
 #endif
 }
