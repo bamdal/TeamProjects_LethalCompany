@@ -1,17 +1,17 @@
 using System;
-using System.Collections;
-using System.Collections.Generic;
-using TMPro;
 using UnityEngine;
 
 public class Timer : MonoBehaviour
 {
     public DateTime startTime = DateTime.Parse("07:00");
-    private TimeSpan totalTime = TimeSpan.FromMinutes(20);
-    private DateTime currentTime;
     private DateTime lastEmittedTime;
     public Action<DateTime> OnTimeChanged;
-    public Action OnHourChangeed;
+    public Action OnHourChanged;
+
+    // 현실 시간과 게임 시간의 비율 (1초에 해당하는 현실 시간)
+    private float gameSecondsPerRealSecond = 51.0f;
+
+    private DateTime currentTime;
     public DateTime CurrentTime
     {
         get => currentTime;
@@ -19,33 +19,30 @@ public class Timer : MonoBehaviour
         {
             if (currentTime != value)
             {
-                if(currentTime.Hour != value.Hour)
+                if (currentTime.Hour != value.Hour)
                 {
-                    OnHourChangeed?.Invoke();
+                    OnHourChanged?.Invoke();
                 }
                 currentTime = value;
-//                OnTimeChanged?.Invoke(currentTime); // 시간 변경 시 이벤트 호출
             }
         }
     }
 
-    
-
     void Awake()
     {
-        // 시작 시간 설정
         CurrentTime = startTime;
     }
 
     void Update()
     {
-        // 현재 시간 계산
-        CurrentTime = startTime.Add(totalTime * Time.time / 60f);
+        // 현실 시간과의 비율을 곱해서 게임 시간을 업데이트
+        CurrentTime = CurrentTime.AddSeconds(Time.deltaTime * gameSecondsPerRealSecond);
+
+        // 게임 시간이 분 단위로 변경되고 이전에 발송된 시간이 아닌 경우에만 이벤트 발송
         if (CurrentTime.Minute % 5 == 0 && CurrentTime != lastEmittedTime)
         {
             lastEmittedTime = CurrentTime;
             OnTimeChanged?.Invoke(CurrentTime);
-            //Debug.Log("바뀜" + CurrentTime);
         }
     }
 }
