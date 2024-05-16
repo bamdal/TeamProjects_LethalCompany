@@ -583,7 +583,7 @@ public class Player : Singleton<Player>, IBattler, IHealth
 
             if (Physics.Raycast(ray, out hit, 3.0f))
             {
-                if (hit.collider.CompareTag("Item") || hit.collider.CompareTag("Hardware"))
+                if (hit.collider.CompareTag("Item") || hit.collider.CompareTag("Hardware") || hit.collider.CompareTag("Weapon"))
                 {
                     for (int i = 0; i < inventory.InvenSlots.Length; i++)
                     {
@@ -594,7 +594,7 @@ public class Player : Singleton<Player>, IBattler, IHealth
                             itemTransform.SetParent(inventory.InvenSlots[i]);
                             TotalWeight += itemTransform.GetComponent<IItemDataBase>().GetItemDB().weight;
                             SlowRatio = (0.01f * (100 - TotalWeight));
-                            itemTransform.localPosition = new Vector3(0, -0.5f, 1.5f); // 포지션을 (0, 0, 0)으로 설정합니다.  
+                            itemTransform.localPosition = new Vector3(0.0f, 0.0f, 1.0f); // 포지션을 (0, 0, 0)으로 설정합니다.  
                             Collider itemCollider = hit.collider.GetComponent<Collider>();
                             if (itemCollider != null)
                                 itemCollider.enabled = false;
