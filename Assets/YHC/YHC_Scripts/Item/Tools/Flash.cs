@@ -78,13 +78,9 @@ public class Flash : ToolBase, IEquipable, IItemDataBase
 
     Light lightComp;
 
-    private void Awake()
-    {
-        lightComp = GetComponentInChildren<Light>();
-    }
-
     private void Start()
     {
+        lightComp = GetComponentInChildren<Light>();
         flashData = GameManager.Instance.ItemData.GetItemDB(ItemCode.FlashLight);
 
         maxBattery = flashData.battery;

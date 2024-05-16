@@ -15,7 +15,7 @@ MonoBehaviour:
   itemName: "\uB4DC\uB7FC\uD1B5"
   itemText: "\uAE30\uB984\uC744 \uB2F4\uB294\uB370 \uC0AC\uC6A9\uD588\uC744 \uAC83
     \uAC19\uC740 \uB4DC\uB7FC\uD1B5\uC774\uB2E4."
-  weight: 10
+  weight: 4
   price: 10
   stackCount: 1
   battery: 0
@@ -24,3 +24,4 @@ MonoBehaviour:
   isConductive: 0
   itemIcon: {fileID: 21300000, guid: f13c12afde25d514a933829fb154bab0, type: 3}
   itemModel: {fileID: 371826997391568018, guid: 137bfbb17bab5ba45959ed6727901443, type: 3}
+  damage: 0

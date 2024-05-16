@@ -686,6 +686,14 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 673815760694287412, guid: 02eb59263eeb74f4b8c2233e13b3316b, type: 3}
+      propertyPath: enemyPrefabs.Array.size
+      value: 3
+      objectReference: {fileID: 0}
+    - target: {fileID: 673815760694287412, guid: 02eb59263eeb74f4b8c2233e13b3316b, type: 3}
+      propertyPath: enemyPrefabs.Array.data[2]
+      value: 
+      objectReference: {fileID: 6239807730101204261, guid: 23fbe294aefd1424c9007ee755009728, type: 3}
     - target: {fileID: 3171684856659673315, guid: 02eb59263eeb74f4b8c2233e13b3316b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -1266,6 +1274,7 @@ MonoBehaviour:
   Door: {fileID: 0}
   generationPointNav: {fileID: 1481000905}
   coilHeadPrefab: {fileID: 0}
+  spiderPrefab: {fileID: 6239807730101204261, guid: 23fbe294aefd1424c9007ee755009728, type: 3}
 --- !u!4 &879335041
 Transform:
   m_ObjectHideFlags: 0

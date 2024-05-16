@@ -9,6 +9,7 @@ using UnityEngine.InputSystem.HID;
 using UnityEngine.InputSystem.XInput;
 using UnityEngine.Rendering;
 using UnityEngine.Rendering.Universal;
+using static UnityEngine.Rendering.DebugUI;
 
 public class Player : Singleton<Player>, IBattler, IHealth
 {
@@ -39,6 +40,7 @@ public class Player : Singleton<Player>, IBattler, IHealth
                 }
                 else
                 {
+                    currentHp = Math.Clamp(value, 0, maxHp);
                     OnDie();
                 }
             }
@@ -77,7 +79,19 @@ public class Player : Singleton<Player>, IBattler, IHealth
             }
         }
     }
-    
+
+    float totalWeight = 0.0f;
+    float TotalWeight
+    {
+        get => totalWeight;
+        set
+        {
+            if(totalWeight != value)
+            {
+                totalWeight = Math.Clamp(value, 0, 80.0f);
+            }
+        }
+    }
     /// <summary>
     /// 걷는 속도
     /// </summary>
@@ -113,6 +127,21 @@ public class Player : Singleton<Player>, IBattler, IHealth
     /// </summary>
     [SerializeField]
     float currentSpeed = 0.0f;
+
+    float slowRatio = 1.0f;
+    
+    float SlowRatio
+    {
+        get => slowRatio;
+        set
+        {
+            if(slowRatio != value)
+            {
+                slowRatio = value;
+            }
+        }
+    }
+
 
     /// <summary>
     /// 이동 모드
@@ -221,6 +250,27 @@ public class Player : Singleton<Player>, IBattler, IHealth
             if(currentItem != value)
             {
                 currentItem = value;
+                if(currentItem != null)
+                {
+                    IItemDataBase temp = currentItem.GetComponent<IItemDataBase>();
+                    CurrentItemDB = temp.GetItemDB();
+                }
+                else
+                {
+                    CurrentItemDB = null;
+                }
+            }
+        }
+    }
+    ItemDB currentItemDB;
+    ItemDB CurrentItemDB
+    {
+        get => currentItemDB;
+        set
+        {
+            if(currentItemDB != value)
+            {
+                currentItemDB = value;
             }
         }
     }
@@ -298,7 +348,7 @@ public class Player : Singleton<Player>, IBattler, IHealth
     private void Start()
     {
         terminal = FindAnyObjectByType<Terminal>();
-        CurrentItem = inventory.InvenSlots[0];
+        CurrentItem = null;
         if(terminal != null)
         {
             terminal.onRequest += OnInputAction;
@@ -336,6 +386,7 @@ public class Player : Singleton<Player>, IBattler, IHealth
         characterController.Move(currentSpeed * Time.deltaTime * moveDirection);
         // 중력 처리
         characterController.Move(1f * Time.deltaTime * gravityDir);
+        Debug.Log(currentSpeed);
     }
 
     private void FixedUpdate()
@@ -455,21 +506,6 @@ public class Player : Singleton<Player>, IBattler, IHealth
     }
 
 
-    /*    private void OnDrawGizmos()
-        {
-            // 캐릭터의 아래에 레이캐스트를 쏴서 바닥에 닿았는지 확인
-            bool isGrounded = IsGrounded();
-
-            // 기즈모 색상 설정
-            Gizmos.color = isGrounded ? Color.green : Color.red;
-
-            // 레이캐스트의 시작점과 끝점을 계산하여 기즈모로 그리기
-            Vector3 startPos = groundCheckPosition.position;
-            Vector3 endPos = startPos + Vector3.down * 0.2f;
-            Gizmos.DrawLine(startPos, endPos);
-        }*/
-
-
 
     /// <summary>
     /// 이동 모드 변경 입력에 대한 델리게이트로 실행되는 함수
@@ -524,10 +560,10 @@ public class Player : Singleton<Player>, IBattler, IHealth
         switch (mode) // 이동 모드에 따라 속도와 애니메이션 변경
         {
             case MoveMode.Walk:
-                currentSpeed = walkSpeed;
+                currentSpeed = walkSpeed * SlowRatio;
                 break;
             case MoveMode.Run:
-                currentSpeed = runSpeed;
+                currentSpeed = runSpeed * SlowRatio;
                 break;
         }
     }
@@ -547,7 +583,7 @@ public class Player : Singleton<Player>, IBattler, IHealth
 
             if (Physics.Raycast(ray, out hit, 3.0f))
             {
-                if (hit.collider.CompareTag("Item") || hit.collider.CompareTag("Hardware"))
+                if (hit.collider.CompareTag("Item") || hit.collider.CompareTag("Hardware") || hit.collider.CompareTag("Weapon"))
                 {
                     for (int i = 0; i < inventory.InvenSlots.Length; i++)
                     {
@@ -556,8 +592,9 @@ public class Player : Singleton<Player>, IBattler, IHealth
                             // 아이템을 인벤토리 슬롯에 넣습니다.
                             Transform itemTransform = hit.collider.transform;
                             itemTransform.SetParent(inventory.InvenSlots[i]);
-                            itemTransform.localPosition = new Vector3(0, -0.5f, 1.5f); // 포지션을 (0, 0, 0)으로 설정합니다.
-                            
+                            TotalWeight += itemTransform.GetComponent<IItemDataBase>().GetItemDB().weight;
+                            SlowRatio = (0.01f * (100 - TotalWeight));
+                            itemTransform.localPosition = new Vector3(0.0f, 0.0f, 1.0f); // 포지션을 (0, 0, 0)으로 설정합니다.  
                             Collider itemCollider = hit.collider.GetComponent<Collider>();
                             if (itemCollider != null)
                                 itemCollider.enabled = false;
@@ -575,14 +612,15 @@ public class Player : Singleton<Player>, IBattler, IHealth
                         }
 
                     }
+                    OnScrollWheel(new Vector2(0, 0));
                     for (int j = 0; j < 4; j++)
                     {
                         if (inventory.InvenSlots[j].childCount > 0)
                         {
-                            Transform currentItem = inventory.InvenSlots[j].GetChild(0);
-                            if (currentItem != null)
+                            Transform tempItem = inventory.InvenSlots[j].GetChild(0);
+                            if (tempItem != null)
                             {
-                                IItemDataBase itemData = currentItem.GetComponent<IItemDataBase>();
+                                IItemDataBase itemData = tempItem.GetComponent<IItemDataBase>();
                                 if (itemData != null)
                                 {
                                     inventory.ItemDBs[j] = itemData.GetItemDB();
@@ -642,6 +680,8 @@ public class Player : Singleton<Player>, IBattler, IHealth
                 itemRigidbody.isKinematic = false;
             
             CurrentItem.SetParent(null); // 부모에서 떼어냅니다.
+            TotalWeight -= CurrentItem.GetComponent<IItemDataBase>().GetItemDB().weight;
+            SlowRatio = (0.01f * (100 - TotalWeight));
             for (int j = 0; j < 4; j++)
             {
                 if (inventory.InvenSlots[j].childCount > 0)             // 인벤토리 인벤슬롯에 아이템이 들어있다면
@@ -739,7 +779,6 @@ public class Player : Singleton<Player>, IBattler, IHealth
         else if (vector.y < 0)
         {
             CurrentItemIndex = NextIndex(CurrentItemIndex);
-            Debug.Log(CurrentItemIndex + " 증가");
         }
 
         if (inventory.InvenSlots[CurrentItemIndex] != null && inventory.InvenSlots[CurrentItemIndex].childCount > 0)    // 인벤토리 슬롯 현재 인덱스가 널값이 아니고, 인벤토리 슬롯 현재 인덱스 내에 아이템이 들어있다면
@@ -750,6 +789,10 @@ public class Player : Singleton<Player>, IBattler, IHealth
             {
                 CurrentItem.gameObject.SetActive(true);
             }
+        }
+        else
+        {
+            CurrentItem = null;
         }
         for (int i = 0; i < inventory.InvenSlots.Length; i++)
         {

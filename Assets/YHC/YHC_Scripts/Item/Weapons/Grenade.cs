@@ -27,14 +27,10 @@ public class Grenade : WeaponBase, IEquipable, IBattler, IItemDataBase
 
     public float Hp { get => throw new System.NotImplementedException(); set => throw new System.NotImplementedException(); }
 
-    private void Awake()
+    private void Start()
     {
         explosionRadius = 5.0f;
         rigid = GetComponent<Rigidbody>();
-    }
-
-    private void Start()
-    {
         rigid.isKinematic = true;
         grenadeData = GameManager.Instance.ItemData.GetItemDB(ItemCode.Grenade);
     }

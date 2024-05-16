@@ -47,11 +47,6 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
     float batteryUse = 5.0f;
 
     EnemyBase targetEnemy;
-
-    private void Awake()
-    {
-    }
-
     private void Start()
     {
         zapGunData = GameManager.Instance.ItemData.GetItemDB(ItemCode.ZapGun);
