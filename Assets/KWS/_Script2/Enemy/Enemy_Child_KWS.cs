@@ -178,7 +178,6 @@ public class Enemy_Child_KWS : MonoBehaviour
 
     /// <summary>
     /// 점프하면서 부모 오브젝트의 위치와 틀어지는 것을 막기 위한 함수
-    /// 현재는 사용 안함
     /// </summary>
     private void samePosition()
     {
@@ -359,6 +358,7 @@ public class Enemy_Child_KWS : MonoBehaviour
         {
             // 플레이어를 못잡았다
             Debug.Log("10초가 지났지만 플레이어를 못잡았다");
+            samePosition();
             enemyParent.NoPath();
             enemyParent.StateStop();
             timerFinished = false;
