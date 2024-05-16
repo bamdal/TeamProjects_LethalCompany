@@ -18,12 +18,12 @@ public class CoilHead_AttackArea : MonoBehaviour
 
     private void Awake()
     {
-        attackArea = GetComponent<SphereCollider>();
-        attackArea.radius = attackRadius;
     }
 
     private void Start()
     {
+        attackArea = GetComponent<SphereCollider>();
+        attackArea.radius = attackRadius;
         attackArea.enabled = false;
         attackArea.enabled = true;
     }
