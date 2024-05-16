@@ -7,9 +7,13 @@ public class Timer : MonoBehaviour
     private DateTime lastEmittedTime;
     public Action<DateTime> OnTimeChanged;
     public Action<int> OnHourChanged;
+    [Header("인게임 시간을 분으로")]
+    public int totalGameTimeMinute = 1020;
+    [Header("현실시간을 분으로")]
+    public int realTimeMinute = 20;
 
-    // 현실 시간과 게임 시간의 비율 (1초에 해당하는 현실 시간)
-    private float gameSecondsPerRealSecond = 51.0f;
+    // 현실 시간과 게임 시간의 비율
+    private float gameSecondsPerRealSecond = 0;
 
     private DateTime currentTime;
     public DateTime CurrentTime
@@ -31,14 +35,14 @@ public class Timer : MonoBehaviour
     void Awake()
     {
         CurrentTime = startTime;
+        gameSecondsPerRealSecond = totalGameTimeMinute / realTimeMinute;
     }
 
     void Update()
     {
-        // 현실 시간과의 비율을 곱해서 게임 시간을 업데이트
+
         CurrentTime = CurrentTime.AddSeconds(Time.deltaTime * gameSecondsPerRealSecond);
 
-        // 게임 시간이 분 단위로 변경되고 이전에 발송된 시간이 아닌 경우에만 이벤트 발송
         if (CurrentTime.Minute % 5 == 0 && CurrentTime != lastEmittedTime)
         {
             lastEmittedTime = CurrentTime;

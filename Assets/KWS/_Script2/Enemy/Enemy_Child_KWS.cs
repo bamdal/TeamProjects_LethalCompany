@@ -178,7 +178,6 @@ public class Enemy_Child_KWS : MonoBehaviour
 
     /// <summary>
     /// 점프하면서 부모 오브젝트의 위치와 틀어지는 것을 막기 위한 함수
-    /// 현재는 사용 안함
     /// </summary>
     private void samePosition()
     {
@@ -289,6 +288,8 @@ public class Enemy_Child_KWS : MonoBehaviour
 
             // 점프할 때 회전을 막기 위해 angularVelocity를 0으로 설정
             rigid.angularVelocity = Vector3.zero;
+
+            samePosition();
         }
     }
 
@@ -310,11 +311,13 @@ public class Enemy_Child_KWS : MonoBehaviour
     {
         while (transform.position.y < currentY)
         {
+            box.enabled = false;
             rigid.velocity = Vector3.zero;
             float newY = transform.position.y + 1.0f * Time.deltaTime;
             transform.position = new Vector3(transform.position.x, Mathf.Min(newY, currentY), transform.position.z);
             yield return null;
         }
+        box.enabled = true;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -359,6 +362,7 @@ public class Enemy_Child_KWS : MonoBehaviour
         {
             // 플레이어를 못잡았다
             Debug.Log("10초가 지났지만 플레이어를 못잡았다");
+            samePosition();
             enemyParent.NoPath();
             enemyParent.StateStop();
             timerFinished = false;
