@@ -288,6 +288,8 @@ public class Enemy_Child_KWS : MonoBehaviour
 
             // 점프할 때 회전을 막기 위해 angularVelocity를 0으로 설정
             rigid.angularVelocity = Vector3.zero;
+
+            samePosition();
         }
     }
 
@@ -309,11 +311,13 @@ public class Enemy_Child_KWS : MonoBehaviour
     {
         while (transform.position.y < currentY)
         {
+            box.enabled = false;
             rigid.velocity = Vector3.zero;
             float newY = transform.position.y + 1.0f * Time.deltaTime;
             transform.position = new Vector3(transform.position.x, Mathf.Min(newY, currentY), transform.position.z);
             yield return null;
         }
+        box.enabled = true;
     }
 
     private void OnTriggerEnter(Collider other)

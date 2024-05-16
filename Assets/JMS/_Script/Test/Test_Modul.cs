@@ -9,6 +9,12 @@ public class Test_Modul : TestBase
     public Door Door;
     public GenerationPointNav generationPointNav;
     public CoilHead coilHeadPrefab;
+
+
+    public Enemy_Spider spiderPrefab;    // 적 프리팹
+    //private Enemy_Spider spiderEnemy;         // 생성된 적의 참조를 저장하는 변수
+
+
     private void Start()
     {
         DungeonGenerator dungeonGenerator = FindAnyObjectByType<DungeonGenerator>();
@@ -36,5 +42,10 @@ public class Test_Modul : TestBase
     protected override void OnTest3(InputAction.CallbackContext context)
     {
         Instantiate(coilHeadPrefab, generationPointNav.transform);
+    }
+
+    protected override void OnTest4(InputAction.CallbackContext context)
+    {
+        Instantiate(spiderPrefab, generationPointNav.transform);
     }
 }
