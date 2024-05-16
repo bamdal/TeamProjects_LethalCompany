@@ -58,19 +58,9 @@ public class Flash_Up : ToolBase, IEquipable, IItemDataBase
 
     Transform lightTransform;
 
-    private void Awake()
-    {
-        lightTransform = transform.GetChild(0);
-
-        flashUpData = GameManager.Instance.ItemData.GetItemDB(ItemCode.FlashLightUp);
-
-        maxBattery = flashUpData.battery;
-        CurrentBattery = maxBattery;
-        weight = flashUpData.weight;
-    }
-
     private void Start()
     {
+        lightTransform = transform.GetChild(0);
         flashUpData = GameManager.Instance.ItemData.GetItemDB(ItemCode.FlashLightUp);
 
         maxBattery = flashUpData.battery;

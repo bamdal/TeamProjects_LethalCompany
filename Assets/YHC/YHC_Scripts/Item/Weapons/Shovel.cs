@@ -13,20 +13,22 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase, IBattler
     float weight;
     public float Weight => weight;
 
-    BoxCollider boxCollider;
+    BoxCollider AttackArea;
     Animator anim;
+    readonly int AttackHash = Animator.StringToHash("Attack");
 
-    private void Awake()
-    {
-        boxCollider = GetComponent<BoxCollider>();
-    }
+
     private void Start()
     {
+        AttackArea = GetComponentInChildren<BoxCollider>();
+        anim = GetComponent<Animator>();
+
+        AttackArea.enabled = false;
+
         shovelData = GameManager.Instance.ItemData.GetItemDB(ItemCode.Shovel);
         weight = shovelData.weight;
         damage = shovelData.damage;
     }
-
 
     public void Equip()
     {
@@ -35,7 +37,7 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase, IBattler
 
     public void Use()
     {
-        
+        anim.SetTrigger(AttackHash);
     }
 
     private void OnTriggerEnter(Collider other)
@@ -45,9 +47,19 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase, IBattler
             IBattler target = other.GetComponent<IBattler>();
             if(target != null)
             {
-                Attack(target);
+                target.Defense(Damage);
             }
         }
+    }
+
+    void ColliderEnable()
+    {
+        AttackArea.enabled = true;
+    }
+
+    void ColliderDisable()
+    {
+        AttackArea.enabled = false;
     }
 
     public void Attack(IBattler target)
