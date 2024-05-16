@@ -35,4 +35,7 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scene/IntegrationScenes/AsyncLoadScene.unity
     guid: e86792f6e4401db4cab33e4058cdc280
+  - enabled: 1
+    path: Assets/_Scene/IntegrationScenes/DeadScene.unity
+    guid: 6182720cfea94cb45a81d3faaaadc08a
   m_configObjects: {}
