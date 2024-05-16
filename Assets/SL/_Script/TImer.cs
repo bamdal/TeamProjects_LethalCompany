@@ -6,7 +6,7 @@ public class Timer : MonoBehaviour
     public DateTime startTime = DateTime.Parse("07:00");
     private DateTime lastEmittedTime;
     public Action<DateTime> OnTimeChanged;
-    public Action OnHourChanged;
+    public Action<int> OnHourChanged;
 
     // 현실 시간과 게임 시간의 비율 (1초에 해당하는 현실 시간)
     private float gameSecondsPerRealSecond = 51.0f;
@@ -21,7 +21,7 @@ public class Timer : MonoBehaviour
             {
                 if (currentTime.Hour != value.Hour)
                 {
-                    OnHourChanged?.Invoke();
+                    OnHourChanged?.Invoke(value.Hour);
                 }
                 currentTime = value;
             }
