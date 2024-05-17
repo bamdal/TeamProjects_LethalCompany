@@ -710,7 +710,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1843225982562606812
 RectTransform:
   m_ObjectHideFlags: 0
@@ -961,7 +961,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &196483691284099554
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1012,7 +1012,7 @@ MonoBehaviour:
   m_text: "Store \uBAA9\uB85D\n* \uC190\uC804\uB4F1(flashlight)\\t\\t\\t\\t\\t15\\t\uC6D0\r\n*
     \uD504\uB85C \uC190\uC804\uB4F1(proflashlight)\\t\\t\\t25\\t\uC6D0\r\n* \uC0BD(shovel)\\t\\t\\t\\t\\t\\t\\t30\\t\uC6D0\r\n*
     \uACF5\uAE30 \uAD8C\uCD1D(ZapGun)\\t\\t\\t\\t\\t400\\t\uC6D0\r\n* \uC12C\uAD11
-    \uC218\uB958\uD0C4(grenade)\\t\\t\\t\\t\\t36\\t\uC6D0\r\n* \uD655\uC7A5 \uC0AC\uB2E4\uB9AC(labber)\\t\\t\\t\\t\\t60\\t\uC6D0\n\n\n\n\n\n\n\uD130\uBBF8\uB110\uC758
+    \uC218\uB958\uD0C4(grenade)\\t\\t\\t\\t\\t36\\t\uC6D0\r\n* \uC0AC\uB2E4\uB9AC(labber)\\t\\t\\t\\t\\t\\t60\\t\uC6D0\n\n\n\n\n\n\n\uD130\uBBF8\uB110\uC758
     \uC885\uB8CC\uB97C \uC6D0\uD558\uC2DC\uBA74 ESC\uB97C \uB20C\uB7EC\uC8FC\uC138\uC694.\n\uAE30\uBCF8
     \uD654\uBA74\uC73C\uB85C \uB3CC\uC544\uAC00\uC2DC\uB824\uBA74 Main\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694."
   m_isRightToLeft: 0
