@@ -72,6 +72,7 @@ public class Enemy_Child_KWS : MonoBehaviour
     int attackHash = Animator.StringToHash("Attack");
     int dieHash = Animator.StringToHash("Die");
 
+    // 콜라이더
     BoxCollider box;
 
     private void Awake()
@@ -89,6 +90,7 @@ public class Enemy_Child_KWS : MonoBehaviour
         enemyParent.onRaise += GravityOff;
         enemyParent.onLower += GravityOn;
         enemyParent.hpChange += HPChange;
+        enemyParent.onPlayerDie += OnPlayerDie;
         //enemyParent.onChase += samePosition;
 
         //Player player = GameManager.Instance.Player;
@@ -146,7 +148,7 @@ public class Enemy_Child_KWS : MonoBehaviour
         
         box.enabled = false;                        // 콜라이더 끄기
 
-        yield return new WaitForSeconds(1.0f);      // 1초 기다리고
+        yield return new WaitForSeconds(3.0f);      // 3초 기다리고
 
         this.gameObject.SetActive(false);           // 이 게임 오브젝트 비활성화
         enemyParent.gameObject.SetActive(false);    // agent를 가지고 있는 부모오브젝트 비활성화
@@ -378,6 +380,16 @@ public class Enemy_Child_KWS : MonoBehaviour
         yield return new WaitForSeconds(10); // 10초 동안 대기
         timerFinished = true;
         CheckChatch();
+    }
+
+    /// <summary>
+    /// 플레이어가 죽어서 플레이어의 자식에서 떨어지기 위한 함수
+    /// </summary>
+    /// <exception cref="NotImplementedException"></exception>
+    private void OnPlayerDie()
+    {
+        // 게임 오브젝트 삭제
+        Destroy(this.gameObject);
     }
 }
 
