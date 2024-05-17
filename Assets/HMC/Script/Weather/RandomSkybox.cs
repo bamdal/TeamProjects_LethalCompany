@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class RandomSkybox : MonoBehaviour
 {
-    public Material Sunrise;
+    //public Material Sunrise;
     public Material Sunset;
     public Material Night_Moonless;
     public Material Night;
@@ -43,11 +43,8 @@ public class RandomSkybox : MonoBehaviour
 
     void UpdateSkybox(int currentTimeHour)
     {
-        if (IsSunrise(currentTimeHour))
-        {
-            RenderSettings.skybox = Sunrise; // 03~06
-        }
-        else if (IsSunset(currentTimeHour))
+        
+        if (IsSunset(currentTimeHour))
         {
             RenderSettings.skybox = Sunset; // 15~18
         }
@@ -77,15 +74,11 @@ public class RandomSkybox : MonoBehaviour
 
     bool IsDay(int currentTimeHour)
     {
-        return currentTimeHour >= 10 && currentTimeHour < 13;
+        return currentTimeHour >= 7 && currentTimeHour < 13;
     }
+
 
     bool IsSunset(int currentTimeHour)
-    {
-        return currentTimeHour >= 7 && currentTimeHour < 10;
-    }
-
-    bool IsSunrise(int currentTimeHour)
     {
         return currentTimeHour >= 13 && currentTimeHour < 16;
     }
