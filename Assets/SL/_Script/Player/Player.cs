@@ -601,6 +601,8 @@ public class Player : Singleton<Player>, IBattler, IHealth
                             Rigidbody itemRigidbody = hit.collider.GetComponent<Rigidbody>();
                             if (itemRigidbody != null)
                                 itemRigidbody.isKinematic = true;
+
+                            itemTransform.rotation = Quaternion.identity;
                             hit.collider.gameObject.SetActive(false);
                             if (inventory.InvenSlots[CurrentItemIndex] != null && inventory.InvenSlots[CurrentItemIndex].childCount > 0)
                             {

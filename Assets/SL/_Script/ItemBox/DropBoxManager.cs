@@ -6,7 +6,8 @@ public class DropBoxManager : MonoBehaviour
 {
     GameManager gameManager;
 
-    public GameObject ItemBoxPrepab;
+    public GameObject itemBoxPrepab;
+    public Transform dropPosition;
 
     Coroutine dropItem;
 
@@ -27,7 +28,7 @@ public class DropBoxManager : MonoBehaviour
     IEnumerator Drop()
     {
         yield return new WaitForSeconds(3f);
-        GameObject itemTemp = Instantiate(ItemBoxPrepab);
+        GameObject itemTemp = Instantiate(itemBoxPrepab, dropPosition.position, dropPosition.rotation, null);
          temp = itemTemp.GetComponent<IInteraction>();
         temp.onRequest += DropItemBox;
         dropItem = null;
