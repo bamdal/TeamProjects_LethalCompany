@@ -32,13 +32,22 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
         get => currentBattery;
         set
         {
-            if(currentBattery != value)
+            if (currentBattery != value)
             {
                 currentBattery = value;
+                currentBattery = Mathf.Clamp(value, 0, MaxBattery);
+                if(currentBattery == 0)
+                {
+                    state = GunState.Load;
+                    StopAllCoroutines();
+                }
                 onBatterChange?.Invoke(currentBattery / MaxBattery);
+                
             }
         }
     }
+
+    bool IsUsable { get => CurrentBattery > 0; }
 
     float MaxBattery;
 
@@ -55,7 +64,7 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
 
     private void Update()
     {
-        if(state == GunState.Shot)
+        if (state == GunState.Shot)
         {
             CurrentBattery -= Time.deltaTime * batteryUse;
         }
@@ -68,14 +77,17 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
 
     public void Use()
     {
-        switch(state)
+        switch (state)
         {
             case GunState.Load:
                 targetEnemy = null;
-                state = GunState.Scan;
+                if (IsUsable)
+                {
+                    state = GunState.Scan;
+                }
                 break;
             case GunState.Scan:
-                if(ObjectScan())
+                if (ObjectScan())
                 {
                     state = GunState.Release;
                     Release();
@@ -92,7 +104,7 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
             case GunState.Shot:
                 state = GunState.Load;
                 break;
-                
+
         }
     }
 
@@ -102,10 +114,10 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
         Collider[] colliders = Physics.OverlapBox(transform.position + transform.forward * 5.0f, Vector3.one * 0.5f);
         targetEnemy = null;
 
-        foreach(Collider collider in colliders)
+        foreach (Collider collider in colliders)
         {
             targetEnemy = collider.GetComponent<EnemyBase>();
-            if(targetEnemy != null)
+            if (targetEnemy != null)
             {
                 result = true;
                 break;
@@ -119,6 +131,7 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
     {
         if (targetEnemy != null)
         {
+            StopAllCoroutines();
             StartCoroutine(EnemyStunned(enemyStunnedTime));
         }
     }
@@ -126,7 +139,6 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
     void Release()
     {
         Debug.Log("적 스캔 완료");
-
     }
 
     IEnumerator EnemyStunned(int stunnedTime)

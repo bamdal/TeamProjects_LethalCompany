@@ -3,7 +3,7 @@ using UnityEngine;
 
 public class RandomSkybox : MonoBehaviour
 {
-    public Material Sunrise;
+    //public Material Sunrise;
     public Material Sunset;
     public Material Night_Moonless;
     public Material Night;
@@ -11,6 +11,9 @@ public class RandomSkybox : MonoBehaviour
     public Material Day_Sunless;
 
     private Timer timer;
+    private Material selectedDaySkybox;
+    private Material sealectedNightSkybox;
+    private Material currentSkybox;
 
     void Start()
     {
@@ -21,7 +24,9 @@ public class RandomSkybox : MonoBehaviour
             Debug.LogError("Timer script not found");
             return;
         }
-
+    
+        selectedDaySkybox = UnityEngine.Random.value < 0.5f ? Day : Day_Sunless;
+        sealectedNightSkybox = UnityEngine.Random.value < 0.5f ? Night : Night_Moonless;
         // Timer 클래스의 이벤트에 대한 구독
         timer.OnTimeChanged += UpdateSkyboxWithDateTime;
         timer.OnHourChanged += UpdateSkyboxWithInt;
@@ -43,47 +48,33 @@ public class RandomSkybox : MonoBehaviour
 
     void UpdateSkybox(int currentTimeHour)
     {
-        if (IsSunrise(currentTimeHour))
+        Material newSkybox = null;
+        
+        if (IsSunset(currentTimeHour))
         {
-            RenderSettings.skybox = Sunrise; // 03~06
-        }
-        else if (IsSunset(currentTimeHour))
-        {
-            RenderSettings.skybox = Sunset; // 15~18
+            newSkybox = Sunset; // 15~18
         }
         else if (IsDay(currentTimeHour))
         {
-            if (UnityEngine.Random.value < 0.5f) // 18~03
-            {
-                RenderSettings.skybox = Day;
-            }
-            else
-            {
-                RenderSettings.skybox = Day_Sunless;
-            }
+            newSkybox = selectedDaySkybox;
         }
         else if (IsNight(currentTimeHour))
         {
-            if (UnityEngine.Random.value < 0.5f) // 03~06
-            {
-                RenderSettings.skybox = Night;
-            }
-            else
-            {
-                RenderSettings.skybox = Night_Moonless;
-            }
+            newSkybox = sealectedNightSkybox;
+        }
+        if(newSkybox != null && newSkybox != currentSkybox)
+        {
+            RenderSettings.skybox = newSkybox;
+            currentSkybox = newSkybox;
+            Debug.Log("Skybox updated to : " + currentSkybox.name);
         }
     }
 
     bool IsDay(int currentTimeHour)
     {
-        return currentTimeHour >= 10 && currentTimeHour < 13;
+        return currentTimeHour >= 7 && currentTimeHour < 13;
     }
 
-    bool IsSunrise(int currentTimeHour)
-    {
-        return currentTimeHour >= 7 && currentTimeHour < 10;
-    }
 
     bool IsSunset(int currentTimeHour)
     {

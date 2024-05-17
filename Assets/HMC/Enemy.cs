@@ -80,7 +80,7 @@ private void Idle()
             agent.SetDestination(hit.position);
 
             isWalking = true;
-            idleTimer = 0f;
+            idleTimer = 1.0f;
             anim.SetBool("Walking", true);
             anim.SetBool("LookAround", false); // 이동 중에는 LookAround 애니메이션 비활성화
         }
