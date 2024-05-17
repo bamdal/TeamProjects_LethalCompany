@@ -55,9 +55,9 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase, IBattler
 
         AttackArea.enabled = false;
 
-        // shovelData = GameManager.Instance.ItemData.GetItemDB(ItemCode.Shovel);
-        // weight = shovelData.weight;
-        // damage = shovelData.damage;
+        shovelData = GameManager.Instance.ItemData.GetItemDB(ItemCode.Shovel);
+        weight = shovelData.weight;
+        damage = shovelData.damage;
 
         head.onShovelTiggerOn += HeadTriggerOn;
         head.onShovelTiggerOff += HeadTriggerOff;
