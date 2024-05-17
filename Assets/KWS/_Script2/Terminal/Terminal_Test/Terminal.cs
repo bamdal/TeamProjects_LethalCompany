@@ -77,6 +77,11 @@ public class Terminal : MonoBehaviour,IInteraction
     /// </summary>
     string sceneNameToLoad;
 
+    /// <summary>
+    /// 플레이어의 상태를 나타내는 캔버스
+    /// </summary>
+    public Canvas playerCanvas;
+
     // 델리게이트들 -----------------------------------------------------------------------------------------------------
 
     public Action ESC;
@@ -285,7 +290,7 @@ public class Terminal : MonoBehaviour,IInteraction
                 break;
 
             // 물건 구매하는 부분 -----------------------------------------------------------------------------------------
-            case "flashlight0":
+            case "flashlight":
             case "손전등":
                 if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf) // mainText 비활성화 storeText 활성화 상태이면
                 {
@@ -293,7 +298,7 @@ public class Terminal : MonoBehaviour,IInteraction
                     gameManager.ItemsQueue.Enqueue(ItemCode.FlashLight);
                 }
                 break;
-            case "flashlight1":
+            case "proflashlight":
             case "프로손전등":
                 if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf) // mainText 비활성화 storeText 활성화 상태이면
                 {
@@ -301,7 +306,7 @@ public class Terminal : MonoBehaviour,IInteraction
                     gameManager.ItemsQueue.Enqueue(ItemCode.FlashLightUp);
                 }
                 break;
-            case "Shovel":
+            case "shovel":
             case "삽":
                 if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf) // mainText 비활성화 storeText 활성화 상태이면
                 {
@@ -309,15 +314,15 @@ public class Terminal : MonoBehaviour,IInteraction
                     gameManager.ItemsQueue.Enqueue(ItemCode.Shovel);
                 }
                 break;
-            case "Zap":
-            case "ZapGun":
+            case "zapGun":
+            case "공기권총":
                 if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf) // mainText 비활성화 storeText 활성화 상태이면
                 {
                     Debug.Log("스토어 입력 중 ZapGun 입력 확인");
                     gameManager.ItemsQueue.Enqueue(ItemCode.ZapGun);
                 }
                 break;
-            case "Grenade":
+            case "grenade":
             case "섬광수류탄":
                 if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf) // mainText 비활성화 storeText 활성화 상태이면
                 {
@@ -325,7 +330,7 @@ public class Terminal : MonoBehaviour,IInteraction
                     gameManager.ItemsQueue.Enqueue(ItemCode.Grenade);
                 }
                 break;
-            case "Labber":
+            case "labber":
             case "사다리":
                 if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf) // mainText 비활성화 storeText 활성화 상태이면
                 {
@@ -335,8 +340,8 @@ public class Terminal : MonoBehaviour,IInteraction
                 break;
 
             // 행성 이동하는 부분 -----------------------------------------------------------------------------------------
-            case "행성":
-            case "planet":
+            case "타이탄":
+            case "titan":
                 if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
                 {
                     Debug.Log("mainText가 활성화된 상태에서 행성의 입력을 확인");
@@ -354,6 +359,7 @@ public class Terminal : MonoBehaviour,IInteraction
                 }
                 break;
             case "회사":
+            case "company":
                 if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
                 {
                     Debug.Log("mainText가 활성화된 상태에서 원래 행성의 입력을 확인");
@@ -438,6 +444,10 @@ public class Terminal : MonoBehaviour,IInteraction
 
             // 카메라 스위칭
             SwitchCamera();
+
+            // 여기다 플레이어의 canvas 끄는 것 추가
+            playerCanvas.gameObject.SetActive(false);
+
         }
     }
 
@@ -447,6 +457,9 @@ public class Terminal : MonoBehaviour,IInteraction
         if (!PressF_text.gameObject.activeSelf)
         {
             pressESC();
+
+            // 여기다 플레이어의 canvas 켜는 것 추가
+            playerCanvas.gameObject.SetActive(true);
         }
     }
 
