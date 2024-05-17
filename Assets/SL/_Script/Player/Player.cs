@@ -602,7 +602,6 @@ public class Player : Singleton<Player>, IBattler, IHealth
                             Rigidbody itemRigidbody = hit.collider.GetComponent<Rigidbody>();
                             if (itemRigidbody != null)
                                 itemRigidbody.isKinematic = true;
-                            itemTransform.rotation = new Quaternion(0, 0, 0, 0);
                             hit.collider.gameObject.SetActive(false);
                             if (inventory.InvenSlots[CurrentItemIndex] != null && inventory.InvenSlots[CurrentItemIndex].childCount > 0)
                             {
@@ -740,9 +739,6 @@ public class Player : Singleton<Player>, IBattler, IHealth
             if (equipable != null)
             {
                 equipable.Use();
-            }
-            else
-            {
             }
         }
     }
