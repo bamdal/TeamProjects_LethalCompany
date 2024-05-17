@@ -80,12 +80,12 @@ public class RandomSkybox : MonoBehaviour
         return currentTimeHour >= 10 && currentTimeHour < 13;
     }
 
-    bool IsSunrise(int currentTimeHour)
+    bool IsSunset(int currentTimeHour)
     {
         return currentTimeHour >= 7 && currentTimeHour < 10;
     }
 
-    bool IsSunset(int currentTimeHour)
+    bool IsSunrise(int currentTimeHour)
     {
         return currentTimeHour >= 13 && currentTimeHour < 16;
     }
