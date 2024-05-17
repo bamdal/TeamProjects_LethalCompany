@@ -1,9 +1,23 @@
+using System.Collections;
 using UnityEngine;
 using UnityEngine.AI;
 
 public class Enemy_H : MonoBehaviour
 {
-    // 몬스터의 상태를 나타내는 열거형
+        public float attackRange = 1.5f; // 공격 범위
+    public float attackCooldown = 3f; // 공격 쿨다운 시간
+    public float idleDuration = 2f; // 대기 시간
+    public float lookAroundDuration = 5f; // LookAround 애니메이션 지속 시간
+
+    private State currentState = State.IDLE; // 몬스터의 현재 상태
+    private Transform target; // 추적할 대상 (플레이어)
+    private NavMeshAgent agent; // NavMeshAgent 컴포넌트
+    private Animator anim;
+    private float lastAttackTime; // 마지막 공격 시간 기록 변수
+    private bool isWalking = false;
+    private bool isLookingAround = false;
+    private float idleTimer = 0f;
+
     public enum State
     {
         IDLE,
@@ -12,25 +26,17 @@ public class Enemy_H : MonoBehaviour
         DIE
     }
 
-    public float attackRange = 1.5f; // 공격 범위
-    public float attackCooldown = 3f; // 공격 쿨다운 시간
-    public float idleDuration = 2f;
-
-    private State currentState = State.IDLE; // 몬스터의 현재 상태
-    private Transform target; // 추적할 대상 (플레이어)
-    private NavMeshAgent agent; // NavMeshAgent 컴포넌트
-    private Animator anim;
-    private float lastAttackTime; // 마지막 공격 시간 기록 변수
-    private bool isWalking = false;
-    private bool needToIdle = false;
-    private float idleTimer = 0f;
+//walking 애니메이션 어색한 부분(목적지 도착 후에도 Walking 애니메이션 출력됨.)
+//Idle 애니메이션 재검토 
+// 이후 die 애니메이션 및 attack모션, run 모션 추가.
 
     private void Start()
     {
-        target = GameObject.FindGameObjectWithTag("Player").transform; // 플레이어를 추적 대상으로 설정
+        // 플레이어 태그를 가진 객체를 찾아 추적 대상으로 설정
+        target = GameObject.FindGameObjectWithTag("Player").transform;
         agent = GetComponent<NavMeshAgent>(); // NavMeshAgent 컴포넌트 가져오기
-        anim = GetComponent<Animator>();
-        anim.SetBool("Walking", false);
+        anim = GetComponent<Animator>(); // Animator 컴포넌트 가져오기
+        anim.SetBool("Walking", false); // 초기 Walking 상태를 false로 설정
     }
 
     private void Update()
@@ -52,59 +58,69 @@ public class Enemy_H : MonoBehaviour
                 break;
         }
 
-        // 다음 Update에서 Idle() 메서드를 호출
-        if (needToIdle)
-        {
-            needToIdle = false;
-            Idle();
-        }
-    }
-
-private void Idle()
-{
-    // 플레이어가 일정 범위 내에 있으면 추적 상태로 변경
-    if (Vector3.Distance(transform.position, target.position) <= attackRange)
-    {
-        currentState = State.CHASE;
-        Debug.Log("Chase");
-    }
-    else
-    {
-        if (!isWalking)
-        {
-            // 새로운 랜덤 방향 선택 전에 적이 바라보는 방향을 고려하여 회전
-            Vector3 randomDirection = Quaternion.Euler(0, Random.Range(0f, 360f), 0) * transform.forward;
-            Vector3 targetPosition = transform.position + randomDirection * 10f;
-            NavMeshHit hit;
-            NavMesh.SamplePosition(targetPosition, out hit, 10f, NavMesh.AllAreas);
-            agent.SetDestination(hit.position);
-
-            isWalking = true;
-            idleTimer = 1.0f;
-            anim.SetBool("Walking", true);
-            anim.SetBool("LookAround", false); // 이동 중에는 LookAround 애니메이션 비활성화
-        }
-        else if (!agent.pathPending && agent.remainingDistance <= 0.1f)
+        // LookAround 애니메이션이 끝난 후 IDLE 상태로 돌아가기 위한 타이머
+        if (isLookingAround)
         {
             idleTimer += Time.deltaTime;
-            if(idleTimer >= idleDuration)
+            if (idleTimer >= lookAroundDuration)
             {
-                isWalking = false;
-                needToIdle = true;
-                anim.SetBool("Walking", false);
+                isLookingAround = false;
+                idleTimer = 0f;
+                SetRandomDestination();
             }
         }
     }
 
-    // LookAround 애니메이션을 대기 상태에서 실행
-    if (!isWalking && needToIdle)
+    private void Idle()
     {
-        anim.SetBool("LookAround", true);
-        // LookAround 애니메이션이 끝난 후에 다음 동작을 수행할 수 있도록 설정해야 합니다.
-        // 예를 들어, LookAround 애니메이션이 끝나고 다음 상태로 전환하는 트리거를 설정합니다.
-        // 이는 애니메이터에서 상태 전환을 제어하거나, 코드에서 트리거를 설정하여 구현할 수 있습니다.
+        // 플레이어가 일정 범위 내에 있으면 추적 상태로 변경
+        if (Vector3.Distance(transform.position, target.position) <= attackRange)
+        {
+            currentState = State.CHASE;
+            Debug.Log("Chase");
+        }
+        else
+        {
+            if (!isWalking && !isLookingAround)
+            {
+                SetRandomDestination();
+            }
+            else if (!agent.pathPending && agent.remainingDistance <= 0.1f && isWalking)
+            {
+                idleTimer += Time.deltaTime;
+                if (idleTimer >= idleDuration)
+                {
+                    isWalking = false;
+                    idleTimer = 0f;
+                    StartCoroutine(LookAround());
+                }
+            }
+        }
     }
-}
+
+    private IEnumerator LookAround()
+    {
+        isLookingAround = true;
+        anim.SetBool("LookAround", true);
+        anim.SetBool("Walking", false);
+        yield return new WaitForSeconds(lookAroundDuration);
+        isLookingAround = false;
+        anim.SetBool("LookAround", false);
+        currentState = State.IDLE;
+    }
+
+    private void SetRandomDestination()
+    {
+        Vector3 randomDirection = Quaternion.Euler(0, UnityEngine.Random.Range(0f, 360f), 0) * Vector3.forward;
+        Vector3 targetPosition = transform.position + randomDirection * 10f;
+        NavMeshHit hit;
+        if (NavMesh.SamplePosition(targetPosition, out hit, 10f, NavMesh.AllAreas))
+        {
+            agent.SetDestination(hit.position);
+            isWalking = true;
+            anim.SetBool("Walking", true);
+        }
+    }
 
     private void Chase()
     {
@@ -119,6 +135,7 @@ private void Idle()
 
         // 추적 중에 속도 높이기
         agent.speed = 3.0f;
+        anim.SetBool("Walking", true);
     }
 
     private void Attack()
