@@ -66,10 +66,10 @@ public class GameManager : Singleton<GameManager>
             {
                 if (value > 0)
                 {
-                    totalMoney += value;
+                    totalMoney = value;
                 }
                 money = value;
-                onMoneyChange?.Invoke(money);       // MoneyCountMonitor에서 사용
+                onMoneyChange?.Invoke(TotalMoney);       // MoneyCountMonitor에서 사용
             }
         }
     }
@@ -237,6 +237,7 @@ public class GameManager : Singleton<GameManager>
         spaceShip = FindAnyObjectByType<SpaceShip>();
         player = FindAnyObjectByType<Player>();
         player.onDie = OnDie;
+        Money = 50.0f;
     }
 
     protected override void OnInitialize()
