@@ -120,6 +120,23 @@ public class SpaceShip : MonoBehaviour
         }
 
         GameManager.Instance.Player.Die();
+    
+    }
+
+    public void Refresh()
+    {
+        animator.SetTrigger("Close");
+        Light light = transform.GetChild(5).GetComponent<Light>();
+        light.enabled = true;
+        StopAllCoroutines();
+        Transform shipBase = transform.GetChild(1);
+        Collider[] shipCollider = shipBase.GetComponentsInChildren<Collider>();
+
+        foreach (Collider collider in shipCollider)
+        {
+            collider.enabled = true;
+        }
+
     }
 
     IEnumerator ExplosionShip()

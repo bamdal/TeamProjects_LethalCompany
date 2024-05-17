@@ -7,7 +7,8 @@ public class StartMiddleScene : MonoBehaviour
 {
     private void Start()
     {
-        StartCoroutine(NextDayCorurine());
+        if(GameManager.Instance.GameState != GameState.GameOver)
+            StartCoroutine(NextDayCorurine());
         GameManager.Instance.GameState = GameState.GameReady;
     }
 

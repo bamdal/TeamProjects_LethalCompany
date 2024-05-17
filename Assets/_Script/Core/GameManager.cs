@@ -147,7 +147,7 @@ public class GameManager : Singleton<GameManager>
             {
 
 
-                dday = Mathf.Clamp(value,0,maxDay);
+                dday = Mathf.Clamp(value,0,maxDay+1);
                 
                 onDayChange?.Invoke(dday);
 
@@ -272,20 +272,45 @@ public class GameManager : Singleton<GameManager>
             StartCoroutine(LoadSpaceScene());
 
         }
+        else
+        {
+            StartCoroutine(GameoverScene());
+        }
+    }
+
+    IEnumerator GameoverScene()
+    {
+        AsyncOperation async = SceneManager.LoadSceneAsync("DeadScene", LoadSceneMode.Single);
+        async.allowSceneActivation = false;
+
+        yield return new WaitForSeconds(3.0f);
+        async.allowSceneActivation = true;
+        Player.PlayerRefresh();
+        SpaceShip.Refresh();
+        while (!async.isDone)
+        {
+            yield return null;
+        }
+        SpaceShip.transform.position = Vector3.zero;
+        SpaceShip.transform.rotation = Quaternion.identity;
+        Player.ControllerTPPosition(Vector3.zero);
+        Player.PlayerRefresh();
+
     }
 
     IEnumerator LoadSpaceScene()
     {
 
-
+  
         AsyncOperation async = SceneManager.LoadSceneAsync("MiddleScene", LoadSceneMode.Single);
+        async.allowSceneActivation = false;
+        yield return new WaitForSeconds(3.0f);
+        async.allowSceneActivation = true;
 
         while (!async.isDone)
         {
             yield return null;
         }
-
-        yield return new WaitForSeconds(3.0f);
 
         SpaceShip.transform.position = Vector3.zero;
         SpaceShip.transform.rotation = Quaternion.identity;

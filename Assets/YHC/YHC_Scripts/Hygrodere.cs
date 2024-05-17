@@ -171,16 +171,17 @@ public class Hygrodere : EnemyBase
 
     private void Awake()
     {
+    }
+    protected override void Start()
+    {
+        base.Start();
+
         attackDamage = 35;
         currentAttackCoolTime = attackCoolTime;
         hygroHp = MaxHP;
 
         agent = GetComponent<NavMeshAgent>();
         chaseArea = GetComponent<SphereCollider>();
-    }
-    protected override void Start()
-    {
-        base.Start();
 
         State = EnemyState.Stop;
         State = EnemyState.Patrol;
