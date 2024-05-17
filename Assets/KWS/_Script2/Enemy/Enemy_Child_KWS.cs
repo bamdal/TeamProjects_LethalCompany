@@ -148,7 +148,7 @@ public class Enemy_Child_KWS : MonoBehaviour
         
         box.enabled = false;                        // 콜라이더 끄기
 
-        yield return new WaitForSeconds(1.0f);      // 1초 기다리고
+        yield return new WaitForSeconds(3.0f);      // 3초 기다리고
 
         this.gameObject.SetActive(false);           // 이 게임 오브젝트 비활성화
         enemyParent.gameObject.SetActive(false);    // agent를 가지고 있는 부모오브젝트 비활성화
