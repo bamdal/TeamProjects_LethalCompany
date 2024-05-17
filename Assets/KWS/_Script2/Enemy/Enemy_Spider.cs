@@ -255,6 +255,11 @@ public class Enemy_Spider : EnemyBase
     }
 
     /// <summary>
+    /// 이 적의 공격으로 플레이어의 체력이 0이 되었을 때 실행될 델리게이트
+    /// </summary>
+    public Action onPlayerDie;
+
+    /// <summary>
     /// 적의 상태가 Attack일 때 실행될 함수
     /// </summary>
     protected override void Update_Attack()
@@ -265,8 +270,16 @@ public class Enemy_Spider : EnemyBase
         if(attackCoolTime > 2.0f)
         {
             attackCoolTime = 0.0f;
-            player.Hp -= 5;
-            Debug.Log($"플레이어의 HP: {player.Hp}");
+            if(player.Hp > 0)
+            {
+                player.Hp -= 5;
+                Debug.Log($"플레이어의 HP: {player.Hp}");
+            }
+            else if(player.Hp <= 0)
+            {
+                // 플레이어의 체력이 0보다 작다 => 플레이어가 사망했다 => 플레이어의 자식에서 해제
+                onPlayerDie?.Invoke();
+            }
         }
 
     }

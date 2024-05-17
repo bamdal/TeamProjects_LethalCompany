@@ -29,12 +29,13 @@ public class Enemy_Jester : EnemyBase
     float originSpeed;
     private Transform layStartPosition;
     bool isPlayerDetected = false;
-
+    MeshRenderer meshRenderer;
     
 
     private void Awake()
     {
         agent = GetComponent<NavMeshAgent>();
+        meshRenderer = transform.GetChild(1).GetComponent<MeshRenderer>();
         timer = patrolTime;
         changeTimer = changeModeTime;
         originSpeed = agent.speed;
@@ -60,6 +61,9 @@ public class Enemy_Jester : EnemyBase
             {
                 agent.speed = originSpeed;
                 isPlayerDetected = false;
+                meshRenderer.material.color = Color.white;
+                transform.GetChild(2).gameObject.SetActive(false);
+                changeTimer = changeModeTime;
                 State = EnemyState.Patrol;
             }
             else
@@ -82,6 +86,7 @@ public class Enemy_Jester : EnemyBase
     }
     protected override void Update_Patrol()
     {
+        agent.isStopped = false;
         if (!agent.pathPending && agent.remainingDistance < 0.5f)
         {
             timer -= Time.deltaTime;
@@ -112,14 +117,25 @@ public class Enemy_Jester : EnemyBase
     {
         agent.isStopped = true;
         agent.velocity = Vector3.zero;
+
         changeTimer -= Time.deltaTime;
+        float t = Mathf.Clamp01(1 - (changeTimer / changeModeTime));
+        Color startColor = Color.white;
+        Color endColor = Color.red;
+        Color newColor = Color.Lerp(startColor, endColor, t);
+        meshRenderer.material.color = newColor; 
+
+
         if (changeTimer <= 0f)
         {
             changeTimer = changeModeTime;
             transform.GetChild(2).gameObject.SetActive(true);
             State = EnemyState.Attack;
+            meshRenderer.material.color = endColor;
         }
     }
+
+
 
     protected override void Update_Attack()
     {

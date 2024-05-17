@@ -386,7 +386,6 @@ public class Player : Singleton<Player>, IBattler, IHealth
         characterController.Move(currentSpeed * Time.deltaTime * moveDirection);
         // 중력 처리
         characterController.Move(1f * Time.deltaTime * gravityDir);
-        Debug.Log(currentSpeed);
     }
 
     private void FixedUpdate()
@@ -602,7 +601,8 @@ public class Player : Singleton<Player>, IBattler, IHealth
                             Rigidbody itemRigidbody = hit.collider.GetComponent<Rigidbody>();
                             if (itemRigidbody != null)
                                 itemRigidbody.isKinematic = true;
-                            itemTransform.rotation = new Quaternion(0, 0, 0, 0);
+
+                            itemTransform.rotation = Quaternion.identity;
                             hit.collider.gameObject.SetActive(false);
                             if (inventory.InvenSlots[CurrentItemIndex] != null && inventory.InvenSlots[CurrentItemIndex].childCount > 0)
                             {
@@ -740,9 +740,6 @@ public class Player : Singleton<Player>, IBattler, IHealth
             if (equipable != null)
             {
                 equipable.Use();
-            }
-            else
-            {
             }
         }
     }

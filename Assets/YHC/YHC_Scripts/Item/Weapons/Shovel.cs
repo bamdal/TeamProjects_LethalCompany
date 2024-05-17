@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Shovel : WeaponBase, IEquipable, IItemDataBase, IBattler
 {
@@ -44,7 +45,6 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase, IBattler
     Animator anim;
     readonly int AttackHash = Animator.StringToHash("Attack");
 
-
     private void Start()
     {
         head = GetComponentInChildren<ShovelHead>();
@@ -59,15 +59,26 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase, IBattler
         weight = shovelData.weight;
         damage = shovelData.damage;
 
+        currentAttackCool = attackCoolTime;
+
+        anim.enabled = false;
+
         head.onShovelTiggerOn += HeadTriggerOn;
         head.onShovelTiggerOff += HeadTriggerOff;
     }
 
+    private void Update()
+    {
+        currentAttackCool -= Time.deltaTime;
+    }
+
     public void Use()
     {
-        if (IsAttackAvailable)
+        if(IsAttackAvailable)
         {
+            anim.enabled = true;
             anim.SetTrigger(AttackHash);
+            currentAttackCool = attackCoolTime;
         }
     }
 
@@ -80,6 +91,11 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase, IBattler
     void ColliderDisable()
     {
         AttackArea.enabled = false;
+    }
+
+    void SwingAnimEnd()
+    {
+        anim.enabled = false;
     }
 
     public void Attack(IBattler target)

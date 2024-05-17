@@ -21,6 +21,8 @@ public class Grenade : WeaponBase, IEquipable, IBattler, IItemDataBase
 
     float throwWegiht = 10.0f;
 
+    PlayerInput playerInput;    // 델리게이트 연결위한 필요한 컴포넌트
+
     Rigidbody rigid;
 
     TestInputActions inputActions;
@@ -31,6 +33,7 @@ public class Grenade : WeaponBase, IEquipable, IBattler, IItemDataBase
     {
         explosionRadius = 5.0f;
         rigid = GetComponent<Rigidbody>();
+        playerInput = GameManager.Instance.Player.GetComponent<PlayerInput>(); // 델리게이트 연결위한 필요한 컴포넌트
         rigid.isKinematic = true;
         grenadeData = GameManager.Instance.ItemData.GetItemDB(ItemCode.Grenade);
     }
@@ -46,6 +49,7 @@ public class Grenade : WeaponBase, IEquipable, IBattler, IItemDataBase
         Debug.Log("사용");
         rigid.isKinematic = false;
         rigid.AddForce(transform.forward * throwWegiht, ForceMode.VelocityChange);
+        playerInput.onItemDrop?.Invoke(); //플레이어 onItemDrop 호출하는 델리게이트
         StartCoroutine(Bomb());
     }
 
