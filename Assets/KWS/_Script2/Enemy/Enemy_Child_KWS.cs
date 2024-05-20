@@ -7,7 +7,7 @@ using UnityEngine;
 using static EnemyBase;
 using static UnityEngine.EventSystems.EventTrigger;
 
-public class Enemy_Child_KWS : MonoBehaviour
+public class Enemy_Child_KWS : MonoBehaviour, IBattler
 {
     /// <summary>
     /// 점프 높이
@@ -75,6 +75,13 @@ public class Enemy_Child_KWS : MonoBehaviour
     // 콜라이더
     BoxCollider box;
 
+    Player player;
+
+    /// <summary>
+    /// 공격을 맞았다고 알릴 델리게이트
+    /// </summary>
+    public Action<float> onDefence;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
@@ -86,11 +93,14 @@ public class Enemy_Child_KWS : MonoBehaviour
 
     private void Start()
     {
+        player = GameManager.Instance.Player;
+
         enemyParent = transform.parent.GetComponent<Enemy_Spider>();
         enemyParent.onRaise += GravityOff;
         enemyParent.onLower += GravityOn;
         enemyParent.hpChange += HPChange;
-        enemyParent.onPlayerDie += OnPlayerDie;
+        //enemyParent.onPlayerDie += OnPlayerDie;
+        player.onDie += OnPlayerDie;
         //enemyParent.onChase += samePosition;
 
         //Player player = GameManager.Instance.Player;
@@ -112,7 +122,7 @@ public class Enemy_Child_KWS : MonoBehaviour
         if(HP < 1)
         {
             StopCoroutine(DisableCollider());
-            Player player = GameManager.Instance.Player;
+            //Player player = GameManager.Instance.Player;
             Quaternion playerRotation = player.transform.rotation;
 
             die = true;
@@ -388,8 +398,28 @@ public class Enemy_Child_KWS : MonoBehaviour
     /// <exception cref="NotImplementedException"></exception>
     private void OnPlayerDie()
     {
+        this.gameObject.transform.SetParent(null);
+
         // 게임 오브젝트 삭제
         Destroy(this.gameObject);
+    }
+
+    /// <summary>
+    /// 적을 공격하는 부분(부모쪽에서 처리하게 만듬)
+    /// </summary>
+    /// <param name="target"></param>
+    public void Attack(IBattler target)
+    {
+        target.Defense(enemyParent.attackPower);
+    }
+
+    /// <summary>
+    /// 공격을 맞았을 때 부분(부모쪽에서 처리)
+    /// </summary>
+    /// <param name="attackPower"></param>
+    public void Defense(float attackPower)
+    {
+        onDefence?.Invoke(attackPower);
     }
 }
 
