@@ -75,6 +75,8 @@ public class Enemy_Child_KWS : MonoBehaviour
     // 콜라이더
     BoxCollider box;
 
+    Player player;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
@@ -86,11 +88,14 @@ public class Enemy_Child_KWS : MonoBehaviour
 
     private void Start()
     {
+        Player player = GameManager.Instance.Player;
+
         enemyParent = transform.parent.GetComponent<Enemy_Spider>();
         enemyParent.onRaise += GravityOff;
         enemyParent.onLower += GravityOn;
         enemyParent.hpChange += HPChange;
-        enemyParent.onPlayerDie += OnPlayerDie;
+        //enemyParent.onPlayerDie += OnPlayerDie;
+        player.onDie += OnPlayerDie;
         //enemyParent.onChase += samePosition;
 
         //Player player = GameManager.Instance.Player;
@@ -112,7 +117,7 @@ public class Enemy_Child_KWS : MonoBehaviour
         if(HP < 1)
         {
             StopCoroutine(DisableCollider());
-            Player player = GameManager.Instance.Player;
+            //Player player = GameManager.Instance.Player;
             Quaternion playerRotation = player.transform.rotation;
 
             die = true;
@@ -388,6 +393,8 @@ public class Enemy_Child_KWS : MonoBehaviour
     /// <exception cref="NotImplementedException"></exception>
     private void OnPlayerDie()
     {
+        this.gameObject.transform.SetParent(null);
+
         // 게임 오브젝트 삭제
         Destroy(this.gameObject);
     }

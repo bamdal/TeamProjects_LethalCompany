@@ -271,7 +271,11 @@ public class Enemy_Spider : EnemyBase
         if(attackCoolTime > 2.0f)
         {
             attackCoolTime = 0.0f;
-            if(player.Hp > 0)
+
+            // 플레이어의 체력 감소시키기
+            player.Defense(5);
+            Debug.Log($"플레이어의 HP: {player.Hp}");
+            /*if (player.Hp > 0)
             {
                 player.Hp -= 5;
                 Debug.Log($"플레이어의 HP: {player.Hp}");
@@ -280,7 +284,7 @@ public class Enemy_Spider : EnemyBase
             {
                 // 플레이어의 체력이 0보다 작다 => 플레이어가 사망했다 => 플레이어의 자식에서 해제
                 onPlayerDie?.Invoke();
-            }
+            }*/
         }
 
     }
