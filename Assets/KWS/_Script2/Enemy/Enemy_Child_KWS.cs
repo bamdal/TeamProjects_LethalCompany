@@ -77,6 +77,11 @@ public class Enemy_Child_KWS : MonoBehaviour, IBattler
 
     Player player;
 
+    /// <summary>
+    /// 공격을 맞았다고 알릴 델리게이트
+    /// </summary>
+    public Action<float> onDefence;
+
     private void Awake()
     {
         rigid = GetComponent<Rigidbody>();
@@ -399,13 +404,19 @@ public class Enemy_Child_KWS : MonoBehaviour, IBattler
         Destroy(this.gameObject);
     }
 
+    /// <summary>
+    /// 적을 공격하는 부분(부모쪽에서 처리하게 만듬)
+    /// </summary>
+    /// <param name="target"></param>
     public void Attack(IBattler target)
     {
         target.Defense(enemyParent.attackPower);
     }
 
-    public Action<float> onDefence;
-
+    /// <summary>
+    /// 공격을 맞았을 때 부분(부모쪽에서 처리)
+    /// </summary>
+    /// <param name="attackPower"></param>
     public void Defense(float attackPower)
     {
         onDefence?.Invoke(attackPower);
