@@ -593,7 +593,10 @@ public class Player : Singleton<Player>, IBattler, IHealth
                             itemTransform.SetParent(inventory.InvenSlots[i]);
                             TotalWeight += itemTransform.GetComponent<IItemDataBase>().GetItemDB().weight;
                             SlowRatio = (0.01f * (100 - TotalWeight));
-                            itemTransform.localPosition = new Vector3(0.0f, 0.0f, 1.0f); // 포지션을 (0, 0, 0)으로 설정합니다.  
+
+                            itemTransform.localPosition = new Vector3(0.0f, 0.0f, 1.0f); // 포지션을 (0, 0, 0)으로 설정합니다.
+                            itemTransform.localRotation = Quaternion.Euler(0, 0, 0);
+                            
                             Collider itemCollider = hit.collider.GetComponent<Collider>();
                             if (itemCollider != null)
                                 itemCollider.enabled = false;
@@ -601,8 +604,6 @@ public class Player : Singleton<Player>, IBattler, IHealth
                             Rigidbody itemRigidbody = hit.collider.GetComponent<Rigidbody>();
                             if (itemRigidbody != null)
                                 itemRigidbody.isKinematic = true;
-
-                            itemTransform.rotation = Quaternion.identity;
                             hit.collider.gameObject.SetActive(false);
                             if (inventory.InvenSlots[CurrentItemIndex] != null && inventory.InvenSlots[CurrentItemIndex].childCount > 0)
                             {
