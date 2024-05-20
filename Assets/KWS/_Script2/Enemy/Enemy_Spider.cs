@@ -4,6 +4,7 @@ using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class Enemy_Spider : EnemyBase
 {
@@ -67,7 +68,7 @@ public class Enemy_Spider : EnemyBase
                 }
             }
         }
-    }
+    }    
 
     /// <summary>
     /// 최대 스폰 가능한 마릿수
@@ -381,5 +382,14 @@ public class Enemy_Spider : EnemyBase
     public void StateDie()
     {
         State = EnemyState.Die;
+    }
+
+    public override void Defense(float attackPower)
+    {
+        if (Hp > 0)
+        {
+            Hp -= attackPower;
+            Debug.Log($"적의 HP : {Hp}");
+        }
     }
 }
