@@ -88,7 +88,7 @@ public class Enemy_Child_KWS : MonoBehaviour, IBattler
 
     private void Start()
     {
-        Player player = GameManager.Instance.Player;
+        player = GameManager.Instance.Player;
 
         enemyParent = transform.parent.GetComponent<Enemy_Spider>();
         enemyParent.onRaise += GravityOff;
