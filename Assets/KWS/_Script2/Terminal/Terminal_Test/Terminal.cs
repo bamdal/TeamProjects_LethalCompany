@@ -88,6 +88,8 @@ public class Terminal : MonoBehaviour,IInteraction
     public Action onRequest { get; set; }
 
     GameManager gameManager;
+
+    AsyncOperation loadOperation;
     private void Awake()
     {
         sphere = GetComponent<SphereCollider>();                             // PressF_text의 감지범위 콜라이더
@@ -393,14 +395,15 @@ public class Terminal : MonoBehaviour,IInteraction
     IEnumerator LoadSceneAsync()
     {
         // 다음 씬 비동기 로드 시작
-        SceneManager.LoadScene("AsyncLoadScene", LoadSceneMode.Additive);
+        //SceneManager.LoadScene("AsyncLoadScene", LoadSceneMode.Additive);
 
-        AsyncOperation loadOperation = SceneManager.LoadSceneAsync(sceneNameToLoad, LoadSceneMode.Single);
+        loadOperation = SceneManager.LoadSceneAsync(sceneNameToLoad, LoadSceneMode.Single);
+        loadOperation.allowSceneActivation = false;
         nearVcam.Priority = 9;
         // 씬 로드 완료를 기다림
         while (!loadOperation.isDone)
         {
- 
+            Debug.Log("delay");
             yield return null;
         }
         int count = GameManager.Instance.SpaceShip.ItemBox.childCount;
@@ -420,6 +423,15 @@ public class Terminal : MonoBehaviour,IInteraction
 
  
 
+    }
+
+    public void GoNextScene()
+    {
+        if (loadOperation != null)
+        {
+
+        loadOperation.allowSceneActivation = true;
+        }
     }
 
     /// <summary>

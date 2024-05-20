@@ -101,7 +101,6 @@ public class GameManager : Singleton<GameManager>
                 switch (gameState) 
                 {
                     case GameState.GameReady:
-                        ResetGame();
                         Debug.Log("게임레디");
                         onGameReady?.Invoke();
                         break;
@@ -389,7 +388,7 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// 게임 초기화 함수
     /// </summary>
-    private void ResetGame()
+    public void ResetGame()
     {
         Dday = maxDay;
         Money = 0;
