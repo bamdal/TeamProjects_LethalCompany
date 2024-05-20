@@ -44,6 +44,11 @@ public class Enemy_Spider : EnemyBase
     public Action<float> hpChange;
 
     /// <summary>
+    /// 이 몬스터의 공격력
+    /// </summary>
+    public float attackPower = 5.0f;
+
+    /// <summary>
     /// 이 몬스터의 HP
     /// </summary>
     public override float Hp
@@ -178,6 +183,7 @@ public class Enemy_Spider : EnemyBase
         //player = GameObject.FindWithTag("Player");
         player = GameManager.Instance.Player;
         agent.stoppingDistance = stopDistance;
+        enemy_Child.onDefence += Defense;
         //State = EnemyState.Stop;
     }
 
@@ -258,7 +264,7 @@ public class Enemy_Spider : EnemyBase
     /// <summary>
     /// 이 적의 공격으로 플레이어의 체력이 0이 되었을 때 실행될 델리게이트
     /// </summary>
-    public Action onPlayerDie;
+    // public Action onPlayerDie;
 
     /// <summary>
     /// 적의 상태가 Attack일 때 실행될 함수
@@ -272,8 +278,9 @@ public class Enemy_Spider : EnemyBase
         {
             attackCoolTime = 0.0f;
 
+            enemy_Child.Attack(player);
             // 플레이어의 체력 감소시키기
-            player.Defense(5);
+            //player.Defense(attackPower);
             Debug.Log($"플레이어의 HP: {player.Hp}");
             /*if (player.Hp > 0)
             {
@@ -390,10 +397,13 @@ public class Enemy_Spider : EnemyBase
 
     public override void Defense(float attackPower)
     {
-        if (Hp > 0)
+
+        Hp -= attackPower;
+        Debug.Log($"적의 HP : {Hp}");
+        /*if (Hp > 0)
         {
             Hp -= attackPower;
             Debug.Log($"적의 HP : {Hp}");
-        }
+        }*/
     }
 }

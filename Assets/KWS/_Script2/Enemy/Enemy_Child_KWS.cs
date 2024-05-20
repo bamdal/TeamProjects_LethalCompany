@@ -7,7 +7,7 @@ using UnityEngine;
 using static EnemyBase;
 using static UnityEngine.EventSystems.EventTrigger;
 
-public class Enemy_Child_KWS : MonoBehaviour
+public class Enemy_Child_KWS : MonoBehaviour, IBattler
 {
     /// <summary>
     /// 점프 높이
@@ -397,6 +397,18 @@ public class Enemy_Child_KWS : MonoBehaviour
 
         // 게임 오브젝트 삭제
         Destroy(this.gameObject);
+    }
+
+    public void Attack(IBattler target)
+    {
+        target.Defense(enemyParent.attackPower);
+    }
+
+    public Action<float> onDefence;
+
+    public void Defense(float attackPower)
+    {
+        onDefence?.Invoke(attackPower);
     }
 }
 
