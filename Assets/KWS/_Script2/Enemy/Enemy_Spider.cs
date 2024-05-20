@@ -395,6 +395,10 @@ public class Enemy_Spider : EnemyBase
         State = EnemyState.Die;
     }
 
+    /// <summary>
+    /// 이 적이 공격 받았을 때 처리할 함수
+    /// </summary>
+    /// <param name="attackPower"></param>
     public override void Defense(float attackPower)
     {
 
