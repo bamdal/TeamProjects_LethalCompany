@@ -620,12 +620,11 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls: []
   m_text: "==============================\nTerminal Commands\n==============================\n[\uBA54\uC778\uCC3D
-    \uBA85\uB839\uC5B4]\n- Store\t\t\t\uC0C1\uC810\uC73C\uB85C \uC774\uB3D9\n- \uD589\uC131\uB4E4\t\t\t\uD589\uC131\uC73C\uB85C
+    \uBA85\uB839\uC5B4]\n- Store\t\t\t\uC0C1\uC810\uC73C\uB85C \uC774\uB3D9\n- \uD589\uC131\t\t\t\uD589\uC131\uC73C\uB85C
     \uC774\uB3D9\n- Help\t\t\t\uBA85\uB839\uC5B4 \uB9AC\uC2A4\uD2B8\n\n[\uC0C1\uC810\uCC3D
     \uBA85\uB839\uC5B4]\n- Main\t\t\t\uBA54\uC778\uC73C\uB85C \uC774\uB3D9\n- \uC544\uC774\uD15C\uB4E4\t\t\uC544\uC774\uD15C
-    \uAD6C\uB9E4\n- \uD604\uC7AC \uC794\uC561 \uD655\uC778\t\t\uC794\uC561 \uD655\uC778\n\n\uBA54\uC778\uCC3D
-    \uB610\uB294 \uC0C1\uC810\uCC3D\uC73C\uB85C \uC774\uB3D9\uD558\uB294 \uBA85\uB839\uC5B4\uB97C
-    \uC785\uB825\uD574\uC8FC\uC2ED\uC2DC\uC624.\n"
+    \uAD6C\uB9E4\n\n\n\n\uBA54\uC778\uCC3D \uB610\uB294 \uC0C1\uC810\uCC3D\uC73C\uB85C
+    \uC774\uB3D9\uD558\uB294 \uBA85\uB839\uC5B4\uB97C \uC785\uB825\uD574\uC8FC\uC2ED\uC2DC\uC624.\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5e88104fa5b39da448ac80c7615d9ea8, type: 2}
   m_sharedMaterial: {fileID: -43443530348917935, guid: 5e88104fa5b39da448ac80c7615d9ea8, type: 2}
@@ -711,7 +710,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &1843225982562606812
 RectTransform:
   m_ObjectHideFlags: 0
@@ -759,16 +758,16 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "\uC704\uC131 \uCE74\uD0C8\uB85C\uADF8\uC5D0 \uC624\uC2E0 \uAC83\uC744
-    \uD658\uC601\uD569\uB2C8\uB2E4.\r\n\uC790\uB3D9 \uC870\uC885 \uC7A5\uCE58\uC758
-    \uACBD\uB85C\uB97C \uC9C0\uC815\uD558\uB824\uBA74 ROUTE\uB97C \uC785\uB825\uD558\uC138\uC694.\r\n\uB2EC\uC5D0
-    \uB300\uD574 \uC54C\uC544\uBCF4\uB824\uBA74 INFO\uB97C \uC785\uB825\uD558\uC138\uC694.\r\n----------------------------\r\n*
-    \uD68C\uC0AC \uAC74\uBB3C\t\t\t\t\t30%\uC5D0 \uB9E4\uB9E4 \uC911\r\n* \uC775\uC2A4\uD398\uB7EC\uBA58\uD14C\uC774\uC158
-    (\uB0A0\uC528)\t\tExperimentation\r\n* \uC5B4\uC288\uC5B4\uB7F0\uC2A4 (\uB0A0\uC528)\t\t\t\tAssurance\r\n*
-    \uBCF4\uC6B0 (\uB0A0\uC528)\t\t        \t\t\tVow\r\r\n* \uC624\uD39C\uC2A4 (\uB0A0\uC528)\t\t       
-    \t\t\tOffense\r\n* \uBA38\uCE58 (\uB0A0\uC528)\t\t        \t\t\tMarch\r\r\n*
-    \uB80C\uB4DC (\uB0A0\uC528)\t\t        \t\t\tRend\r\n* \uB2E4\uC778 (\uB0A0\uC528)\t\t       
-    \t\t\tDine\r\n* \uD0C0\uC774\uD0C4 (\uB0A0\uC528)\t\t        \t\t\tTitan\r\n\n\uD130\uBBF8\uB110\uC758
+  m_text: "\uD130\uBBF8\uB110\uC5D0 \uC624\uC2E0 \uAC83\uC744 \uD658\uC601\uD569\uB2C8\uB2E4!!\n\uB2E4\uB978
+    \uD589\uC131\uC73C\uB85C \uC774\uB3D9\uD558\uACE0 \uC2F6\uC73C\uC2DC\uBA74 \uD589\uC131
+    \uC774\uB984\uC744 \uC785\uB825\uD558\uC138\uC694.\n<Store>\uBA85\uB839\uC5B4\uB97C
+    \uC785\uB825\uD558\uC5EC \uC544\uC774\uD15C\uC744 \uAD6C\uACBD\uD558\uC138\uC694.\n\uBA85\uB839\uC5B4\uC5D0
+    \uB300\uD574 \uB354 \uC54C\uACE0 \uC2F6\uC73C\uC2DC\uBA74 <Help>\uB97C \uC785\uB825\uD558\uC138\uC694.\r\n----------------------------\r\n\uC774\uB3D9
+    \uAC00\uB2A5\uD55C \uD589\uC131\n* \uD68C\uC0AC (company)\\t\\t\\t\\t\\t\\t\uC774\uB3D9
+    \uAC00\uB2A5\n* \uC624\uD39C\uC2A4 (Offense)\\t\\t\\t\\t\\t\\t\uC774\uB3D9 \uBD88\uAC00\uB2A5\n*
+    \uBA38\uCE58 (March)\\t\\t\\t\\t\\t\\t\uC774\uB3D9 \uBD88\uAC00\n* \uD0C0\uC774\uD0C4
+    (Titan)\\t\\t\\t\\t\\t\\t\uC774\uB3D9 \uAC00\uB2A5\n* \uB80C\uB4DC (Rend)\\t\\t\\t\\t\\t\\t\\t\uC774\uB3D9
+    \uBD88\uAC00\uB2A5\n* \uB2E4\uC778 (Dine)\\t\\t\\t\\t\\t\\t\\t\uC774\uB3D9 \uBD88\uAC00\uB2A5\n\n\n\uD130\uBBF8\uB110\uC758
     \uC885\uB8CC\uB97C \uC6D0\uD558\uC2DC\uBA74 ESC\uB97C \uB20C\uB7EC\uC8FC\uC138\uC694."
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 5e88104fa5b39da448ac80c7615d9ea8, type: 2}
@@ -962,7 +961,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!224 &196483691284099554
 RectTransform:
   m_ObjectHideFlags: 0
@@ -1010,13 +1009,10 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Store \uBAA9\uB85D\n* \uBB34\uC804\uAE30\t\t\t\t\t\t\t\t12\t\uC6D0\r\n*
-    \uC190\uC804\uB4F1\t\t\t\t\t\t\t\t15\t\uC6D0\r\n* \uC0BD\t\t\t\t\t\t\t\t\t30\t\uC6D0\r\n*
-    \uB9C8\uC2A4\uD130 \uD0A4\t\t\t\t\t\t\t20\t\uC6D0\r\n* \uD504\uB85C \uC190\uC804\uB4F1(\uC804\uBB38\uAC00\uC6A9
-    \uC190\uC804\uB4F1)\t\t\t25\t\uC6D0\r\n* \uC12C\uAD11 \uC218\uB958\uD0C4\t\t\t\t\t\t\t36\t\uC6D0\r\n*
-    \uBD90\uBC15\uC2A4\t\t\t\t\t\t\t\t60\t\uC6D0\r\n* Tzp \uD761\uC785\uAE30\t\t\t\t\t\t\t72\t\uC6D0\r\n*
-    \uACF5\uAE30 \uAD8C\uCD1D(Zap Gun)\t\t\t\t\t400\t\uC6D0\r\n* \uC81C\uD2B8\uD329\t\t\t\t\t\t\t\t700\t\uC6D0\r\n*
-    \uD655\uC7A5 \uC0AC\uB2E4\uB9AC(\uAC1C\uD3D0\uC2DD \uC0AC\uB2E4\uB9AC)\t\t\t\t60\t\uC6D0\n\n\uD130\uBBF8\uB110\uC758
+  m_text: "Store \uBAA9\uB85D\n* \uC190\uC804\uB4F1(flashlight)\\t\\t\\t\\t\\t15\\t\uC6D0\r\n*
+    \uD504\uB85C \uC190\uC804\uB4F1(proflashlight)\\t\\t\\t25\\t\uC6D0\r\n* \uC0BD(shovel)\\t\\t\\t\\t\\t\\t\\t30\\t\uC6D0\r\n*
+    \uACF5\uAE30 \uAD8C\uCD1D(ZapGun)\\t\\t\\t\\t\\t400\\t\uC6D0\r\n* \uC12C\uAD11
+    \uC218\uB958\uD0C4(grenade)\\t\\t\\t\\t\\t36\\t\uC6D0\r\n* \uC0AC\uB2E4\uB9AC(labber)\\t\\t\\t\\t\\t\\t60\\t\uC6D0\n\n\n\n\n\n\n\uD130\uBBF8\uB110\uC758
     \uC885\uB8CC\uB97C \uC6D0\uD558\uC2DC\uBA74 ESC\uB97C \uB20C\uB7EC\uC8FC\uC138\uC694.\n\uAE30\uBCF8
     \uD654\uBA74\uC73C\uB85C \uB3CC\uC544\uAC00\uC2DC\uB824\uBA74 Main\uB97C \uC785\uB825\uD574\uC8FC\uC138\uC694."
   m_isRightToLeft: 0
@@ -1260,6 +1256,7 @@ MonoBehaviour:
   interfaceOffset: {x: 0.5, y: 0.5, z: 0}
   farVcam: {fileID: 0}
   nearVcam: {fileID: 0}
+  playerCanvas: {fileID: 0}
 --- !u!1 &7064731083207038717
 GameObject:
   m_ObjectHideFlags: 0

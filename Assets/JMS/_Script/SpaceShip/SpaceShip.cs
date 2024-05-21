@@ -19,6 +19,9 @@ public class SpaceShip : MonoBehaviour
     Transform itemBox;
 
     public Transform ItemBox => itemBox;
+
+    Terminal terminal;
+
     private void Awake()
     {
         DontDestroyOnLoad(this.gameObject);
@@ -26,6 +29,7 @@ public class SpaceShip : MonoBehaviour
         redButton = GetComponentInChildren<RedButton>();
         redButton.onRequest += ButtonClick;
         cinemachineImpulse = GetComponent<CinemachineImpulseSource>();
+        terminal = GetComponentInChildren<Terminal>();
 
         itemBox = transform.GetChild(7);
     }
@@ -53,7 +57,15 @@ public class SpaceShip : MonoBehaviour
                 StartCoroutine(LoadSpaceScene());
 
             }
+            else
+            {
+                terminal.GoNextScene();
+            }
 
+        }
+        else
+        {
+            terminal.GoNextScene();
         }
 
     }
@@ -68,12 +80,16 @@ public class SpaceShip : MonoBehaviour
 
     public void SpaceShipDoorOpen()
     {
+        animator.ResetTrigger("Open");
+        animator.ResetTrigger("Close");
         animator.SetTrigger("Open"); 
     }
 
 
     public void SpaceShipDoorClose()
     {
+        animator.ResetTrigger("Open");
+        animator.ResetTrigger("Close");
         animator.SetTrigger("Close");
     }
 
@@ -120,7 +136,8 @@ public class SpaceShip : MonoBehaviour
         }
 
         GameManager.Instance.Player.Die();
-    
+
+        GameManager.Instance.ResetGame();
     }
 
     public void Refresh()

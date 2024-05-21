@@ -66,10 +66,10 @@ public class GameManager : Singleton<GameManager>
             {
                 if (value > 0)
                 {
-                    totalMoney += value;
+                    totalMoney = value;
                 }
                 money = value;
-                onMoneyChange?.Invoke(money);       // MoneyCountMonitor에서 사용
+                onMoneyChange?.Invoke(TotalMoney);       // MoneyCountMonitor에서 사용
             }
         }
     }
@@ -101,7 +101,6 @@ public class GameManager : Singleton<GameManager>
                 switch (gameState) 
                 {
                     case GameState.GameReady:
-                        ResetGame();
                         Debug.Log("게임레디");
                         onGameReady?.Invoke();
                         break;
@@ -237,6 +236,7 @@ public class GameManager : Singleton<GameManager>
         spaceShip = FindAnyObjectByType<SpaceShip>();
         player = FindAnyObjectByType<Player>();
         player.onDie = OnDie;
+        Money = 50.0f;
     }
 
     protected override void OnInitialize()
@@ -388,7 +388,7 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// 게임 초기화 함수
     /// </summary>
-    private void ResetGame()
+    public void ResetGame()
     {
         Dday = maxDay;
         Money = 0;

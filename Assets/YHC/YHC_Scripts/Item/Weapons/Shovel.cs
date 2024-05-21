@@ -78,6 +78,15 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase, IBattler
         {
             anim.enabled = true;
             anim.SetTrigger(AttackHash);
+            Collider[] collider = Physics.OverlapBox(transform.position, new Vector3(2,2,2), Quaternion.identity,LayerMask.GetMask("Enemy"));
+            for(int i = 0; i < collider.Length; i++)
+            {
+                IBattler enemyTemp = collider[i].GetComponent<IBattler>();
+                if (enemyTemp != null)
+                {
+                    enemyTemp.Defense(damage);                     
+                }
+            }
             currentAttackCool = attackCoolTime;
         }
     }
@@ -122,14 +131,15 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase, IBattler
     /// </summary>
     private void HeadTriggerOn(Collider collider)
     {
-        if (collider.CompareTag("Enemy"))
+        /*if (collider.CompareTag("Enemy"))
         {
             target = collider.GetComponent<IBattler>();
             if (target != null)
             {
                 target.Defense(damage);
+                Debug.Log(collider);
             }
-        }
+        }*/
     }
 
     /// <summary>
@@ -137,13 +147,13 @@ public class Shovel : WeaponBase, IEquipable, IItemDataBase, IBattler
     /// </summary>
     private void HeadTriggerOff(Collider collider)
     {
-        if(collider.CompareTag("Enemy"))
+        /*if(collider.CompareTag("Enemy"))
         {
             target = collider.GetComponent<IBattler>();
             if (target != null)
             {
                 target = null;
             }
-        }
+        }*/
     }
 }

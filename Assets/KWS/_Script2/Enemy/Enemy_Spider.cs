@@ -4,6 +4,7 @@ using System.IO;
 using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
+using static UnityEngine.EventSystems.EventTrigger;
 
 public class Enemy_Spider : EnemyBase
 {
@@ -43,6 +44,11 @@ public class Enemy_Spider : EnemyBase
     public Action<float> hpChange;
 
     /// <summary>
+    /// 이 몬스터의 공격력
+    /// </summary>
+    public float attackPower = 5.0f;
+
+    /// <summary>
     /// 이 몬스터의 HP
     /// </summary>
     public override float Hp
@@ -67,7 +73,7 @@ public class Enemy_Spider : EnemyBase
                 }
             }
         }
-    }
+    }    
 
     /// <summary>
     /// 최대 스폰 가능한 마릿수
@@ -177,6 +183,7 @@ public class Enemy_Spider : EnemyBase
         //player = GameObject.FindWithTag("Player");
         player = GameManager.Instance.Player;
         agent.stoppingDistance = stopDistance;
+        enemy_Child.onDefence += Defense;
         //State = EnemyState.Stop;
     }
 
@@ -257,7 +264,7 @@ public class Enemy_Spider : EnemyBase
     /// <summary>
     /// 이 적의 공격으로 플레이어의 체력이 0이 되었을 때 실행될 델리게이트
     /// </summary>
-    public Action onPlayerDie;
+    // public Action onPlayerDie;
 
     /// <summary>
     /// 적의 상태가 Attack일 때 실행될 함수
@@ -270,7 +277,12 @@ public class Enemy_Spider : EnemyBase
         if(attackCoolTime > 2.0f)
         {
             attackCoolTime = 0.0f;
-            if(player.Hp > 0)
+
+            enemy_Child.Attack(player);
+            // 플레이어의 체력 감소시키기
+            //player.Defense(attackPower);
+            Debug.Log($"플레이어의 HP: {player.Hp}");
+            /*if (player.Hp > 0)
             {
                 player.Hp -= 5;
                 Debug.Log($"플레이어의 HP: {player.Hp}");
@@ -279,7 +291,7 @@ public class Enemy_Spider : EnemyBase
             {
                 // 플레이어의 체력이 0보다 작다 => 플레이어가 사망했다 => 플레이어의 자식에서 해제
                 onPlayerDie?.Invoke();
-            }
+            }*/
         }
 
     }
@@ -381,5 +393,21 @@ public class Enemy_Spider : EnemyBase
     public void StateDie()
     {
         State = EnemyState.Die;
+    }
+
+    /// <summary>
+    /// 이 적이 공격 받았을 때 처리할 함수
+    /// </summary>
+    /// <param name="attackPower"></param>
+    public override void Defense(float attackPower)
+    {
+
+        Hp -= attackPower;
+        Debug.Log($"적의 HP : {Hp}");
+        /*if (Hp > 0)
+        {
+            Hp -= attackPower;
+            Debug.Log($"적의 HP : {Hp}");
+        }*/
     }
 }
