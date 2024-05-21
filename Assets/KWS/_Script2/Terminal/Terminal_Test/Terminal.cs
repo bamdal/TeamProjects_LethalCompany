@@ -40,6 +40,16 @@ public class Terminal : MonoBehaviour,IInteraction
     TextMeshProUGUI helpText;
 
     /// <summary>
+    /// gold
+    /// </summary>
+    GameObject gold;
+
+    /// <summary>
+    /// 돈을 알려주는 UI
+    /// </summary>
+    TextMeshProUGUI moneyText;
+
+    /// <summary>
     /// 인터페이스를 화면의 중앙에 정렬하기 위한 오프셋
     /// </summary>
     public Vector3 interfaceOffset = new Vector3(0.5f, 0.5f, 0);
@@ -82,6 +92,8 @@ public class Terminal : MonoBehaviour,IInteraction
     /// </summary>
     public Canvas playerCanvas;
 
+    
+
     // 델리게이트들 -----------------------------------------------------------------------------------------------------
 
     public Action ESC;
@@ -102,6 +114,11 @@ public class Terminal : MonoBehaviour,IInteraction
         storeText = canvas.GetChild(3).GetComponent<TextMeshProUGUI>();      // canvas의 3번째 자식 StoreText
 
         helpText = canvas.GetChild(4).GetComponent<TextMeshProUGUI>();       // canvas의 4번째 자식 HelpText
+
+        gold = canvas.GetChild(6).gameObject;                                // canvas의 6번째 자식 gold
+
+        moneyText = gold.transform.GetChild(1).GetComponent <TextMeshProUGUI>();    // gold의 1번째 자식 moneyText
+
 
 
         // 게임 시작 시
@@ -129,9 +146,11 @@ public class Terminal : MonoBehaviour,IInteraction
         nearVcam = near.GetComponent<CinemachineVirtualCamera>();
 
         gameManager = GameManager.Instance;
+
+        gameManager.onMoneyChange += UpdateMoneyText;
+
+        moneyText.text = "50";
     }
-
-
 
     private void OnEnable()
     {
@@ -509,6 +528,15 @@ public class Terminal : MonoBehaviour,IInteraction
 
         // IInteraction 인터페이스에 알림
         onRequest?.Invoke();
+    }
+
+    /// <summary>
+    /// 현재 소유하고 있는 금액이 변경될 때마다 UI 갱신하는 함수
+    /// </summary>
+    /// <param name="money"></param>
+    private void UpdateMoneyText(float money)
+    {
+        moneyText.text = money.ToString();
     }
 }
 
