@@ -82,4 +82,5 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 64b1fe66701600d4bb5f92c498944a8c, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  ItemBoxPrepab: {fileID: 8224964642994939039, guid: 0d57e6c2ba73cc24da8ca974adb9ab25, type: 3}
+  itemBoxPrepab: {fileID: 8224964642994939039, guid: 0d57e6c2ba73cc24da8ca974adb9ab25, type: 3}
+  dropPosition: {fileID: 0}

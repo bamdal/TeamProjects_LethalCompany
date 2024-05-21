@@ -799,6 +799,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
+--- !u!4 &1180535377 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 8546797501726865133, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
+  m_PrefabInstance: {fileID: 1180535376}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1188049671
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -967,7 +972,7 @@ GameObject:
   - component: {fileID: 1414317494}
   - component: {fileID: 1414317493}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: PlayerCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -1815,6 +1820,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: GameManager
       objectReference: {fileID: 0}
+    - target: {fileID: 6471023079869006499, guid: a263acd7407007f48aa63f570b01a9f7, type: 3}
+      propertyPath: dropPosition
+      value: 
+      objectReference: {fileID: 1180535377}
     - target: {fileID: 7822879004496559298, guid: a263acd7407007f48aa63f570b01a9f7, type: 3}
       propertyPath: m_LocalPosition.x
       value: 175.0759

@@ -35,6 +35,13 @@ public class GameManager : Singleton<GameManager>
     public ItemDataManager ItemData => itemDataManager;
 
     /// <summary>
+    /// 택배시스템 매니저
+    /// </summary>
+    DropBoxManager dropBoxManager;
+    
+    public DropBoxManager DropBoxManager => dropBoxManager;
+
+    /// <summary>
     /// 스토어
     /// </summary>
     Store store;
@@ -46,9 +53,14 @@ public class GameManager : Singleton<GameManager>
     Terminal terminal;
     public Terminal Terminal => terminal;
 
-    float totalMoney = 0;
+    float totalMoney = -50;
 
     public float TotalMoney => totalMoney;
+
+    /// <summary>
+    /// 초기자금
+    /// </summary>
+    float initialFunds = 50.0f;
 
     /// <summary>
     /// 게임매니저가 현재 가지고 있는 돈
@@ -66,7 +78,7 @@ public class GameManager : Singleton<GameManager>
             {
                 if (value > 0)
                 {
-                    totalMoney = value;
+                    totalMoney += value - money;
                 }
                 money = value;
                 onMoneyChange?.Invoke(TotalMoney);       // MoneyCountMonitor에서 사용
@@ -236,12 +248,13 @@ public class GameManager : Singleton<GameManager>
         spaceShip = FindAnyObjectByType<SpaceShip>();
         player = FindAnyObjectByType<Player>();
         player.onDie = OnDie;
-        Money = 50.0f;
+        Money += initialFunds;
     }
 
     protected override void OnInitialize()
     {
         itemDataManager = GetComponent<ItemDataManager>();
+        dropBoxManager = GetComponent<DropBoxManager>();    
         Player.cam = Camera.main;
         Player.invenUI = FindAnyObjectByType<InventoryUI>();
         
@@ -381,6 +394,7 @@ public class GameManager : Singleton<GameManager>
         else
         {   // 퀘스트 달성시 목표금액 증가, 기간 초기화
             Dday = maxDay;
+            totalMoney = 0;
             TargetAmountMoney *= MoneyMagnification;
         }
     }

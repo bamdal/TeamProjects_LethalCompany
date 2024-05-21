@@ -30,7 +30,7 @@ public class EnemySpawner : MonoBehaviour
             for(int i = 0; i < duengenSpawn.MaxSpawnCount; i++)
             {
                 
-                if(Random.value<duengenSpawn.SpawnPercent+ 0.05 * (int)difficulty)
+                if(Random.value<duengenSpawn.SpawnPercent+ 0.05 * (int)difficulty)  // 난이도별 몬스터 소환 판정 시도
                 {
                     enemyCount.Enqueue(enemyBase);
                 }
@@ -56,7 +56,9 @@ public class EnemySpawner : MonoBehaviour
         {
             EnemyBase obj = Instantiate(enemyCount.Dequeue(), enemys);
             obj.gameObject.SetActive(false);
-            obj.transform.position = spawnPoints[Random.Range(0, spawnPoints.Count)].transform.position; spawnCount++;
+            int index = Random.Range(0, spawnPoints.Count);
+            obj.transform.position = spawnPoints[index].transform.position; spawnCount++;
+            spawnPoints.RemoveAt(index);    // 같은 위치에 중복 소환 방지
             enemies.Enqueue(obj.gameObject);
         }
 
@@ -64,7 +66,9 @@ public class EnemySpawner : MonoBehaviour
         {
             GameObject obj = Instantiate(trapCount.Dequeue(), enemys);
             obj.gameObject.SetActive(false);
-            obj.transform.position = spawnPoints[Random.Range(0, spawnPoints.Count)].transform.position; spawnCount++;
+            int index = Random.Range(0, spawnPoints.Count);
+            obj.transform.position = spawnPoints[index].transform.position; spawnCount++;
+            spawnPoints.RemoveAt(index);
             enemies.Enqueue(obj);
         }
 
