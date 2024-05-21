@@ -244,12 +244,12 @@ public class Enemy_Child_KWS : MonoBehaviour, IBattler
 
     private void FixedUpdate()
     {
-        if (IsGrounded() && !die)   // 땅이면
+        if (IsGrounded() && !die)           // 땅이면
         {
             cooltime += Time.deltaTime;     // 쿨타임 누적
         }
 
-        if (isCatch && !die)        // 플레이어를 잡았을 경우
+        if (isCatch && !die)                // 플레이어를 잡았을 경우
         {
             //Player player = GameManager.Instance.Player;
             //spiderPosition = player.transform.GetChild(5);

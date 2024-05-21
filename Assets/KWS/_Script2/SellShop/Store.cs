@@ -69,7 +69,8 @@ public class Store : MonoBehaviour
     void Start()
     {
         // 게임 매니저 오브젝트 찾기
-        GameObject gameManager = GameObject.Find("GameManager");
+        //GameObject gameManager = GameObject.Find("GameManager");
+        GameManager gameManager = GameManager.Instance;
 
         if (gameManager != null)
         {
@@ -105,7 +106,7 @@ public class Store : MonoBehaviour
         }
         else
         {
-            Debug.LogError("GameManager 오브젝트를 찾을 수 없습니다.");
+            Debug.LogError("GameManager를 찾을 수 없습니다.");
         }
     }
 
