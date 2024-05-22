@@ -24,6 +24,15 @@ public class Door : MonoBehaviour
     /// </summary>
     Transform hinge;
 
+    /// <summary>
+    /// 문 여닫는 쿨타임
+    /// </summary>
+    public float coolTime = 1.5f;
+
+    /// <summary>
+    /// 문 여닫는걸 판단하는 함수(true = 닫힘, false = 열수있음)
+    /// </summary>
+    bool doorLock = false;
 
     private void Awake()
     {
@@ -110,19 +119,31 @@ public class Door : MonoBehaviour
     /// </summary>
     void TogggleOpenClose()
     {
-        if (hinge != null)
+        if (!doorLock)
         {
-            StopAllCoroutines();
-            if (open)
+            doorLock = true;
+            if (hinge != null)
             {
-                Close();
+                StopAllCoroutines();
+                if (open)
+                {
+                    Close();
+                }
+                else
+                {
+                    Open();
+                }
             }
-            else
-            {
-                Open();
-            }
+            StartCoroutine(OpenCoolTime());
         }
 
+
+    }
+
+    IEnumerator OpenCoolTime()
+    {
+        yield return new WaitForSeconds(coolTime);
+        doorLock = false;
     }
 
     /// <summary>
