@@ -22,7 +22,7 @@ public class EneterDoor : MonoBehaviour, IInteraction
         Debug.Log("누름");
         DungeonInside tp = FindAnyObjectByType<DungeonInside>();
         Player player = target.GetComponent<Player>();
-        player.IsInDungeon = true;
+        player.IsInDungeon = false;
         player.ControllerTPPosition(tp.TPPosition().position);
     }
 

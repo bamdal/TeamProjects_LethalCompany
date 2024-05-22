@@ -46,7 +46,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24879fe717cbaa74bbb0567ff9ea1ed6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 4
+  difficulty: 1
   moduls:
   - {fileID: 4564526961701584482, guid: 1138215f9dd50bb48a4377b49ce3db21, type: 3}
   - {fileID: 2468206507073093500, guid: d30871add4ee14548b4d3ba81c49880d, type: 3}
@@ -56,7 +56,7 @@ MonoBehaviour:
   startModul: {fileID: 8890035108818428612, guid: 9d2017c4855d0ef4db8209631d4adc77, type: 3}
   endModul: {fileID: 1020186458150760470, guid: 5f69f3cd0b65629458f1740f0559e220, type: 3}
   pointNav: {fileID: 0}
-  generationCount: 3
+  generationCount: 5
   randomSeed: -1
 --- !u!114 &673815760694287412
 MonoBehaviour:
@@ -71,7 +71,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   enemyPrefabs:
-  - {fileID: 9173004761039666514, guid: 0224428c7d683df4f8139d4d6252d454, type: 3}
+  - {fileID: 2785346621474018705, guid: 276090e417a293644a5b45eaf8f5f3aa, type: 3}
   - {fileID: 6455801229053208336, guid: 11017ff584c353d4eb323ea8139d15f0, type: 3}
   - {fileID: 6239807730101204261, guid: 23fbe294aefd1424c9007ee755009728, type: 3}
   trapPrefabs:

@@ -2035,7 +2035,7 @@ MonoBehaviour:
   attackDamage: 9999
   attackCoolTime: 5
   cognitionAngle: 25
-  coilheadMaxSpawnCount: 5
+  coilheadMaxSpawnCount: 2
   coilHeadSpawnRate: 0.06
 --- !u!195 &9023909122595600465
 NavMeshAgent:
