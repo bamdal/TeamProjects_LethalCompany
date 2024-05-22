@@ -37,7 +37,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     /// <summary>
     /// CoilHead의 패트롤 범위, 목적지에 도작하면 patrolRange 범위 안에 새로운 랜덤 목적지 생성
     /// </summary>
-    float patrolRange = 100.0f;
+    float patrolRange = 10.0f;
 
     /// <summary>
     /// 추적상태 돌입 범위
@@ -224,10 +224,12 @@ public class CoilHead : EnemyBase, IBattler, IHealth
                 {
                     agent.speed = 0.0f;
                     agent.velocity = Vector3.zero;
+                    anim.SetTrigger(IdleHash);
                 }
                 else
                 {
                     agent.speed = chaseMoveSpeed;
+                    anim.SetTrigger(MoveHash);
                 }
             }
         }
@@ -317,6 +319,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         if (IsCoolTime)
         {
             Attack(attackTarget);
+            attackTarget.Defense(AttackDamage);
             anim.SetTrigger(AttackHash);
             currentAttackCoolTime = attackCoolTime;
 
@@ -415,14 +418,48 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     public void CoilHeadDie()
     {
         State = EnemyState.Die;
+        anim.SetTrigger(IdleHash);
         agent.speed = 0.0f;
         agent.velocity = Vector3.zero;
+
+        StopAllCoroutines();
+        StartCoroutine(DieCoroutine());
 
         IsAlive = false;
     }
 
+
     public void PlayerDie()
     {
         State = EnemyState.Stop;
+        anim.SetTrigger(IdleHash);
+    }
+
+    public new void Attack(IBattler target)
+    {
+        target.Defense(AttackDamage);
+    }
+
+    public override void Defense(float attackPower)
+    {
+        Hp -= attackPower;
+    }
+
+    IEnumerator DieCoroutine()
+    {
+        yield return new WaitForSeconds(3);
+        gameObject.SetActive(false);
+    }
+
+    void OnDrawGizmos()
+    {
+        if (agent == null || agent.path == null)
+            return;
+
+        Gizmos.color = Color.red;
+        for (int i = 0; i < agent.path.corners.Length - 1; i++)
+        {
+            Gizmos.DrawLine(agent.path.corners[i], agent.path.corners[i + 1]);
+        }
     }
 }
