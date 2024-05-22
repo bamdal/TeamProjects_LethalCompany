@@ -32,6 +32,8 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     public float patrolMoveSpeed = 2.0f;
     public float chaseMoveSpeed = 5.0f;
 
+    float tempSpeed = 0.0f;
+
     /// <summary>
     /// CoilHead의 패트롤 범위, 목적지에 도작하면 patrolRange 범위 안에 새로운 랜덤 목적지 생성
     /// </summary>
@@ -164,6 +166,11 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     SphereCollider detectingArea;
     SphereCollider chaseArea;
     CoilHead_AttackArea attackArea;
+    Animator anim;
+
+    int AttackHash = Animator.StringToHash("Attack");
+    int MoveHash = Animator.StringToHash("Move");
+    int IdleHash = Animator.StringToHash("Idle");
 
     private void Awake()
     {
@@ -180,6 +187,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         detectingArea = GetComponent<SphereCollider>();
         chaseArea = transform.GetChild(1).GetComponent<SphereCollider>();
         attackArea = GetComponentInChildren<CoilHead_AttackArea>();
+        anim = GetComponent<Animator>();
 
         State = EnemyState.Stop;
         State = EnemyState.Patrol;
@@ -266,12 +274,14 @@ public class CoilHead : EnemyBase, IBattler, IHealth
             if (wait < 0.0f)
             {
                 State = EnemyState.Patrol;
+                anim.SetTrigger(MoveHash);
                 agent.SetDestination(GetRandomDestination());
                 wait = waitTime;
             }
         }
         else
         {
+            anim.SetTrigger(IdleHash);
             agent.speed = 0.0f;
         }
     }
@@ -280,6 +290,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     {
         if (agent.remainingDistance < agent.stoppingDistance)
         {
+            anim.SetTrigger(MoveHash);
             agent.SetDestination(GetRandomDestination());
         }
     }
@@ -288,6 +299,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     {
         if (playerTransform != null)
         {
+            anim.SetTrigger(MoveHash);
             agent.SetDestination(playerTransform.position);
         }
         else
@@ -300,12 +312,14 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     {
         currentAttackCoolTime -= Time.deltaTime;
 
-        agent.SetDestination(playerTransform.position + new Vector3(1, 0, 1));
+        agent.SetDestination(playerTransform.position);
 
         if (IsCoolTime)
         {
             Attack(attackTarget);
+            anim.SetTrigger(AttackHash);
             currentAttackCoolTime = attackCoolTime;
+
         }
     }
 
@@ -349,6 +363,17 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         attackTarget = player.GetComponent<IBattler>();
         Debug.Log("공격모드");
         State = EnemyState.Attack;
+    }
+
+    void AttackAnimStart()
+    {
+        tempSpeed = agent.speed;
+        agent.speed = 0.0f;
+    }
+
+    void AttackAnimEnd()
+    {
+        agent.speed = tempSpeed;
     }
 
     // 적과 플레이어 시야 관련 ------------------------------------------------------------------------------------------

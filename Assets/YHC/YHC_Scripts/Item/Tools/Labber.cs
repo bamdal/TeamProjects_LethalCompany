@@ -1,18 +1,22 @@
 using System.Collections;
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 
-public class Labber : MonoBehaviour
+public class Labber : ItemBase
 {
-    // Start is called before the first frame update
-    void Start()
+    ItemDB labberDB;
+
+    TextMeshProUGUI stateText;
+
+    private void Start()
     {
-        
+        // labberDB = ItemDataManager.Instance.GetItemDB(ItemCode.Labber);
     }
 
-    // Update is called once per frame
-    void Update()
+
+    public ItemDB GetItemDB()
     {
-        
+        return labberDB;
     }
 }
