@@ -53,6 +53,7 @@ public class Player : Singleton<Player>, IBattler, IHealth
     private void OnDie()
     {
         Debug.Log("사망");
+        collider.enabled = false;
         ResetItemInventory();
         onDie?.Invoke();
     }
@@ -198,6 +199,7 @@ public class Player : Singleton<Player>, IBattler, IHealth
     // 컴포넌트들
     CharacterController characterController;
 
+    Collider collider;
 
     // 입력용 인풋 액션
     PlayerInput input;
@@ -308,7 +310,7 @@ public class Player : Singleton<Player>, IBattler, IHealth
     private void OnEnable()
     {
         input = GetComponent<PlayerInput>();
-
+        
         input.onMove += OnMoveInput;
         input.onMoveModeChange += OnMoveModeChageInput;
         input.onInteract += OnInteractInput;
@@ -318,6 +320,7 @@ public class Player : Singleton<Player>, IBattler, IHealth
         input.onScroll += OnScrollWheel;
         input.onItemDrop += OnItemDrop;
         
+        collider = GetComponent<Collider>();
         cam = Camera.main;
         inventoryTransform = transform.GetChild(1);
         inventory = inventoryTransform.GetComponent<Inventory>();
@@ -896,6 +899,7 @@ public class Player : Singleton<Player>, IBattler, IHealth
         Stamina = maxStamina;
         Hp = maxHp;
         gravityY = -1f;
+        collider.enabled = true;
         onRefresh?.Invoke();
     }
 }

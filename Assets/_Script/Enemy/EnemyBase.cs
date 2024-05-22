@@ -113,7 +113,7 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
 
     public void Attack(IBattler target)
     {
-
+        
     }
 
     public virtual void Defense(float attackPower)
