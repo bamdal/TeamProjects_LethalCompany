@@ -1970,7 +1970,7 @@ GameObject:
   - component: {fileID: 9023909122595600465}
   - component: {fileID: 6036267022656422036}
   - component: {fileID: 119212153615340423}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Enemy_CoilHead
   m_TagString: Enemy
   m_Icon: {fileID: 0}
