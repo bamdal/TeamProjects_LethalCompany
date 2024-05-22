@@ -172,6 +172,7 @@ public class Enemy_Jester : EnemyBase
 
     private void OnCollisionEnter(Collision collision)
     {
+        Debug.Log(collision);
         if (collision.gameObject.CompareTag("Player") && State == EnemyState.Attack)
         {
             player.Defense(attackPower);
