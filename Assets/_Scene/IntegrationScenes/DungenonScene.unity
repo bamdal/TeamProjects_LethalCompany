@@ -249,11 +249,11 @@ PrefabInstance:
       objectReference: {fileID: 568872264}
     - target: {fileID: 6501425972638931305, guid: 02eb59263eeb74f4b8c2233e13b3316b, type: 3}
       propertyPath: difficulty
-      value: 1
+      value: 500
       objectReference: {fileID: 0}
     - target: {fileID: 6501425972638931305, guid: 02eb59263eeb74f4b8c2233e13b3316b, type: 3}
       propertyPath: generationCount
-      value: 5
+      value: 2
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
