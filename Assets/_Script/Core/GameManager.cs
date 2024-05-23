@@ -308,7 +308,7 @@ public class GameManager : Singleton<GameManager>
         SpaceShip.transform.rotation = Quaternion.identity;
         Player.ControllerTPPosition(Vector3.zero);
         Player.PlayerRefresh();
-
+        Terminal.IsSpace();
     }
 
     IEnumerator LoadSpaceScene()

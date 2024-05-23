@@ -402,10 +402,14 @@ public class Terminal : MonoBehaviour,IInteraction
     /// </summary>
     void ChangeSceen()
     {
-        PressESC();
-        StartCoroutine(LoadSceneAsync());
-        enter.FocusOut();
-        isSpace = false;
+        if (isSpace)
+        {
+            PressESC();
+            StartCoroutine(LoadSceneAsync());
+            enter.FocusOut();
+            isSpace = false;
+        }
+
     }
 
 

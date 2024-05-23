@@ -10,6 +10,7 @@ public class StartMiddleScene : MonoBehaviour
         if(GameManager.Instance.GameState != GameState.GameOver)
             StartCoroutine(NextDayCorurine());
         GameManager.Instance.GameState = GameState.GameReady;
+        GameManager.Instance.Terminal.IsSpace();
     }
 
     IEnumerator NextDayCorurine()
