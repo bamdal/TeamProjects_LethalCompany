@@ -28,23 +28,28 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
                 {
                     case EnemyState.Stop:
                         Debug.Log("정지 상태");
+                        onEnemyStateChange?.Invoke(state);
                         onEnemyStateUpdate = Update_Stop;
                         break;
                     case EnemyState.Patrol:
                         Debug.Log("정찰 상태");
+                        onEnemyStateChange?.Invoke(state);
                         onEnemyStateUpdate = Update_Patrol;
                         break;
                     case EnemyState.Chase:
                         Debug.Log("추적 상태");
+                        onEnemyStateChange?.Invoke(state);
                         onEnemyStateUpdate = Update_Chase;
                         break;
                     case EnemyState.Attack:
                         Debug.Log("공격 상태");
+                        onEnemyStateChange?.Invoke(state);
                         onEnemyStateUpdate = Update_Attack;
                         break;
                     case EnemyState.Die:
                         Debug.Log("사망 상태");
                         onDie?.Invoke();
+                        onEnemyStateChange?.Invoke(state);
                         onEnemyStateUpdate = Update_Die;
 
                         break;
@@ -56,6 +61,7 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
     public Action onDie;
     public Action<int> onDebuffAttack;
     public Action onEnemyStateUpdate;
+    public Action<EnemyState> onEnemyStateChange;
 
     public virtual float Hp { get; set; }
 
