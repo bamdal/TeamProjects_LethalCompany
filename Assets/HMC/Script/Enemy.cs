@@ -4,7 +4,7 @@ using UnityEngine.AI;
 
 public class Enemy_H : MonoBehaviour
 {
-        public float attackRange = 1.5f; // 공격 범위
+    public float attackRange = 1.5f; // 공격 범위
     public float attackCooldown = 3f; // 공격 쿨다운 시간
     public float idleDuration = 2f; // 대기 시간
     public float lookAroundDuration = 5f; // LookAround 애니메이션 지속 시간
@@ -25,10 +25,6 @@ public class Enemy_H : MonoBehaviour
         ATTACK,
         DIE
     }
-
-//walking 애니메이션 어색한 부분(목적지 도착 후에도 Walking 애니메이션 출력됨.)
-//Idle 애니메이션 재검토 
-// 이후 die 애니메이션 및 attack모션, run 모션 추가.
 
     private void Start()
     {
@@ -87,10 +83,11 @@ public class Enemy_H : MonoBehaviour
             }
             else if (!agent.pathPending && agent.remainingDistance <= 0.1f && isWalking)
             {
+                isWalking = false;
+                anim.SetBool("Walking", false);
                 idleTimer += Time.deltaTime;
                 if (idleTimer >= idleDuration)
                 {
-                    isWalking = false;
                     idleTimer = 0f;
                     StartCoroutine(LookAround());
                 }
@@ -144,6 +141,7 @@ public class Enemy_H : MonoBehaviour
         if (Time.time - lastAttackTime >= attackCooldown)
         {
             // 공격 코드 추가
+            anim.SetTrigger("Attack");
             Debug.Log("Attack!");
             lastAttackTime = Time.time;
         }
@@ -158,10 +156,8 @@ public class Enemy_H : MonoBehaviour
     private void Die()
     {
         // 사망 처리 코드 추가
+        anim.SetTrigger("Die");
         Debug.Log("I'm dead!");
-        Destroy(gameObject);
-
-        // 몬스터가 사망하면 속도를 원래대로 복구
-        agent.speed = 1.0f;
+        Destroy(gameObject, 2f); // 2초 후에 객체 삭제
     }
 }
