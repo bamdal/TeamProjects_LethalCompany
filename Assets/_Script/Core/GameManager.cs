@@ -3,6 +3,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using static UnityEditor.Progress;
 
 /// <summary>
 /// 게임상태
@@ -82,6 +83,7 @@ public class GameManager : Singleton<GameManager>
                 }
                 money = value;
                 onMoneyChange?.Invoke(TotalMoney);       // MoneyCountMonitor에서 사용
+                onMoney?.Invoke(money);
             }
         }
     }
@@ -92,6 +94,8 @@ public class GameManager : Singleton<GameManager>
     /// </summary>
     public Action<float> onMoneyChange;
 
+
+    public Action<float> onMoney;
 
 
     /// <summary>
@@ -221,10 +225,6 @@ public class GameManager : Singleton<GameManager>
             }
         }
     }
-    /// <summary>
-    /// 손전등 가격
-    /// </summary>
-    const float FlashLightPrice = 10.0f;
 
     /// <summary>
     /// EnemyAI용 배회할 포지션 좌표들
@@ -262,6 +262,7 @@ public class GameManager : Singleton<GameManager>
         Cursor.lockState = CursorLockMode.Locked;
         store = FindAnyObjectByType<Store>();
         TargetAmountMoney = startTargetAmountMoney;
+        ItemDB itemDB = FindAnyObjectByType<ItemDB>();
         if (store != null)
         {
             store.onMoneyEarned += OnMoneyAdd;       // Store 클래스의 델리게이트 연결
@@ -270,7 +271,7 @@ public class GameManager : Singleton<GameManager>
         terminal = FindAnyObjectByType<Terminal>();
         if (terminal != null)
         {
-            terminal.onFlashLight += OnUseMoney;    // Terminal 클래스의 델리게이트 연결
+            terminal.onUseMoney += OnUseMoney;    // Terminal 클래스의 델리게이트 연결
         }
     }
 
@@ -346,10 +347,18 @@ public class GameManager : Singleton<GameManager>
     /// <summary>
     /// 터미널 상점에서 물건을 구매했을 때 실행될 함수
     /// </summary>
-    /// <exception cref="NotImplementedException"></exception>
-    private void OnUseMoney()
+    private void OnUseMoney(float price)
     {
-        if (Money >= FlashLightPrice)
+        if (Money > price)
+        {
+            Money -= price;
+        }
+        else
+        {
+            Debug.Log("돈이 부족합니다.");
+        }
+
+        /*if (Money >= FlashLightPrice)
         {
             // 돈 차감하고
             Money -= FlashLightPrice;
@@ -366,7 +375,7 @@ public class GameManager : Singleton<GameManager>
         else
         {
             Debug.Log($"돈이 부족합니다. 현재 남은 돈 {Money}원");
-        }
+        }*/
     }
 
     /// <summary>
