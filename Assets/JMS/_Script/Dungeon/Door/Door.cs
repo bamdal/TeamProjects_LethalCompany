@@ -163,6 +163,21 @@ public class Door : MonoBehaviour
         }
         
     }
+    public void EnemyDoorOpen(GameObject target)
+    {
+        if (!doorLock && !open)
+        {
+
+
+            doorLock = true;
+            OpenVecter(target);
+            StopAllCoroutines();
+            Open();
+            StartCoroutine(OpenCoolTime());
+        }
+        
+
+    }
 
 #if UNITY_EDITOR
     public void Test_OpenVector(GameObject target)

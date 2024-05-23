@@ -21,10 +21,10 @@ public class DoorOpenPoint : MonoBehaviour, IInteraction
     private void OnTriggerEnter(Collider other)
     {
         Debug.Log(other.gameObject.name);
-        if (other.gameObject.CompareTag("Enemy") && Vector3.Magnitude(transform.position - other.gameObject.transform.position) < 1)
+        if (other.gameObject.CompareTag("Enemy") && Vector3.Magnitude(transform.position - other.gameObject.transform.position) < 2)
         {
 
-            door.Interaction(other.gameObject);
+            door.EnemyDoorOpen(other.gameObject);
             Debug.Log(other.gameObject);
         }
     }
