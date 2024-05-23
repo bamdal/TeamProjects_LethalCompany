@@ -73,7 +73,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8014d5ed6bb20e44eab99d486eeb4660, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  stunnedTime: 5
+  attackInterval: 0.3
   patrolRange: 10
   patrolTime: 5
   attackPower: 10
@@ -88,7 +88,7 @@ NavMeshAgent:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1757975740127458970}
   m_Enabled: 1
-  m_AgentTypeID: 0
+  m_AgentTypeID: -1372625422
   m_Radius: 0.5
   m_Speed: 3.5
   m_Acceleration: 8

@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.AI;
 
@@ -34,12 +35,12 @@ public class Hygrodere : EnemyBase
     /// <summary>
     /// Hygro의 패트롤 범위, 목적지에 도작하면 patrolRange 범위 안에 새로운 랜덤 목적지 생성
     /// </summary>
-    float patrolRange = 100.0f;
+    float patrolRange = 10.0f;
 
     /// <summary>
     /// 추적상태 돌입 범위
     /// </summary>
-    public float chasePatrolTransitionRange = 10.0f;
+    public float chasePatrolTransitionRange = 5.0f;
 
     // HP 관련 -----------------------------------------------------------
     float hygroHp = 100.0f;
@@ -69,7 +70,7 @@ public class Hygrodere : EnemyBase
     /// <summary>
     /// Hygro의 공격력
     /// </summary>
-    public int attackDamage = 35;
+    public int attackDamage = 9999;
 
     public int AttackDamage => attackDamage;
 
@@ -118,6 +119,8 @@ public class Hygrodere : EnemyBase
         }
     }
 
+    public Hygrodere devidedHygro;
+
     /// <summary>
     /// 플레이어가 죽었는지 살았는지 확인하는 변수
     /// </summary>
@@ -128,20 +131,20 @@ public class Hygrodere : EnemyBase
     /// <summary>
     /// 분열된 상태인지 아닌지 확인하는 변수, true면 분열된 상태, false면 분열 전
     /// </summary>
-    bool isDevided = false;
+    public bool isDevided = false;
 
     public bool IsDevided
     {
         get => isDevided;
         set
         {
-            if(isDevided != value) 
+            if (isDevided != value)
             {
-                isDevided = value;            
+                isDevided = value;
             }
         }
     }
-   
+
     /// <summary>
     /// 하이그로디어의 최대 스폰 수
     /// </summary>
@@ -167,7 +170,7 @@ public class Hygrodere : EnemyBase
     // 컴포넌트
     NavMeshAgent agent;
     SphereCollider chaseArea;
-    // Hygrodere_AttackArea attackArea;
+    Hygrodere_AttackArea attackArea;
 
     private void Awake()
     {
@@ -181,7 +184,8 @@ public class Hygrodere : EnemyBase
         hygroHp = MaxHP;
 
         agent = GetComponent<NavMeshAgent>();
-        chaseArea = GetComponent<SphereCollider>();
+        chaseArea = transform.GetChild(1).GetComponent<SphereCollider>();
+        attackArea = GetComponentInChildren<Hygrodere_AttackArea>();
 
         State = EnemyState.Stop;
         State = EnemyState.Patrol;
@@ -192,11 +196,11 @@ public class Hygrodere : EnemyBase
         wait = waitTime;
 
         chaseArea.radius = chasePatrolTransitionRange;
-        //attackArea.onPlayerApproach += AttackAreaApproach;
-        //attackArea.onPlayerOut += (() =>
-        //{
-        //    State = EnemyState.Chase;
-        //});
+        attackArea.onPlayerApproach += AttackAreaApproach;
+        attackArea.onPlayerOut += (() =>
+        {
+            State = EnemyState.Chase;
+        });
 
         StartCoroutine(SpawnTimeTriggerActivate());
     }
@@ -246,8 +250,8 @@ public class Hygrodere : EnemyBase
         {
             if (wait < 0.0f)
             {
-                State = EnemyState.Patrol;
                 agent.SetDestination(GetRandomDestination());
+                State = EnemyState.Patrol;
                 wait = waitTime;
             }
         }
@@ -262,7 +266,10 @@ public class Hygrodere : EnemyBase
         if (agent.remainingDistance < agent.stoppingDistance)
         {
             agent.SetDestination(GetRandomDestination());
+            // transform.Rotate(agent.destination);
         }
+
+        Debug.Log(agent.remainingDistance < agent.stoppingDistance);
     }
 
     protected override void Update_Chase()
@@ -270,6 +277,7 @@ public class Hygrodere : EnemyBase
         if (playerTransform != null)
         {
             agent.SetDestination(playerTransform.position);
+            transform.Rotate(agent.destination);
         }
         else
         {
@@ -281,7 +289,8 @@ public class Hygrodere : EnemyBase
     {
         currentAttackCoolTime -= Time.deltaTime;
 
-        agent.SetDestination(playerTransform.position + new Vector3(1, 0, 1));
+        agent.SetDestination(playerTransform.position);
+        transform.Rotate(agent.destination);
 
         if (IsCoolTime)
         {
@@ -333,10 +342,12 @@ public class Hygrodere : EnemyBase
 
     public void HygroDie()
     {
-        if(!IsDevided)
+        if (!IsDevided)
         {
             gameObject.SetActive(false);
 
+            StopAllCoroutines();
+            StartCoroutine(DieCoroutine());
 
 
             IsAlive = false;
@@ -346,5 +357,33 @@ public class Hygrodere : EnemyBase
     public void PlayerDie()
     {
         State = EnemyState.Stop;
+        agent.speed = 0.0f;
+    }
+
+    public new void Attack(IBattler target)
+    {
+        target.Defense(AttackDamage);
+    }
+
+    public override void Defense(float attackPower)
+    {
+        Hp -= attackPower;
+    }
+
+    IEnumerator DieCoroutine()
+    {
+        yield return new WaitForSeconds(3);
+
+        if (!IsDevided)
+        {
+            Hygrodere newSlime1 = Instantiate(devidedHygro, transform.position, transform.rotation);
+            newSlime1.IsDevided = true;
+            Hygrodere newSlime2 = Instantiate(devidedHygro, transform.position, transform.rotation);
+            newSlime2.IsDevided = true;
+        }
+        else
+        {
+            gameObject.SetActive(false);
+        }
     }
 }

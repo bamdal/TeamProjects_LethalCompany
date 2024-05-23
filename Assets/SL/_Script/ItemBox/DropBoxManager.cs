@@ -29,6 +29,7 @@ public class DropBoxManager : MonoBehaviour
     {
         yield return new WaitForSeconds(3f);
         GameObject itemTemp = Instantiate(itemBoxPrepab, dropPosition.position, dropPosition.rotation, null);
+        itemTemp.transform.position = dropPosition.localPosition;
          temp = itemTemp.GetComponent<IInteraction>();
         temp.onRequest += DropItemBox;
         dropItem = null;

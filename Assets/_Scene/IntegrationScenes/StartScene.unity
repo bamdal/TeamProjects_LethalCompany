@@ -1925,7 +1925,7 @@ GameObject:
   - component: {fileID: 1693531216}
   - component: {fileID: 1693531215}
   m_Layer: 5
-  m_Name: Canvas
+  m_Name: PlayerCanvas
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -2284,6 +2284,10 @@ PrefabInstance:
       propertyPath: farVcam
       value: 
       objectReference: {fileID: 1871234026}
+    - target: {fileID: 729462734710785174, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: playerCanvas
+      value: 
+      objectReference: {fileID: 1693531217}
     - target: {fileID: 1019778677627282264, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2292,6 +2296,22 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 640995295}
+    - target: {fileID: 1564551389215945900, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564551389215945900, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564551389215945900, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564551389215945900, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1819467801632709480, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2302,7 +2322,23 @@ PrefabInstance:
       objectReference: {fileID: 1914658022}
     - target: {fileID: 2781570432863808970, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_text
-      value: "$256\n / $50"
+      value: "$256\n / $0"
+      objectReference: {fileID: 0}
+    - target: {fileID: 5101523530686760358, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5101523530686760358, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5101523530686760358, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5101523530686760358, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5222434457387526350, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_LocalPosition.x
@@ -2359,6 +2395,22 @@ PrefabInstance:
     - target: {fileID: 7763088936451043420, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_Name
       value: SpaceShip
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008236641313813154, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008236641313813154, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008236641313813154, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008236641313813154, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8690300313841275334, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_Mesh

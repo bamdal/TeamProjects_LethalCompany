@@ -422,7 +422,7 @@ public class Terminal : MonoBehaviour,IInteraction
         // 씬 로드 완료를 기다림
         while (!loadOperation.isDone)
         {
-            Debug.Log("delay");
+            //Debug.Log("delay");
             yield return null;
         }
         int count = GameManager.Instance.SpaceShip.ItemBox.childCount;
@@ -477,6 +477,10 @@ public class Terminal : MonoBehaviour,IInteraction
             SwitchCamera();
 
             // 여기다 플레이어의 canvas 끄는 것 추가
+            if (playerCanvas == null)
+            {
+                playerCanvas = GameObject.Find("PlayerCanvas").GetComponent<Canvas>();
+            }
             playerCanvas.gameObject.SetActive(false);
 
         }
@@ -490,6 +494,10 @@ public class Terminal : MonoBehaviour,IInteraction
             PressESC();
 
             // 여기다 플레이어의 canvas 켜는 것 추가
+            if (playerCanvas == null)
+            {
+                playerCanvas = GameObject.Find("PlayerCanvas").GetComponent<Canvas>();
+            }
             playerCanvas.gameObject.SetActive(true);
         }
     }

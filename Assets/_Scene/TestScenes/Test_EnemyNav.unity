@@ -24,7 +24,7 @@ RenderSettings:
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
-  m_AmbientMode: 3
+  m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
   m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
   m_HaloStrength: 0.5
@@ -250,7 +250,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 0
+  m_IsActive: 1
 --- !u!114 &203844587
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -686,14 +686,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 673815760694287412, guid: 02eb59263eeb74f4b8c2233e13b3316b, type: 3}
-      propertyPath: enemyPrefabs.Array.size
-      value: 3
-      objectReference: {fileID: 0}
-    - target: {fileID: 673815760694287412, guid: 02eb59263eeb74f4b8c2233e13b3316b, type: 3}
-      propertyPath: enemyPrefabs.Array.data[2]
-      value: 
-      objectReference: {fileID: 6239807730101204261, guid: 23fbe294aefd1424c9007ee755009728, type: 3}
     - target: {fileID: 3171684856659673315, guid: 02eb59263eeb74f4b8c2233e13b3316b, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -745,6 +737,10 @@ PrefabInstance:
     - target: {fileID: 6501425972638931305, guid: 02eb59263eeb74f4b8c2233e13b3316b, type: 3}
       propertyPath: difficulty
       value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 6501425972638931305, guid: 02eb59263eeb74f4b8c2233e13b3316b, type: 3}
+      propertyPath: generationCount
+      value: 3
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
@@ -1599,7 +1595,7 @@ MonoBehaviour:
   priority: 0
   blendDistance: 0
   weight: 1
-  sharedProfile: {fileID: 11400000, guid: 5ebd04460b084404eb20522dacbc5b62, type: 2}
+  sharedProfile: {fileID: 11400000, guid: dc37b3efc9db0184893dfba0c8403e04, type: 2}
 --- !u!4 &1160234427
 Transform:
   m_ObjectHideFlags: 0

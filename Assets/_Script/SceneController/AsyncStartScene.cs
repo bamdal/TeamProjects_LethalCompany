@@ -8,17 +8,33 @@ using UnityEngine.SceneManagement;
 public class AsyncStartScene : MonoBehaviour
 {
     // Start is called before the first frame update
+
+    /// <summary>
+    /// 함선이 내릴 좌표용 트랜스폼
+    /// </summary>
     Transform landPosition;
+
+    /// <summary>
+    /// 택배 상자 도착용 좌표 트랜스폼
+    /// </summary>
+    Transform dropBoxPosition;
+
+    EnemySpawner spawner;
+
+    public List<EnemySpawnPoint> enemySpawnPoints;
 
     private void Awake()
     {
         landPosition = transform.GetChild(0);
+        dropBoxPosition = transform.GetChild(1);
+        spawner = GetComponent<EnemySpawner>();
     }
 
     void Start()
     {
 
         GameManager.Instance.GameState = GameState.GameStart;
+        GameManager.Instance.DropBoxManager.dropPosition = dropBoxPosition;
         if (SceneManager.GetActiveScene().name != "Company")
         {
             StartCoroutine(LoadDungenonScene());
@@ -58,6 +74,7 @@ public class AsyncStartScene : MonoBehaviour
         {
             yield return null;
         }
+        spawner.OnSpawnEnemy(enemySpawnPoints, Difficulty.EX);
 
         onSceneLoadComplite?.Invoke();
         GameManager.Instance.SpaceShip.SpaceShipDoorOpen();

@@ -32,10 +32,12 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     public float patrolMoveSpeed = 2.0f;
     public float chaseMoveSpeed = 5.0f;
 
+    float tempSpeed = 0.0f;
+
     /// <summary>
     /// CoilHead의 패트롤 범위, 목적지에 도작하면 patrolRange 범위 안에 새로운 랜덤 목적지 생성
     /// </summary>
-    float patrolRange = 100.0f;
+    float patrolRange = 10.0f;
 
     /// <summary>
     /// 추적상태 돌입 범위
@@ -164,6 +166,11 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     SphereCollider detectingArea;
     SphereCollider chaseArea;
     CoilHead_AttackArea attackArea;
+    Animator anim;
+
+    int AttackHash = Animator.StringToHash("Attack");
+    int MoveHash = Animator.StringToHash("Move");
+    int IdleHash = Animator.StringToHash("Idle");
 
     private void Awake()
     {
@@ -180,6 +187,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         detectingArea = GetComponent<SphereCollider>();
         chaseArea = transform.GetChild(1).GetComponent<SphereCollider>();
         attackArea = GetComponentInChildren<CoilHead_AttackArea>();
+        anim = GetComponent<Animator>();
 
         State = EnemyState.Stop;
         State = EnemyState.Patrol;
@@ -216,10 +224,12 @@ public class CoilHead : EnemyBase, IBattler, IHealth
                 {
                     agent.speed = 0.0f;
                     agent.velocity = Vector3.zero;
+                    anim.SetTrigger(IdleHash);
                 }
                 else
                 {
                     agent.speed = chaseMoveSpeed;
+                    anim.SetTrigger(MoveHash);
                 }
             }
         }
@@ -266,12 +276,14 @@ public class CoilHead : EnemyBase, IBattler, IHealth
             if (wait < 0.0f)
             {
                 State = EnemyState.Patrol;
+                anim.SetTrigger(MoveHash);
                 agent.SetDestination(GetRandomDestination());
                 wait = waitTime;
             }
         }
         else
         {
+            anim.SetTrigger(IdleHash);
             agent.speed = 0.0f;
         }
     }
@@ -280,6 +292,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     {
         if (agent.remainingDistance < agent.stoppingDistance)
         {
+            anim.SetTrigger(MoveHash);
             agent.SetDestination(GetRandomDestination());
         }
     }
@@ -288,6 +301,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     {
         if (playerTransform != null)
         {
+            anim.SetTrigger(MoveHash);
             agent.SetDestination(playerTransform.position);
         }
         else
@@ -300,12 +314,15 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     {
         currentAttackCoolTime -= Time.deltaTime;
 
-        agent.SetDestination(playerTransform.position + new Vector3(1, 0, 1));
+        agent.SetDestination(playerTransform.position);
 
         if (IsCoolTime)
         {
             Attack(attackTarget);
+            attackTarget.Defense(AttackDamage);
+            anim.SetTrigger(AttackHash);
             currentAttackCoolTime = attackCoolTime;
+
         }
     }
 
@@ -351,6 +368,17 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         State = EnemyState.Attack;
     }
 
+    void AttackAnimStart()
+    {
+        tempSpeed = agent.speed;
+        agent.speed = 0.0f;
+    }
+
+    void AttackAnimEnd()
+    {
+        agent.speed = tempSpeed;
+    }
+
     // 적과 플레이어 시야 관련 ------------------------------------------------------------------------------------------
 
     /// <summary>
@@ -390,14 +418,48 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     public void CoilHeadDie()
     {
         State = EnemyState.Die;
+        anim.SetTrigger(IdleHash);
         agent.speed = 0.0f;
         agent.velocity = Vector3.zero;
+
+        StopAllCoroutines();
+        StartCoroutine(DieCoroutine());
 
         IsAlive = false;
     }
 
+
     public void PlayerDie()
     {
         State = EnemyState.Stop;
+        anim.SetTrigger(IdleHash);
+    }
+
+    public new void Attack(IBattler target)
+    {
+        target.Defense(AttackDamage);
+    }
+
+    public override void Defense(float attackPower)
+    {
+        Hp -= attackPower;
+    }
+
+    IEnumerator DieCoroutine()
+    {
+        yield return new WaitForSeconds(3);
+        gameObject.SetActive(false);
+    }
+
+    void OnDrawGizmos()
+    {
+        if (agent == null || agent.path == null)
+            return;
+
+        Gizmos.color = Color.red;
+        for (int i = 0; i < agent.path.corners.Length - 1; i++)
+        {
+            Gizmos.DrawLine(agent.path.corners[i], agent.path.corners[i + 1]);
+        }
     }
 }

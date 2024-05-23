@@ -17,13 +17,15 @@ public class DoorOpenPoint : MonoBehaviour, IInteraction
 
 
 
-    private void OnCollisionEnter(Collision collision)
+
+    private void OnTriggerEnter(Collider other)
     {
-        Debug.Log(collision.gameObject.name);
-        if (collision.gameObject.CompareTag("Enemy"))
+        Debug.Log(other.gameObject.name);
+        if (other.gameObject.CompareTag("Enemy") && Vector3.Magnitude(transform.position - other.gameObject.transform.position) < 1)
         {
-            door.Interaction(collision.gameObject);
-            Debug.Log(collision.gameObject);
+
+            door.Interaction(other.gameObject);
+            Debug.Log(other.gameObject);
         }
     }
 

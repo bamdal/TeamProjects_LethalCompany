@@ -311,6 +311,10 @@ public class Enemy_Child_KWS : MonoBehaviour, IBattler
     /// <returns>바닥이면 true, 바닥이 아니면 false</returns>
     public bool IsGrounded()
     {
+        if (this == null)
+        {
+            return false;
+        }
         // 캐릭터의 아래에 레이캐스트를 쏴서 바닥에 닿았는지 확인
         return Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, layerMask: groundLayer);
     }
@@ -335,8 +339,9 @@ public class Enemy_Child_KWS : MonoBehaviour, IBattler
     private void OnTriggerEnter(Collider other)
     {
         // 자식의 트리거에 플레이어가 닿았으면 얼굴에 붙음
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && this != null)
         {
+
             isCatch = true;
             CheckChatch();
         }
@@ -398,10 +403,14 @@ public class Enemy_Child_KWS : MonoBehaviour, IBattler
     /// <exception cref="NotImplementedException"></exception>
     private void OnPlayerDie()
     {
-        this.gameObject.transform.SetParent(null);
+        if (this != null)
+        {
+            this.gameObject.transform.SetParent(null);
 
-        // 게임 오브젝트 삭제
-        Destroy(this.gameObject);
+            // 게임 오브젝트 삭제
+            Destroy(this.gameObject);
+        }
+
     }
 
     /// <summary>
