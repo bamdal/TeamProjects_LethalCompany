@@ -401,7 +401,7 @@ public class Terminal : MonoBehaviour,IInteraction
     /// </summary>
     void ChangeSceen()
     {
-        pressESC();
+        PressESC();
         StartCoroutine(LoadSceneAsync());
         enter.FocusOut();
     }
@@ -487,7 +487,7 @@ public class Terminal : MonoBehaviour,IInteraction
         Debug.Log($"ESC 키가 눌렸습니다");
         if (!PressF_text.gameObject.activeSelf)
         {
-            pressESC();
+            PressESC();
 
             // 여기다 플레이어의 canvas 켜는 것 추가
             playerCanvas.gameObject.SetActive(true);
@@ -497,7 +497,7 @@ public class Terminal : MonoBehaviour,IInteraction
     /// <summary>
     /// ESC가 눌려지면 터미널에서 빠져나오는 함수
     /// </summary>
-    private void pressESC()
+    private void PressESC()
     {
         PressF_text.gameObject.SetActive(true);        // PressF_text 활성화
 

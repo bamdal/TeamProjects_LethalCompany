@@ -34,7 +34,7 @@ public class Enter : MonoBehaviour
         {
             TotalText?.Invoke(text);
             ClearText();
-            inputField.ActivateInputField();
+            inputField.ActivateInputField();        //InputField를 활성화하는 함수
         });
     }
 
