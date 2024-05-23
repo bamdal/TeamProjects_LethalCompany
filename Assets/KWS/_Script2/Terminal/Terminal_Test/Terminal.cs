@@ -92,7 +92,8 @@ public class Terminal : MonoBehaviour,IInteraction
     /// </summary>
     public Canvas playerCanvas;
 
-    
+
+    bool isSpace = true;
 
     // 델리게이트들 -----------------------------------------------------------------------------------------------------
 
@@ -404,6 +405,7 @@ public class Terminal : MonoBehaviour,IInteraction
         PressESC();
         StartCoroutine(LoadSceneAsync());
         enter.FocusOut();
+        isSpace = false;
     }
 
 
@@ -537,6 +539,11 @@ public class Terminal : MonoBehaviour,IInteraction
     private void UpdateMoneyText(float money)
     {
         moneyText.text = money.ToString();
+    }
+
+    public void IsSpace()
+    {
+        isSpace = true;
     }
 }
 
