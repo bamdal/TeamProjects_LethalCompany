@@ -168,6 +168,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     SphereCollider attackCollier;
     CoilHeadAttack attackTool;
     CoilHead_AttackArea attackRadius;
+    CoilHead_ChaseArea chaseArea;
 
     Animator anim;
 
@@ -188,7 +189,9 @@ public class CoilHead : EnemyBase, IBattler, IHealth
 
         agent = GetComponent<NavMeshAgent>();
         detectingRadius = GetComponent<SphereCollider>();
-        chaseRadius = transform.GetChild(1).GetComponent<SphereCollider>();
+        chaseArea = GetComponentInChildren<CoilHead_ChaseArea>();
+
+        chaseRadius = chaseArea.GetComponent<SphereCollider>();
         attackRadius = GetComponentInChildren<CoilHead_AttackArea>();
         anim = GetComponent<Animator>();
 
@@ -196,12 +199,15 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         attackCollier = attackTool.GetComponent<SphereCollider>();
         attackCollier.enabled = false;
 
+        chaseArea.onChaseIn += PlayerIn;
+        chaseArea.onChaseOut += PlayerOut;
         attackTool.onAttackPlayer += PlayerAttack;
 
         State = EnemyState.Stop;
         State = EnemyState.Patrol;
 
         onEnemyStateChange += StateChange;
+
 
         agent.SetDestination(GetRandomDestination());
         MoveSpeed = patrolMoveSpeed;
@@ -216,6 +222,10 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         });
 
         StartCoroutine(SpawnTimeTriggerActivate());
+
+        anim.SetTrigger(MoveHash);
+        Player player = GameManager.Instance.Player;
+        player.onDie += PlayerDie;
     }
 
     protected override void Update()
@@ -223,7 +233,6 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         base.Update();
         if (playerTransform != null)
         {
-
             currentAngle = GetSightAngle(playerTransform);              // 플레이어와 적 사이의 각도 측정
 
             transform.rotation = Quaternion.Slerp(transform.rotation
@@ -235,38 +244,33 @@ public class CoilHead : EnemyBase, IBattler, IHealth
                 {
                     agent.speed = 0.0f;
                     agent.velocity = Vector3.zero;
+                    anim.enabled = false;
                 }
                 else
                 {
-                    agent.speed = chaseMoveSpeed;
+                    anim.enabled = true;
                 }
             }
         }
     }
 
-    private void OnTriggerEnter(Collider other)
+    private void PlayerIn(Collider collider)
     {
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log("플레이어 발견");
-            playerTransform = other.transform;
-            MoveSpeed = chaseMoveSpeed;
-            agent.speed = MoveSpeed;
-            State = EnemyState.Chase;
-        }
+        Debug.Log("플레이어 발견");
+        playerTransform = collider.transform;
+        MoveSpeed = chaseMoveSpeed;
+        agent.speed = MoveSpeed;
+        State = EnemyState.Chase;
     }
 
-    private void OnTriggerExit(Collider other)
+    private void PlayerOut(Collider collider)
     {
-        if (other.CompareTag("Player"))
-        {
-            Debug.Log("플레이어 도망");
-            MoveSpeed = patrolMoveSpeed;
-            State = EnemyState.Patrol;
-            agent.speed = patrolMoveSpeed;
-            attackTarget = null;
-            playerTransform = null;
-        }
+        Debug.Log("플레이어 도망");
+        MoveSpeed = patrolMoveSpeed;
+        State = EnemyState.Patrol;
+        agent.speed = patrolMoveSpeed;
+        attackTarget = null;
+        playerTransform = null;
     }
 
     IEnumerator SpawnTimeTriggerActivate()
@@ -369,6 +373,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     {
         tempSpeed = agent.speed;
         agent.speed = 0.0f;
+        agent.velocity = Vector3.zero;
     }
 
     void AttackAnimEnd()
@@ -474,13 +479,24 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         {
             case EnemyState.Die:
             case EnemyState.Stop:
+                Debug.Log(state);
                 anim.SetTrigger(IdleHash);
+                anim.enabled = false;
                 break;
             case EnemyState.Patrol:
+                Debug.Log(state);
+                anim.enabled = true;
+                agent.speed = patrolMoveSpeed;
+                anim.SetTrigger(MoveHash);
+                break;
             case EnemyState.Chase:
+                Debug.Log(state);
+                anim.enabled = true;
+                agent.speed = chaseMoveSpeed;
                 anim.SetTrigger(MoveHash);
                 break;
             case EnemyState.Attack:
+                Debug.Log(state);
                 anim.SetTrigger(AttackHash);
                 break;
         }
