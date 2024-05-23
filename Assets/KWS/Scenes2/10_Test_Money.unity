@@ -1070,6 +1070,18 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4012702476423622430, guid: 4474b02a3251baf4eac8269c491524fc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 4286005104143977794, guid: 4474b02a3251baf4eac8269c491524fc, type: 3}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 6501217365792788158, guid: 4474b02a3251baf4eac8269c491524fc, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 6677382605799944831, guid: 4474b02a3251baf4eac8269c491524fc, type: 3}
       propertyPath: m_Name
       value: FakeTerminal
@@ -1142,6 +1154,10 @@ PrefabInstance:
     - target: {fileID: 5849757498908201614, guid: a98c54d8ab0f8354c8000edb8d5a6ee7, type: 3}
       propertyPath: m_Name
       value: Store_Fin
+      objectReference: {fileID: 0}
+    - target: {fileID: 5849757498908201614, guid: a98c54d8ab0f8354c8000edb8d5a6ee7, type: 3}
+      propertyPath: m_IsActive
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6053477122990076793, guid: a98c54d8ab0f8354c8000edb8d5a6ee7, type: 3}
       propertyPath: m_IsActive
