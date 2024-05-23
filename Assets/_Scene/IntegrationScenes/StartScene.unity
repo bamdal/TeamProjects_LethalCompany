@@ -2292,6 +2292,22 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 640995295}
+    - target: {fileID: 1564551389215945900, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564551389215945900, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564551389215945900, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 1564551389215945900, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 1819467801632709480, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2300,6 +2316,22 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1914658022}
+    - target: {fileID: 5101523530686760358, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5101523530686760358, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5101523530686760358, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5101523530686760358, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5222434457387526350, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -2355,6 +2387,22 @@ PrefabInstance:
     - target: {fileID: 7763088936451043420, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_Name
       value: SpaceShip
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008236641313813154, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchorMax.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008236641313813154, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchorMin.y
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008236641313813154, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchoredPosition.x
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 8008236641313813154, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
+      propertyPath: m_AnchoredPosition.y
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8690300313841275334, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_Mesh
