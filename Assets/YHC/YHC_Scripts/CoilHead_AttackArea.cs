@@ -5,7 +5,7 @@ using UnityEngine;
 
 public class CoilHead_AttackArea : MonoBehaviour
 {
-    public float attackRadius = 5.0f;
+    public float attackRadius = 1.5f;
 
     /// <summary>
     /// 플레이어가 공격 범위 내에 들어왔을 때 실행될 델리게이트
