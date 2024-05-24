@@ -48,7 +48,7 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
@@ -66,7 +66,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5600d336096093c40b79b2a5a6d2a719, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackRadius: 5
+  attackRadius: 1.5
 --- !u!1 &3552826570278871177
 GameObject:
   m_ObjectHideFlags: 0
@@ -223,12 +223,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 69057d9c2d9ab2a47b4872aa9cd324d6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  patrolMoveSpeed: 5
+  patrolMoveSpeed: 1
   chaseMoveSpeed: 2
-  chasePatrolTransitionRange: 10
-  attackDamage: 35
+  chasePatrolTransitionRange: 5
+  attackDamage: 9999
   attackCoolTime: 0.5
-  devidedHygro: {fileID: 3908614548762159704}
+  devidedHygro: {fileID: 0}
   isDevided: 0
   HygroMaxSpawnCount: 2
   HygroSpawnRate: 0.06
@@ -290,6 +290,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1153776219936758152}
   - component: {fileID: 2862410768900399946}
+  - component: {fileID: 2145395650308841376}
   m_Layer: 0
   m_Name: ChaseArea
   m_TagString: Untagged
@@ -327,12 +328,24 @@ SphereCollider:
     serializedVersion: 2
     m_Bits: 0
   m_LayerOverridePriority: 0
-  m_IsTrigger: 0
+  m_IsTrigger: 1
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &2145395650308841376
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 5999891103032552476}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 6ad2dd98b87a99d42b46421c214dadce, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &6218322660258840509
 GameObject:
   m_ObjectHideFlags: 0

@@ -10,15 +10,11 @@ public class Hygrodere_AttackArea : MonoBehaviour
     /// <summary>
     /// 플레이어가 공격 범위 내에 들어왔을 때 실행될 델리게이트
     /// </summary>
-    public Action<Transform> onPlayerApproach;
+    public Action<Collider> onAttackIn;
 
-    public Action onPlayerOut;
+    public Action<Collider> onAttackOut;
 
     SphereCollider attackArea;
-
-    private void Awake()
-    {
-    }
 
     private void Start()
     {
@@ -32,7 +28,7 @@ public class Hygrodere_AttackArea : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            onPlayerApproach?.Invoke(other.transform);
+            onAttackIn?.Invoke(other);
         }
     }
 
@@ -40,7 +36,7 @@ public class Hygrodere_AttackArea : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            onPlayerOut?.Invoke();
+            onAttackOut?.Invoke(other);
         }
     }
 }
