@@ -68,9 +68,11 @@ public class Hygrodere : EnemyBase
     /// <summary>
     /// Hygro의 공격력
     /// </summary>
-    public int attackDamage = 9999;
+    int currentAttackDamage;
 
-    public int AttackDamage => attackDamage;
+    public int AttackDamage => currentAttackDamage;
+
+    public int attackDamage = 9999;
 
     /// <summary>
     /// 공격 쿨타임
@@ -174,7 +176,7 @@ public class Hygrodere : EnemyBase
     {
         base.Start();
 
-        attackDamage = 35;
+        currentAttackDamage = attackDamage;
         currentAttackCoolTime = attackCoolTime;
         hygroHp = MaxHP;
 
@@ -190,9 +192,11 @@ public class Hygrodere : EnemyBase
         MoveSpeed = patrolMoveSpeed;
         agent.speed = MoveSpeed;
         wait = waitTime;
+        isPlayerDie = false;
 
         chaseRadius.radius = chasePatrolTransitionRange;
         attackArea.onAttackIn += AttackAreaPlayerIn;
+        attackArea.onAttackStay += AttackAreaPlayerStay;
         attackArea.onAttackOut += AttackAreaPlayerOut;
         chaseArea.onChaseIn += ChaseAreaPlayerIn;
         chaseArea.onChaseOut += ChaseAreaPlayerOut;
@@ -200,8 +204,10 @@ public class Hygrodere : EnemyBase
         IsAlive = true;
 
         StartCoroutine(SpawnTimeTriggerActivate());
-    }
 
+        Player player = GameManager.Instance.Player;
+        player.onDie += PlayerDie;
+    }
 
     protected override void Update()
     {
@@ -240,7 +246,6 @@ public class Hygrodere : EnemyBase
         if (agent.remainingDistance < agent.stoppingDistance)
         {
             agent.SetDestination(GetRandomDestination());
-            // transform.Rotate(agent.destination);
         }
     }
 
@@ -249,7 +254,6 @@ public class Hygrodere : EnemyBase
         if (playerTransform != null)
         {
             agent.SetDestination(playerTransform.position);
-            transform.Rotate(agent.destination);
         }
         else
         {
@@ -261,23 +265,19 @@ public class Hygrodere : EnemyBase
     {
         currentAttackCoolTime -= Time.deltaTime;
 
-        if (playerTransform != null)
-        {
-            transform.Rotate(playerTransform.position);
-        }
 
-        if (IsCoolTime)
-        {
-            Collider[] colliders = Physics.OverlapSphere(transform.forward, 0.5f);
-            foreach (Collider collider in colliders)
-            {
-                IBattler battler = collider.GetComponent<IBattler>();
-                if (battler != null)
-                {
-                    Attack(battler);
-                }
-            }
-        }
+        // if (IsCoolTime)
+        // {
+        //     Collider[] colliders = Physics.OverlapSphere(transform.forward, 0.5f);
+        //     foreach (Collider collider in colliders)
+        //     {
+        //         IBattler battler = collider.GetComponent<IBattler>();
+        //         if (battler != null)
+        //         {
+        //             Attack(battler);
+        //         }
+        //     }
+        // }
     }
 
     protected override void Update_Die()
@@ -310,11 +310,13 @@ public class Hygrodere : EnemyBase
     private void ChaseAreaPlayerIn(Collider collider)
     {
         State = EnemyState.Chase;
+        playerTransform = collider.transform;
     }
 
     private void ChaseAreaPlayerOut(Collider collider)
     {
         State = EnemyState.Patrol;
+        playerTransform = null;
     }
 
     // 공격 관련 --------------------------------------------------------------------------------------------------------
@@ -327,19 +329,23 @@ public class Hygrodere : EnemyBase
     {
         // 플레이어일때만 실행되기때문에 추가 확인 필요 X
         State = EnemyState.Attack;
-        if (IsCoolTime)
+        playerTransform = collider.transform;
+    }
+
+    private void AttackAreaPlayerStay(Collider collider)
+    {
+        if (IsCoolTime && !isPlayerDie)
         {
             attackTarget = collider.GetComponent<IBattler>();
             Attack(attackTarget);
+            currentAttackCoolTime = attackCoolTime;
         }
     }
 
     private void AttackAreaPlayerOut(Collider collider)
     {
-        playerTransform = null;
-        attackTarget = null;
-    }
 
+    }
 
     public void HygroDie()
     {
@@ -361,6 +367,7 @@ public class Hygrodere : EnemyBase
     public void PlayerDie()
     {
         State = EnemyState.Stop;
+        isPlayerDie = true;
         agent.speed = 0.0f;
     }
 
@@ -395,7 +402,10 @@ public class Hygrodere : EnemyBase
             case EnemyState.Stop:
             case EnemyState.Patrol:
             case EnemyState.Chase:
+                agent.stoppingDistance = 0.05f;
+                break;
             case EnemyState.Attack:
+                agent.stoppingDistance = 0.5f;
                 break;
         }
     }
