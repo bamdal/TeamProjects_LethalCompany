@@ -75,7 +75,7 @@ MonoBehaviour:
   gravityAcceleration: 9.8
   MaxHP: 20
   currentHP: 0
-  attackPower: 32
+  attackPower: 10
   moveSpeed: 2.5
   stopDistance: 1
   rotationSpeed: 10
