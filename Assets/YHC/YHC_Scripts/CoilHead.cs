@@ -213,6 +213,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         MoveSpeed = patrolMoveSpeed;
         agent.speed = MoveSpeed;
         wait = waitTime;
+        isPlayerDie = false;
 
         chaseRadius.radius = chasePatrolTransitionRange;
         attackRadius.onPlayerApproach += AttackAreaApproach;
@@ -362,7 +363,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
         // 플레이어일때만 실행되기때문에 추가 확인 필요 X
         Debug.Log("공격모드");
         State = EnemyState.Attack;
-        if (IsCoolTime)
+        if (IsCoolTime && !isPlayerDie)
         {
             playerTransform = player;
             attackTarget = player.GetComponent<IBattler>();
@@ -452,6 +453,7 @@ public class CoilHead : EnemyBase, IBattler, IHealth
     public void PlayerDie()
     {
         State = EnemyState.Stop;
+        isPlayerDie = true;
     }
 
     // 기타 함수 및 인터페이스 ---------------------------------------------------------------------------
