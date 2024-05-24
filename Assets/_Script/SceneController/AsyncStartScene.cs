@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.UI;
 
 public class AsyncStartScene : MonoBehaviour
 {
@@ -23,15 +24,22 @@ public class AsyncStartScene : MonoBehaviour
 
     public List<EnemySpawnPoint> enemySpawnPoints;
 
+    public LoadingPanel loadingPanel;
+
     private void Awake()
     {
         landPosition = transform.GetChild(0);
         dropBoxPosition = transform.GetChild(1);
         spawner = GetComponent<EnemySpawner>();
+
     }
 
     void Start()
     {
+        if (loadingPanel == null)
+        {
+            loadingPanel = FindAnyObjectByType<LoadingPanel>();
+        }
 
         GameManager.Instance.GameState = GameState.GameStart;
         GameManager.Instance.DropBoxManager.dropPosition = dropBoxPosition;
@@ -74,9 +82,10 @@ public class AsyncStartScene : MonoBehaviour
         {
             yield return null;
         }
-        spawner.OnSpawnEnemy(enemySpawnPoints, Difficulty.EX);
+        spawner.OnSpawnEnemy(enemySpawnPoints);
 
         onSceneLoadComplite?.Invoke();
+        loadingPanel.CanvasGroupAlphaChange();
         GameManager.Instance.SpaceShip.SpaceShipDoorOpen();
     }
 

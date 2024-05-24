@@ -73,9 +73,9 @@ public class Terminal : MonoBehaviour,IInteraction
     PlayerInput playerInput;
 
     /// <summary>
-    /// 스토어 화면에서 입력된 onFlashLight 아이템을 게임매니저로 알릴 델리게이트
+    /// 스토어 화면에서 입력된 아이템의 가격을 게임매니저로 알릴 델리게이트
     /// </summary>
-    public Action onFlashLight;
+    public Action<float> onUseMoney;
 
     /// <summary>
     /// 터미널의 범위에 들어왔는지 확인하는 변수
@@ -92,8 +92,19 @@ public class Terminal : MonoBehaviour,IInteraction
     /// </summary>
     public Canvas playerCanvas;
 
-
+    /// <summary>
+    /// 우주인지 확인하는 변수(true면 우주, false면 지상)
+    /// </summary>
     bool isSpace = true;
+
+    bool terminalUse = false;
+
+    public bool TerminalUse => terminalUse;
+
+
+
+    ItemDB itemDB;
+
 
     // 델리게이트들 -----------------------------------------------------------------------------------------------------
 
@@ -148,9 +159,11 @@ public class Terminal : MonoBehaviour,IInteraction
 
         gameManager = GameManager.Instance;
 
-        gameManager.onMoneyChange += UpdateMoneyText;
+        gameManager.onMoney += UpdateMoneyText;
 
         moneyText.text = "50";
+
+        itemDB = FindAnyObjectByType<ItemDB>();
     }
 
     private void OnEnable()
@@ -318,6 +331,8 @@ public class Terminal : MonoBehaviour,IInteraction
                 {
                     Debug.Log("스토어 입력 중 손전등 입력 확인");
                     gameManager.ItemsQueue.Enqueue(ItemCode.FlashLight);
+                    onUseMoney?.Invoke((float)ItemPrice.flashlight);
+                    Debug.Log($"{(float)ItemPrice.flashlight}");
                 }
                 break;
             case "proflashlight":
@@ -326,6 +341,8 @@ public class Terminal : MonoBehaviour,IInteraction
                 {
                     Debug.Log("스토어 입력 중 프로손전등 입력 확인");
                     gameManager.ItemsQueue.Enqueue(ItemCode.FlashLightUp);
+                    onUseMoney?.Invoke((float)ItemPrice.proflashlight);
+                    Debug.Log($"{(float)ItemPrice.proflashlight}");
                 }
                 break;
             case "shovel":
@@ -334,14 +351,18 @@ public class Terminal : MonoBehaviour,IInteraction
                 {
                     Debug.Log("스토어 입력 중 삽 입력 확인");
                     gameManager.ItemsQueue.Enqueue(ItemCode.Shovel);
+                    onUseMoney?.Invoke((float)ItemPrice.shovel);
+                    Debug.Log($"{(float)ItemPrice.shovel}");
                 }
                 break;
-            case "zapGun":
+            case "zapgun":
             case "공기권총":
                 if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf) // mainText 비활성화 storeText 활성화 상태이면
                 {
                     Debug.Log("스토어 입력 중 ZapGun 입력 확인");
                     gameManager.ItemsQueue.Enqueue(ItemCode.ZapGun);
+                    onUseMoney?.Invoke((float)ItemPrice.ZapGun);
+                    Debug.Log($"{(float)ItemPrice.ZapGun}");
                 }
                 break;
             case "grenade":
@@ -350,6 +371,8 @@ public class Terminal : MonoBehaviour,IInteraction
                 {
                     Debug.Log("스토어 입력 중 섬광수류탄 입력 확인");
                     gameManager.ItemsQueue.Enqueue(ItemCode.Grenade);
+                    onUseMoney?.Invoke((float)ItemPrice.grenade);
+                    Debug.Log($"{(float)ItemPrice.grenade}");
                 }
                 break;
             case "labber":
@@ -358,6 +381,8 @@ public class Terminal : MonoBehaviour,IInteraction
                 {
                     Debug.Log("스토어 입력 중 사다리 입력 확인");
                     gameManager.ItemsQueue.Enqueue(ItemCode.Labber);
+                    onUseMoney?.Invoke((float)ItemPrice.labber);
+                    Debug.Log($"{(float)ItemPrice.labber}");
                 }
                 break;
 
@@ -402,10 +427,14 @@ public class Terminal : MonoBehaviour,IInteraction
     /// </summary>
     void ChangeSceen()
     {
-        PressESC();
-        StartCoroutine(LoadSceneAsync());
-        enter.FocusOut();
-        isSpace = false;
+        if (isSpace)
+        {
+            PressESC();
+            StartCoroutine(LoadSceneAsync());
+            enter.FocusOut();
+            isSpace = false;
+        }
+
     }
 
 
@@ -455,6 +484,7 @@ public class Terminal : MonoBehaviour,IInteraction
         }
     }
 
+
     /// <summary>
     /// 상호작용 인터페이스
     /// </summary>
@@ -464,7 +494,7 @@ public class Terminal : MonoBehaviour,IInteraction
         if (PressF_text.gameObject.activeSelf)
         {
             PressF_text.gameObject.SetActive(false);        // PressF_text 비활성화
-
+            terminalUse = true;
             // OnESCClick 연결
             playerInputActions.Enable();
             playerInputActions.Option.ESC.performed += OnESCClick;
@@ -510,7 +540,7 @@ public class Terminal : MonoBehaviour,IInteraction
     private void PressESC()
     {
         PressF_text.gameObject.SetActive(true);        // PressF_text 활성화
-
+        terminalUse = false;
         enter.ClearText();        // 혹시 텍스트 남아있으면 비우기
 
         // 포커스 아웃
@@ -541,9 +571,25 @@ public class Terminal : MonoBehaviour,IInteraction
         moneyText.text = money.ToString();
     }
 
+    /// <summary>
+    /// 버튼을 눌러서 isSpace를 우주인 상태로 바꾸기 위한 함수
+    /// </summary>
     public void IsSpace()
     {
         isSpace = true;
+    }
+
+    /// <summary>
+    /// 아이템을 살 때 물건의 가격
+    /// </summary>
+    enum ItemPrice
+    {
+        flashlight = 15,
+        proflashlight = 25,
+        shovel = 30,
+        ZapGun = 400,
+        grenade = 36,
+        labber = 60,
     }
 }
 

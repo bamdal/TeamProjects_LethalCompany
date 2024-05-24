@@ -13,7 +13,7 @@ public class Enter : MonoBehaviour
     /// <summary>
     /// 플레이어 인풋 액션
     /// </summary>
-    private PlayerInputActions playerInput;
+    /// private PlayerInputActions playerInput;
 
     /// <summary>
     /// 한글 맨 뒤 글자가 잘려서 나오는 문제 수정용 string
@@ -28,13 +28,15 @@ public class Enter : MonoBehaviour
 
     private void Awake()
     {
-        playerInput = new PlayerInputActions();
+        //playerInput = new PlayerInputActions();
         inputField = GetComponent<TMP_InputField>();
+        Terminal terminal = GetComponentInParent<Terminal>();
         inputField.onSubmit.AddListener((text) =>
         {
             TotalText?.Invoke(text);
             ClearText();
-            inputField.ActivateInputField();        //InputField를 활성화하는 함수
+            if(terminal.TerminalUse)
+                inputField.ActivateInputField();        //InputField를 활성화하는 함수
         });
     }
 
@@ -44,7 +46,7 @@ public class Enter : MonoBehaviour
         //inputField.onEndEdit.AddListener(EndEdit);
     }
 
-    private void OnEnable()
+/*    private void OnEnable()
     {
         playerInput.Enable();
         playerInput.Player.EnterInteract.performed += EnterClick;
@@ -54,7 +56,7 @@ public class Enter : MonoBehaviour
     {
         playerInput.Player.EnterInteract.performed -= EnterClick;
         playerInput.Disable();
-    }
+    }*/
 
     private void EnterClick(InputAction.CallbackContext context)
     {
@@ -62,7 +64,7 @@ public class Enter : MonoBehaviour
         //inputField.ActivateInputField();
 
         // 다른 곳을 클릭 했다가 엔터치면 포커스 활성화
-        FocusOn();
+       // FocusOn();
 
         //// inputField가 공백이 아닐때
         //if (inputField.text != "") 
@@ -121,7 +123,8 @@ public class Enter : MonoBehaviour
     public void FocusOut()
     {
         // 메시지를 보낸 후 비활성화
-        inputField.Select();        // 포커스가 되어있으면 비활성화, 포커스가 안되어 있으면 활성화
+        //inputField.Select();        // 포커스가 되어있으면 비활성화, 포커스가 안되어 있으면 활성화
+        inputField.DeactivateInputField();
     }
 
     /// <summary>
