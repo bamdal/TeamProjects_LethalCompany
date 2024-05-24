@@ -24,8 +24,9 @@ public class EnemySpawner : MonoBehaviour
         
     }
     
-    public void OnSpawnEnemy(List<EnemySpawnPoint> spawnPoints, Difficulty difficulty)
+    public void OnSpawnEnemy(List<EnemySpawnPoint> spawnPoints)
     {
+        Difficulty difficulty = GameManager.Instance.Difficulty;
         Queue<EnemySpawnPoint> enemySpawnPointsQueue = new Queue<EnemySpawnPoint>();
         Shuffle(spawnPoints);
         foreach (EnemySpawnPoint spawnPoint in spawnPoints)

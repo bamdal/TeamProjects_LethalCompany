@@ -1,6 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
+using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using static UnityEditor.Progress;
@@ -27,7 +28,9 @@ public class GameManager : Singleton<GameManager>
 
     public SpaceShip SpaceShip => spaceShip;
 
-    
+    Difficulty difficulty = Difficulty.D;
+
+    public Difficulty Difficulty => difficulty;
 
     /// <summary>
     /// 아이템 데이터 매니저
@@ -122,6 +125,8 @@ public class GameManager : Singleton<GameManager>
                         break;
                     case GameState.GameStart:
                         Debug.Log("게임스타트");
+                        var enumValues = Enum.GetValues(typeof(Difficulty)).Cast<ItemCode>().Where(itemCode => (int)itemCode < 10).ToArray();
+                        difficulty = (Difficulty)enumValues.GetValue(UnityEngine.Random.Range(0, enumValues.Length));
                         onBuy?.Invoke();
                         onGameStart?.Invoke();
                         break;

@@ -19,7 +19,7 @@ public class Test_Modul : TestBase
     {
         DungeonGenerator dungeonGenerator = FindAnyObjectByType<DungeonGenerator>();
         dungeonGenerator.StartGame();
-
+        GameManager.Instance.GameState = GameState.GameStart;
     }
 
     protected override void OnTest1(InputAction.CallbackContext context)
