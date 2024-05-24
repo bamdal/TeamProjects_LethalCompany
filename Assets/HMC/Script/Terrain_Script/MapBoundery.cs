@@ -13,6 +13,7 @@ public class MapBoundery : MonoBehaviour
     {
             if (other.gameObject.CompareTag("Player"))
             {
+                Debug.Log("충돌 감지됨: " + other.gameObject.name);
                 Vector3 closestPoint = other.ClosestPoint(transform.position);
                 float distance = Vector3.Distance(closestPoint, transform.position);
                 BoxCollider playerCollider = other.GetComponent<BoxCollider>();
