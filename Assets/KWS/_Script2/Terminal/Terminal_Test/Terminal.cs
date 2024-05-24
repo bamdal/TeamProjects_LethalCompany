@@ -97,7 +97,14 @@ public class Terminal : MonoBehaviour,IInteraction
     /// </summary>
     bool isSpace = true;
 
+    bool terminalUse = false;
+
+    public bool TerminalUse => terminalUse;
+
+
+
     ItemDB itemDB;
+
 
     // 델리게이트들 -----------------------------------------------------------------------------------------------------
 
@@ -477,6 +484,7 @@ public class Terminal : MonoBehaviour,IInteraction
         }
     }
 
+
     /// <summary>
     /// 상호작용 인터페이스
     /// </summary>
@@ -486,7 +494,7 @@ public class Terminal : MonoBehaviour,IInteraction
         if (PressF_text.gameObject.activeSelf)
         {
             PressF_text.gameObject.SetActive(false);        // PressF_text 비활성화
-
+            terminalUse = true;
             // OnESCClick 연결
             playerInputActions.Enable();
             playerInputActions.Option.ESC.performed += OnESCClick;
@@ -532,7 +540,7 @@ public class Terminal : MonoBehaviour,IInteraction
     private void PressESC()
     {
         PressF_text.gameObject.SetActive(true);        // PressF_text 활성화
-
+        terminalUse = false;
         enter.ClearText();        // 혹시 텍스트 남아있으면 비우기
 
         // 포커스 아웃
