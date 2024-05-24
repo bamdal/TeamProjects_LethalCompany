@@ -49,7 +49,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   itemDB: {fileID: 0}
-  attackCoolTime: 3
+  attackCoolTime: 0.5
 --- !u!95 &6874935252414273026
 Animator:
   serializedVersion: 5
