@@ -17,7 +17,7 @@ public class Enemy_Jester : EnemyBase
     public float maxSpeed = 8.0f;
     public int maxSpawnCount = 1;
     public float spawnPercent = 0.3f;
-    AudioSource audio;
+    AudioSource jesterAudio;
 
     public override int MaxSpawnCount { get => maxSpawnCount; set { } }
     public override float SpawnPercent { get => spawnPercent; set { } }
@@ -35,7 +35,7 @@ public class Enemy_Jester : EnemyBase
 
     private void Awake()
     {
-        audio = GetComponent<AudioSource>();
+        jesterAudio = GetComponent<AudioSource>();
         agent = GetComponent<NavMeshAgent>();
         meshRenderer = transform.GetChild(1).GetComponent<MeshRenderer>();
         timer = patrolTime;
@@ -67,7 +67,7 @@ public class Enemy_Jester : EnemyBase
                 transform.GetChild(2).gameObject.SetActive(false);
                 changeTimer = changeModeTime;
                 State = EnemyState.Patrol;
-                audio.Stop();
+                jesterAudio.Stop();
             }
             else
             {
@@ -113,7 +113,7 @@ public class Enemy_Jester : EnemyBase
                 {
                     State = EnemyState.Stop;
                     // 여기에 audio 시작 코드
-                    audio.Play();
+                    jesterAudio.Play();
                 }
             }
         }
@@ -137,7 +137,7 @@ public class Enemy_Jester : EnemyBase
             transform.GetChild(2).gameObject.SetActive(true);
             State = EnemyState.Attack;
             //여기서 노래 종료 코드
-            audio.Stop();
+            jesterAudio.Stop();
             meshRenderer.material.color = endColor;
         }
     }

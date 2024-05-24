@@ -24,7 +24,7 @@ public class AsyncStartScene : MonoBehaviour
 
     public List<EnemySpawnPoint> enemySpawnPoints;
 
-    public CanvasGroup loadingPanel;
+    public LoadingPanel loadingPanel;
 
     private void Awake()
     {
@@ -38,7 +38,7 @@ public class AsyncStartScene : MonoBehaviour
     {
         if (loadingPanel == null)
         {
-            loadingPanel = GameObject.Find("LoadingPanel").GetComponent<CanvasGroup>();
+            loadingPanel = FindAnyObjectByType<LoadingPanel>();
         }
 
         GameManager.Instance.GameState = GameState.GameStart;
@@ -82,10 +82,10 @@ public class AsyncStartScene : MonoBehaviour
         {
             yield return null;
         }
-        spawner.OnSpawnEnemy(enemySpawnPoints, Difficulty.EX);
+        spawner.OnSpawnEnemy(enemySpawnPoints);
 
         onSceneLoadComplite?.Invoke();
-        loadingPanel.alpha = 0f;
+        loadingPanel.CanvasGroupAlphaChange();
         GameManager.Instance.SpaceShip.SpaceShipDoorOpen();
     }
 

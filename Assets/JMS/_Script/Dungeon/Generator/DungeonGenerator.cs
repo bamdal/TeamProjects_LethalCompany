@@ -19,7 +19,7 @@ public class DungeonGenerator : MonoBehaviour
 
     // 모듈에 미리 만들어둔 아이템 소환위치에 아이템 랜덤배치하기
 
-    public Difficulty difficulty = Difficulty.D;
+    Difficulty difficulty;
 
     EnemySpawner enemySpawner;
 
@@ -60,6 +60,8 @@ public class DungeonGenerator : MonoBehaviour
     /// 반복시행할 맵 생성 횟수
     /// </summary>
     public int generationCount = 5;
+
+    int GenerationCount => generationCount + (int)difficulty;
 
     /// <summary>
     /// 랜덤 시드 0 이상 값 쓰면 시드 고정
@@ -161,7 +163,10 @@ public class DungeonGenerator : MonoBehaviour
     /// </summary>
     bool doMakeComplite = false;
 
-
+    private void Start()
+    {
+        difficulty = GameManager.Instance.Difficulty;
+    }
 
 
     public void StartGame()
@@ -202,7 +207,7 @@ public class DungeonGenerator : MonoBehaviour
         List<ModulConnector> failConnectors = new List<ModulConnector>();   // 실패한 커넥터 가져오기
         
 
-        for (int generation = 0; generation < generationCount; generation++)    // 반복 재생 횟수
+        for (int generation = 0; generation < GenerationCount; generation++)    // 반복 재생 횟수
         {
             List<ModulConnector> newConnectors = new List<ModulConnector>();    // 생성된모듈들의 연결자 리스트
             for (int exist = 0; exist < existConnectors.Count; exist++)
@@ -251,7 +256,7 @@ public class DungeonGenerator : MonoBehaviour
         pointNav.CompliteGenerationDungeon();   // 던전 생성 완료후 네비메시를 깔게 함
 
         ItemGeneration();  // 아이템 스폰 코드 작성
-        enemySpawner.OnSpawnEnemy(enemySpawnPoints, difficulty);    // 아이템 스폰 좌표들과 난이도 보내기
+        enemySpawner.OnSpawnEnemy(enemySpawnPoints);    // 아이템 스폰 좌표들과 난이도 보내기
     }
 
     /// <summary>
