@@ -1,6 +1,6 @@
-
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemySpawner : MonoBehaviour
 {
@@ -12,6 +12,7 @@ public class EnemySpawner : MonoBehaviour
 
     Transform enemys;
     Queue<GameObject> enemies;
+
     private void Awake()
     {
         enemyCount = new Queue<EnemyBase>();
@@ -21,9 +22,8 @@ public class EnemySpawner : MonoBehaviour
         {
             enemys = transform.GetChild(0);
         }
-        
     }
-    
+
     public void OnSpawnEnemy(List<EnemySpawnPoint> spawnPoints)
     {
         Difficulty difficulty = GameManager.Instance.Difficulty;
@@ -33,13 +33,13 @@ public class EnemySpawner : MonoBehaviour
         {
             enemySpawnPointsQueue.Enqueue(spawnPoint);
         }
+
         foreach (EnemyBase enemyBase in enemyPrefabs)
         {
             IDuengenSpawn duengenSpawn = enemyBase.GetComponent<IDuengenSpawn>();
-            for(int i = 0; i < duengenSpawn.MaxSpawnCount; i++)
+            for (int i = 0; i < duengenSpawn.MaxSpawnCount; i++)
             {
-                
-                if(UnityEngine.Random.value<duengenSpawn.SpawnPercent+ 0.05 * (int)difficulty)  // 난이도별 몬스터 소환 판정 시도
+                if (UnityEngine.Random.value < duengenSpawn.SpawnPercent + 0.05 * (int)difficulty) // 난이도별 몬스터 소환 판정 시도
                 {
                     enemyCount.Enqueue(enemyBase);
                 }
@@ -51,40 +51,58 @@ public class EnemySpawner : MonoBehaviour
             IDuengenSpawn duengenSpawn = temp.GetComponent<IDuengenSpawn>();
             for (int i = 0; i < duengenSpawn.MaxSpawnCount; i++)
             {
-
                 if (UnityEngine.Random.value < duengenSpawn.SpawnPercent + 0.05 * (int)difficulty)
                 {
                     trapCount.Enqueue(temp);
                 }
-               
             }
         }
-        
+
         int spawnCount = 0;
-        while (enemyCount.Count > 0 && enemySpawnPointsQueue.Count >0)
+        while (enemyCount.Count > 0 && enemySpawnPointsQueue.Count > 0)
         {
-            EnemyBase obj = Instantiate(enemyCount.Dequeue(), enemys);
-            obj.gameObject.SetActive(false);
-            obj.transform.position = enemySpawnPointsQueue.Dequeue().transform.position; spawnCount++;
-            enemies.Enqueue(obj.gameObject);
+            EnemyBase obj = enemyCount.Dequeue();
+            Vector3 spawnPosition = enemySpawnPointsQueue.Dequeue().transform.position;
+            NavMeshHit hit;
+
+            if (NavMesh.SamplePosition(spawnPosition, out hit, 5.0f, NavMesh.AllAreas))
+            {
+                EnemyBase instantiatedObj = Instantiate(obj, hit.position, Quaternion.identity, enemys);
+                instantiatedObj.transform.position = spawnPosition; 
+                instantiatedObj.gameObject.SetActive(false);
+                spawnCount++;
+                enemies.Enqueue(instantiatedObj.gameObject);
+            }
+            else
+            {
+                Debug.LogWarning("Enemy spawn point is too far from the NavMesh.");
+            }
         }
 
         while (trapCount.Count > 0 && enemySpawnPointsQueue.Count > 0)
         {
-            GameObject obj = Instantiate(trapCount.Dequeue(), enemys);
-            obj.gameObject.SetActive(false);
-            int index = UnityEngine.Random.Range(0, spawnPoints.Count);
-            obj.transform.position = enemySpawnPointsQueue.Dequeue().transform.position; spawnCount++;
-            spawnPoints.RemoveAt(index);
-            enemies.Enqueue(obj);
-        }
+            GameObject obj = trapCount.Dequeue();
+            Vector3 spawnPosition = enemySpawnPointsQueue.Dequeue().transform.position;
+            NavMeshHit hit;
 
-    
+            if (NavMesh.SamplePosition(spawnPosition, out hit, 5.0f, NavMesh.AllAreas))
+            {
+                GameObject instantiatedObj = Instantiate(obj, hit.position, Quaternion.identity, enemys);
+                instantiatedObj.transform.position = spawnPosition;
+                instantiatedObj.gameObject.SetActive(false);
+                spawnCount++;
+                enemies.Enqueue(instantiatedObj);
+            }
+            else
+            {
+                Debug.LogWarning("Trap spawn point is too far from the NavMesh.");
+            }
+        }
 
         Debug.Log($"적 소환 수 : {spawnCount}");
 
         int count = enemies.Count;
-        for(int i = 0; i < count; i++)
+        for (int i = 0; i < count; i++)
         {
             enemies.Dequeue().SetActive(true);
         }

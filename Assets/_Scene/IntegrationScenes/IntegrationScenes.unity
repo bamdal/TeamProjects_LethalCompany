@@ -797,7 +797,7 @@ PrefabInstance:
     - target: {fileID: 9067516278861555671, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
       propertyPath: loadingPanel
       value: 
-      objectReference: {fileID: 1965778036}
+      objectReference: {fileID: 1965778037}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -1843,7 +1843,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 0.4339623, g: 0.1780883, b: 0.1780883, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_RaycastPadding: {x: 0, y: 0, z: 0, w: 0}
   m_Maskable: 1
   m_OnCullStateChanged:
@@ -1875,7 +1875,7 @@ CanvasGroup:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 1965778032}
   m_Enabled: 1
-  m_Alpha: 1
+  m_Alpha: 0.34
   m_Interactable: 1
   m_BlocksRaycasts: 0
   m_IgnoreParentGroups: 0

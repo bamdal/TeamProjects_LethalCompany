@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Test_Qupang : TestBase
 {
+#if UNITY_EDITOR
     Player player;
     DropBoxManager itemDrop;
     GameManager gameManager;
@@ -31,6 +32,6 @@ public class Test_Qupang : TestBase
         Debug.Log(gameManager.ItemsQueue);
     }
 
-
+#endif
 
 }

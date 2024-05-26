@@ -988,6 +988,26 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 3021274763329006759, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
+      propertyPath: poolBaseCapacity
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4150113205602746013, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
+      propertyPath: poolBaseCapacity
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4503654492485143685, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
+      propertyPath: poolBaseCapacity
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 4599998774704805106, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
+      propertyPath: poolBaseCapacity
+      value: 8
+      objectReference: {fileID: 0}
+    - target: {fileID: 6533576035810237565, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
+      propertyPath: poolBaseCapacity
+      value: 8
+      objectReference: {fileID: 0}
     - target: {fileID: 7404700355697594526, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
       propertyPath: m_Name
       value: Factory
@@ -1033,7 +1053,10 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7607927011497799549, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
+    - {fileID: 5609238513204772315, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
+    - {fileID: 1162863416121308282, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: d9f0918b98809a6499b71f179f55026f, type: 3}
