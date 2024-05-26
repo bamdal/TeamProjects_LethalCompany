@@ -61,7 +61,7 @@ public class DungeonGenerator : MonoBehaviour
     /// </summary>
     public int generationCount = 5;
 
-    int GenerationCount => generationCount + (int)difficulty;
+    int GenerationCount => generationCount + Mathf.Clamp((int)difficulty,-2,2);
 
     /// <summary>
     /// 랜덤 시드 0 이상 값 쓰면 시드 고정

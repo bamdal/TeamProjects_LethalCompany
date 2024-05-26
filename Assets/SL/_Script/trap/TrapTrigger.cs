@@ -49,6 +49,7 @@ public class TrapTrigger : MonoBehaviour, IDuengenSpawn
 
     private void OnTriggerEnter(Collider other)
     {
+        int i = 0;
         if (other.CompareTag("Player"))
         {
             if (!IsLowering)
@@ -67,11 +68,11 @@ public class TrapTrigger : MonoBehaviour, IDuengenSpawn
         IsLowering = true;
         float currentSpeed = loweringSpeed;
 
-        while (trap.position.y > trapLowerPosition)
+        while (trap.localPosition.y > trapLowerPosition)
         {
             currentSpeed += gravityAcceleration * Time.deltaTime;
-            float newY = trap.position.y - currentSpeed * Time.deltaTime;
-            trap.position = new Vector3(trap.position.x, Mathf.Max(newY, trapLowerPosition), trap.position.z);
+            float newY = trap.localPosition.y - currentSpeed * Time.deltaTime;
+            trap.localPosition = new Vector3(trap.localPosition.x, Mathf.Max(newY, trapLowerPosition), trap.localPosition.z);
             yield return null;
         }
     }

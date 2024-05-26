@@ -349,11 +349,11 @@ public class Enemy_Spider : EnemyBase
         IsLowering = true;
         float currentSpeed = loweringSpeed;
 
-        while (childEnemy.position.y > trapLowerPosition)
+        while (childEnemy.localPosition.y > trapLowerPosition)
         {
             currentSpeed += gravityAcceleration * Time.deltaTime;
-            float newY = childEnemy.position.y - currentSpeed * Time.deltaTime;
-            childEnemy.position = new Vector3(childEnemy.position.x, Mathf.Max(newY, trapLowerPosition), childEnemy.position.z);
+            float newY = childEnemy.localPosition.y - currentSpeed * Time.deltaTime;
+            childEnemy.localPosition = new Vector3(childEnemy.localPosition.x, Mathf.Max(newY, trapLowerPosition), childEnemy.localPosition.z);
             yield return null;
         }
     }
