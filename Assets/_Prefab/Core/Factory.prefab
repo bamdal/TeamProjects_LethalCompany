@@ -136,6 +136,10 @@ PrefabInstance:
       propertyPath: recycleObject
       value: 
       objectReference: {fileID: 6482104205489665552, guid: f268a33c89e27e64facad3414a1b915e, type: 3}
+    - target: {fileID: 3899185433927705827, guid: 38044ffc6d7fecf47851618959cf9207, type: 3}
+      propertyPath: poolBaseCapacity
+      value: 32
+      objectReference: {fileID: 0}
     - target: {fileID: 8381140570020676102, guid: 38044ffc6d7fecf47851618959cf9207, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -308,6 +312,10 @@ PrefabInstance:
       propertyPath: recycleObject
       value: 
       objectReference: {fileID: 8822895717547138697, guid: 80f013efeb290054c9dbc4c63211f129, type: 3}
+    - target: {fileID: 9017752345587714279, guid: 43fcfdfcb704eb54a919bc56c2b6b89c, type: 3}
+      propertyPath: poolBaseCapacity
+      value: 32
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -330,6 +338,10 @@ PrefabInstance:
       propertyPath: recycleObject
       value: 
       objectReference: {fileID: 2231581111867255905, guid: 866bc2484e6908241800660e3f939602, type: 3}
+    - target: {fileID: 879796442522353634, guid: d590ba1627e8b354e9b93f0db064cf97, type: 3}
+      propertyPath: poolBaseCapacity
+      value: 32
+      objectReference: {fileID: 0}
     - target: {fileID: 3041338585144086597, guid: d590ba1627e8b354e9b93f0db064cf97, type: 3}
       propertyPath: m_Name
       value: HardwareGasTankPool
@@ -634,6 +646,10 @@ PrefabInstance:
       propertyPath: recycleObject
       value: 
       objectReference: {fileID: 371826997391568018, guid: 137bfbb17bab5ba45959ed6727901443, type: 3}
+    - target: {fileID: 6404849991440358139, guid: 5b8153e4d613b9743bd8c22d8fd44955, type: 3}
+      propertyPath: poolBaseCapacity
+      value: 32
+      objectReference: {fileID: 0}
     - target: {fileID: 8288582323384575215, guid: 5b8153e4d613b9743bd8c22d8fd44955, type: 3}
       propertyPath: m_Name
       value: HardwareBarrelPool
@@ -664,6 +680,10 @@ PrefabInstance:
       propertyPath: recycleObject
       value: 
       objectReference: {fileID: 8347303088536995330, guid: d32601a35664ee84c9ba80b16556e914, type: 3}
+    - target: {fileID: 5675176918801569329, guid: d0c869632258c3b4f9f706d84a875211, type: 3}
+      propertyPath: poolBaseCapacity
+      value: 32
+      objectReference: {fileID: 0}
     - target: {fileID: 7675133006026148706, guid: d0c869632258c3b4f9f706d84a875211, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

@@ -26,16 +26,4 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scene/IntegrationScenes/AsyncLoadScene.unity
     guid: e86792f6e4401db4cab33e4058cdc280
-  - enabled: 1
-    path: Assets/KWS/Scenes2/08_Test_Terminal_Player.unity
-    guid: 3a55c89b3a0d61949a2f810cfdfc0a91
-  - enabled: 1
-    path: Assets/KWS/Scenes2/09_Test_LoadSceen.unity
-    guid: f245b98741d143947bb4c89be9f88b63
-  - enabled: 1
-    path: Assets/KWS/Scenes2/11_Test_Enemy.unity
-    guid: 60ec54e5cc1ddbe4bac35f5a8e08d969
-  - enabled: 1
-    path: "Assets/KWS/Scenes2/\uD589\uC131.unity"
-    guid: 15bdc0e4b85083340be4ad7759079e40
   m_configObjects: {}
