@@ -207,32 +207,6 @@ public class Store : MonoBehaviour
     }
 
     /// <summary>
-    /// 버튼을 누르면 폐철물이 바로 사라지는 문제 해결용 n초 기다리기
-    /// </summary>
-    /// <returns></returns>
-    IEnumerator Delay()
-    {
-        yield return new WaitForSeconds(3.0f);
-    }
-
-    /*private void OnSellClick(InputAction.CallbackContext context)
-    {
-        //Debug.Log("트리거 범위에 Hardware가 없습니다.");
-        if (collidedObjects.Count > 0)
-        {
-            //Debug.Log("트리거 범위에 Hardware가 있고, F가 활성화 되었습니다. ");
-            // collidedObjects 리스트의 복사본을 만들고
-            List<GameObject> collidedObjectsCopy = new List<GameObject>(collidedObjects);
-
-            // 복사본을 이용하여 판매를 수행
-            foreach (var obj in collidedObjectsCopy)
-            {
-                SellHardware(obj);
-            }
-        }
-    }*/
-
-    /// <summary>
     /// 상호작용 인터페이스
     /// </summary>
     /// <param name="target"></param>
@@ -241,15 +215,34 @@ public class Store : MonoBehaviour
         //Debug.Log("실행");
         if (collidedObjects.Count > 0)
         {
+            StartCoroutine(Delay(1.0f));
             //Debug.Log("트리거 범위에 Hardware가 있고, F가 활성화 되었습니다. ");
             // collidedObjects 리스트의 복사본을 만들고
-            List<GameObject> collidedObjectsCopy = new List<GameObject>(collidedObjects);
+            /*List<GameObject> collidedObjectsCopy = new List<GameObject>(collidedObjects);
 
             // 복사본을 이용하여 판매를 수행
             foreach (var obj in collidedObjectsCopy)
             {
                 SellHardware(obj);
-            }
+            }*/
+        }
+    }
+
+    /// <summary>
+    /// 플레이어의 판매 상호작용 후 delay만큼 기다리고 판매를 실행할 코루틴
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator Delay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // collidedObjects 리스트의 복사본을 만들고
+        List<GameObject> collidedObjectsCopy = new List<GameObject>(collidedObjects);
+
+        // 복사본을 이용하여 판매를 수행
+        foreach (var obj in collidedObjectsCopy)
+        {
+            SellHardware(obj);
         }
     }
 }
