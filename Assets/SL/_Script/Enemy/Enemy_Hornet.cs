@@ -11,7 +11,6 @@ public class Enemy_Hornet : EnemyBase
     public float patrolRange = 10f; // 배회 범위
     public float patrolTime = 5f;   // 배회 시간
     public float attackPower = 10.0f;
-    public float popingSpeed = 10.0f;
     public int maxSpawnCount = 1;
     public float spawnPercent = 0.3f;
 
@@ -86,7 +85,7 @@ public class Enemy_Hornet : EnemyBase
     {
         while(true)
         {
-            player.Defense(1.0f);
+            player.Defense(attackPower);
             yield return new WaitForSeconds(attackInterval);
         }
 
