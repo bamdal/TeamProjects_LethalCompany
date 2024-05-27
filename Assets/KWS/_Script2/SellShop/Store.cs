@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -194,7 +195,7 @@ public class Store : MonoBehaviour
         // 판매가 이루어졌으므로 누적된 무게와 가격 초기화
         totalWeight = 0.0f;
         totalPrice = 0.0f;
-
+        
         // 판매된 폐철물 비활성화
         hardwareObject.SetActive(false);
 
@@ -203,6 +204,15 @@ public class Store : MonoBehaviour
 
         Debug.Log($"판매된 총 금액: [{totalPrice}]");
         Debug.Log($"판매된 누적 금액: [{totalMoney}]");
+    }
+
+    /// <summary>
+    /// 버튼을 누르면 폐철물이 바로 사라지는 문제 해결용 n초 기다리기
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator Delay()
+    {
+        yield return new WaitForSeconds(3.0f);
     }
 
     /*private void OnSellClick(InputAction.CallbackContext context)
