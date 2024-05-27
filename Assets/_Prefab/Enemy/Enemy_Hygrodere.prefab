@@ -164,7 +164,7 @@ GameObject:
   - component: {fileID: 3908614548762159704}
   - component: {fileID: 42396972774534235}
   - component: {fileID: 3620723823198109591}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: Enemy_Hygrodere
   m_TagString: Enemy
   m_Icon: {fileID: 0}
@@ -228,7 +228,7 @@ MonoBehaviour:
   chasePatrolTransitionRange: 5
   attackDamage: 9999
   attackCoolTime: 0.5
-  devidedHygro: {fileID: 0}
+  devidedHygro: {fileID: 3908614548762159704}
   isDevided: 0
   HygroMaxSpawnCount: 2
   HygroSpawnRate: 0.06
@@ -278,8 +278,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.3, y: 0.3, z: 0.3}
-  m_Center: {x: 0, y: 0.15, z: 0}
+  m_Size: {x: 0.3, y: 1, z: 0.3}
+  m_Center: {x: 0, y: 0.51, z: 0}
 --- !u!1 &5999891103032552476
 GameObject:
   m_ObjectHideFlags: 0

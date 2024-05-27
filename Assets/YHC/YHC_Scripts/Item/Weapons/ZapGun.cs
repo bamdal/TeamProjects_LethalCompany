@@ -7,6 +7,7 @@ using UnityEngine.EventSystems;
 public class ZapGun : WeaponBase, IEquipable, IItemDataBase
 {
     int enemyStunnedTime = 15;
+    Transform effectPrefab;
 
     enum GunState
     {
@@ -36,13 +37,13 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
             {
                 currentBattery = value;
                 currentBattery = Mathf.Clamp(value, 0, MaxBattery);
-                if(currentBattery == 0)
+                if (currentBattery == 0)
                 {
                     state = GunState.Load;
                     StopAllCoroutines();
                 }
                 onBatterChange?.Invoke(currentBattery / MaxBattery);
-                
+
             }
         }
     }
@@ -60,6 +61,9 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
     {
         zapGunData = GameManager.Instance.ItemData.GetItemDB(ItemCode.ZapGun);
         MaxBattery = zapGunData.battery;
+        currentBattery = MaxBattery;
+        effectPrefab = transform.GetChild(3);
+        effectPrefab.gameObject.SetActive(false);
     }
 
     private void Update()
@@ -80,16 +84,20 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
         switch (state)
         {
             case GunState.Load:
+                Debug.Log("로딩");
                 targetEnemy = null;
                 if (IsUsable)
                 {
                     state = GunState.Scan;
+                    Debug.Log("스캔");
                 }
                 break;
             case GunState.Scan:
+                Debug.Log("로딩 스캔");
                 if (ObjectScan())
                 {
                     state = GunState.Release;
+                    Debug.Log("릴리즈");
                     Release();
                 }
                 else
@@ -98,10 +106,12 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
                 }
                 break;
             case GunState.Release:
+                Debug.Log("샷");
                 state = GunState.Shot;
                 Shot();
                 break;
             case GunState.Shot:
+                Debug.Log("load");
                 state = GunState.Load;
                 break;
 
@@ -111,7 +121,7 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
     bool ObjectScan()
     {
         bool result = false;
-        Collider[] colliders = Physics.OverlapBox(transform.position + transform.forward * 5.0f, Vector3.one * 0.5f);
+        Collider[] colliders = Physics.OverlapSphere(transform.position + transform.forward * 3.0f, 3.0f);
         targetEnemy = null;
 
         foreach (Collider collider in colliders)
@@ -143,11 +153,11 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
 
     IEnumerator EnemyStunned(int stunnedTime)
     {
-        while (true)
-        {
-            targetEnemy.OnDebuff(stunnedTime);
-            yield return new WaitForSeconds(stunnedTime);
-        }
+        targetEnemy.OnDebuff(stunnedTime);
+        effectPrefab.gameObject.SetActive(true);
+        effectPrefab.transform.position = targetEnemy.transform.position;
+        yield return new WaitForSeconds(stunnedTime);
+        effectPrefab.gameObject.SetActive(false);
     }
 
     public ItemDB GetItemDB()
