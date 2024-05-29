@@ -19,9 +19,11 @@ public class Enemy_Jester : EnemyBase
     public float spawnPercent = 0.3f;
     AudioSource jesterAudio;
 
+
     public override int MaxSpawnCount { get => maxSpawnCount; set { } }
     public override float SpawnPercent { get => spawnPercent; set { } }
 
+    PlayerRader playerRader;
 
     private Vector3 walkPoint;      // 다음 이동 지점
     private NavMeshAgent agent;
@@ -43,7 +45,12 @@ public class Enemy_Jester : EnemyBase
         originSpeed = agent.speed;
         onEnemyStateUpdate = Update_Patrol;
         layStartPosition = transform.GetChild(0);
+        playerRader = transform.GetChild(3).GetComponent<PlayerRader>();
+        playerRader.findPlayer += FindPlayer;
     }
+
+
+
     protected override void Start()
     {
         base.Start();
@@ -167,22 +174,28 @@ public class Enemy_Jester : EnemyBase
     }
 
 
-    private void OnTriggerEnter(Collider other)
+    private void OnTriggerEnter(Collider collision)
     {
-        if (other.gameObject.CompareTag("Player"))
+        /*if (collision.gameObject.CompareTag("Player"))
         {
             isPlayerDetected = true;
 
+        }*/
+        if (collision.gameObject.CompareTag("Player") && State == EnemyState.Attack)
+        {
+            player.Defense(attackPower);
         }
-
     }
-
-    private void OnCollisionEnter(Collision collision)
+    private void FindPlayer(bool isPlayer)
+    {
+        isPlayerDetected = isPlayer;
+    }
+    /*private void OnCollisionEnter(Collision collision)
     {
         Debug.Log(collision);
         if (collision.gameObject.CompareTag("Player") && State == EnemyState.Attack)
         {
             player.Defense(attackPower);
         }
-    }
+    }*/
 }
