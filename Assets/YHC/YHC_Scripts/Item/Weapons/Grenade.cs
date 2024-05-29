@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Grenade : WeaponBase, IEquipable, IBattler, IItemDataBase
 {
@@ -80,7 +81,8 @@ public class Grenade : WeaponBase, IEquipable, IBattler, IItemDataBase
             foreach(EnemyBase enemy in enemies)
             {
                 StartCoroutine(EnemyStunned(stunnedDuration, enemy.transform.position));
-                enemy.onDebuffAttack?.Invoke(stunnedDuration);
+                NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
+                enemy.onDebuffAttack?.Invoke(agent, stunnedDuration);
             }
         }
 

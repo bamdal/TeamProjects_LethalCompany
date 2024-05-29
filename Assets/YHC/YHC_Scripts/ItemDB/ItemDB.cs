@@ -20,7 +20,7 @@ public enum ItemCode
     Shovel,
     ZapGun,
     Grenade,
-    Labber,
+    Ladder,
 }
 
 [CreateAssetMenu(fileName = "new Item Data", menuName = "Scriptable Object/Item Data", order = 0)]

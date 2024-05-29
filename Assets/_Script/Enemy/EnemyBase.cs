@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
 {
@@ -59,7 +60,7 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
     }
 
     public Action onDie;
-    public Action<int> onDebuffAttack;
+    public Action<NavMeshAgent,int> onDebuffAttack;
     public Action onEnemyStateUpdate;
     public Action<EnemyState> onEnemyStateChange;
 
@@ -130,16 +131,17 @@ public class EnemyBase : MonoBehaviour, IHealth, IBattler, IDuengenSpawn
     /// <summary>
     /// 적이 디버프 공격을 맞았을때 실행될 함수(잽건과 수류탄의 스턴용)
     /// </summary>
-    public void OnDebuff(int debufftime)
+    public void OnDebuff(NavMeshAgent agent, int debufftime)
     {
-        StartCoroutine(StunnedEnemy(debufftime));
+        StartCoroutine(StunnedEnemy(agent, debufftime));
     }
 
-    IEnumerator StunnedEnemy(int debuffTime)
+    IEnumerator StunnedEnemy(NavMeshAgent agent, int debuffTime)
     {
-        State = EnemyState.Stop;
+        float temp = agent.speed;
+        agent.speed = 0.0f;
         yield return new WaitForSeconds(debuffTime);
-        State = EnemyState.Patrol;
+        agent.speed = temp;
     }
 
 

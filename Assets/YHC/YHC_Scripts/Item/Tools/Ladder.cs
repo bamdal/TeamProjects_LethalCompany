@@ -3,20 +3,20 @@ using System.Collections.Generic;
 using TMPro;
 using UnityEngine;
 
-public class Labber : ItemBase
+public class Ladder : ItemBase
 {
-    ItemDB labberDB;
+    ItemDB ladderDB;
 
     TextMeshProUGUI stateText;
 
     private void Start()
     {
-        // labberDB = ItemDataManager.Instance.GetItemDB(ItemCode.Labber);
+        ladderDB = ItemDataManager.Instance.GetItemDB(ItemCode.Ladder);
     }
 
 
     public ItemDB GetItemDB()
     {
-        return labberDB;
+        return ladderDB;
     }
 }

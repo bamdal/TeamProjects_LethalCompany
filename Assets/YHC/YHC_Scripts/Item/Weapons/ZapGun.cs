@@ -2,6 +2,7 @@ using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 using UnityEngine.EventSystems;
 
 public class ZapGun : WeaponBase, IEquipable, IItemDataBase
@@ -48,7 +49,15 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
         }
     }
 
+    /// <summary>
+    /// 잽건이 사용 가능한 상태인지 확인하는 프로퍼티 -> 배터리가 0보다 많으면 사용가능
+    /// </summary>
     bool IsUsable { get => CurrentBattery > 0; }
+
+    /// <summary>
+    /// 잽건의 이펙트가 켜진상태
+    /// </summary>
+    bool effectActivate = false;
 
     float MaxBattery;
 
@@ -71,6 +80,15 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
         if (state == GunState.Shot)
         {
             CurrentBattery -= Time.deltaTime * batteryUse;
+        }
+
+        if (effectActivate)
+        {
+            effectPrefab.gameObject.SetActive(true);
+            if (targetEnemy != null)
+            {
+                effectPrefab.transform.position = targetEnemy.transform.position;
+            }
         }
     }
 
@@ -153,11 +171,16 @@ public class ZapGun : WeaponBase, IEquipable, IItemDataBase
 
     IEnumerator EnemyStunned(int stunnedTime)
     {
-        targetEnemy.OnDebuff(stunnedTime);
-        effectPrefab.gameObject.SetActive(true);
-        effectPrefab.transform.position = targetEnemy.transform.position;
+        NavMeshAgent agent = targetEnemy.GetComponent<NavMeshAgent>();
+        if (agent != null)
+        {
+            targetEnemy.OnDebuff(agent, stunnedTime);
+        }
+
+        effectActivate = true;      // 이펙트 켜졌다고 표시
         yield return new WaitForSeconds(stunnedTime);
-        effectPrefab.gameObject.SetActive(false);
+        effectPrefab.gameObject.SetActive(false);   // 이펙트 끄기
+        effectActivate = false;     // 이펙트 꺼졌다고 표시
     }
 
     public ItemDB GetItemDB()
