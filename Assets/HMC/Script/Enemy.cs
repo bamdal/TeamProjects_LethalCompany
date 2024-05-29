@@ -79,7 +79,7 @@ public class Enemy_H : MonoBehaviour
         {
             if (!isWalking && !isLookingAround)
             {
-                SetRandomDestination();
+                StartCoroutine(LookAround());
             }
             else if (!agent.pathPending && agent.remainingDistance <= 0.1f && isWalking)
             {
@@ -99,6 +99,7 @@ public class Enemy_H : MonoBehaviour
     {
         isLookingAround = true;
         anim.SetBool("LookAround", true);
+        Debug.Log("Look Around");
         anim.SetBool("Walking", false);
         yield return new WaitForSeconds(lookAroundDuration);
         isLookingAround = false;
@@ -131,7 +132,7 @@ public class Enemy_H : MonoBehaviour
         }
 
         // 추적 중에 속도 높이기
-        agent.speed = 3.0f;
+        agent.speed = 2.0f;
         anim.SetBool("Walking", true);
     }
 
@@ -142,14 +143,17 @@ public class Enemy_H : MonoBehaviour
         {
             // 공격 코드 추가
             anim.SetTrigger("Attack");
-            Debug.Log("Attack!");
+            //Debug.Log("Attack!");
             lastAttackTime = Time.time;
         }
+
+        agent.isStopped = true;      //
 
         // 공격 범위를 벗어나면 추적 상태로 변경
         if (Vector3.Distance(transform.position, target.position) > attackRange)
         {
             currentState = State.CHASE;
+            agent.isStopped = false;
         }
     }
 
@@ -157,7 +161,7 @@ public class Enemy_H : MonoBehaviour
     {
         // 사망 처리 코드 추가
         anim.SetTrigger("Die");
-        Debug.Log("I'm dead!");
-        Destroy(gameObject, 2f); // 2초 후에 객체 삭제
+        Debug.Log("moster's dead!");
+        Destroy(gameObject, 0.5f); // 2초 후에 객체 삭제
     }
 }
