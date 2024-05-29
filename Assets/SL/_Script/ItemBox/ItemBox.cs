@@ -32,7 +32,8 @@ public class ItemBox : MonoBehaviour, IInteraction
     {
         if (!isOpen)
         {
-            if (gameManager.ItemsQueue.Count > 4)
+            int temp = gameManager.ItemsQueue.Count;
+            if (temp > 4)
             {
                 for (int i = 0; i < 4; i++)
                 {
@@ -42,9 +43,10 @@ public class ItemBox : MonoBehaviour, IInteraction
             }
             else
             {
-                for (int i = 0; i < gameManager.ItemsQueue.Count; i++)
+                for (int i = 0; i < temp; i++)
                 {
                     Factory.Instance.GetItem(gameManager.ItemsQueue.Dequeue(), itemLocation[i].position);
+                    Debug.Log(gameManager.ItemsQueue.Count);
                 }
             }
             if (gameManager.ItemsQueue.Count > 0)
