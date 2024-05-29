@@ -1,11 +1,6 @@
 using System;
 using System.Collections;
-using System.Collections.Generic;
-using System.Xml.Serialization;
-using UnityEditorInternal;
 using UnityEngine;
-using static EnemyBase;
-using static UnityEngine.EventSystems.EventTrigger;
 
 public class Enemy_Child_KWS : MonoBehaviour, IBattler
 {
@@ -316,7 +311,7 @@ public class Enemy_Child_KWS : MonoBehaviour, IBattler
             return false;
         }
         // 캐릭터의 아래에 레이캐스트를 쏴서 바닥에 닿았는지 확인
-        return Physics.Raycast(transform.position, Vector3.down, groundCheckDistance, layerMask: groundLayer);
+        return Physics.Raycast(transform.localPosition, Vector3.down, groundCheckDistance, layerMask: groundLayer);
     }
 
     /// <summary>
@@ -325,12 +320,12 @@ public class Enemy_Child_KWS : MonoBehaviour, IBattler
     /// <returns></returns>
     public IEnumerator RaiseTrap()
     {
-        while (transform.position.y < currentY)
+        while (transform.localPosition.y < currentY)
         {
             box.enabled = false;
             rigid.velocity = Vector3.zero;
-            float newY = transform.position.y + 1.0f * Time.deltaTime;
-            transform.position = new Vector3(transform.position.x, Mathf.Min(newY, currentY), transform.position.z);
+            float newY = transform.localPosition.y + 1.0f * Time.deltaTime;
+            transform.localPosition = new Vector3(transform.localPosition.x, Mathf.Min(newY, currentY), transform.localPosition.z);
             yield return null;
         }
         box.enabled = true;

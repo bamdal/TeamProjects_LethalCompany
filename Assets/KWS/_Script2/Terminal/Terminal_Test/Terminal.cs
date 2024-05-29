@@ -1,16 +1,10 @@
 using Cinemachine;
 using System;
 using System.Collections;
-using System.Collections.Generic;
 using TMPro;
-using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
-using UnityEngine.SocialPlatforms.Impl;
-using UnityEngine.UI;
-using static UnityEditor.Timeline.TimelinePlaybackControls;
 using UnityEngine.SceneManagement;
-using UnityEngine.ProBuilder.Shapes;
 
 public class Terminal : MonoBehaviour,IInteraction
 {
@@ -380,7 +374,7 @@ public class Terminal : MonoBehaviour,IInteraction
                 if (!mainText.gameObject.activeSelf && storeText.gameObject.activeSelf) // mainText 비활성화 storeText 활성화 상태이면
                 {
                     Debug.Log("스토어 입력 중 사다리 입력 확인");
-                    gameManager.ItemsQueue.Enqueue(ItemCode.Labber);
+                    gameManager.ItemsQueue.Enqueue(ItemCode.Ladder);
                     onUseMoney?.Invoke((float)ItemPrice.labber);
                     Debug.Log($"{(float)ItemPrice.labber}");
                 }

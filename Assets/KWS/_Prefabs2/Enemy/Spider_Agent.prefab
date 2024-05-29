@@ -155,7 +155,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5350302518906621181, guid: 629d6a093b2fbc34d95a54fb81695b43, type: 3}
       propertyPath: currentY
-      value: 3
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 8285578905264258402, guid: 629d6a093b2fbc34d95a54fb81695b43, type: 3}
       propertyPath: m_Enabled

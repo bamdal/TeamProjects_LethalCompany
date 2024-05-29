@@ -9,7 +9,7 @@ public class Test_EnemyAttack : TestBase
     private Enemy_Spider enemy;         // 생성된 적의 참조를 저장하는 변수
 
     protected override void OnTest4(InputAction.CallbackContext context)
-    {
+    {        
         if (enemy != null && enemy.Hp > 0)
         {
             enemy.Hp -= 5;

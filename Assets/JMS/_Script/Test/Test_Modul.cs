@@ -24,28 +24,38 @@ public class Test_Modul : TestBase
 
     protected override void OnTest1(InputAction.CallbackContext context)
     {
-        DungeonGenerator dungeonGenerator = FindAnyObjectByType<DungeonGenerator>();
-        dungeonGenerator.StartGame();
+        /*DungeonGenerator dungeonGenerator = FindAnyObjectByType<DungeonGenerator>();
+        dungeonGenerator.StartGame();*/
+        Player player = GameManager.Instance.Player;
+        player.IsInDungeon = true;
 
     }
 
     protected override void OnTest2(InputAction.CallbackContext context)
     {
-        Transform[] child = generationPointNav.transform.GetComponentsInChildren<Transform>();
+        /*Transform[] child = generationPointNav.transform.GetComponentsInChildren<Transform>();
         foreach (Transform child2 in child)
         {
             if(child2.gameObject != generationPointNav.gameObject)
                 Destroy(child2.gameObject);
-        }
+        }*/
+        Player player = GameManager.Instance.Player;
+        player.IsInDungeon = false;
+
     }
 
     protected override void OnTest3(InputAction.CallbackContext context)
     {
-        Instantiate(coilHeadPrefab, generationPointNav.transform);
+        GameManager.Instance.ItemsQueue.Enqueue(ItemCode.Shovel);
+        GameManager.Instance.ItemsQueue.Enqueue(ItemCode.FlashLight);
+        Debug.Log(GameManager.Instance.ItemsQueue.Count);
+        /*Instantiate(coilHeadPrefab, generationPointNav.transform);*/
     }
 
     protected override void OnTest4(InputAction.CallbackContext context)
     {
-        Instantiate(spiderPrefab, generationPointNav.transform);
+        GameManager.Instance.OnUse();
+        /*        Instantiate(spiderPrefab, generationPointNav.transform);
+        */
     }
 }

@@ -26,7 +26,7 @@ RenderSettings:
   m_AmbientIntensity: 1
   m_AmbientMode: 0
   m_SubtractiveShadowColor: {r: 0.42, g: 0.478, b: 0.627, a: 1}
-  m_SkyboxMaterial: {fileID: 10304, guid: 0000000000000000f000000000000000, type: 0}
+  m_SkyboxMaterial: {fileID: 2100000, guid: 2d59d810ba900874295015e507e19f2e, type: 2}
   m_HaloStrength: 0.5
   m_FlareStrength: 1
   m_FlareFadeSpeed: 3
@@ -38,7 +38,7 @@ RenderSettings:
   m_ReflectionIntensity: 1
   m_CustomReflection: {fileID: 0}
   m_Sun: {fileID: 0}
-  m_IndirectSpecularColor: {r: 0.44657844, g: 0.49641222, b: 0.57481694, a: 1}
+  m_IndirectSpecularColor: {r: 0.16834798, g: 0.27185795, b: 0.2198121, a: 1}
   m_UseRadianceAmbientProbe: 0
 --- !u!157 &3
 LightmapSettings:
@@ -131,6 +131,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 110083519021197034, guid: 1dd08346df2fb364ab5ade4f4fcfce99, type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: 8916a171fc0fc2e40baf41da7cd19a07, type: 2}
     - target: {fileID: 3304721363282001014, guid: 1dd08346df2fb364ab5ade4f4fcfce99, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -376,7 +380,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5964225437306367306, guid: 4548862bbe78e5442adac29ab687b04e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -6.64
+      value: 8
       objectReference: {fileID: 0}
     - target: {fileID: 5964225437306367306, guid: 4548862bbe78e5442adac29ab687b04e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -519,7 +523,7 @@ MonoBehaviour:
   m_OverrideTileSize: 0
   m_TileSize: 256
   m_OverrideVoxelSize: 0
-  m_VoxelSize: 0.1
+  m_VoxelSize: 0.08
   m_MinRegionArea: 2
   m_NavMeshData: {fileID: 23800000, guid: dff0c84daeb919e4094cec327e49c76d, type: 2}
   m_BuildHeightMesh: 0
@@ -754,7 +758,7 @@ GameObject:
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!65 &1913261112
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -916,7 +920,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 311130779801329965, guid: 23fbe294aefd1424c9007ee755009728, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 7.37
+      value: 3
       objectReference: {fileID: 0}
     - target: {fileID: 311130779801329965, guid: 23fbe294aefd1424c9007ee755009728, type: 3}
       propertyPath: m_LocalRotation.w
@@ -953,6 +957,10 @@ PrefabInstance:
     - target: {fileID: 1257560914072973767, guid: 23fbe294aefd1424c9007ee755009728, type: 3}
       propertyPath: m_IsActive
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5446767587166041098, guid: 23fbe294aefd1424c9007ee755009728, type: 3}
+      propertyPath: currentY
+      value: 10
       objectReference: {fileID: 0}
     - target: {fileID: 6239807730101204261, guid: 23fbe294aefd1424c9007ee755009728, type: 3}
       propertyPath: currentHP

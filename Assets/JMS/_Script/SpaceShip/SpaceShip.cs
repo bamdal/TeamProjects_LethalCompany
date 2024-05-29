@@ -137,7 +137,17 @@ public class SpaceShip : MonoBehaviour
 
         GameManager.Instance.Player.Die();
 
+        StartCoroutine(ResetGameCorutine());
+
+
+
+    }
+
+    IEnumerator ResetGameCorutine()
+    {
+        yield return new WaitForSeconds (2.0f);
         GameManager.Instance.ResetGame();
+
     }
 
     public void Refresh()

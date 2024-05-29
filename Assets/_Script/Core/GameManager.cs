@@ -4,7 +4,6 @@ using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using static UnityEditor.Progress;
 
 /// <summary>
 /// 게임상태
@@ -31,6 +30,9 @@ public class GameManager : Singleton<GameManager>
     Difficulty difficulty = Difficulty.D;
 
     public Difficulty Difficulty => difficulty;
+
+    public bool TEST_DIFFICYLTY = false;
+    public Difficulty TEST_DIFFICULYY = Difficulty.D;
 
     /// <summary>
     /// 아이템 데이터 매니저
@@ -127,6 +129,10 @@ public class GameManager : Singleton<GameManager>
                         Debug.Log("게임스타트");
                         var enumValues = Enum.GetValues(typeof(Difficulty)).Cast<ItemCode>().Where(itemCode => (int)itemCode < 10).ToArray();
                         difficulty = (Difficulty)enumValues.GetValue(UnityEngine.Random.Range(0, enumValues.Length));
+                        if (TEST_DIFFICYLTY)
+                        {
+                            difficulty = TEST_DIFFICULYY;
+                        }
                         onBuy?.Invoke();
                         onGameStart?.Invoke();
                         break;

@@ -7,7 +7,7 @@ public class Hygrodere : EnemyBase
 {
     // 이동 관련 -----------------------------------------------------------
 
-    const float waitTime = 2.0f;
+    const float waitTime = 15.0f;
     float wait = 0.0f;
 
     /// <summary>
@@ -126,6 +126,8 @@ public class Hygrodere : EnemyBase
     /// </summary>
     bool isPlayerDie = false;
 
+    bool stunned = false;
+
     // 스폰 관련 -----------------------------------------------------------------------------
 
     /// <summary>
@@ -194,6 +196,8 @@ public class Hygrodere : EnemyBase
         wait = waitTime;
         isPlayerDie = false;
 
+        onEnemyStateChange += StateChange;
+
         chaseRadius.radius = chasePatrolTransitionRange;
         attackArea.onAttackIn += AttackAreaPlayerIn;
         attackArea.onAttackStay += AttackAreaPlayerStay;
@@ -228,11 +232,15 @@ public class Hygrodere : EnemyBase
         wait -= Time.deltaTime;
         if (!isPlayerDie)
         {
-            if (wait < 0.0f)
+            if (wait < 0.0f && !stunned)
             {
                 agent.SetDestination(GetRandomDestination());
                 State = EnemyState.Patrol;
                 wait = waitTime;
+            }
+            else
+            {
+                agent.speed = 0.0f;
             }
         }
         else
@@ -351,11 +359,9 @@ public class Hygrodere : EnemyBase
     {
         if (!IsDevided)
         {
-            gameObject.SetActive(false);
-
             StopAllCoroutines();
             StartCoroutine(DieCoroutine());
-
+         
             IsAlive = false;
         }
         else
@@ -384,12 +390,21 @@ public class Hygrodere : EnemyBase
 
     IEnumerator DieCoroutine()
     {
+        agent.speed = 0.0f;
         yield return new WaitForSeconds(3);
 
         Hygrodere newSlime1 = Instantiate(devidedHygro, transform.position, transform.rotation);
         newSlime1.IsDevided = true;
+        newSlime1.transform.SetParent(transform.parent);
+        newSlime1.Start();
         Hygrodere newSlime2 = Instantiate(devidedHygro, transform.position, transform.rotation);
         newSlime2.IsDevided = true;
+        newSlime2.transform.SetParent(transform.parent);
+        newSlime2.Start();
+        gameObject.SetActive(false);
+
+        yield return new WaitForSeconds(1);
+
     }
 
 

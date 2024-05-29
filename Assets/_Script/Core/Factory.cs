@@ -141,12 +141,6 @@ public class Factory : Singleton<Factory>
         return shovelPool.GetObject();
     }
 
-    public ItemBase GetItem(Vector3 position, float angle = 0.0f)
-    {
-        return shovelPool.GetObject(position, angle * Vector3.forward);
-    }
-
-
     /// <summary>
     /// 랜덤한 폐철물 소환 enumValues.Length-1 부분 코드수 늘어나면 조정해야함
     /// </summary>

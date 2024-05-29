@@ -46,7 +46,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 24879fe717cbaa74bbb0567ff9ea1ed6, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  difficulty: 1
   moduls:
   - {fileID: 4564526961701584482, guid: 1138215f9dd50bb48a4377b49ce3db21, type: 3}
   - {fileID: 2468206507073093500, guid: d30871add4ee14548b4d3ba81c49880d, type: 3}
@@ -74,6 +73,7 @@ MonoBehaviour:
   - {fileID: 2785346621474018705, guid: 276090e417a293644a5b45eaf8f5f3aa, type: 3}
   - {fileID: 6455801229053208336, guid: 11017ff584c353d4eb323ea8139d15f0, type: 3}
   - {fileID: 6239807730101204261, guid: 23fbe294aefd1424c9007ee755009728, type: 3}
+  - {fileID: 3908614548762159704, guid: e7ed07783f9f6b44c8ea641bf64fcc43, type: 3}
   trapPrefabs:
   - {fileID: 7092445322126236038, guid: 0758946b0a4d6ca4da59074cf19b00ee, type: 3}
 --- !u!1 &4971912658237920506

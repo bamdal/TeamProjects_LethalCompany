@@ -1,11 +1,13 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.AI;
 
 public class Grenade : WeaponBase, IEquipable, IBattler, IItemDataBase
 {
 
     ItemDB grenadeData;
+    Transform effectPrefab;
 
     int stunnedDuration = 15;
 
@@ -17,7 +19,7 @@ public class Grenade : WeaponBase, IEquipable, IBattler, IItemDataBase
     /// <summary>
     /// 폭발 데미지 반경
     /// </summary>
-    public float explosionRadius;
+    public float explosionRadius = 5.0f;
 
     float throwWegiht = 10.0f;
 
@@ -36,6 +38,8 @@ public class Grenade : WeaponBase, IEquipable, IBattler, IItemDataBase
         playerInput = GameManager.Instance.Player.GetComponent<PlayerInput>(); // 델리게이트 연결위한 필요한 컴포넌트
         rigid.isKinematic = true;
         grenadeData = GameManager.Instance.ItemData.GetItemDB(ItemCode.Grenade);
+        effectPrefab = transform.GetChild(2);
+        effectPrefab.gameObject.SetActive(false);
     }
 
     public void Equip()
@@ -76,14 +80,25 @@ public class Grenade : WeaponBase, IEquipable, IBattler, IItemDataBase
 
             foreach(EnemyBase enemy in enemies)
             {
-                enemy.onDebuffAttack?.Invoke(stunnedDuration);
+                StartCoroutine(EnemyStunned(stunnedDuration, enemy.transform.position));
+                NavMeshAgent agent = enemy.GetComponent<NavMeshAgent>();
+                enemy.onDebuffAttack?.Invoke(agent, stunnedDuration);
             }
         }
 
         yield return new WaitForSeconds(delay);
         Debug.Log("오브젝트 비활성화");
-        
+
     }
+
+    IEnumerator EnemyStunned(int stunnedTime, Vector3 enemyPos)
+    {
+        effectPrefab.gameObject.SetActive(true);
+        effectPrefab.transform.position = transform.position;
+        yield return new WaitForSeconds(stunnedTime);
+        effectPrefab.gameObject.SetActive(false);
+    }
+
     public void Attack(IBattler target)
     {
 

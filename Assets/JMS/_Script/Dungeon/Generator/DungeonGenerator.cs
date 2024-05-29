@@ -61,7 +61,7 @@ public class DungeonGenerator : MonoBehaviour
     /// </summary>
     public int generationCount = 5;
 
-    int GenerationCount => generationCount + (int)difficulty;
+    int GenerationCount => generationCount + Mathf.Clamp((int)difficulty,-2,2);
 
     /// <summary>
     /// 랜덤 시드 0 이상 값 쓰면 시드 고정
@@ -253,8 +253,14 @@ public class DungeonGenerator : MonoBehaviour
             yield return null;
         }
 
-        pointNav.CompliteGenerationDungeon();   // 던전 생성 완료후 네비메시를 깔게 함
+        StartCoroutine(GenerateDungeonNavMesh());
+    }
 
+    IEnumerator GenerateDungeonNavMesh()
+    {
+
+        pointNav.CompliteGenerationDungeon();   // 던전 생성 완료후 네비메시를 깔게 함
+        yield return new WaitForSeconds(2.0f);
         ItemGeneration();  // 아이템 스폰 코드 작성
         enemySpawner.OnSpawnEnemy(enemySpawnPoints);    // 아이템 스폰 좌표들과 난이도 보내기
     }

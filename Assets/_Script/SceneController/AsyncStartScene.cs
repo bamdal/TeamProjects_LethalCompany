@@ -45,6 +45,7 @@ public class AsyncStartScene : MonoBehaviour
         GameManager.Instance.DropBoxManager.dropPosition = dropBoxPosition;
         if (SceneManager.GetActiveScene().name != "Company")
         {
+
             StartCoroutine(LoadDungenonScene());
 
         }
@@ -66,6 +67,7 @@ public class AsyncStartScene : MonoBehaviour
         {
             yield return null;
         }
+
         GameManager.Instance.SpaceShip.transform.position = landPosition.position;
         GameManager.Instance.SpaceShip.transform.rotation = landPosition.rotation;
         GameManager.Instance.Player.ControllerTPPosition(landPosition.position);
@@ -82,9 +84,11 @@ public class AsyncStartScene : MonoBehaviour
         {
             yield return null;
         }
+
         spawner.OnSpawnEnemy(enemySpawnPoints);
 
         onSceneLoadComplite?.Invoke();
+
         loadingPanel.CanvasGroupAlphaChange();
         GameManager.Instance.SpaceShip.SpaceShipDoorOpen();
     }

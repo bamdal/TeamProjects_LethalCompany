@@ -1,12 +1,7 @@
 using System;
 using System.Collections;
 using System.Collections.Generic;
-using System.Xml.Linq;
-using Unity.VisualScripting;
 using UnityEngine;
-using UnityEngine.InputSystem;
-using UnityEngine.InputSystem.XInput;
-using static UnityEditor.Progress;
 
 public class Store : MonoBehaviour
 {
@@ -200,7 +195,7 @@ public class Store : MonoBehaviour
         // 판매가 이루어졌으므로 누적된 무게와 가격 초기화
         totalWeight = 0.0f;
         totalPrice = 0.0f;
-
+        
         // 판매된 폐철물 비활성화
         hardwareObject.SetActive(false);
 
@@ -211,23 +206,6 @@ public class Store : MonoBehaviour
         Debug.Log($"판매된 누적 금액: [{totalMoney}]");
     }
 
-    /*private void OnSellClick(InputAction.CallbackContext context)
-    {
-        //Debug.Log("트리거 범위에 Hardware가 없습니다.");
-        if (collidedObjects.Count > 0)
-        {
-            //Debug.Log("트리거 범위에 Hardware가 있고, F가 활성화 되었습니다. ");
-            // collidedObjects 리스트의 복사본을 만들고
-            List<GameObject> collidedObjectsCopy = new List<GameObject>(collidedObjects);
-
-            // 복사본을 이용하여 판매를 수행
-            foreach (var obj in collidedObjectsCopy)
-            {
-                SellHardware(obj);
-            }
-        }
-    }*/
-
     /// <summary>
     /// 상호작용 인터페이스
     /// </summary>
@@ -237,15 +215,34 @@ public class Store : MonoBehaviour
         //Debug.Log("실행");
         if (collidedObjects.Count > 0)
         {
+            StartCoroutine(Delay(1.0f));
             //Debug.Log("트리거 범위에 Hardware가 있고, F가 활성화 되었습니다. ");
             // collidedObjects 리스트의 복사본을 만들고
-            List<GameObject> collidedObjectsCopy = new List<GameObject>(collidedObjects);
+            /*List<GameObject> collidedObjectsCopy = new List<GameObject>(collidedObjects);
 
             // 복사본을 이용하여 판매를 수행
             foreach (var obj in collidedObjectsCopy)
             {
                 SellHardware(obj);
-            }
+            }*/
+        }
+    }
+
+    /// <summary>
+    /// 플레이어의 판매 상호작용 후 delay만큼 기다리고 판매를 실행할 코루틴
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator Delay(float delay)
+    {
+        yield return new WaitForSeconds(delay);
+
+        // collidedObjects 리스트의 복사본을 만들고
+        List<GameObject> collidedObjectsCopy = new List<GameObject>(collidedObjects);
+
+        // 복사본을 이용하여 판매를 수행
+        foreach (var obj in collidedObjectsCopy)
+        {
+            SellHardware(obj);
         }
     }
 }

@@ -73,11 +73,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8014d5ed6bb20e44eab99d486eeb4660, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  attackInterval: 0.3
+  attackInterval: 1
   patrolRange: 10
   patrolTime: 5
   attackPower: 10
-  popingSpeed: 10
   maxSpawnCount: 1
   spawnPercent: 0.3
 --- !u!195 &8735175479370265247
@@ -123,7 +122,7 @@ ParticleSystemRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: 4ce84a0d9185b7d41853a636c4d1b36f, type: 2}
+  - {fileID: 2100000, guid: e25cf7c5cc8cb434496e575fc94ebebf, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
