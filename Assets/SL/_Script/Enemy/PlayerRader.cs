@@ -7,7 +7,7 @@ public class PlayerRader : MonoBehaviour
 {
     public Action<bool> findPlayer;
     public float raderRange = 10.0f;
-    public float chaseRange = 30.0f;
+    public float chaseRange = 15.0f;
     SphereCollider playerRaderCollider;
 
     
