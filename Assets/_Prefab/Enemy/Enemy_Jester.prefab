@@ -77,7 +77,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   patrolRange: 10
   patrolTime: 5
-  changeModeTime: 28
+  changeModeTime: 5
   attackPower: 9999
   popingSpeed: 2
   modeChangeProbability: 0.1
@@ -86,7 +86,7 @@ MonoBehaviour:
     m_Bits: 256
   maxSpeed: 8
   maxSpawnCount: 1
-  spawnPercent: 0.3
+  spawnPercent: 1
 --- !u!54 &839288278165058045
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -133,8 +133,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 2.5, y: 2, z: 2.5}
-  m_Center: {x: 0, y: 1, z: 0}
+  m_Size: {x: 1.5, y: 1.5, z: 1.5}
+  m_Center: {x: 0, y: 0.75, z: 0}
 --- !u!95 &4293641601231033498
 Animator:
   serializedVersion: 5
