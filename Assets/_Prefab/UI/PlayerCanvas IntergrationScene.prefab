@@ -383,7 +383,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1408812523091313616, guid: fc9d60e913f684c438c880dae2661d23, type: 3}
       propertyPath: m_Name
-      value: PlayerCanvas Variant
+      value: PlayerCanvas IntergrationScene
       objectReference: {fileID: 0}
     - target: {fileID: 4927871145819575318, guid: fc9d60e913f684c438c880dae2661d23, type: 3}
       propertyPath: m_Pivot.x
@@ -485,7 +485,7 @@ PrefabInstance:
     m_RemovedGameObjects: []
     m_AddedGameObjects:
     - targetCorrespondingSourceObject: {fileID: 4927871145819575318, guid: fc9d60e913f684c438c880dae2661d23, type: 3}
-      insertIndex: 5
+      insertIndex: -1
       addedObject: {fileID: 4918297774870781162}
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: fc9d60e913f684c438c880dae2661d23, type: 3}
