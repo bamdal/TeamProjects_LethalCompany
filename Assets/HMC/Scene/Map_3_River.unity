@@ -176,7 +176,8 @@ PrefabInstance:
       value: Player
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 3754411237124191531, guid: 4548862bbe78e5442adac29ab687b04e, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4548862bbe78e5442adac29ab687b04e, type: 3}
@@ -1024,9 +1025,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5591edd95d4547bcb67d23412a7e8d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highDensity: 1
+  highDensity: 0.8
   midDensity: 0.6
-  highDensityProbability: 0.1
+  lowDensity: 0.4
+  highDensityProbability: 0.2
+  midDensityProbability: 0.5
 --- !u!64 &1318960417
 MeshCollider:
   m_ObjectHideFlags: 0
@@ -1224,7 +1227,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7970764422736446296, guid: 08fa2171b06b044a19cba5cd5e497213, type: 3}
+    - {fileID: 4146648678130923811, guid: 08fa2171b06b044a19cba5cd5e497213, type: 3}
+    - {fileID: 6467990452098268765, guid: 08fa2171b06b044a19cba5cd5e497213, type: 3}
+    - {fileID: 9014081740562817730, guid: 08fa2171b06b044a19cba5cd5e497213, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08fa2171b06b044a19cba5cd5e497213, type: 3}

@@ -241,17 +241,6 @@ MonoBehaviour:
   m_LightCookieSize: {x: 1, y: 1}
   m_LightCookieOffset: {x: 0, y: 0}
   m_SoftShadowQuality: 0
---- !u!114 &658513002 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 7411168840302102019, guid: 90a01adbc216e3e439e357e485fe5353, type: 3}
-  m_PrefabInstance: {fileID: 1584921262}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f47f8a2c6e302dd4bb21a24fdffae346, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &924375592
 GameObject:
   m_ObjectHideFlags: 0
@@ -264,6 +253,7 @@ GameObject:
   - component: {fileID: 924375595}
   - component: {fileID: 924375594}
   - component: {fileID: 924375596}
+  - component: {fileID: 924375597}
   m_Layer: 0
   m_Name: Terrain_0_0_4bd9e5ed-ee57-47a9-a342-ae882620423a
   m_TagString: Untagged
@@ -357,13 +347,26 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b822a298f7e434aee9c31d745895f6d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Sunrise: {fileID: 2100000, guid: 7c86d4abbd33b564b9e773aceadb8572, type: 2}
   Sunset: {fileID: 2100000, guid: 44d0573bf6d91e447b62f3aff840f2ae, type: 2}
   Night_Moonless: {fileID: 2100000, guid: 1cc6e6796f833a94f94e6d794ca654c3, type: 2}
   Night: {fileID: 2100000, guid: d1fdb8e44b28da34d9e922cca0bc740e, type: 2}
   Day: {fileID: 2100000, guid: 9ca22510633fbfd4399f1704cd9d5c72, type: 2}
   Day_Sunless: {fileID: 2100000, guid: 67950864b84c5db4f9eee7ca51c85571, type: 2}
-  timer: {fileID: 658513002}
+--- !u!114 &924375597
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 924375592}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f5591edd95d4547bcb67d23412a7e8d0, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  highDensity: 0.8
+  midDensity: 0.4
+  highDensityProbability: 0.2
 --- !u!1 &1075843740
 GameObject:
   m_ObjectHideFlags: 0
@@ -554,7 +557,11 @@ PrefabInstance:
       value: 0
       objectReference: {fileID: 0}
     m_RemovedComponents: []
-    m_RemovedGameObjects: []
+    m_RemovedGameObjects:
+    - {fileID: 7970764422736446296, guid: 08fa2171b06b044a19cba5cd5e497213, type: 3}
+    - {fileID: 4146648678130923811, guid: 08fa2171b06b044a19cba5cd5e497213, type: 3}
+    - {fileID: 6467990452098268765, guid: 08fa2171b06b044a19cba5cd5e497213, type: 3}
+    - {fileID: 9014081740562817730, guid: 08fa2171b06b044a19cba5cd5e497213, type: 3}
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 08fa2171b06b044a19cba5cd5e497213, type: 3}

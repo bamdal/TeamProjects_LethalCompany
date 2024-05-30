@@ -5,14 +5,25 @@ using UnityEngine;
 public class Fog : MonoBehaviour
 {
     public float highDensity = 0.8f;
-    public float midDensity = 0.4f;
+    public float midDensity = 0.6f;
+    public float lowDensity = 0.4f;
     public float highDensityProbability = 0.2f;
+    public float midDensityProbability = 0.5f;
+    private float lowDensityPRobability;
     private float originalDensity;
 
     void Start()
     {
-        int randomValue = Random.Range(0, 2);
+        if(highDensityProbability + midDensityProbability > 1f)
+        {
+            Debug.Log("확률의 합이 1이 되지 않습니다. 자동으로 조정합니다");
+            float totalProbability = highDensityProbability + midDensityProbability;
+            highDensityProbability /= totalProbability;
+            midDensityProbability /= totalProbability;
 
+            lowDensityPRobability = 1f - (highDensityProbability + midDensityProbability);
+        }
+        int randomValue = Random.Range(0, 2);
         if (randomValue == 0)
         {
             RenderSettings.fog = false;
@@ -27,14 +38,23 @@ public class Fog : MonoBehaviour
             if (randomProbability < highDensityProbability)
             {
                 RenderSettings.fogDensity = highDensity;
-                Debug.Log("높은 안개의 밀도 설정: " + highDensity);
+                Debug.Log("high fog Density: " + highDensity);
+            }
+            else if(randomProbability < highDensityProbability + midDensityProbability)
+            {
+                RenderSettings.fogDensity = midDensity;
+                Debug.Log("mid fog Density:" + midDensity);
             }
             else
             {
                 RenderSettings.fogDensity = midDensity;
-                Debug.Log("낮은 안개의 밀도 설정: " + midDensity);
+                Debug.Log("low fog Density: " + lowDensity);
             }
         }
         originalDensity = RenderSettings.fogDensity;
+    }
+    void Update() 
+    {
+        Debug.Log("현재 안개의 밀도:" + RenderSettings.fogDensity);
     }
 }
