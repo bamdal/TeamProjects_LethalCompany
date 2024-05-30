@@ -1904,6 +1904,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Enemy_Hornet
       objectReference: {fileID: 0}
+    - target: {fileID: 1757975740127458970, guid: 40a950d7022b133439cf5b07db835213, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
@@ -2159,6 +2163,10 @@ PrefabInstance:
     - target: {fileID: 2658328980519095831, guid: 11017ff584c353d4eb323ea8139d15f0, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 6455801229053208336, guid: 11017ff584c353d4eb323ea8139d15f0, type: 3}
+      propertyPath: changeModeTime
+      value: 20
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
