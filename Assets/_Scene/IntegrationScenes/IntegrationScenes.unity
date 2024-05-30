@@ -20,7 +20,7 @@ RenderSettings:
   m_FogDensity: 0.01
   m_LinearFogStart: 0
   m_LinearFogEnd: 300
-  m_AmbientSkyColor: {r: 0, g: 0, b: 0, a: 1}
+  m_AmbientSkyColor: {r: 0.2735849, g: 0.2735849, b: 0.2735849, a: 1}
   m_AmbientEquatorColor: {r: 0.114, g: 0.125, b: 0.133, a: 1}
   m_AmbientGroundColor: {r: 0.047, g: 0.043, b: 0.035, a: 1}
   m_AmbientIntensity: 1
@@ -1191,12 +1191,12 @@ RectTransform:
   m_LocalScale: {x: 0, y: 0, z: 0}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1850607212}
   - {fileID: 1188049672}
   - {fileID: 1696186468}
   - {fileID: 1469208776}
   - {fileID: 388879586}
   - {fileID: 1965778033}
+  - {fileID: 2462183828968542185}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
   m_AnchorMin: {x: 0, y: 0}
@@ -1726,11 +1726,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!224 &1850607212 stripped
-RectTransform:
-  m_CorrespondingSourceObject: {fileID: 315214539953806424, guid: 484d67f9547673048ba316b94fd63427, type: 3}
-  m_PrefabInstance: {fileID: 2462183828968542184}
-  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &1884192828
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -2475,6 +2470,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 484d67f9547673048ba316b94fd63427, type: 3}
+--- !u!224 &2462183828968542185 stripped
+RectTransform:
+  m_CorrespondingSourceObject: {fileID: 3671736316719675940, guid: 484d67f9547673048ba316b94fd63427, type: 3}
+  m_PrefabInstance: {fileID: 2462183828968542184}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &6486452449868810597
 PrefabInstance:
   m_ObjectHideFlags: 0

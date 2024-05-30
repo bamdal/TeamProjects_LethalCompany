@@ -259,7 +259,7 @@ public class GameManager : Singleton<GameManager>
         spaceShip = FindAnyObjectByType<SpaceShip>();
         player = FindAnyObjectByType<Player>();
         player.onDie = OnDie;
-        Money += initialFunds;
+        Money = initialFunds;
     }
 
     protected override void OnInitialize()
@@ -287,27 +287,37 @@ public class GameManager : Singleton<GameManager>
     }
 
     /// <summary>
+    /// 딜레이용 부울
+    /// </summary>
+    bool delay = true;
+
+    /// <summary>
     /// 플레이어 사망시 씬 이동
     /// </summary>
     void OnDie()
     {
-        if (GameState == GameState.GameStart)
+        if (delay)
         {
+            delay = false;
+            if (GameState == GameState.GameStart)
+            {
 
-            StartCoroutine(LoadSpaceScene());
+                StartCoroutine(LoadSpaceScene());
 
+            }
+            else
+            {
+                StartCoroutine(GameoverScene());
+            }
         }
-        else
-        {
-            StartCoroutine(GameoverScene());
-        }
+
     }
 
     IEnumerator GameoverScene()
     {
         AsyncOperation async = SceneManager.LoadSceneAsync("DeadScene", LoadSceneMode.Single);
         async.allowSceneActivation = false;
-
+        SpaceShip.SpaceShipDoorClose();
         yield return new WaitForSeconds(3.0f);
         async.allowSceneActivation = true;
         Player.PlayerRefresh();
@@ -318,15 +328,17 @@ public class GameManager : Singleton<GameManager>
         }
         SpaceShip.transform.position = Vector3.zero;
         SpaceShip.transform.rotation = Quaternion.identity;
+        
         Player.ControllerTPPosition(Vector3.zero);
         Player.PlayerRefresh();
         Terminal.IsSpace();
+        delay = true;
     }
 
     IEnumerator LoadSpaceScene()
     {
 
-  
+        SpaceShip.SpaceShipDoorClose();
         AsyncOperation async = SceneManager.LoadSceneAsync("MiddleScene", LoadSceneMode.Single);
         async.allowSceneActivation = false;
         yield return new WaitForSeconds(3.0f);
@@ -341,7 +353,10 @@ public class GameManager : Singleton<GameManager>
         SpaceShip.transform.rotation = Quaternion.identity;
         Player.ControllerTPPosition(Vector3.zero);
         Player.PlayerRefresh();
+        delay =true;
     }
+
+
 
     /// <summary>
     /// Store 클래스의 델리게이트가 호출될 때 실행되는 함수
@@ -425,7 +440,7 @@ public class GameManager : Singleton<GameManager>
     public void ResetGame()
     {
         Dday = maxDay;
-        Money = 0;
+        Money = initialFunds;
         targetAmountMoney = startTargetAmountMoney;
     }
 

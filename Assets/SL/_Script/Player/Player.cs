@@ -682,8 +682,17 @@ public class Player : Singleton<Player>, IBattler, IHealth
             Rigidbody itemRigidbody = CurrentItem.GetComponent<Rigidbody>();
             if (itemRigidbody != null)
                 itemRigidbody.isKinematic = false;
-            
-            CurrentItem.SetParent(null); // 부모에서 떼어냅니다.
+            Recycle recycle = CurrentItem.GetComponent<Recycle>();   
+            if (recycle.getParent() != null)
+            {
+                CurrentItem.SetParent(recycle.getParent()); // 부모에서 떼어냅니다.
+                Debug.Log("팩토리로 돌아감");
+            }
+            else
+            {
+                CurrentItem.SetParent(null);
+                Debug.Log("그냥 버림");
+            }
             TotalWeight -= CurrentItem.GetComponent<IItemDataBase>().GetItemDB().weight;
             SlowRatio = (0.01f * (100 - TotalWeight));
             for (int j = 0; j < 4; j++)

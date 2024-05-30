@@ -5,6 +5,7 @@ using UnityEngine.InputSystem;
 
 public class Test_Modul : TestBase
 {
+#if UNITY_EDITOR
     public GameObject target;
     public Door Door;
     public GenerationPointNav generationPointNav;
@@ -58,4 +59,5 @@ public class Test_Modul : TestBase
         /*        Instantiate(spiderPrefab, generationPointNav.transform);
         */
     }
+#endif
 }
