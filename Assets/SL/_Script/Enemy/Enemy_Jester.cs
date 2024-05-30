@@ -74,6 +74,7 @@ public class Enemy_Jester : EnemyBase
                 transform.GetChild(2).gameObject.SetActive(false);
                 changeTimer = changeModeTime;
                 State = EnemyState.Patrol;
+                playerRader.gameObject.GetComponent<Collider>().enabled = true;
                 jesterAudio.Stop();
             }
             else
@@ -136,7 +137,7 @@ public class Enemy_Jester : EnemyBase
         Color endColor = Color.red;
         Color newColor = Color.Lerp(startColor, endColor, t);
         meshRenderer.material.color = newColor; 
-
+        playerRader.gameObject.GetComponent<Collider>().enabled = false;
 
         if (changeTimer <= 0f)
         {
