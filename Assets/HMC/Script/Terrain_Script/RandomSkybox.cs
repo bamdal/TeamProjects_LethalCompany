@@ -53,20 +53,23 @@ public class RandomSkybox : MonoBehaviour
         if (IsSunset(currentTimeHour))
         {
             newSkybox = Sunset; // 15~18
+            //Debug.Log("sunset");
         }
         else if (IsDay(currentTimeHour))
         {
             newSkybox = selectedDaySkybox;
+            //Debug.Log("Day");
         }
         else if (IsNight(currentTimeHour))
         {
             newSkybox = sealectedNightSkybox;
+            //Debug.Log("night");
         }
         if(newSkybox != null && newSkybox != currentSkybox)
         {
             RenderSettings.skybox = newSkybox;
             currentSkybox = newSkybox;
-            Debug.Log("Skybox updated to : " + currentSkybox.name);
+            //Debug.Log("Skybox updated to : " + currentSkybox.name);
         }
     }
 
