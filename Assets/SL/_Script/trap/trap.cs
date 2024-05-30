@@ -45,7 +45,7 @@ public class Trap : MonoBehaviour
         {
             Debug.Log(other.gameObject.name);
             IBattler player = other.gameObject.GetComponent<IBattler>();
-            player.Defense(99999999);
+            player.Defense(100);
         }
         else
         {

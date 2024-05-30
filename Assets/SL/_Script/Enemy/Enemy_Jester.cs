@@ -32,14 +32,24 @@ public class Enemy_Jester : EnemyBase
     float originSpeed;
     private Transform layStartPosition;
     bool isPlayerDetected = false;
-    MeshRenderer meshRenderer;
+    MeshRenderer[] meshRenderer;
+    Animator animator;
     
 
     private void Awake()
     {
         jesterAudio = GetComponent<AudioSource>();
         agent = GetComponent<NavMeshAgent>();
-        meshRenderer = transform.GetChild(1).GetComponent<MeshRenderer>();
+        meshRenderer = new MeshRenderer[2];
+        for(int i = 0; i < 2; i++)
+        {
+                meshRenderer[i] = transform.GetChild(1).transform.GetChild(i).GetComponent<MeshRenderer>();
+            for(int j = 0; j < 2; j++)
+            {
+            }
+
+        }
+        
         timer = patrolTime;
         changeTimer = changeModeTime;
         originSpeed = agent.speed;
@@ -47,6 +57,7 @@ public class Enemy_Jester : EnemyBase
         layStartPosition = transform.GetChild(0);
         playerRader = transform.GetChild(3).GetComponent<PlayerRader>();
         playerRader.findPlayer += FindPlayer;
+        animator = GetComponent<Animator>();
     }
 
 
@@ -70,11 +81,13 @@ public class Enemy_Jester : EnemyBase
             {
                 agent.speed = originSpeed;
                 isPlayerDetected = false;
-                meshRenderer.material.color = Color.white;
+                
                 transform.GetChild(2).gameObject.SetActive(false);
                 changeTimer = changeModeTime;
                 State = EnemyState.Patrol;
+                playerRader.gameObject.GetComponent<Collider>().enabled = true;
                 jesterAudio.Stop();
+                animator.SetBool(nameof(Attack),false);
             }
             else
             {
@@ -135,21 +148,38 @@ public class Enemy_Jester : EnemyBase
         Color startColor = Color.white;
         Color endColor = Color.red;
         Color newColor = Color.Lerp(startColor, endColor, t);
-        meshRenderer.material.color = newColor; 
-
+        for (int i = 0; i < 2; i++)
+        {
+            for(int j = 0; j < 2; j++)
+            {
+                meshRenderer[i].materials[j].color = newColor;
+            }
+        }
+        playerRader.gameObject.GetComponent<Collider>().enabled = false;
 
         if (changeTimer <= 0f)
         {
             changeTimer = changeModeTime;
-            transform.GetChild(2).gameObject.SetActive(true);
-            State = EnemyState.Attack;
-            //여기서 노래 종료 코드
-            jesterAudio.Stop();
-            meshRenderer.material.color = endColor;
+            animator.SetBool(nameof(Attack), true);
+            for (int i = 0; i < 2; i++)
+            {
+                for (int j = 0; j < 2; j++)
+                {
+                    meshRenderer[i].materials[j].color = endColor;
+                }
+            }
+            StartCoroutine(OpenChest());
         }
     }
 
+    IEnumerator OpenChest()
+    {
 
+        yield return new WaitForSeconds(1.0f);
+        transform.GetChild(2).gameObject.SetActive(true);
+        State = EnemyState.Attack;
+        jesterAudio.Stop();
+    }
 
     protected override void Update_Attack()
     {

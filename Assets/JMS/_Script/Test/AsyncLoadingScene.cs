@@ -27,10 +27,7 @@ public class AsyncLoadingScene : MonoBehaviour
     /// </summary>
     IEnumerator loadingTextCoroutine;
 
-    /// <summary>
-    /// 로딩 완료 표시(true면 완료, false 미완)
-    /// </summary>
-    bool loadingDone = false;
+
 
     // UI
     Slider loadingSlider;
@@ -102,6 +99,5 @@ public class AsyncLoadingScene : MonoBehaviour
 
         StopCoroutine(loadingTextCoroutine);        // 글자 변경 안되게 만들기
         loadingText.text = "Loading\nComplete!";    // 완료되었다고 글자 출력
-        loadingDone = true;                         // 로딩 완료되었다고 표시
     }
 }
