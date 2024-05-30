@@ -599,7 +599,7 @@ public class Player : Singleton<Player>, IBattler, IHealth
 
                             itemTransform.localPosition = new Vector3(0.0f, 0.0f, 1.0f); // 포지션을 (0, 0, 0)으로 설정합니다.
                             itemTransform.localRotation = Quaternion.Euler(0, 0, 0);
-                            
+                            invenUI.ItemImages[i].color = new(1, 1, 1, 1);
                             Collider itemCollider = hit.collider.GetComponent<Collider>();
                             if (itemCollider != null)
                                 itemCollider.enabled = false;
@@ -611,6 +611,7 @@ public class Player : Singleton<Player>, IBattler, IHealth
                             if (inventory.InvenSlots[CurrentItemIndex] != null && inventory.InvenSlots[CurrentItemIndex].childCount > 0)
                             {
                                 inventory.InvenSlots[CurrentItemIndex].GetChild(0).gameObject.SetActive(true);
+
                             }
                             break;
                         }
@@ -682,7 +683,7 @@ public class Player : Singleton<Player>, IBattler, IHealth
             Rigidbody itemRigidbody = CurrentItem.GetComponent<Rigidbody>();
             if (itemRigidbody != null)
                 itemRigidbody.isKinematic = false;
-            
+            invenUI.ItemImages[CurrentItemIndex].color = new(1, 1, 1, 0.3f);
             CurrentItem.SetParent(null); // 부모에서 떼어냅니다.
             TotalWeight -= CurrentItem.GetComponent<IItemDataBase>().GetItemDB().weight;
             SlowRatio = (0.01f * (100 - TotalWeight));
@@ -698,6 +699,7 @@ public class Player : Singleton<Player>, IBattler, IHealth
                         {
                             inventory.ItemDBs[j] = itemData.GetItemDB();                    // ItemDB에서 데이터를 가져와
                             invenUI.ItemImages[j].sprite = inventory.ItemDBs[j].itemIcon;   // 이미지를 인벤토리창에 띄움
+
                         }
 
                     }
