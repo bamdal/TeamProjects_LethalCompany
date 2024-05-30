@@ -370,7 +370,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5964225437306367306, guid: 4548862bbe78e5442adac29ab687b04e, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 50
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5964225437306367306, guid: 4548862bbe78e5442adac29ab687b04e, type: 3}
       propertyPath: m_LocalRotation.w
@@ -949,6 +949,14 @@ PrefabInstance:
     - target: {fileID: 1251587097392931990, guid: a263acd7407007f48aa63f570b01a9f7, type: 3}
       propertyPath: m_Name
       value: GameManager
+      objectReference: {fileID: 0}
+    - target: {fileID: 3667524131926236890, guid: a263acd7407007f48aa63f570b01a9f7, type: 3}
+      propertyPath: TEST_DIFFICULYY
+      value: 500
+      objectReference: {fileID: 0}
+    - target: {fileID: 3667524131926236890, guid: a263acd7407007f48aa63f570b01a9f7, type: 3}
+      propertyPath: TEST_DIFFICYLTY
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 6471023079869006499, guid: a263acd7407007f48aa63f570b01a9f7, type: 3}
       propertyPath: dropPosition

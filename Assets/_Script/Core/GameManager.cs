@@ -332,6 +332,8 @@ public class GameManager : Singleton<GameManager>
         Player.ControllerTPPosition(Vector3.zero);
         Player.PlayerRefresh();
         Terminal.IsSpace();
+
+        yield return new WaitForSeconds(10.0f);
         delay = true;
     }
 
@@ -353,7 +355,8 @@ public class GameManager : Singleton<GameManager>
         SpaceShip.transform.rotation = Quaternion.identity;
         Player.ControllerTPPosition(Vector3.zero);
         Player.PlayerRefresh();
-        delay =true;
+        yield return new WaitForSeconds(10.0f);
+        delay = true;
     }
 
 
