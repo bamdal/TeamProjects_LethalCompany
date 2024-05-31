@@ -21,7 +21,7 @@ EditorBuildSettings:
     path: Assets/_Scene/IntegrationScenes/Company.unity
     guid: c43f1f83b6218d04f84e38e8fd6d27e1
   - enabled: 1
-    path: Assets/_Scene/IntegrationScenes/MiddleScene.unity
+    path: Assets/_Scene/IntegrationScenes/middleScene.unity
     guid: 9bf2fff3420de9c419076fb7a1ffc8fb
   - enabled: 1
     path: Assets/_Scene/IntegrationScenes/DeadScene.unity
