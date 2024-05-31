@@ -147,10 +147,11 @@ private void Attack()
         anim.SetTrigger("Attack");
         //Debug.Log("Attack!");
         lastAttackTime = Time.time;
+        agent.isStopped = true; // 공격 중에는 이동 멈추기
+        anim.SetBool("Walking", false); // 이동 애니메이션 비활성화
     }
 
-    agent.isStopped = true; // 공격 중에는 이동 멈추기
-    anim.SetBool("Walking", false); // 이동 애니메이션 비활성화
+    
 
     // 공격 범위를 벗어나면 추적 상태로 변경
     if (Vector3.Distance(transform.position, target.position) > attackRange)
