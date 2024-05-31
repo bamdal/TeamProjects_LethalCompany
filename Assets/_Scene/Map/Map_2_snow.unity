@@ -365,8 +365,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   highDensity: 0.8
-  midDensity: 0.4
+  midDensity: 0.6
+  lowDensity: 0.4
   highDensityProbability: 0.2
+  midDensityProbability: 0.5
 --- !u!1 &1075843740
 GameObject:
   m_ObjectHideFlags: 0
