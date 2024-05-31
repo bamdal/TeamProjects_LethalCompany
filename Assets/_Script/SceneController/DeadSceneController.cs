@@ -20,7 +20,7 @@ public class DeadSceneController : MonoBehaviour
             yield return null;
             if (elapsedTime > 1.0f && Input.anyKeyDown)
             {
-                AsyncOperation async = SceneManager.LoadSceneAsync("MiddleScene", LoadSceneMode.Single);
+                AsyncOperation async = SceneManager.LoadSceneAsync(4, LoadSceneMode.Single);
                 while (!async.isDone)
                 {
                     yield return null;

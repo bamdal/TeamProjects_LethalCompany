@@ -381,24 +381,60 @@ public class Terminal : MonoBehaviour,IInteraction
                 break;
 
             // 행성 이동하는 부분 -----------------------------------------------------------------------------------------
-            case "타이탄":
-            case "titan":
+            case "테스트행성":
+            case "Test":
                 if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
                 {
                     Debug.Log("mainText가 활성화된 상태에서 행성의 입력을 확인");
                     sceneNameToLoad = "IntegrationScenes";              // 씬의 이름이 IntegrationScenes 것 불러옴
                     ChangeSceen();
                 }
-                break; 
-
-            case "원래행성":
+                break;
+            case "오펜스":
+            case "Offense":
                 if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
                 {
-                    Debug.Log("mainText가 활성화된 상태에서 원래 행성의 입력을 확인");
-                    sceneNameToLoad = "10_Test_Money";              // 씬의 이름이 10_Test_Money 것 불러옴
+                    Debug.Log("mainText가 활성화된 상태에서 행성의 입력을 확인");
+                    sceneNameToLoad = "Offense";              // 씬의 이름이 IntegrationScenes 것 불러옴
                     ChangeSceen();
                 }
                 break;
+            case "머치":
+            case "March":
+                if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
+                {
+                    Debug.Log("mainText가 활성화된 상태에서 행성의 입력을 확인");
+                    sceneNameToLoad = "March";              // 씬의 이름이 IntegrationScenes 것 불러옴
+                    ChangeSceen();
+                }
+                break;
+            case "타이탄":
+            case "Titan":
+                if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
+                {
+                    Debug.Log("mainText가 활성화된 상태에서 행성의 입력을 확인");
+                    sceneNameToLoad = "Titan";              // 씬의 이름이 IntegrationScenes 것 불러옴
+                    ChangeSceen();
+                }
+                break;
+            case "랜드":
+            case "Rend":
+                if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
+                {
+                    Debug.Log("mainText가 활성화된 상태에서 행성의 입력을 확인");
+                    sceneNameToLoad = "Rend";              // 씬의 이름이 IntegrationScenes 것 불러옴
+                    ChangeSceen();
+                }
+                break;
+
+            /*            case "원래행성":
+                            if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
+                            {
+                                Debug.Log("mainText가 활성화된 상태에서 원래 행성의 입력을 확인");
+                                sceneNameToLoad = "10_Test_Money";              // 씬의 이름이 10_Test_Money 것 불러옴
+                                ChangeSceen();
+                            }
+                            break;*/
             case "회사":
             case "company":
                 if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
