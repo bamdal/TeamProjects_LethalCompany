@@ -11,7 +11,7 @@ GameObject:
   - component: {fileID: 8857927355032658546}
   - component: {fileID: 6525118482843337178}
   - component: {fileID: 5774563146314467986}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Wheel3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -94,7 +94,7 @@ GameObject:
   - component: {fileID: 2398564189565370765}
   - component: {fileID: 8882775481094727831}
   - component: {fileID: 6366811917938020123}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Wheel4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -177,7 +177,7 @@ GameObject:
   - component: {fileID: 3623250742223148054}
   - component: {fileID: 7004905286905669668}
   - component: {fileID: 6847301129360207563}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: CoverRight
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -260,7 +260,7 @@ GameObject:
   - component: {fileID: 763109844852258931}
   - component: {fileID: 6130219675252111750}
   - component: {fileID: 595785178097664045}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: CoverLeft
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -342,7 +342,7 @@ GameObject:
   m_Component:
   - component: {fileID: 5904119758811378887}
   - component: {fileID: 1709817146704641563}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Collider_Body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -383,7 +383,7 @@ GameObject:
   - component: {fileID: 1027507298186527812}
   - component: {fileID: 8240298430329275399}
   - component: {fileID: 8331782805300277189}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Wheel1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -469,7 +469,7 @@ GameObject:
   - component: {fileID: 2285591630079485542}
   - component: {fileID: 4180691193543171436}
   - component: {fileID: 6751603501485298458}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Hardware_GarbageCart
   m_TagString: Hardware
   m_Icon: {fileID: 0}
@@ -621,7 +621,7 @@ GameObject:
   - component: {fileID: 148470187716042778}
   - component: {fileID: 5227519531972833423}
   - component: {fileID: 3321478474466458362}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Wheel2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
