@@ -29,4 +29,16 @@ EditorBuildSettings:
   - enabled: 1
     path: Assets/_Scene/IntegrationScenes/AsyncLoadScene.unity
     guid: e86792f6e4401db4cab33e4058cdc280
+  - enabled: 1
+    path: Assets/_Scene/Map/March.unity
+    guid: 1f02d897891bd410aa2acaf50be5924c
+  - enabled: 1
+    path: Assets/_Scene/Map/Offense.unity
+    guid: c2d398a28bb114e5ca88475d29060cc4
+  - enabled: 1
+    path: Assets/_Scene/Map/Rend.unity
+    guid: 8542079ea862c41e5bf40d1c5fe51057
+  - enabled: 1
+    path: Assets/_Scene/Map/Titan.unity
+    guid: 55a71393c86344f0fbb0e27acd20ef5e
   m_configObjects: {}

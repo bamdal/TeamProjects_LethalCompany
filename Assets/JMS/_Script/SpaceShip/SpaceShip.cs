@@ -36,9 +36,9 @@ public class SpaceShip : MonoBehaviour
 
     private void ButtonClick()
     {
-        if (SceneManager.GetActiveScene().name != "StartScene")
+        if (SceneManager.GetActiveScene().buildIndex != 0)
         {
-            if (SceneManager.GetActiveScene().name != "MiddleScene")
+            if (SceneManager.GetActiveScene().buildIndex != 4)
             {
                 Collider[] colliders = Physics.OverlapBox(transform.position, new Vector3(10, 5, 15) * 0.5f);
                 foreach (Collider collider in colliders)
@@ -101,7 +101,7 @@ public class SpaceShip : MonoBehaviour
     {
 
 
-        AsyncOperation async = SceneManager.LoadSceneAsync("MiddleScene", LoadSceneMode.Single);
+        AsyncOperation async = SceneManager.LoadSceneAsync(4, LoadSceneMode.Single);
 
         while (!async.isDone)
         {

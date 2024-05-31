@@ -1227,7 +1227,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 3667524131926236890, guid: a263acd7407007f48aa63f570b01a9f7, type: 3}
       propertyPath: TEST_DIFFICULYY
-      value: 500
+      value: -2
       objectReference: {fileID: 0}
     - target: {fileID: 3667524131926236890, guid: a263acd7407007f48aa63f570b01a9f7, type: 3}
       propertyPath: TEST_DIFFICYLTY
@@ -2010,14 +2010,6 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
-    - target: {fileID: 140076929152931062, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 147684734573471519, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 203818651206986921, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2026,22 +2018,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 640995295}
-    - target: {fileID: 635759459224592384, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 722729031320369070, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 729462734710785174, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: farVcam
       value: 
       objectReference: {fileID: 1871234026}
-    - target: {fileID: 729462734710785174, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: playerCanvas
-      value: 
-      objectReference: {fileID: 0}
     - target: {fileID: 1019778677627282264, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2070,30 +2050,10 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1652847229}
-    - target: {fileID: 1946726849102797869, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 2104834514169781463, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1914658022}
-    - target: {fileID: 2537259437125895278, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 2712304584123513007, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 3554917652447137186, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4788501038951352210, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5101523530686760358, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_AnchorMax.y
       value: 0
@@ -2150,22 +2110,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 5270902852138062254, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 5665850593160521166, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 5716016664541799049, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 284810774}
-    - target: {fileID: 6848614547953668724, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7196803172557193780, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_Mesh
       value: 
@@ -2174,10 +2122,6 @@ PrefabInstance:
       propertyPath: m_Mesh
       value: 
       objectReference: {fileID: 1020467541}
-    - target: {fileID: 7724404528619036919, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_StaticEditorFlags
-      value: 0
-      objectReference: {fileID: 0}
     - target: {fileID: 7763088936451043420, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_Name
       value: SpaceShip
@@ -2196,10 +2140,6 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8008236641313813154, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
       propertyPath: m_AnchoredPosition.y
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 8499909658470279860, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
-      propertyPath: m_StaticEditorFlags
       value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 8690300313841275334, guid: 51630f9e621ca7f43b0af73925d58c6e, type: 3}
