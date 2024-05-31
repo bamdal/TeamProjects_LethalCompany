@@ -884,9 +884,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5591edd95d4547bcb67d23412a7e8d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highDensity: 0.8
-  midDensity: 0.6
-  lowDensity: 0.4
   highDensityProbability: 0.2
   midDensityProbability: 0.5
 --- !u!114 &1590896868

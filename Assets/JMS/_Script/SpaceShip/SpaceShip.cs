@@ -36,9 +36,9 @@ public class SpaceShip : MonoBehaviour
 
     private void ButtonClick()
     {
-        if (SceneManager.GetActiveScene().buildIndex != 0)
+        if (SceneManager.GetActiveScene().buildIndex != 1)
         {
-            if (SceneManager.GetActiveScene().buildIndex != 4)
+            if (SceneManager.GetActiveScene().buildIndex != 5)
             {
                 Collider[] colliders = Physics.OverlapBox(transform.position, new Vector3(10, 5, 15) * 0.5f);
                 foreach (Collider collider in colliders)
@@ -80,6 +80,7 @@ public class SpaceShip : MonoBehaviour
 
     public void SpaceShipDoorOpen()
     {
+        animator.ResetTrigger("Idle");
         animator.ResetTrigger("Open");
         animator.ResetTrigger("Close");
         animator.SetTrigger("Open"); 
@@ -88,9 +89,19 @@ public class SpaceShip : MonoBehaviour
 
     public void SpaceShipDoorClose()
     {
+        animator.ResetTrigger("Idle");
         animator.ResetTrigger("Open");
         animator.ResetTrigger("Close");
         animator.SetTrigger("Close");
+    }
+
+    public void SpaceShipDoorIdle()
+    {
+        animator.ResetTrigger("Open");
+        animator.ResetTrigger("Close");
+        animator.ResetTrigger("Idle");
+        animator.SetTrigger("Idle");
+
     }
 
     /// <summary>
@@ -101,7 +112,7 @@ public class SpaceShip : MonoBehaviour
     {
 
 
-        AsyncOperation async = SceneManager.LoadSceneAsync(4, LoadSceneMode.Single);
+        AsyncOperation async = SceneManager.LoadSceneAsync(5, LoadSceneMode.Single);
 
         while (!async.isDone)
         {

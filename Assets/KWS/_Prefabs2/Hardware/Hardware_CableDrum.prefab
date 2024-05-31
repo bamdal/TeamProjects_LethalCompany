@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 3522732384283189028}
   - component: {fileID: 284863769348298564}
   - component: {fileID: 2409717921457111163}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Hardware_CableDrum
   m_TagString: Hardware
   m_Icon: {fileID: 0}
@@ -159,7 +159,7 @@ GameObject:
   - component: {fileID: 717633187147818393}
   - component: {fileID: 8251933384491339447}
   - component: {fileID: 7622207756025373661}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Cables
   m_TagString: Untagged
   m_Icon: {fileID: 0}

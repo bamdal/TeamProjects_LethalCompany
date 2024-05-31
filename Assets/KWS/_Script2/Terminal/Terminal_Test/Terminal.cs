@@ -412,7 +412,7 @@ public class Terminal : MonoBehaviour,IInteraction
             case "Titan":
                 if (mainText.gameObject.activeSelf)     // mainText가 활성화 된 상태에서
                 {
-                    Debug.Log("mainText가 활성화된 상태에서 행성의 입력을 확인");
+                    Debug.Log("타이탄 현재 에러");
                     sceneNameToLoad = "Titan";              // 씬의 이름이 IntegrationScenes 것 불러옴
                     ChangeSceen();
                 }

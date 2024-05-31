@@ -414,9 +414,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f5591edd95d4547bcb67d23412a7e8d0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  highDensity: 0.8
-  midDensity: 0.6
-  lowDensity: 0.4
   highDensityProbability: 0.2
   midDensityProbability: 0.5
 --- !u!114 &924375598
@@ -1057,9 +1054,25 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 2788025228502421095, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: 256.9
+      objectReference: {fileID: 0}
+    - target: {fileID: 2788025228502421095, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 2.81
+      objectReference: {fileID: 0}
+    - target: {fileID: 5150956438277218390, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 32.33
+      objectReference: {fileID: 0}
     - target: {fileID: 5863868914747390054, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
       propertyPath: m_Name
       value: IntegrationScenesController
+      objectReference: {fileID: 0}
+    - target: {fileID: 8181730952453406807, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
+      propertyPath: m_LocalPosition.y
+      value: 28.67
       objectReference: {fileID: 0}
     - target: {fileID: 8469042668604694402, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
       propertyPath: m_LocalPosition.x
@@ -1115,15 +1128,27 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 8937641884114631734, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 92.2
+      value: 105.62
       objectReference: {fileID: 0}
     - target: {fileID: 8937641884114631734, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 29.7
+      value: 27.32
       objectReference: {fileID: 0}
     - target: {fileID: 8937641884114631734, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 176.9
+      value: 173.4
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937641884114631734, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
+      propertyPath: m_LocalRotation.w
+      value: 0.98332995
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937641884114631734, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
+      propertyPath: m_LocalRotation.y
+      value: -0.18183027
+      objectReference: {fileID: 0}
+    - target: {fileID: 8937641884114631734, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
+      propertyPath: m_LocalEulerAnglesHint.y
+      value: -20.953
       objectReference: {fileID: 0}
     - target: {fileID: 9067516278861555671, guid: 9db33de35b9f2f2488f82c189bdf7ef1, type: 3}
       propertyPath: loadingPanel

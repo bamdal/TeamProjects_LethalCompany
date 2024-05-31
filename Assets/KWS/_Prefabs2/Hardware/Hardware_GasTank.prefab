@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 8872519268813349628}
   - component: {fileID: 144233505070152951}
   - component: {fileID: 2395969503495031391}
-  m_Layer: 12
+  m_Layer: 0
   m_Name: Hardware_GasTank
   m_TagString: Hardware
   m_Icon: {fileID: 0}

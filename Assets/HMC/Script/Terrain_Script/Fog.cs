@@ -4,9 +4,9 @@ using UnityEngine;
 
 public class Fog : MonoBehaviour
 {
-    float highDensity = 0.5f;
-    float midDensity = 0.4f;
-    float lowDensity = 0.2f;
+    float highDensity = 0.2f;
+    float midDensity = 0.1f;
+    float lowDensity = 0.05f;
     public float highDensityProbability = 0.2f;
     public float midDensityProbability = 0.5f;
 /*    private float lowDensityPRobability;

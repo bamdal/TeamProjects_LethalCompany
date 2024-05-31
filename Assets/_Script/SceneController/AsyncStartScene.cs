@@ -61,7 +61,7 @@ public class AsyncStartScene : MonoBehaviour
     IEnumerator LoadDungenonScene()
     {
 
-        AsyncOperation async = SceneManager.LoadSceneAsync(2, LoadSceneMode.Additive);
+        AsyncOperation async = SceneManager.LoadSceneAsync(3, LoadSceneMode.Additive);
 
         while (!async.isDone)
         {
@@ -73,7 +73,7 @@ public class AsyncStartScene : MonoBehaviour
         GameManager.Instance.Player.ControllerTPPosition(landPosition.position);
 
         // DungenonScene이 로드된 후에 StartGame 메서드를 호출
-        GameObject dungeonScene = SceneManager.GetSceneByBuildIndex(2).GetRootGameObjects()[0];
+        GameObject dungeonScene = SceneManager.GetSceneByBuildIndex(3).GetRootGameObjects()[0];
         if (dungeonScene != null)
         {
             dungeonScene.GetComponent<DungeonGenerator>().StartGame();
