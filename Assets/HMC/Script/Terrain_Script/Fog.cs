@@ -14,6 +14,7 @@ public class Fog : MonoBehaviour
 
     void Start()
     {
+        
         if(highDensityProbability + midDensityProbability > 1f)
         {
             Debug.Log("확률의 합이 1이 되지 않습니다. 자동으로 조정합니다");
@@ -52,9 +53,7 @@ public class Fog : MonoBehaviour
             }
         }
         originalDensity = RenderSettings.fogDensity;
-    }
-    void Update() 
-    {
         Debug.Log("현재 안개의 밀도:" + RenderSettings.fogDensity);
     }
+
 }

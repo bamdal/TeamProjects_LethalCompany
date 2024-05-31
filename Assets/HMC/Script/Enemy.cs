@@ -99,17 +99,19 @@ public class Enemy_H : MonoBehaviour
     {
         isLookingAround = true;
         anim.SetBool("LookAround", true);
-        Debug.Log("Look Around");
+        //Debug.Log("Look Around");
         anim.SetBool("Walking", false);
+        agent.isStopped = true;
         yield return new WaitForSeconds(lookAroundDuration);
         isLookingAround = false;
         anim.SetBool("LookAround", false);
+        agent.isStopped = false; 
         currentState = State.IDLE;
     }
 
     private void SetRandomDestination()
     {
-        Vector3 randomDirection = Quaternion.Euler(0, UnityEngine.Random.Range(0f, 360f), 0) * Vector3.forward;
+        Vector3 randomDirection = Quaternion.Euler(0, Random.Range(0f, 360f), 0) * Vector3.forward;
         Vector3 targetPosition = transform.position + randomDirection * 10f;
         NavMeshHit hit;
         if (NavMesh.SamplePosition(targetPosition, out hit, 10f, NavMesh.AllAreas))
@@ -136,32 +138,39 @@ public class Enemy_H : MonoBehaviour
         anim.SetBool("Walking", true);
     }
 
-    private void Attack()
+private void Attack()
+{
+    // 일정 시간 간격으로 공격
+    if (Time.time - lastAttackTime >= attackCooldown)
     {
-        // 일정 시간 간격으로 공격
-        if (Time.time - lastAttackTime >= attackCooldown)
-        {
-            // 공격 코드 추가
-            anim.SetTrigger("Attack");
-            //Debug.Log("Attack!");
-            lastAttackTime = Time.time;
-        }
-
-        agent.isStopped = true;      //
-
-        // 공격 범위를 벗어나면 추적 상태로 변경
-        if (Vector3.Distance(transform.position, target.position) > attackRange)
-        {
-            currentState = State.CHASE;
-            agent.isStopped = false;
-        }
+        // 공격 코드 추가
+        anim.SetTrigger("Attack");
+        //Debug.Log("Attack!");
+        lastAttackTime = Time.time;
     }
+
+    agent.isStopped = true; // 공격 중에는 이동 멈추기
+    anim.SetBool("Walking", false); // 이동 애니메이션 비활성화
+
+    // 공격 범위를 벗어나면 추적 상태로 변경
+    if (Vector3.Distance(transform.position, target.position) > attackRange)
+    {
+        currentState = State.CHASE;
+        agent.isStopped = false; // 추적 시작 시 이동 재개
+    }
+    else
+    {
+        // 공격 범위 안에 있으면 멈춤
+        agent.isStopped = true;
+    }
+}
+
 
     private void Die()
     {
         // 사망 처리 코드 추가
         anim.SetTrigger("Die");
-        Debug.Log("moster's dead!");
-        Destroy(gameObject, 0.5f); // 2초 후에 객체 삭제
+        Debug.Log("Monster's dead!");
+        Destroy(gameObject, 0.5f); // 0.5초 후에 객체 삭제
     }
 }
