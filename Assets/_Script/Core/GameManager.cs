@@ -315,7 +315,7 @@ public class GameManager : Singleton<GameManager>
 
     IEnumerator GameoverScene()
     {
-        AsyncOperation async = SceneManager.LoadSceneAsync("DeadScene", LoadSceneMode.Single);
+        AsyncOperation async = SceneManager.LoadSceneAsync(6, LoadSceneMode.Single);
         async.allowSceneActivation = false;
         SpaceShip.SpaceShipDoorClose();
         yield return new WaitForSeconds(3.0f);
@@ -341,7 +341,7 @@ public class GameManager : Singleton<GameManager>
     {
 
         SpaceShip.SpaceShipDoorClose();
-        AsyncOperation async = SceneManager.LoadSceneAsync("MiddleScene", LoadSceneMode.Single);
+        AsyncOperation async = SceneManager.LoadSceneAsync(5, LoadSceneMode.Single);
         async.allowSceneActivation = false;
         yield return new WaitForSeconds(3.0f);
         async.allowSceneActivation = true;
