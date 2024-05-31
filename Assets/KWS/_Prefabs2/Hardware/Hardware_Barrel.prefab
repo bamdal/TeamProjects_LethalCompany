@@ -14,7 +14,7 @@ GameObject:
   - component: {fileID: 6402975462451874559}
   - component: {fileID: 3154086953395279105}
   - component: {fileID: 8651242643717137877}
-  m_Layer: 0
+  m_Layer: 12
   m_Name: Hardware_Barrel
   m_TagString: Hardware
   m_Icon: {fileID: 0}
